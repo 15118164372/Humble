@@ -46,6 +46,11 @@ const char *getScriptPath(void)
     return g_strScriptPath.c_str();
 }
 
+const char *getPathSeparator(void) 
+{
+    return H_PATH_SEPARATOR;
+}
+
 void H_RegAll(struct lua_State *pLState)
 {
     H_RegBinary(pLState);
@@ -252,6 +257,7 @@ void H_RegFuncs(struct lua_State *pLState)
         .addFunction("md5Str", md5Str)
         .addFunction("md5File", md5File)
         .addFunction("newLuaTask", newLuaTask)
+        .addFunction("getPathSeparator", getPathSeparator)
         .addFunction("getProPath", getProPath)
         .addFunction("getScriptPath", getScriptPath);
 }
