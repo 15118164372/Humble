@@ -109,23 +109,6 @@
     <ClInclude Include="luacjson\dtoa_config.h" />
     <ClInclude Include="luacjson\fpconv.h" />
     <ClInclude Include="luacjson\strbuf.h" />
-    <ClInclude Include="luacurl\l52util.h" />
-    <ClInclude Include="luacurl\lceasy.h" />
-    <ClInclude Include="luacurl\lcerror.h" />
-    <ClInclude Include="luacurl\lcerr_easy.h" />
-    <ClInclude Include="luacurl\lcerr_form.h" />
-    <ClInclude Include="luacurl\lcerr_multi.h" />
-    <ClInclude Include="luacurl\lcerr_share.h" />
-    <ClInclude Include="luacurl\lcflags.h" />
-    <ClInclude Include="luacurl\lchttppost.h" />
-    <ClInclude Include="luacurl\lcinfoeasy.h" />
-    <ClInclude Include="luacurl\lcmulti.h" />
-    <ClInclude Include="luacurl\lcopteasy.h" />
-    <ClInclude Include="luacurl\lcoptmulti.h" />
-    <ClInclude Include="luacurl\lcoptshare.h" />
-    <ClInclude Include="luacurl\lcshare.h" />
-    <ClInclude Include="luacurl\lcurl.h" />
-    <ClInclude Include="luacurl\lcutils.h" />
     <ClInclude Include="luasocket\auxiliar.h" />
     <ClInclude Include="luasocket\buffer.h" />
     <ClInclude Include="luasocket\except.h" />
@@ -302,14 +285,6 @@
     <ClCompile Include="luacjson\g_fmt.c" />
     <ClCompile Include="luacjson\lua_cjson.c" />
     <ClCompile Include="luacjson\strbuf.c" />
-    <ClCompile Include="luacurl\l52util.c" />
-    <ClCompile Include="luacurl\lceasy.c" />
-    <ClCompile Include="luacurl\lcerror.c" />
-    <ClCompile Include="luacurl\lchttppost.c" />
-    <ClCompile Include="luacurl\lcmulti.c" />
-    <ClCompile Include="luacurl\lcshare.c" />
-    <ClCompile Include="luacurl\lcurl.c" />
-    <ClCompile Include="luacurl\lcutils.c" />
     <ClCompile Include="luaserialize\serialize.c" />
     <ClCompile Include="luasocket\auxiliar.c" />
     <ClCompile Include="luasocket\buffer.c" />
@@ -515,7 +490,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/jwsmtp;../HBase/pugixml;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/curl;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/jsoncpp;../HBase/luaserialize;../HBase/luasocket;../HBase/luacurl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/jwsmtp;../HBase/pugixml;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/jsoncpp;../HBase/luaserialize;../HBase/luasocket;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -528,7 +503,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/jwsmtp;../HBase/pugixml;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/curl;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/jsoncpp;../HBase/luaserialize;../HBase/luasocket;../HBase/luacurl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/jwsmtp;../HBase/pugixml;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/jsoncpp;../HBase/luaserialize;../HBase/luasocket;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -543,7 +518,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/jwsmtp;../HBase/pugixml;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/curl;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/jsoncpp;../HBase/luaserialize;../HBase/luasocket;../HBase/luacurl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/jwsmtp;../HBase/pugixml;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/jsoncpp;../HBase/luaserialize;../HBase/luasocket;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -560,7 +535,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/jwsmtp;../HBase/pugixml;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/curl;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/jsoncpp;../HBase/luaserialize;../HBase/luasocket;../HBase/luacurl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/jwsmtp;../HBase/pugixml;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/jsoncpp;../HBase/luaserialize;../HBase/luasocket;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

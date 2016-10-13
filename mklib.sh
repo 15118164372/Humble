@@ -25,9 +25,6 @@ DepLib=DependLib
 libevent_tar=libevent-2.1.5-beta.tar.gz
 libevent_path=libevent-2.1.5-beta
 
-curl_tar=curl-7.38.0.tar.gz
-curl_path=curl-7.38.0
-
 #Брвы-----------------libevent---------------------------
 cd $LibPath$DepLib
 
@@ -65,25 +62,3 @@ fi
 mv $LibPath$DepLib/$libevent_path/.libs/libevent_core.a $LibPath$RstPath/libevent_core_$OSName.a
 mv $LibPath$DepLib/$libevent_path/.libs/libevent_extra.a $LibPath$RstPath/libevent_extra_$OSName.a
 mv $LibPath$DepLib/$libevent_path/.libs/libevent_pthreads.a $LibPath$RstPath/libevent_pthreads_$OSName.a
-
-#Брвы-----------------curl---------------------------
-cd $LibPath$DepLib
-
-rm -rf $curl_path
-if [ "$OSName" = "SunOS" ]
-then
-    gzcat $curl_tar | tar xvf -
-else
-    tar -xvzf $curl_tar
-fi
-cd $LibPath$DepLib/$curl_path
-
-./configure --enable-shared=no --disable-ldap --disable-ldaps
-make
-
-if [ -f "$LibPath$RstPath/libcurl_$OSName.a" ]
-then
-    rm -rf $LibPath$RstPath/libcurl_$OSName.a
-fi
-
-mv $LibPath$DepLib/$curl_path/lib/.libs/libcurl.a $LibPath$RstPath/libcurl_$OSName.a

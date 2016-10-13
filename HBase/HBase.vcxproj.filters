@@ -82,9 +82,6 @@
     <Filter Include="Service\Parser">
       <UniqueIdentifier>{30dea6f7-72f1-4903-9f3a-8ae9699a7e65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3rd\lua\luacurl">
-      <UniqueIdentifier>{d2b3c3a8-8527-44ca-98f8-6159a430a6d0}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -679,57 +676,6 @@
     <ClInclude Include="DefParser.h">
       <Filter>Service\Parser</Filter>
     </ClInclude>
-    <ClInclude Include="luacurl\l52util.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lceasy.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lcerr_easy.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lcerr_form.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lcerr_multi.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lcerr_share.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lcerror.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lcflags.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lchttppost.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lcinfoeasy.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lcmulti.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lcopteasy.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lcoptmulti.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lcoptshare.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lcshare.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lcurl.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
-    <ClInclude Include="luacurl\lcutils.h">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="jwsmtp\compat.cpp">
@@ -1293,30 +1239,6 @@
     </ClCompile>
     <ClCompile Include="DefParser.cpp">
       <Filter>Service\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="luacurl\l52util.c">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClCompile>
-    <ClCompile Include="luacurl\lceasy.c">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClCompile>
-    <ClCompile Include="luacurl\lcerror.c">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClCompile>
-    <ClCompile Include="luacurl\lchttppost.c">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClCompile>
-    <ClCompile Include="luacurl\lcmulti.c">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClCompile>
-    <ClCompile Include="luacurl\lcshare.c">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClCompile>
-    <ClCompile Include="luacurl\lcurl.c">
-      <Filter>3rd\lua\luacurl</Filter>
-    </ClCompile>
-    <ClCompile Include="luacurl\lcutils.c">
-      <Filter>3rd\lua\luacurl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
