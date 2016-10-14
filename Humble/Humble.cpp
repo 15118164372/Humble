@@ -12,11 +12,6 @@ using namespace Humble;
 #ifdef H_MYSQL
 #pragma comment(lib, "libmysql.lib")
 #endif
-#if _DEBUG
-#pragma comment(lib, "libcurl_a_debug.lib")
-#else
-#pragma comment(lib, "libcurl_a.lib")
-#endif
 #pragma comment(lib, "HBase.lib")
 #endif
 
