@@ -13,9 +13,6 @@
     <Filter Include="3rd">
       <UniqueIdentifier>{2f626edb-2f75-42b7-af2c-24269601e15d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3rd\jwsmtp">
-      <UniqueIdentifier>{01834fb6-10a9-4dd7-b06c-0353414ca578}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3rd\pugixml">
       <UniqueIdentifier>{c64ee883-b7f8-4d8f-b463-ca297d26cd77}</UniqueIdentifier>
     </Filter>
@@ -92,18 +89,6 @@
     </ClInclude>
     <ClInclude Include="Macros.h">
       <Filter>Config</Filter>
-    </ClInclude>
-    <ClInclude Include="jwsmtp\compat.h">
-      <Filter>3rd\jwsmtp</Filter>
-    </ClInclude>
-    <ClInclude Include="jwsmtp\jwsmtp.h">
-      <Filter>3rd\jwsmtp</Filter>
-    </ClInclude>
-    <ClInclude Include="jwsmtp\jwsmtp_base64.h">
-      <Filter>3rd\jwsmtp</Filter>
-    </ClInclude>
-    <ClInclude Include="jwsmtp\mailer.h">
-      <Filter>3rd\jwsmtp</Filter>
     </ClInclude>
     <ClInclude Include="zlib\crc32.h">
       <Filter>3rd\zlib</Filter>
@@ -535,9 +520,6 @@
     <ClInclude Include="Log.h">
       <Filter>Service</Filter>
     </ClInclude>
-    <ClInclude Include="Mail.h">
-      <Filter>Service</Filter>
-    </ClInclude>
     <ClInclude Include="jsoncpp\json\assertions.h">
       <Filter>3rd\jsoncpp\json</Filter>
     </ClInclude>
@@ -601,10 +583,37 @@
     <ClInclude Include="SHA1.h">
       <Filter>Encrypt</Filter>
     </ClInclude>
+    <ClInclude Include="NetParser.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="CirQueue.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Httpd.h">
+      <Filter>Service\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="Tcp1.h">
+      <Filter>Service\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="Tcp2.h">
+      <Filter>Service\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="WebSock.h">
+      <Filter>Service\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="mqtt.h">
+      <Filter>Service\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="DefParser.h">
+      <Filter>Service\Parser</Filter>
+    </ClInclude>
     <ClInclude Include="luasocket\auxiliar.h">
       <Filter>3rd\lua\luasocket</Filter>
     </ClInclude>
     <ClInclude Include="luasocket\buffer.h">
+      <Filter>3rd\lua\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket\compat.h">
       <Filter>3rd\lua\luasocket</Filter>
     </ClInclude>
     <ClInclude Include="luasocket\except.h">
@@ -616,7 +625,7 @@
     <ClInclude Include="luasocket\luasocket.h">
       <Filter>3rd\lua\luasocket</Filter>
     </ClInclude>
-    <ClInclude Include="luasocket\luasockio.h">
+    <ClInclude Include="luasocket\luasocketio.h">
       <Filter>3rd\lua\luasocket</Filter>
     </ClInclude>
     <ClInclude Include="luasocket\mime.h">
@@ -646,47 +655,20 @@
     <ClInclude Include="luasocket\unix.h">
       <Filter>3rd\lua\luasocket</Filter>
     </ClInclude>
+    <ClInclude Include="luasocket\unixtcp.h">
+      <Filter>3rd\lua\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="luasocket\unixudp.h">
+      <Filter>3rd\lua\luasocket</Filter>
+    </ClInclude>
     <ClInclude Include="luasocket\usocket.h">
       <Filter>3rd\lua\luasocket</Filter>
     </ClInclude>
     <ClInclude Include="luasocket\wsocket.h">
       <Filter>3rd\lua\luasocket</Filter>
     </ClInclude>
-    <ClInclude Include="NetParser.h">
-      <Filter>Service</Filter>
-    </ClInclude>
-    <ClInclude Include="CirQueue.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Httpd.h">
-      <Filter>Service\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="Tcp1.h">
-      <Filter>Service\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="Tcp2.h">
-      <Filter>Service\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="WebSock.h">
-      <Filter>Service\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="mqtt.h">
-      <Filter>Service\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="DefParser.h">
-      <Filter>Service\Parser</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="jwsmtp\compat.cpp">
-      <Filter>3rd\jwsmtp</Filter>
-    </ClCompile>
-    <ClCompile Include="jwsmtp\jwsmtp_base64.cpp">
-      <Filter>3rd\jwsmtp</Filter>
-    </ClCompile>
-    <ClCompile Include="jwsmtp\mailer.cpp">
-      <Filter>3rd\jwsmtp</Filter>
-    </ClCompile>
     <ClCompile Include="zlib\adler32.c">
       <Filter>3rd\zlib</Filter>
     </ClCompile>
@@ -1134,9 +1116,6 @@
     <ClCompile Include="Log.cpp">
       <Filter>Service</Filter>
     </ClCompile>
-    <ClCompile Include="Mail.cpp">
-      <Filter>Service</Filter>
-    </ClCompile>
     <ClCompile Include="jsoncpp\json_reader.cpp">
       <Filter>3rd\jsoncpp</Filter>
     </ClCompile>
@@ -1168,10 +1147,37 @@
       <Filter>Encrypt</Filter>
     </ClCompile>
     <ClCompile Include="HBase.cpp" />
+    <ClCompile Include="NetParser.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Chan.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Httpd.cpp">
+      <Filter>Service\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="Tcp1.cpp">
+      <Filter>Service\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="Tcp2.cpp">
+      <Filter>Service\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="WebSock.cpp">
+      <Filter>Service\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="mqtt.cpp">
+      <Filter>Service\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="DefParser.cpp">
+      <Filter>Service\Parser</Filter>
+    </ClCompile>
     <ClCompile Include="luasocket\auxiliar.c">
       <Filter>3rd\lua\luasocket</Filter>
     </ClCompile>
     <ClCompile Include="luasocket\buffer.c">
+      <Filter>3rd\lua\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="luasocket\compat.c">
       <Filter>3rd\lua\luasocket</Filter>
     </ClCompile>
     <ClCompile Include="luasocket\except.c">
@@ -1183,7 +1189,7 @@
     <ClCompile Include="luasocket\luasocket.c">
       <Filter>3rd\lua\luasocket</Filter>
     </ClCompile>
-    <ClCompile Include="luasocket\luasockio.c">
+    <ClCompile Include="luasocket\luasocketio.c">
       <Filter>3rd\lua\luasocket</Filter>
     </ClCompile>
     <ClCompile Include="luasocket\mime.c">
@@ -1210,35 +1216,17 @@
     <ClCompile Include="luasocket\unix.c">
       <Filter>3rd\lua\luasocket</Filter>
     </ClCompile>
+    <ClCompile Include="luasocket\unixtcp.c">
+      <Filter>3rd\lua\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="luasocket\unixudp.c">
+      <Filter>3rd\lua\luasocket</Filter>
+    </ClCompile>
     <ClCompile Include="luasocket\usocket.c">
       <Filter>3rd\lua\luasocket</Filter>
     </ClCompile>
     <ClCompile Include="luasocket\wsocket.c">
       <Filter>3rd\lua\luasocket</Filter>
-    </ClCompile>
-    <ClCompile Include="NetParser.cpp">
-      <Filter>Service</Filter>
-    </ClCompile>
-    <ClCompile Include="Chan.cpp">
-      <Filter>Service</Filter>
-    </ClCompile>
-    <ClCompile Include="Httpd.cpp">
-      <Filter>Service\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="Tcp1.cpp">
-      <Filter>Service\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="Tcp2.cpp">
-      <Filter>Service\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="WebSock.cpp">
-      <Filter>Service\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="mqtt.cpp">
-      <Filter>Service\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="DefParser.cpp">
-      <Filter>Service\Parser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

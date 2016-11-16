@@ -57,7 +57,6 @@ void H_RegAll(struct lua_State *pLState)
     H_RegNetParser(pLState);
     H_RegNetWorker(pLState);
     H_RegSender(pLState);
-    H_RegMail(pLState);
     H_RegFuncs(pLState);
     H_RegCharset(pLState);
     H_RegClock(pLState);
@@ -236,7 +235,6 @@ void H_RegGlobal(struct lua_State *pLState)
 {
     luabridge::setGlobal(pLState, CNetWorker::getSingletonPtr(), "g_pNetWorker");
     luabridge::setGlobal(pLState, CSender::getSingletonPtr(), "g_pSender");
-    luabridge::setGlobal(pLState, CMail::getSingletonPtr(), "g_pEmail");
     luabridge::setGlobal(pLState, CWorkerDisp::getSingletonPtr(), "g_pWorkerMgr");
     luabridge::setGlobal(pLState, CNetParser::getSingletonPtr(), "g_pNetParser");
 }
@@ -362,14 +360,6 @@ void H_RegSender(struct lua_State *pLState)
             .addFunction("sendUB", &CSender::sendUBinary)
             .addFunction("broadCastU", &CSender::broadCastU)
             .addFunction("broadCastUB", &CSender::broadCastUBinary)
-        .endClass();
-}
-
-void H_RegMail(struct lua_State *pLState)
-{
-    luabridge::getGlobalNamespace(pLState)
-        .beginClass<CMail>("CMail")
-            .addFunction("sendMail", &CMail::sendMail)
         .endClass();
 }
 

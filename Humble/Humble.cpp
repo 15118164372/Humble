@@ -99,7 +99,6 @@ void sigHandEntry(int iSigNum)
 int init(void)
 {
     CLog *pLog = CLog::getSingletonPtr();
-    CMail *pMail = CMail::getSingletonPtr();
     CWorkerDisp *pWorker = CWorkerDisp::getSingletonPtr();
     CTick *pTick = CTick::getSingletonPtr();
 
@@ -118,15 +117,6 @@ int init(void)
     {
         H_Printf("%s", "in config.ini not find node 'Log'");
         return H_RTN_FAILE;
-    }
-
-    if (objIni.haveNode("Email"))
-    {
-        pMail->setServer(objIni.getStringValue("Email", "server"));
-        pMail->setAuthType(objIni.getIntValue("Email", "auth"));
-        pMail->setSender(objIni.getStringValue("Email", "sender"));
-        pMail->setUserName(objIni.getStringValue("Email", "user"));
-        pMail->setPassWord(objIni.getStringValue("Email", "psw"));
     }
 
     if (objIni.haveNode("Main"))
@@ -159,7 +149,6 @@ void initParser(void)
 void runSV(void)
 {
     CLog *pLog = CLog::getSingletonPtr();
-    CMail *pMail = CMail::getSingletonPtr();
     CLinker *pLinker = CLinker::getSingletonPtr();
     CNetWorker *pNet = CNetWorker::getSingletonPtr();
     CWorkerDisp *pWorker = CWorkerDisp::getSingletonPtr();
@@ -171,11 +160,6 @@ void runSV(void)
 
     CThread::Creat(pLog);
     pLog->waitStart();
-    if (pMail->getSetted())
-    {
-        CThread::Creat(pMail);
-        pMail->waitStart();
-    }
     CThread::Creat(pLinker);
     pLinker->waitStart();
     CThread::Creat(pNet);
@@ -199,10 +183,6 @@ void runSV(void)
     pSender->Join();
     pNet->Join();
     pLinker->Join();
-    if (pMail->getSetted())
-    {
-        pMail->Join();
-    }
     H_LOG(LOGLV_INFO, "%s", "stop service successfully.");
     pLog->Join();
 }

@@ -34,7 +34,6 @@
 #include "NetWorker.h"
 #include "Sender.h"
 #include "Log.h"
-#include "Mail.h"
 #include "Linker.h"
 #include "WorkerDisp.h"
 #include "Tick.h"
@@ -45,8 +44,6 @@
 #include "WebSock.h"
 #include "mqtt.h"
 #include "NetParser.h"
-
-#include "jwsmtp/mailer.h"
 
 extern std::string g_strProPath;
 extern std::string g_strScriptPath;
