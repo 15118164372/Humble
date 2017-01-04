@@ -2,12 +2,10 @@
 C++º¯Êý
 --]]
 
-local serialize = require("serialize")
 local string = string
 local pWorkerMgr = g_pWorkerMgr
 local pNet = g_pNetWorker
 local pSender = g_pSender
-local pEmail = g_pEmail
 local pNetParser = g_pNetParser
 local newLuaTask = newLuaTask
 
@@ -77,11 +75,6 @@ function humble.broadCastU(sock, usPort, strBuf)
 end
 function humble.broadCastUB(sock, usPort, pBinary)
     pSender:broadCastUB(sock, usPort, pBinary)
-end
-
---ÓÊ¼þ
-function humble.sendMail(strMail)
-    pEmail:sendMail(strMail)
 end
 
 function humble.getChan(strTaskNam)

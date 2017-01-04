@@ -94,10 +94,6 @@ function utile.unPack(pVal)
     return table.unpack(serialize.unpack(pVal))
 end
 
-function utile.md5File(strFile)
-    return md5File(strFile)
-end
-
 function utile.callFunc(Func, ...)
     assert("function" == type(Func))
 
