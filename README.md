@@ -10,36 +10,35 @@ Humble是c++、lua语言开发的多线程服务器框架,网络底层使用libe
 ##二、配置文件  
 * config.ini 文件配置服务器启动参数。   
 
-##三、使用(回显服务)   
-* 建立监听(start.lua onStart()):   
---监听   
-humble.addListener(1, "0.0.0.0", 15000)    
---数据解析   
-humble.setParser(1, "tcp1")    
+##三、注册数据解析器
+* 数据解析器继承CParser，将parsePack函数完成，
+然后在Humble.cpp中的initParser函数中添加该解析器。
+
+##四、使用(回显为例)   
+* 1、建立监听(start.lua onStart()):     
+humble.addListener(1, "0.0.0.0", 15000)--建立监听           
+humble.setParser(1, "tcp1")--设置数据解析    
     
-* 创建echo服务，加入函数(echo.lua)：     
-function initTask()      
+* 2、创建echo服务(echo.lua)：     
+function initTask()--服务初始化      
 end    
-function runTask()    
+function runTask()--服务消息处理       
 end     
-function destroyTask()   
+function destroyTask()--服务释放   
 end   
 
-* 注册echo服务(start.lua onStart())    
---echo 为lua文件名，即模块名   
+* 3、注册echo服务(start.lua onStart())     
 humble.regTask("echo")      
---获取echo消息通道，每个模块注册后都会有一对应的消息通道(g_pChan)   
+--将echo消息通道保存在变量中   
 tChan.echo = humble.getChan("echo")      
 
-* 向echo发送消息(start.lua onTcpRead(......))    
+* 4、将收到的消息发送到echo模块处理(start.lua onTcpRead(......))    
 tChan.echo:Send(utile.Pack(sock, uiSession, buffer))    
 
-* 回显(echo.lua runTask())          
---取出消息   
-local sock, uiSession, buffer = utile.unPack(pChan:Recv())
-......
---返回消息       
-humble.Send(sock, uiSession, buffer)   
+* 5、回显(echo.lua runTask())             
+local sock, uiSession, buffer = utile.unPack(pChan:Recv())--取出消息    
+......       
+humble.Send(sock, uiSession, buffer)--返回消息   
 
 ##联系我    
 279133271@qq.com    
