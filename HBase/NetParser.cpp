@@ -65,6 +65,7 @@ const char *CNetParser::getParserNam(const unsigned short usType)
     typeit itType = m_mapType.find(usType);
     if (m_mapType.end() != itType)
     {
+        m_objTypeLck.unLock();
         return itType->second->getName();
     }
     m_objTypeLck.unLock();
