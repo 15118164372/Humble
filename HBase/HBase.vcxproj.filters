@@ -13,9 +13,6 @@
     <Filter Include="3rd">
       <UniqueIdentifier>{2f626edb-2f75-42b7-af2c-24269601e15d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3rd\pugixml">
-      <UniqueIdentifier>{c64ee883-b7f8-4d8f-b463-ca297d26cd77}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3rd\rijndael">
       <UniqueIdentifier>{66ddbedd-e596-4966-a7d8-058c29a00974}</UniqueIdentifier>
     </Filter>
@@ -63,12 +60,6 @@
     </Filter>
     <Filter Include="Service">
       <UniqueIdentifier>{4cc0d584-8a91-43ae-b565-fb7b338bcad4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3rd\jsoncpp">
-      <UniqueIdentifier>{afe856f5-049e-4432-b91a-ec8e534efc92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3rd\jsoncpp\json">
-      <UniqueIdentifier>{e75c8f2e-7072-45ad-a8f5-cb4d2fed0d7f}</UniqueIdentifier>
     </Filter>
     <Filter Include="3rd\lua\serialize">
       <UniqueIdentifier>{94062488-49e2-4098-a264-0acc19a62253}</UniqueIdentifier>
@@ -233,12 +224,6 @@
     </ClInclude>
     <ClInclude Include="rijndael\rijndael.h">
       <Filter>3rd\rijndael</Filter>
-    </ClInclude>
-    <ClInclude Include="pugixml\pugiconfig.hpp">
-      <Filter>3rd\pugixml</Filter>
-    </ClInclude>
-    <ClInclude Include="pugixml\pugixml.hpp">
-      <Filter>3rd\pugixml</Filter>
     </ClInclude>
     <ClInclude Include="lpeg\lpcap.h">
       <Filter>3rd\lua\lpeg</Filter>
@@ -519,39 +504,6 @@
     </ClInclude>
     <ClInclude Include="Log.h">
       <Filter>Service</Filter>
-    </ClInclude>
-    <ClInclude Include="jsoncpp\json\assertions.h">
-      <Filter>3rd\jsoncpp\json</Filter>
-    </ClInclude>
-    <ClInclude Include="jsoncpp\json\autolink.h">
-      <Filter>3rd\jsoncpp\json</Filter>
-    </ClInclude>
-    <ClInclude Include="jsoncpp\json\config.h">
-      <Filter>3rd\jsoncpp\json</Filter>
-    </ClInclude>
-    <ClInclude Include="jsoncpp\json\features.h">
-      <Filter>3rd\jsoncpp\json</Filter>
-    </ClInclude>
-    <ClInclude Include="jsoncpp\json\forwards.h">
-      <Filter>3rd\jsoncpp\json</Filter>
-    </ClInclude>
-    <ClInclude Include="jsoncpp\json\json.h">
-      <Filter>3rd\jsoncpp\json</Filter>
-    </ClInclude>
-    <ClInclude Include="jsoncpp\json\reader.h">
-      <Filter>3rd\jsoncpp\json</Filter>
-    </ClInclude>
-    <ClInclude Include="jsoncpp\json\value.h">
-      <Filter>3rd\jsoncpp\json</Filter>
-    </ClInclude>
-    <ClInclude Include="jsoncpp\json\version.h">
-      <Filter>3rd\jsoncpp\json</Filter>
-    </ClInclude>
-    <ClInclude Include="jsoncpp\json\writer.h">
-      <Filter>3rd\jsoncpp\json</Filter>
-    </ClInclude>
-    <ClInclude Include="jsoncpp\json_tool.h">
-      <Filter>3rd\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="EvBuffer.h">
       <Filter>Service</Filter>
@@ -861,9 +813,6 @@
     <ClCompile Include="rijndael\rijndael.cpp">
       <Filter>3rd\rijndael</Filter>
     </ClCompile>
-    <ClCompile Include="pugixml\pugixml.cpp">
-      <Filter>3rd\pugixml</Filter>
-    </ClCompile>
     <ClCompile Include="lpeg\lpcap.c">
       <Filter>3rd\lua\lpeg</Filter>
     </ClCompile>
@@ -1116,15 +1065,6 @@
     <ClCompile Include="Log.cpp">
       <Filter>Service</Filter>
     </ClCompile>
-    <ClCompile Include="jsoncpp\json_reader.cpp">
-      <Filter>3rd\jsoncpp</Filter>
-    </ClCompile>
-    <ClCompile Include="jsoncpp\json_value.cpp">
-      <Filter>3rd\jsoncpp</Filter>
-    </ClCompile>
-    <ClCompile Include="jsoncpp\json_writer.cpp">
-      <Filter>3rd\jsoncpp</Filter>
-    </ClCompile>
     <ClCompile Include="WorkerDisp.cpp">
       <Filter>Service</Filter>
     </ClCompile>
@@ -1256,9 +1196,6 @@
     </None>
     <None Include="RSAEuro\rsasparc.s">
       <Filter>3rd\RSAEuro</Filter>
-    </None>
-    <None Include="jsoncpp\json_valueiterator.inl">
-      <Filter>3rd\jsoncpp</Filter>
     </None>
   </ItemGroup>
 </Project>
