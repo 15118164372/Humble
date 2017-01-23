@@ -33,6 +33,8 @@ function runTask()
         humble.sendB(sock, uiSession, pWBinary)  
     elseif "websock" == strName then
         table.print(strMsg)
+		--控制帧处理
+		--分片帧处理等
         local pWBinary = websock.Text(strMsg.info)
         humble.sendB(sock, uiSession, pWBinary)
     elseif "mqtt" == strName then

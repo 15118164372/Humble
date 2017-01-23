@@ -43,9 +43,12 @@ end
 function websock.parsePack(pBinary)
     local tInfo = {}
     
+	--ПыПўМе
     tInfo.info = pBinary:getByte(pBinary:getSurpLens())
     pBinary:setW2R()
+	--MsgType
     tInfo.code = pBinary:getUint8()
+	--FIN ЦЎ
     tInfo.fin = pBinary:getUint8()
     
     return tInfo
