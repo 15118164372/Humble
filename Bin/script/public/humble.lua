@@ -8,22 +8,25 @@ local pNet = g_pNetWorker
 local pSender = g_pSender
 local pNetParser = g_pNetParser
 local newLuaTask = newLuaTask
-
 local humble = {}
 
---网络
+--网络解析
 function humble.setParser(usSockType, strName)
     return pNetParser:setParser(usSockType, strName)
 end
 function humble.getParserNam(usSockType)
     return pNetParser:getParserNam(usSockType)
 end
+
+--监听
 function humble.addListener(usSockType, strHost, usPort)
     return pNet:addListener(usSockType, strHost, usPort)
 end
 function humble.delListener(uiID)   
     pNet:delListener(uiID)
 end
+
+--连接处理
 function humble.addTcpLink(usSockType, strHost, usPort)
     return pNet:addTcpLink(usSockType, strHost, usPort)
 end
@@ -36,6 +39,8 @@ end
 function humble.closeByType(usType)   
     pNet:closeByType(usType)
 end
+
+--发送
 function humble.Send(sock, uiSession, strBuf)
     pSender:Send(sock, uiSession, strBuf, string.len(strBuf))
 end
@@ -77,6 +82,7 @@ function humble.broadCastUB(sock, usPort, pBinary)
     pSender:broadCastUB(sock, usPort, pBinary)
 end
 
+--服务
 function humble.getChan(strTaskNam)
     return pWorkerMgr:getChan(strTaskNam)
 end

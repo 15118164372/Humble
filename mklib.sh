@@ -22,8 +22,8 @@ fi
 DepLib=DependLib
 
 #±àÒë---------------------------°üĞÅÏ¢---------------------------
-libevent_tar=libevent-2.1.5-beta.tar.gz
-libevent_path=libevent-2.1.5-beta
+libevent_tar=libevent-2.1.8-stable.tar.gz
+libevent_path=libevent-2.1.8-stable
 
 #±àÒë-----------------libevent---------------------------
 cd $LibPath$DepLib

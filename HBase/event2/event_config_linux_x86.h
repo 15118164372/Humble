@@ -69,6 +69,12 @@
 /* Define to 1 if you have the `epoll_ctl' function. */
 #define EVENT__HAVE_EPOLL_CTL 1
 
+/* Define to 1 if you have the <errno.h> header file. */
+#define EVENT__HAVE_ERRNO_H 1
+
+/* Define to 1 if you have ERR_remove_thread_stat(). */
+#define EVENT__HAVE_ERR_REMOVE_THREAD_STATE 1
+
 /* Define to 1 if you have the `eventfd' function. */
 #define EVENT__HAVE_EVENTFD 1
 
@@ -115,7 +121,7 @@
 #define EVENT__HAVE_GETPROTOBYNUMBER 1
 
 /* Define to 1 if you have the `getservbyname' function. */
-/* #undef EVENT__HAVE_GETSERVBYNAME */
+#define EVENT__HAVE_GETSERVBYNAME 1
 
 /* Define to 1 if you have the `gettimeofday' function. */
 #define EVENT__HAVE_GETTIMEOFDAY 1
@@ -396,18 +402,20 @@
 /* Define to 1 if you have the `vasprintf' function. */
 #define EVENT__HAVE_VASPRINTF 1
 
+/* Define if waitpid() supports WNOWAIT */
+/* #undef EVENT__HAVE_WAITPID_WITH_WNOWAIT */
+
 /* Define if kqueue works correctly with pipes */
 /* #undef EVENT__HAVE_WORKING_KQUEUE */
 
 /* Define to 1 if you have the <zlib.h> header file. */
 #define EVENT__HAVE_ZLIB_H 1
 
-/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define EVENT__LT_OBJDIR ".libs/"
 
 /* Numeric representation of the version */
-#define EVENT__NUMERIC_VERSION 0x02010500
+#define EVENT__NUMERIC_VERSION 0x02010800
 
 /* Name of package */
 #define EVENT__PACKAGE "libevent"
@@ -419,7 +427,7 @@
 #define EVENT__PACKAGE_NAME "libevent"
 
 /* Define to the full name and version of this package. */
-#define EVENT__PACKAGE_STRING "libevent 2.1.5-beta"
+#define EVENT__PACKAGE_STRING "libevent 2.1.8-stable"
 
 /* Define to the one symbol short name of this package. */
 #define EVENT__PACKAGE_TARNAME "libevent"
@@ -428,7 +436,7 @@
 #define EVENT__PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define EVENT__PACKAGE_VERSION "2.1.5-beta"
+#define EVENT__PACKAGE_VERSION "2.1.8-stable"
 
 /* Define to necessary symbol if this constant uses a non-standard name on
    your system. */
@@ -487,7 +495,7 @@
 
 
 /* Version number of package */
-#define EVENT__VERSION "2.1.5-beta"
+#define EVENT__VERSION "2.1.8-stable"
 
 /* Enable large inode numbers on Mac OS X 10.5.  */
 #ifndef EVENT___DARWIN_USE_64_BIT_INODE
