@@ -74,11 +74,11 @@ local function parseHead(pBinary)
             assert("1.0" == strHttpver or "1.1" == strHttpver)
         else
             strName, strVal = string.match(strLine, "^(.-):%s*(.*)")
-            tHead[string.lower(strName)] = string.lower(strVal)
+            tHead[strName] = strVal
         end
     end
     
-    return strMethod, strUrl, tHead
+    return string.lower(strMethod), strUrl, tHead
 end
 
 local function parseChunked(pBinary)    
