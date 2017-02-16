@@ -109,7 +109,7 @@ std::string CWebSock::createResponse(const std::string &strKey) const
         "HTTP/1.1 101 Switching Protocols\r\n"
         "Upgrade: websocket\r\n"
         "Connection: Upgrade\r\n"
-        "Server: QServer version:" + m_strVersion + "\r\n"
+        "Server: Humble version:" + m_strVersion + "\r\n"
         "Sec-WebSocket-Accept: " + strKey + "\r\n"
         "Sec-WebSocket-Origin: null\r\n"
         "\r\n";
