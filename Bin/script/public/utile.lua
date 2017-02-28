@@ -3,6 +3,9 @@ utile
 --]]
 
 require("macros")
+local http = require("http")
+local ltn12 = require "ltn12"
+local cjson = require("cjson")
 local serialize = require("serialize")
 local type = type
 local table = table
@@ -104,6 +107,34 @@ function utile.callFunc(Func, ...)
     end
     
     return xpcall(Func, onExcept, table.unpack({...}))
+end
+
+--param table or string
+function utile.post(url, param)
+	if param then
+		if "table" == type(param) then
+			param = cjson.encode(param)
+		end
+	else
+		param = ""
+	end
+	
+	local response_body = {}  
+    local res, code = http.request{  
+        url = url,  
+        method = "POST",  
+        headers =  
+        {  
+            ["Content-Type"] = "application/json",  
+            ["Content-Length"] = #param,  
+        },  
+        source = ltn12.source.string(param),  
+        sink = ltn12.sink.table(response_body)  
+    }
+	
+    res = table.concat(response_body)  
+  
+    return res,code 
 end
 
 function string.split(str, delimiter)
