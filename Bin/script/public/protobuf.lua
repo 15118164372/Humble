@@ -427,7 +427,18 @@ local function default_table(typename)
 		return v
 	end
 
-	v = { __index = assert(decode_message(typename , "")) }
+	local default_inst = assert(decode_message(typename , ""))
+	v = { 
+		__index = function(tb, key)
+			local ret = default_inst[key]
+			if 'table' ~= type(ret) then
+				return ret
+			end 
+			ret = setmetatable({}, { __index = ret })
+			rawset(tb, key, ret)
+			return ret
+		end
+	}
 
 	default_cache[typename]  = v
 	return v
