@@ -3,6 +3,7 @@
 --]]
 
 require("macros")
+require("timewheel")
 local humble = require("humble")
 local utile = require("utile")
 
@@ -10,6 +11,11 @@ if not g_tChan then
     g_tChan = {}    
 end
 local tChan = g_tChan
+-- ±º‰¬÷
+if not g_objTimeWheel then
+	g_objTimeWheel = WheelMgr:new()
+end
+local objTimeWheel = g_objTimeWheel
 
 function onStart()
     tChan.timer = humble.getChan("test")
@@ -20,11 +26,28 @@ function onStop()
 end
 
 function onTimer(uiTick, uiCount)
+	--√ø÷°
     tChan.timer:Send(utile.Pack(uiTick, uiCount))
     
     --1√Î
     if 0 == ((uiTick * uiCount) % 1000) then 
-        --print("1 sec")
-        --print(string.format("cur load %d.", humble.getCurLoad()))
+        DEV_OnTime(objTimeWheel)
     end
 end
+
+--≤‚ ‘—”≥Ÿ
+local function onDEV()
+	print(string.format('onDEV: %d', os.time()))
+	DEV_Reg(objTimeWheel, 5, onDEV)
+end
+DEV_Reg(objTimeWheel, 5, onDEV)
+local function onDEV2()
+	print(string.format('onDEV2: %d', os.time()))
+	DEV_Reg(objTimeWheel, 1, onDEV2)
+end
+DEV_Reg(objTimeWheel, 1, onDEV2)
+local function onAtTime()
+	print(string.format('onAtTime: %s', os.date("%Y-%m-%d %H:%M:%S")))
+end
+DEV_AtTime(objTimeWheel, "16:15:28", onAtTime)
+--≤‚ ‘—”≥Ÿ Ω· ¯

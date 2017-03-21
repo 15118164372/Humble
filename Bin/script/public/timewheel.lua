@@ -454,3 +454,31 @@ function WheelMgr:onTime()
     
     self:cashAll()
 end
+
+--触发   objWheelMgr = WheelMgr:new()
+function DEV_OnTime(objWheelMgr)
+	objWheelMgr:onTime()
+end
+
+--延迟制定时间
+function DEV_Reg(objWheelMgr, iTime, Func, ...)
+	objWheelMgr:addTimer(Func, iTime, table.unpack({...}))
+end
+
+--strTime 格式(24小时制)：12:36:28
+function DEV_AtTime(objWheelMgr, strTime, Func, ...)
+	local strHour, strMin, strSec = string.match(strTime, "(%d+):(%d+):(%d+)")
+    local iTime = (tonumber(strHour) * 60 * 60) + (tonumber(strMin) * 60) + tonumber(strSec)
+    local tNow = os.date("*t", time)
+    local iNowTime = (tonumber(tNow.hour) * 60 * 60) + (tonumber(tNow.min) * 60) + tonumber(tNow.sec)
+    
+    local iDelayTime = 0
+    
+    if iTime >= iNowTime then
+        iDelayTime = iTime - iNowTime
+    else
+        iDelayTime = (24 * 60 * 60) - (iNowTime - iTime)
+    end
+    
+    DEV_Reg(objWheelMgr, iDelayTime, Func, table.unpack({...}))
+end
