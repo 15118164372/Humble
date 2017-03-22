@@ -39,6 +39,8 @@ function onTimer(uiTick, uiCount)
     end
 end
 
+--ртобн╙╡Бйт
+
 --╡БйтясЁы
 local function onDEV()
 	--print(string.format('onDEV: %d', os.time()))
