@@ -37,11 +37,13 @@ g_NetDisp:regNetEvent("/echo2", echo2)
 --有新任务执行
 function runTask()
     local varRecv = pChan:Recv()
-    local evType, proto, msg = utile.unPack(varRecv)
-	if evType == EnevtType.TcpRead then
-		local sock,session,pack = table.unpack(msg)
-		g_NetDisp:onNetEvent(proto, sock, session, pack)
-	end	
+	if varRecv then
+		local evType, proto, msg = utile.unPack(varRecv)
+		if evType == EnevtType.TcpRead then
+			local sock,session,pack = table.unpack(msg)
+			g_NetDisp:onNetEvent(proto, sock, session, pack)
+		end
+	end
 end
 
 --任务销毁

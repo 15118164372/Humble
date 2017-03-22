@@ -93,8 +93,9 @@ end
 
 --ÍøÂç·Ö·¢
 function humble.regProto(proto, strTask)
-	assert("string" == type(proto) or "number" == type(proto))
-	if "string" == type(proto) then
+	local protoType = type(proto)
+	assert("string" == protoType or "number" == protoType)
+	if "string" == protoType then
 		pProtoDisp:regStrProto(proto, strTask)
 	else
 		pProtoDisp:regIProto(proto, strTask)
@@ -102,9 +103,10 @@ function humble.regProto(proto, strTask)
 end
 
 function humble.netToTask(proto, param)
-	assert("string" == type(proto) or "number" == type(proto))
+	local protoType = type(proto)
+	assert("string" == protoType or "number" == protoType)
 	local strTask = nil
-	if "string" == type(proto) then
+	if "string" == protoType then
 		strTask = pProtoDisp:getStrProto(proto)
 	else
 		strTask = pProtoDisp:getIProto(proto)

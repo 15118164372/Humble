@@ -14,8 +14,10 @@ end
 --有新任务执行
 function runTask()
     local varRecv = pChan:Recv()
-    local evType, _, param = utile.unPack(varRecv)
-	table.print(param)
+	if varRecv then
+		local evType, _, param = utile.unPack(varRecv)
+		table.print(param)
+	end
 end
 
 --任务销毁
