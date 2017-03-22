@@ -88,9 +88,8 @@ function onTcpRead(sock, uiSession, usSockType)
 		local strMsg = pBuffer:getString()
 		local objChan = humble.getChan(strTask)
 		if not objChan then
-			local rtnMsg = cjson.encode({"fail", "not find task."})
-			local pSendBinary = tcp2.Response(rtnMsg)
-			humble.sendB(sock, uiSession, pSendBinary)
+			humble.sendB(sock, uiSession, 
+				tcp2.Response(cjson.encode({"fail", "not find task."})))
 			return
 		end
 		
