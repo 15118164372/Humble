@@ -48,6 +48,9 @@
     <ClInclude Include="ShowDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\Humble\ProtoDisp.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tool.cpp">
@@ -73,6 +76,9 @@
     </ClCompile>
     <ClCompile Include="ShowDlg.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Humble\ProtoDisp.cpp">
+      <Filter>Tool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

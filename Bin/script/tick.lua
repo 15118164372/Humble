@@ -3,6 +3,7 @@
 --]]
 
 require("macros")
+require("logicmacro")
 require("timewheel")
 local humble = require("humble")
 local utile = require("utile")
@@ -17,17 +18,20 @@ if not g_objTimeWheel then
 end
 local objTimeWheel = g_objTimeWheel
 
+--定时器初始化
 function onStart()
     tChan.timer = humble.getChan("test")
 end
 
+--定时器停止
 function onStop()
     
 end
 
+--定时器触发
 function onTimer(uiTick, uiCount)
 	--每帧
-    tChan.timer:Send(utile.Pack(uiTick, uiCount))
+    --tChan.timer:Send(utile.Pack(EnevtType.Frame, nil, uiTick, uiCount))
     
     --1秒
     if 0 == ((uiTick * uiCount) % 1000) then 
@@ -37,12 +41,13 @@ end
 
 --测试延迟
 local function onDEV()
-	print(string.format('onDEV: %d', os.time()))
+	--print(string.format('onDEV: %d', os.time()))
+	tChan.timer:Send(utile.Pack(EnevtType.Delay, nil, "测试延迟", "5秒一次."))
 	DEV_Reg(objTimeWheel, 5, onDEV)
 end
 DEV_Reg(objTimeWheel, 5, onDEV)
 local function onDEV2()
-	print(string.format('onDEV2: %d', os.time()))
+	--print(string.format('onDEV2: %d', os.time()))
 	DEV_Reg(objTimeWheel, 1, onDEV2)
 end
 DEV_Reg(objTimeWheel, 1, onDEV2)

@@ -27,6 +27,7 @@ void H_RegWorkerTask(struct lua_State *pLState);
 void H_RegWorkerDisp(struct lua_State *pLState);
 void H_SetPackPath(struct lua_State *pLState);
 void H_RegOther(struct lua_State *pLState);
+void H_RegProtoDisp(struct lua_State *pLState);
 
 void H_RegAll(struct lua_State *pLState);
 

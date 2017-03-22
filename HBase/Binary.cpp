@@ -10,8 +10,6 @@ CBinary::CBinary(void) : m_pParseBuffer(NULL), m_pTmpBuf(NULL),
     m_iParseBufLens(H_INIT_NUMBER), m_iTmpBufLens(H_INIT_NUMBER), m_iCurParseLens(H_INIT_NUMBER),
     m_iTmpParseLens(H_INIT_NUMBER)
 {
-    m_strWritBuffer.resize(4 * H_ONEK);
-
     H_Zero(m_acZero, sizeof(m_acZero));
     m_iLEFLens = strlen(H_LINEEFLAG);
 }

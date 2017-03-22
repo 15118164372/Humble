@@ -162,12 +162,14 @@
     <ClCompile Include="LNetDisp.cpp" />
     <ClCompile Include="LTick.cpp" />
     <ClCompile Include="LuaTask.cpp" />
+    <ClCompile Include="ProtoDisp.cpp" />
     <ClCompile Include="Reg2Lua.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LNetDisp.h" />
     <ClInclude Include="LTick.h" />
     <ClInclude Include="LuaTask.h" />
+    <ClInclude Include="ProtoDisp.h" />
     <ClInclude Include="Reg2Lua.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

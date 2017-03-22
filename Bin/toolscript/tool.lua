@@ -9,7 +9,6 @@ local mqtt = require("mqtt")
 local def = require("def")
 local tcp1 = require("tcp1")
 local tcp2 = require("tcp2")
-local cbfuncs = require("cbfuncs")
 local cjson = require("cjson")
 local table = table
 local string = string
@@ -66,26 +65,25 @@ end
 
 function runTask()
     local varRecv = pChan:Recv()
-    local va0, va1, va2, va3, va4, va5 = utile.unPack(varRecv)
-    if msgtype.tick == va0 then
+    local msgType, _, msg = utile.unPack(varRecv)
+    if msgtype.tick == msgType then
         
-    elseif msgtype.onesec == va0 then
-        cbfuncs.onDelayEvent()
-    elseif msgtype.link == va0 then
-        tSock.sock = va1
-        tSock.session = va2
-        local strMsg = string.format("tcp linked, sock: %d, session %d", va1, va2)
+    elseif msgtype.onesec == msgType then
+        
+    elseif msgtype.link == msgType then
+	    tSock.sock = msg[1]
+        tSock.session = msg[2]
+        local strMsg = string.format("tcp linked, sock: %d, session %d", tSock.sock, tSock.session)
         showMsg(strMsg, #strMsg)
-    elseif msgtype.close == va0 then
-        tSock = {}
-        local strMsg = string.format("tcp closed, sock: %d, session %d", va1, va2)
+    elseif msgtype.close == msgType then
+          local strMsg = string.format("tcp closed, sock: %d, session %d", msg[1], msg[2])
         showMsg(strMsg, #strMsg)
-    elseif msgtype.send == va0 then
-        sendMsg(va1, va2)
-    elseif msgtype.read == va0 then
-        readMsg(va1, va2)
+    elseif msgtype.send == msgType then
+        sendMsg(msg[1], msg[2])
+    elseif msgtype.read == msgType then
+        readMsg(msg[1], msg[2])
     else
-        local strMsg = string.format("unknown message type: %s", tostring(va0))
+        local strMsg = string.format("unknown message type: %s", tostring(msgType))
         showMsg(strMsg, #strMsg)
     end
 end

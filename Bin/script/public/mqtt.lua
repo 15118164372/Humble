@@ -9,7 +9,6 @@ local math = math
 local type = type
 
 local mqtt = {}
-local pWBinary = CBinary()
 local strProName = "MQIsdp"
 local iProVersion = 13
 
@@ -325,7 +324,7 @@ function mqtt.CONNECT(clinetID, strUser, strPsw,
     
     assert(clinetID and 0 ~= #clinetID)
     
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
     
     --可变头
     local vHead = {}
@@ -391,7 +390,7 @@ end
 
 --连接确认
 function mqtt.CONNACK(rtnCode)
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
    
     --可变头
     local vHead = string.pack("B", 0)
@@ -409,7 +408,7 @@ end
 --发布消息
 function mqtt.PUBLISH(topic, qos, msg, msgid)
     assert(topic and 0 ~= #topic)
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
     
     --可变头
     local vHead = {}
@@ -436,7 +435,7 @@ end
 --发布确认 PUBLISH QoS级别1 的回应
 function mqtt.PUBACK(msgid)
     assert(msgid)
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
     
     --可变头
     local vHead = string.pack(">H", msgid)    
@@ -451,7 +450,7 @@ end
 --发布接收（有保证的交付第1部分）PUBLISH QoS级别2 的回应
 function mqtt.PUBREC(msgid)
     assert(msgid)
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
     
     --可变头
     local vHead = string.pack(">H", msgid)    
@@ -466,7 +465,7 @@ end
 --发布释放（有保证的交付第2部分） 对PUBREC的回应
 function mqtt.PUBREL(msgid)
     assert(msgid)
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
     
     --可变头
     local vHead = string.pack(">H", msgid)    
@@ -481,7 +480,7 @@ end
 --发布完成（有保证的交付第3部分）对PUBREL的回应
 function mqtt.PUBCOMP(msgid)
     assert(msgid)
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
     
     --可变头
     local vHead = string.pack(">H", msgid)
@@ -497,7 +496,7 @@ end
 function mqtt.SUBSCRIBE(msgid, tTopic)
     assert(msgid)
     assert("table" == type(tTopic))
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
     
     --可变头
     local vHead = {}
@@ -523,7 +522,7 @@ end
 function mqtt.SUBACK(msgid, tQos)
     assert(msgid)
     assert("table" == type(tQos))
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
     
     --可变头
     local vHead = {}
@@ -547,7 +546,7 @@ end
 function mqtt.UNSUBSCRIBE(msgid, tTopic)
     assert(msgid)
     assert("table" == type(tTopic))
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
     
     --可变头
     local vHead = {}
@@ -571,7 +570,7 @@ end
 --取消订阅确认
 function mqtt.UNSUBACK(msgid)
     assert(msgid)
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
     
     --可变头
     local vHead = string.pack(">H", msgid)
@@ -586,7 +585,7 @@ end
 
 --PING请求
 function mqtt.PINGREQ()
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
     
     local fHead = createHead(MsgType.PINGREQ, 0, 0, 0, 0)
     
@@ -597,7 +596,7 @@ end
 
 --PING回复
 function mqtt.PINGRESP()
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
     
     local fHead = createHead(MsgType.PINGRESP, 0, 0, 0, 0)
     
@@ -608,7 +607,7 @@ end
 
 --客户端断开连接
 function mqtt.DISCONNECT()
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
     
     local fHead = createHead(MsgType.DISCONNECT, 0, 0, 0, 0)
     

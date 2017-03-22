@@ -53,6 +53,7 @@ void CLNetDisp::onStart(void)
     if (H_RTN_OK != luaL_dofile(m_pLState, strLuaFile.c_str()))
     {
         const char *pError = lua_tostring(m_pLState, -1);
+        H_LOG(LOGLV_ERROR, "%s", pError);
         H_ASSERT(false, pError);
     }
 

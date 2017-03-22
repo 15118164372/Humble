@@ -3,11 +3,9 @@ tcp1
 --]]
 
 local tcp1 = {}
-local pWBinary = CBinary()
 
 function tcp1.Response(val)
-    pWBinary:reSetWrite()
-    
+    local pWBinary = CBinary()    
     local iLens = #val
     if iLens < 126 then  
         pWBinary:setUint8(iLens)

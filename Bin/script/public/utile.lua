@@ -85,8 +85,9 @@ function utile.md5File(strFile)
     return md5File(strFile)
 end
 
-function utile.Pack(...)
-    return serialize.pack({...})
+--与 unPack 成对出现，否则内存泄露
+function utile.Pack(evType, proto, ...)
+    return serialize.pack({evType, proto, {...}})
 end
 
 function utile.unPack(pVal)

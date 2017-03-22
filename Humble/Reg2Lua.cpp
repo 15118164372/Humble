@@ -1,5 +1,6 @@
 
 #include "Reg2Lua.h"
+#include "ProtoDisp.h"
 
 H_BNAMSP
 
@@ -70,9 +71,21 @@ void H_RegAll(struct lua_State *pLState)
     H_RegWorkerDisp(pLState);
     H_RegWorkerTask(pLState);
     H_RegChan(pLState);
+    H_RegProtoDisp(pLState);
     H_SetPackPath(pLState);
     H_RegOther(pLState);
-    H_RegGlobal(pLState);
+    H_RegGlobal(pLState);    
+}
+
+void H_RegProtoDisp(struct lua_State *pLState)
+{
+    luabridge::getGlobalNamespace(pLState)
+        .beginClass<CProtoDisp>("CProtoDisp")
+            .addFunction("regStrProto", &CProtoDisp::regStrProto)
+            .addFunction("regIProto", &CProtoDisp::regIProto)
+            .addFunction("getStrProto", &CProtoDisp::getStrProto)
+            .addFunction("getIProto", &CProtoDisp::getIProto)
+        .endClass();
 }
 
 void H_RegWorkerTask(struct lua_State *pLState)
@@ -237,6 +250,7 @@ void H_RegGlobal(struct lua_State *pLState)
     luabridge::setGlobal(pLState, CSender::getSingletonPtr(), "g_pSender");
     luabridge::setGlobal(pLState, CWorkerDisp::getSingletonPtr(), "g_pWorkerMgr");
     luabridge::setGlobal(pLState, CNetParser::getSingletonPtr(), "g_pNetParser");
+    luabridge::setGlobal(pLState, CProtoDisp::getSingletonPtr(), "g_pProtoDisp");
 }
 
 void H_RegFuncs(struct lua_State *pLState)

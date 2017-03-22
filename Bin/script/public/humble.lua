@@ -8,6 +8,7 @@ local pNet = g_pNetWorker
 local pSender = g_pSender
 local pNetParser = g_pNetParser
 local newLuaTask = newLuaTask
+local pProtoDisp = g_pProtoDisp
 local humble = {}
 
 --ÍøÂç½âÎö
@@ -88,6 +89,39 @@ function humble.getChan(strTaskNam)
 end
 function humble.regTask(strTaskNam)
     return pWorkerMgr:regTask(strTaskNam, newLuaTask())
+end
+
+--ÍøÂç·Ö·¢
+function humble.regProto(proto, strTask)
+	assert("string" == type(proto) or "number" == type(proto))
+	if "string" == type(proto) then
+		pProtoDisp:regStrProto(proto, strTask)
+	else
+		pProtoDisp:regIProto(proto, strTask)
+	end
+end
+
+function humble.netToTask(proto, param)
+	assert("string" == type(proto) or "number" == type(proto))
+	local strTask = nil
+	if "string" == type(proto) then
+		strTask = pProtoDisp:getStrProto(proto)
+	else
+		strTask = pProtoDisp:getIProto(proto)
+	end
+	
+	if not strTask then
+		return false
+	end
+	
+	local objChan = humble.getChan(strTask)
+	if not objChan then
+		return false
+	end
+	
+	objChan:Send(param)
+	
+	return true
 end
 
 return humble

@@ -51,9 +51,8 @@ void CLuaTask::initTask(void)
     if (H_RTN_OK != luaL_dofile(m_pLState, strLuaFile.c_str()))
     {
         const char *pError = lua_tostring(m_pLState, -1);
-        H_Printf("%s", pError);
-
-        return;
+        H_LOG(LOGLV_ERROR, "%s", pError);
+        H_ASSERT(false, pError);
     }
 
     *(m_pLFunc[LTASK_INIT]) = luabridge::getGlobal(m_pLState, "initTask");

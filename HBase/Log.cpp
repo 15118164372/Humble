@@ -57,7 +57,7 @@ const char * CLog::getLV(LOG_LEVEL emInLogLv) const
         break;
     }
 
-    return "Unknown";
+    return "UNKNOWN";
 }
 
 void CLog::runTask(std::string *pMsg)

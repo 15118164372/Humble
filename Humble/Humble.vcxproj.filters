@@ -6,11 +6,13 @@
     <ClCompile Include="Reg2Lua.cpp" />
     <ClCompile Include="LuaTask.cpp" />
     <ClCompile Include="LTick.cpp" />
+    <ClCompile Include="ProtoDisp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LNetDisp.h" />
     <ClInclude Include="Reg2Lua.h" />
     <ClInclude Include="LuaTask.h" />
     <ClInclude Include="LTick.h" />
+    <ClInclude Include="ProtoDisp.h" />
   </ItemGroup>
 </Project>

@@ -3,7 +3,6 @@ websock
 --]]
 
 local websock = {}
-local pWBinary = CBinary()
 
 local MsgType = {}
 MsgType.CONTINUATION = 0x00
@@ -14,7 +13,7 @@ MsgType.PING = 0x09
 MsgType.PONG = 0x0A
 
 local function Response(code, fin, val)
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
     
     local cType = code | 0x80
     if 0 == fin then

@@ -9,7 +9,6 @@ local assert = assert
 local tonumber = tonumber
 
 local httpd = {}
-local pWBinary = CBinary()
 
 local http_status_msg = {
 	[100] = "Continue",
@@ -127,7 +126,7 @@ function httpd.parsePack(pBinary)
 end
 
 function httpd.Response(iCode, varBodyFunc, tHeader)
-    pWBinary:reSetWrite()
+    local pWBinary = CBinary()
     
 	local strMsg = string.format("HTTP/1.1 %03d %s\r\n", iCode, http_status_msg[iCode] or "")
     pWBinary:setByte(strMsg, #strMsg)
