@@ -33,10 +33,10 @@ humble.regTask("echo")
 tChan.echo = humble.getChan("echo")      
 
 * 4、将收到的消息发送到echo模块处理(start.lua onTcpRead(......))    
-tChan.echo:Send(utile.Pack(sock, uiSession, buffer))    
+tChan.echo:Send(utile.Pack(...))    
 
 * 5、回显(echo.lua runTask())             
-local sock, uiSession, buffer = utile.unPack(pChan:Recv())--取出消息    
+local _,_,_ = utile.unPack(pChan:Recv())--取出消息    
 ......       
 humble.Send(sock, uiSession, buffer)--返回消息   
 
