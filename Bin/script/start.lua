@@ -6,12 +6,16 @@ require("macros")
 require("logicmacro")
 local humble = require("humble")
 local utile = require("utile")
-local httpd = require("httpd")
-local websock = require("websock")
-local mqtt = require("mqtt")
+local cjson = require("cjson")
+local tcp2 = require("tcp2")
 local table = table
 local pairs = pairs
 local pBuffer = g_pBuffer
+
+--以下为测试
+local httpd = require("httpd")
+local websock = require("websock")
+local mqtt = require("mqtt")
 
 if not g_tChan then
     g_tChan = {}    
@@ -28,8 +32,16 @@ if not g_tLinker then
 end
 local tLinker = g_tLinker
 
+--命令
+local cmdSockType = 10000
+
 --初始化  这里注册任务
 function onStart()
+	--命令监听
+	tListener.cmd = humble.addListener(cmdSockType, "127.0.0.1", 15100)
+	humble.setParser(cmdSockType, "tcp2")
+	
+	--以下为测试
     tListener.test = humble.addListener(1, "0.0.0.0", 15000)
     tListener.test2 = humble.addListener(2, "0.0.0.0", 15001)  
     humble.setParser(1, "http")
@@ -47,6 +59,11 @@ end
 
 --退出，主要清理掉连接防止服务器停止时还有消息送来
 function onStop()
+	--命令
+	humble.delUdp(tListener.cmd)
+	
+	
+	--以下为测试
     humble.closeByType(1)
     humble.delListener(tListener.test)
     humble.delUdp(tListener.udp)
@@ -64,11 +81,30 @@ end
 
 --tcp读到一完整的包
 function onTcpRead(sock, uiSession, usSockType)
-    local strName = humble.getParserNam(usSockType)
+	--命令
+	if cmdSockType == usSockType then
+		local strCmd = pBuffer:getString()
+		local strTask = pBuffer:getString()
+		local strMsg = pBuffer:getString()
+		local objChan = humble.getChan(strTask)
+		if not objChan then
+			local rtnMsg = cjson.encode({"fail", "not find task."})
+			local pSendBinary = tcp2.Response(rtnMsg)
+			humble.sendB(sock, uiSession, pSendBinary)
+			return
+		end
+		
+		local packMsg = utile.Pack(EnevtType.CMD, strCmd, sock, uiSession, strMsg)
+		objChan:Send(packMsg)
+		return
+	end
+    
+	
+	--以下为测试
+	local strName = humble.getParserNam(usSockType)
     if 0 == #strName then
         return
-    end    
-    
+    end
 	if "http" == strName then
 		local buffer = httpd.parsePack(pBuffer)
 		local param = utile.Pack(EnevtType.TcpRead, buffer.url, sock, uiSession, buffer)
@@ -91,6 +127,7 @@ end
 
 --udp可读
 function onUdpRead(sock, pHost, usPort)
+	--以下为测试
     local strBuf = pBuffer:getByte(pBuffer:getSurpLens())
     humble.sendU(sock, pHost, usPort, strBuf.."lua1")
     humble.broadCastU(sock, usPort, strBuf.."lua2")

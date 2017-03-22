@@ -10,7 +10,9 @@ EnevtType = {
 	"NetClose",--网络断开
 	"TcpRead",--tcp可读
 	"UdpRead",--udp可读
+	"CMD", --命令
     "Frame",--每帧
+	
 	--自定义
     "Delay",--延时
 }

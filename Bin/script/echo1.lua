@@ -1,6 +1,7 @@
 
 require("macros")
 require("logicmacro")
+require("cmd")
 local utile = require("utile")
 local humble = require("humble")
 local httpd = require("httpd")
@@ -39,10 +40,15 @@ function runTask()
     local varRecv = pChan:Recv()
 	if varRecv then
 		local evType, proto, msg = utile.unPack(varRecv)
+		if evType == EnevtType.CMD then
+			local sock,session,pack = table.unpack(msg)
+			doCmd(proto, sock, session, pack) 
+		end		
+		
 		if evType == EnevtType.TcpRead then
 			local sock,session,pack = table.unpack(msg)
 			g_NetDisp:onNetEvent(proto, sock, session, pack)
-		end	
+		end			
 	end
 end
 

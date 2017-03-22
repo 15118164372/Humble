@@ -187,8 +187,191 @@ void runSV(void)
     pLog->Join();
 }
 
+int runCommand(H_SOCK &sock, const char *pszCommand, const char *pszMode, const char *pszMsg)
+{
+    CBinary objBinary1;
+    objBinary1.setString(pszCommand);
+    objBinary1.setString(pszMode);
+    objBinary1.setString(pszMsg);
+
+    std::string strBuf = objBinary1.getWritedBuf();
+    CBinary objBinary2;
+    objBinary2.setUint16((unsigned short)strBuf.size());
+    objBinary2.setByte(strBuf.c_str(), strBuf.size());
+
+    strBuf = objBinary2.getWritedBuf();
+    int iRtn = send(sock, strBuf.c_str(), strBuf.size(), 0);
+    if (0 >= iRtn)
+    {
+        return H_RTN_FAILE;
+    }    
+    
+    char acHead[2] = {0};
+    iRtn = recv(sock, acHead, sizeof(acHead), 0);
+    if (2 != iRtn)
+    {
+        return H_RTN_FAILE;
+    }
+    unsigned short usPackLens = ntohs(*(unsigned short*)acHead);
+    char *pBuf = new char[usPackLens + 1];
+    H_Zero(pBuf, usPackLens + 1);
+    iRtn = recv(sock, pBuf, usPackLens, 0);
+    if (iRtn != usPackLens)
+    {
+        H_SafeDelete(pBuf);
+        return H_RTN_FAILE;
+    }
+
+    printf("==>%s\n", pBuf);
+    H_SafeDelete(pBuf);
+    
+    return H_RTN_OK;
+}
+
+//-d 进入命令行模式 Humble -d 15001
 int main(int argc, char *argv[])
 {
+    //命令行
+    bool bCmdMode = false;
+    if (3 == argc)
+    {
+        if (0 == strcmp(argv[1], "-d"))
+        {
+            bCmdMode = true;
+        }
+    }
+    if (bCmdMode)
+    {
+        unsigned short usPort = H_ToNumber<unsigned short>((const char*)argv[2]);
+        printf("Humble version %d.%d.%d, cmd port %d\n", H_MAJOR, H_MINOR, H_RELEASE, usPort);
+        printf("command:\n    quit\n    exit\n    hotfix taskname filename\n    do taskname .... done\n");
+
+        const char *pszHost = "127.0.0.1";
+        H_SOCK cmdSock = H_INVALID_SOCK;
+        CNETAddr objAddr;
+
+        if (H_RTN_OK != objAddr.setAddr(pszHost, usPort))
+        {
+            H_Printf("%s", "setAddr error.");
+            return H_RTN_FAILE;
+        }
+        //创建socket
+        cmdSock = socket(AF_INET, SOCK_STREAM, 0);
+        if (H_INVALID_SOCK == cmdSock)
+        {
+            H_Printf("%s", "creat socket error.");
+            return H_RTN_FAILE;
+        }
+        if (0 != connect(cmdSock, objAddr.getAddr(), (int)objAddr.getAddrSize()))
+        {
+            H_Printf("connect %s on port %d error.", pszHost, usPort);
+            evutil_closesocket(cmdSock);
+
+            return H_RTN_FAILE;
+        }
+
+        char acCMD[H_ONEK];
+        std::string strCmd;
+        std::string strTask;
+        bool bRunLua = false;
+
+        while (true)
+        {
+            H_Zero(acCMD, sizeof(acCMD));
+            std::cin.getline(acCMD, sizeof(acCMD) - 1);
+            std::string strInput = H_Trim(std::string(acCMD));
+            if (strInput.empty())
+            {
+                continue;
+            }
+            if (strInput == "quit")
+            {
+                break;
+            }
+
+            if (!bRunLua)
+            {
+                std::list<std::string> lstCmd;
+                std::list<std::string>::iterator itCmd;
+                H_Split(strInput, " ", lstCmd);
+                for (itCmd = lstCmd.begin(); lstCmd.end() != itCmd;)
+                {
+                    if (itCmd->size() == 0)
+                    {
+                        itCmd = lstCmd.erase(itCmd);
+                    }
+                    else
+                    {
+                        itCmd++;
+                    }
+                }
+
+                itCmd = lstCmd.begin();
+                if (*itCmd == "hotfix")
+                {
+                    if (lstCmd.size() != 3)
+                    {
+                        printf("==>command error.\n");
+                        continue;
+                    }
+
+                    itCmd++;
+                    strTask = *itCmd;
+                    itCmd++;
+                    std::string strFile = *itCmd;
+                    if (H_RTN_OK != runCommand(cmdSock, "hotfix", strTask.c_str(), strFile.c_str()))
+                    {
+                        printf("==>connect closed.\n");
+                        break;
+                    }
+                    continue;
+                }
+                if (*itCmd == "do")
+                {
+                    if (lstCmd.size() != 2)
+                    {
+                        printf("==>command error.\n");
+                        continue;
+                    }
+
+                    strCmd.clear();
+                    itCmd++;
+                    strTask = *itCmd;
+                    bRunLua = true;
+                    printf("==>begin input lua code.\n");
+                    continue;
+                }
+                printf("==>unknown command.\n");
+            }
+            else
+            {
+                if (strInput == "exit")
+                {
+                    bRunLua = false;
+                    printf("==>end input lua code.\n");
+                    continue;
+                }
+                if (strInput == "done")
+                {
+                    bRunLua = false;
+                    printf("==>end input lua code.\n");
+                    if (H_RTN_OK != runCommand(cmdSock, "do", strTask.c_str(), strCmd.c_str()))
+                    {
+                        printf("==>connect closed.\n");
+                        break;
+                    }
+                    continue;
+                }
+                strCmd += strInput + "\n";
+            }
+        }
+
+        evutil_closesocket(cmdSock);
+
+        return 0;
+    }
+
+
     g_strProPath = H_GetProPath();
     g_strScriptPath = H_FormatStr("%s%s%s", g_strProPath.c_str(), "script", H_PATH_SEPARATOR);
 
@@ -203,7 +386,7 @@ int main(int argc, char *argv[])
     signal(SIGKILL, sigHandEntry);//立即结束程序
     signal(SIGABRT, sigHandEntry);//中止一个程序
     signal(H_SIGNAL_EXIT, sigHandEntry);
-    H_Printf("exit service by command \"kill -%d %d\".", H_SIGNAL_EXIT, getpid());   
+    H_Printf("exit service by command \"kill -%d %d\".", H_SIGNAL_EXIT, getpid());
 #endif
 
     if (H_RTN_OK != init())
