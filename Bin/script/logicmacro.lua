@@ -11,6 +11,7 @@ EnevtType = {
 	"TcpRead",--tcp可读
 	"UdpRead",--udp可读
     "Frame",--每帧
+	--自定义
     "Delay",--延时
 }
 EnevtType = table.enum(EnevtType, 0)

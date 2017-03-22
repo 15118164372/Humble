@@ -81,8 +81,6 @@ function onTcpRead(sock, uiSession, usSockType)
 	if "tcp1" == strName then
 		local iProto = pBuffer:getUint16()
 		local strMsg = pBuffer:getByte(pBuffer:getSurpLens())
-		print(iProto)
-		print(strMsg)
 		local param = utile.Pack(EnevtType.TcpRead, iProto, sock, uiSession, strMsg)
 		--发送消息到对应任务
 		if not humble.netToTask(iProto, param) then
