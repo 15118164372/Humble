@@ -10,7 +10,7 @@ Humble是c++、lua语言开发的多线程服务器框架,网络底层使用libe
 ##二、配置文件  
 * config.ini 文件配置服务器启动参数。   
 
-##三、注册数据解析器
+##三、注册数据解析器    
 * 数据解析器继承CParser，将parsePack函数完成，
 然后在Humble.cpp中的initParser函数中添加该解析器。
 
