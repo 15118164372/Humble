@@ -43,12 +43,25 @@ std::string *CProtoDisp::getTaskPoint(const char *pszTask)
 
 void CProtoDisp::regStrProto(const char *pszProto, const char *pszTask)
 {
+    std::string strProto(pszProto);
+    strprotoit itProto = m_mapStrProto.find(strProto);
+    if (m_mapStrProto.end() != itProto)
+    {
+        H_Printf("proto %s duplicate registration", strProto.c_str());
+    }
+
     std::string *pTask = getTaskPoint(pszTask);
-    m_mapStrProto[std::string(pszProto)] = pTask;
+    m_mapStrProto[strProto] = pTask;
 }
 
 void CProtoDisp::regIProto(int iProto, const char *pszTask)
 {
+    iprotoit itProto = m_mapIProto.find(iProto);
+    if (m_mapIProto.end() != itProto)
+    {
+        H_Printf("proto %d duplicate registration", iProto);
+    }
+
     std::string *pTask = getTaskPoint(pszTask);
     m_mapIProto[iProto] = pTask;
 }
