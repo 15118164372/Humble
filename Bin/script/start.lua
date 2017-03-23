@@ -60,7 +60,7 @@ end
 --退出，主要清理掉连接防止服务器停止时还有消息送来
 function onStop()
 	--命令
-	humble.delUdp(tListener.cmd)
+	humble.delListener(tListener.cmd)
 	
 	
 	--以下为测试
