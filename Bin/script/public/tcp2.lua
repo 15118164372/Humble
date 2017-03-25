@@ -1,5 +1,5 @@
 --[[
-tcp2 
+tcp2 unsigned short(消息长度)  + 消息
 --]]
 
 local tcp2 = {}

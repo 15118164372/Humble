@@ -141,6 +141,7 @@ void initParser(void)
     pParser->addParser(CDefParser::getSingletonPtr());
     pParser->addParser(CTcp1::getSingletonPtr());
     pParser->addParser(CTcp2::getSingletonPtr());
+    pParser->addParser(CTcp3::getSingletonPtr());
     pParser->addParser(CHttp::getSingletonPtr());
     pParser->addParser(CWebSock::getSingletonPtr());
     pParser->addParser(CMQTT::getSingletonPtr());

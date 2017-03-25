@@ -49,6 +49,8 @@ function onTcpRead(sock, uiSession, usSockType)
         buffer = pBuffer:getByte(pBuffer:getSurpLens())        
     elseif "tcp2" == strName then
         buffer = pBuffer:getByte(pBuffer:getSurpLens())
+	elseif "tcp3" == strName then
+        buffer = pBuffer:getByte(pBuffer:getSurpLens())	
     elseif "websock" == strName then
         buffer = websock.parsePack(pBuffer)
     elseif "mqtt" == strName then

@@ -619,6 +619,9 @@
     <ClInclude Include="luasocket\wsocket.h">
       <Filter>3rd\lua\luasocket</Filter>
     </ClInclude>
+    <ClInclude Include="Tcp3.h">
+      <Filter>Service\Parser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zlib\adler32.c">
@@ -1167,6 +1170,9 @@
     </ClCompile>
     <ClCompile Include="luasocket\wsocket.c">
       <Filter>3rd\lua\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="Tcp3.cpp">
+      <Filter>Service\Parser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

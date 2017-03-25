@@ -9,6 +9,7 @@ local mqtt = require("mqtt")
 local def = require("def")
 local tcp1 = require("tcp1")
 local tcp2 = require("tcp2")
+local tcp3 = require("tcp3")
 local cjson = require("cjson")
 local table = table
 local string = string

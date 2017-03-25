@@ -8,6 +8,11 @@
 H_BNAMSP
 
 //包头类websocket
+/*
+消息长度小于126  char(消息长度) + 消息
+小于等于65535    char(值126) + unsigned short(消息长度) + 消息
+大于65535        char(值127) + unsigned int(消息长度) + 消息
+*/
 class CTcp1 : public CParser, public CSingleton<CTcp1>
 {
 public:

@@ -40,6 +40,7 @@
 #include "DefParser.h"
 #include "Tcp1.h"
 #include "Tcp2.h"
+#include "Tcp3.h"
 #include "Httpd.h"
 #include "WebSock.h"
 #include "mqtt.h"

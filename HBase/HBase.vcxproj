@@ -159,6 +159,7 @@
     <ClInclude Include="Task.h" />
     <ClInclude Include="Tcp1.h" />
     <ClInclude Include="Tcp2.h" />
+    <ClInclude Include="Tcp3.h" />
     <ClInclude Include="Thread.h" />
     <ClInclude Include="Tick.h" />
     <ClInclude Include="uchardet\CharDistribution.h" />
@@ -330,6 +331,7 @@
     <ClCompile Include="TableFile.cpp" />
     <ClCompile Include="Tcp1.cpp" />
     <ClCompile Include="Tcp2.cpp" />
+    <ClCompile Include="Tcp3.cpp" />
     <ClCompile Include="Thread.cpp" />
     <ClCompile Include="Tick.cpp" />
     <ClCompile Include="uchardet\CharDistribution.cpp" />
