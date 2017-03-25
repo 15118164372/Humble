@@ -1,7 +1,6 @@
 --以下为测试
 require("macros")
 require("logicmacro")
-require("cmd")
 local utile = require("utile")
 local humble = require("humble")
 local httpd = require("httpd")
@@ -21,7 +20,7 @@ end
 local pBinary = g_pBinary
 
 if not g_NetDisp then
-	g_NetDisp = netdisp:new("echo1")
+	g_NetDisp = netdisp:new("echo7")
 end
 
 --任务初始化
@@ -30,25 +29,20 @@ function initTask()
 end
 
 local function echo(sock, session, pack)
-	local pWBinary = httpd.Response(200, "echo1 return")
+	local pWBinary = httpd.Response(200, "echo7 return")
     humble.sendB(sock, session, pWBinary)
 end
-g_NetDisp:regNetEvent("/echo1", echo)
+g_NetDisp:regNetEvent("/echo7", echo)
 
 --有新任务执行
 function runTask()
     local varRecv = pChan:Recv()
 	if varRecv then
 		local evType, proto, msg = utile.unPack(varRecv)
-		if evType == EnevtType.CMD then
-			local sock,session,pack = table.unpack(msg)
-			doCmd(proto, sock, session, pack) 
-		end		
-		
 		if evType == EnevtType.TcpRead then
 			local sock,session,pack = table.unpack(msg)
 			g_NetDisp:onNetEvent(proto, sock, session, pack)
-		end			
+		end
 	end
 end
 

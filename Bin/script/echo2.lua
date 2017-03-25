@@ -28,11 +28,11 @@ function initTask()
     
 end
 
-local function echo2(sock, session, pack)
+local function echo(sock, session, pack)
 	local pWBinary = httpd.Response(200, "echo2 return")
     humble.sendB(sock, session, pWBinary)
 end
-g_NetDisp:regNetEvent("/echo2", echo2)
+g_NetDisp:regNetEvent("/echo2", echo)
 
 --有新任务执行
 function runTask()

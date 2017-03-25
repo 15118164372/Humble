@@ -36,7 +36,7 @@ end
 function utile.Debug(fmt, ...)
     if bDebug then
         local strMsg = string.format(fmt, table.unpack({...}))
-        print(string.format("[%s][LDebug] %s", os.date(), strMsg))
+        print(string.format("[%s][LDEBUG] %s", os.date("%Y-%m-%d %H:%M:%S"), strMsg))
     end
 end
 

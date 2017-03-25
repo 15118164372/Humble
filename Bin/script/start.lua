@@ -42,16 +42,24 @@ function onStart()
 	humble.setParser(cmdSockType, "tcp2")
 	
 	--以下为测试
-    tListener.test = humble.addListener(1, "0.0.0.0", 15000)
+    tListener.test = humble.addListener(1, "0.0.0.0", 80)
     tListener.test2 = humble.addListener(2, "0.0.0.0", 15001)  
     humble.setParser(1, "http")
 	humble.setParser(2, "tcp1")
 	
     tListener.udp = humble.addUdp("0.0.0.0", 15001)
     
+	--ech1 - echo8 访问:http://localhost/echo1 ...http://localhost/echo9
     humble.regTask("echo1")
 	humble.regTask("echo2")
 	humble.regTask("echo3")
+	humble.regTask("echo4")
+	humble.regTask("echo5")
+	humble.regTask("echo6")
+	humble.regTask("echo7")
+	humble.regTask("echo8")
+	
+	humble.regTask("echo9")
     humble.regTask("test")      
     
     tChan.echo = humble.getChan("echo1")

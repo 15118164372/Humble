@@ -16,7 +16,7 @@ function runTask()
     local varRecv = pChan:Recv()
 	if varRecv then
 		local evType, _, param = utile.unPack(varRecv)
-		table.print(param)
+		--table.print(param)
 	end
 end
 

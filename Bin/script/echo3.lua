@@ -28,11 +28,11 @@ function initTask()
     
 end
 
-local function echo3(sock, uiSession, iProto, strMsg)
-	local rtnBuf = "echo3 return"
-    humble.sendB(sock, uiSession, tcp1.Response(rtnBuf))
+local function echo(sock, session, pack)
+	local pWBinary = httpd.Response(200, "echo3 return")
+    humble.sendB(sock, session, pWBinary)
 end
-g_NetDisp:regNetEvent(1, echo3)
+g_NetDisp:regNetEvent("/echo3", echo)
 
 --有新任务执行
 function runTask()
@@ -42,7 +42,7 @@ function runTask()
 		if evType == EnevtType.TcpRead then
 			local sock,session,pack = table.unpack(msg)
 			g_NetDisp:onNetEvent(proto, sock, session, pack)
-		end	
+		end
 	end
 end
 
