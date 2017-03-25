@@ -7,6 +7,7 @@ local table = table
 local string = string
 local assert = assert
 local tonumber = tonumber
+local cjson = require("cjson")
 
 local httpd = {}
 
@@ -125,7 +126,7 @@ function httpd.parsePack(pBinary)
     return tInfo 
 end
 
-function httpd.Response(iCode, varBodyFunc, tHeader)
+function httpd.Response(iCode, varBodyFunc, tHeader, ...)
     local pWBinary = CBinary()
     
 	local strMsg = string.format("HTTP/1.1 %03d %s\r\n", iCode, http_status_msg[iCode] or "")
@@ -137,23 +138,27 @@ function httpd.Response(iCode, varBodyFunc, tHeader)
 		end
 	end
 
-	local iType = type(varBodyFunc)
-	if iType == "string" then
-		strMsg = string.format("content-length: %d\r\n\r\n", string.len(varBodyFunc))
+	local strType = type(varBodyFunc)
+	if strType == "string" then
+		strMsg = string.format("content-length: %d\r\n\r\n", #varBodyFunc)
         pWBinary:setByte(strMsg, #strMsg)
         pWBinary:setByte(varBodyFunc, #varBodyFunc)
-	elseif iType == "function" then
+	elseif strType == "table" then
+		local strJsonMsg = cjson.encode(varBodyFunc)
+		strMsg = string.format("content-type: application/json\r\ncontent-length: %d\r\n\r\n", 
+			#strJsonMsg)
+        pWBinary:setByte(strMsg, #strMsg)
+        pWBinary:setByte(strJsonMsg, #strJsonMsg)
+	elseif strType == "function" then
 		strMsg = "transfer-encoding: chunked\r\n"
         pWBinary:setByte(strMsg, #strMsg)
         local str
 		while true do
-			local str = varBodyFunc()
+			str = varBodyFunc(table.unpack({...}))
 			if str then
-				if str ~= "" then
-					strMsg = string.format("\r\n%x\r\n", string.len(str))
-                    pWBinary:setByte(strMsg, #strMsg)
-                    pWBinary:setByte(str, #str)
-				end
+				strMsg = string.format("\r\n%x\r\n", #str)
+                pWBinary:setByte(strMsg, #strMsg)
+                pWBinary:setByte(str, #str)
 			else
 				strMsg = "\r\n0\r\n\r\n"
                 pWBinary:setByte(strMsg, #strMsg)

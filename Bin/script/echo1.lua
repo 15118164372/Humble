@@ -29,9 +29,18 @@ function initTask()
     
 end
 
+local function readFile(file)
+	return file:read(200) 
+end
+
 local function echo(sock, session, pack)
-	local pWBinary = httpd.Response(200, "echo1 return")
+	local tmsg = {}
+	tmsg.rtn = 0
+	tmsg.msg = "echo1 json return"
+	--file = io.open("D:/soft/nginx-1.10.1.zip", "rb")
+	local pWBinary = httpd.Response(200, tmsg)
     humble.sendB(sock, session, pWBinary)
+	--file:close()
 end
 g_NetDisp:regNetEvent("/echo1", echo)
 
@@ -54,5 +63,5 @@ end
 
 --任务销毁
 function destroyTask()
-
+	
 end
