@@ -22,7 +22,7 @@ local function Response(code, fin, val)
     pWBinary:setUint8(cType)
     
     local iLens = #val
-    if iLens < 126 then  
+    if iLens <= 125 then  
         pWBinary:setUint8(iLens)
     elseif iLens <= 0xFFFF then  
         pWBinary:setUint8(126)
