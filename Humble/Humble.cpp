@@ -199,11 +199,11 @@ int runCommand(H_SOCK &sock, const char *pszCommand, const char *pszMode, const 
     std::string strBuf = objBinary1.getWritedBuf();
     CBinary objBinary2;
     objBinary2.setUint32((unsigned int)strBuf.size());
-    objBinary2.setByte(strBuf.c_str(), strBuf.size());
+    objBinary2.setByte(strBuf.c_str(), (const unsigned int)strBuf.size());
 
     strBuf = objBinary2.getWritedBuf();
     objClock.reStart();
-    int iRtn = send(sock, strBuf.c_str(), strBuf.size(), 0);
+    int iRtn = send(sock, strBuf.c_str(), (int)strBuf.size(), 0);
     if (0 >= iRtn)
     {
         return H_RTN_FAILE;
