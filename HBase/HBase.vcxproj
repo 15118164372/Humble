@@ -222,12 +222,15 @@
     <ClCompile Include="Ini.cpp" />
     <ClCompile Include="Library.cpp" />
     <ClCompile Include="Linker.cpp" />
+    <ClCompile Include="lmongo\bson.c" />
+    <ClCompile Include="lmongo\mongo.c" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="lpeg\lpcap.c" />
     <ClCompile Include="lpeg\lpcode.c" />
     <ClCompile Include="lpeg\lpprint.c" />
     <ClCompile Include="lpeg\lptree.c" />
     <ClCompile Include="lpeg\lpvm.c" />
+    <ClCompile Include="lsnapshot\snapshot.c" />
     <ClCompile Include="lua5.3\lapi.c" />
     <ClCompile Include="lua5.3\lauxlib.c" />
     <ClCompile Include="lua5.3\lbaselib.c" />
@@ -471,7 +474,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;../HBase/lmongo;../HBase/lsnapshot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -484,7 +487,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;../HBase/lmongo;../HBase/lsnapshot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -499,7 +502,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;../HBase/lmongo;../HBase/lsnapshot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -516,7 +519,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;../HBase/lmongo;../HBase/lsnapshot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

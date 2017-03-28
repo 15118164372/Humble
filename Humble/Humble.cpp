@@ -197,7 +197,7 @@ int runCommand(H_SOCK &sock, const char *pszCommand, const char *pszMode, const 
 
     std::string strBuf = objBinary1.getWritedBuf();
     CBinary objBinary2;
-    objBinary2.setUint16((unsigned short)strBuf.size());
+    objBinary2.setUint32((unsigned int)strBuf.size());
     objBinary2.setByte(strBuf.c_str(), strBuf.size());
 
     strBuf = objBinary2.getWritedBuf();
@@ -207,17 +207,18 @@ int runCommand(H_SOCK &sock, const char *pszCommand, const char *pszMode, const 
         return H_RTN_FAILE;
     }    
     
-    char acHead[2] = {0};
+    const int iHeadLens = sizeof(unsigned int);
+    char acHead[iHeadLens] = {0};
     iRtn = recv(sock, acHead, sizeof(acHead), 0);
-    if (2 != iRtn)
+    if (iHeadLens != iRtn)
     {
         return H_RTN_FAILE;
     }
-    unsigned short usPackLens = ntohs(*(unsigned short*)acHead);
-    char *pBuf = new char[usPackLens + 1];
-    H_Zero(pBuf, usPackLens + 1);
-    iRtn = recv(sock, pBuf, usPackLens, 0);
-    if (iRtn != usPackLens)
+    unsigned int uiPackLens = ntohl(*(unsigned int*)acHead);
+    char *pBuf = new char[uiPackLens + 1];
+    H_Zero(pBuf, uiPackLens + 1);
+    iRtn = recv(sock, pBuf, uiPackLens, 0);
+    if (iRtn != (int)uiPackLens)
     {
         H_SafeDelete(pBuf);
         return H_RTN_FAILE;

@@ -28,7 +28,7 @@ function NetDisp:onNetEvent(protocol, ...)
     if Func then
         utile.callFunc(Func, table.unpack{...})
 	else
-		utile.Log(LogLV.Err, "protocol %s may not register.", tostring(protocol))
+		utile.Log(LogLV.Err, "net protocol %s may not register.", tostring(protocol))
     end
 end
 
@@ -40,7 +40,7 @@ function NetDisp:regNetEvent(protocol, Func)
 	humble.regProto(protocol, self.TaskName)
 	
 	self.Proto[protocol] = Func
-    utile.Debug("register protocol %s", tostring(protocol))
+    utile.Debug("register net protocol %s", tostring(protocol))
 end
 
 return NetDisp

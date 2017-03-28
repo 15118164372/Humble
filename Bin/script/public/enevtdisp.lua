@@ -19,22 +19,22 @@ function EnevtDisp:new()
     return self
 end
 
-function EnevtDisp:onNetEvent(protocol, ...)
+function EnevtDisp:onEvent(protocol, ...)
     local Func = self.Proto[protocol]
     if Func then
         utile.callFunc(Func, table.unpack{...})
 	else
-		utile.Log(LogLV.Err, "enevt %s may not register.", tostring(protocol))
+		utile.Log(LogLV.Err, "enevt protocol %s may not register.", tostring(protocol))
     end
 end
 
-function EnevtDisp:regNetEvent(protocol, Func)
+function EnevtDisp:regEvent(protocol, Func)
 	if "function" ~= type(Func) then
         return
     end
 	
 	self.Proto[protocol] = Func
-    utile.Debug("register enevt %s", tostring(protocol))
+    utile.Debug("register enevt protocol %s", tostring(protocol))
 end
 
 return EnevtDisp

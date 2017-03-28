@@ -65,6 +65,15 @@ LUALIB_API int (luaopen_serialize)(lua_State *L);
 #define LUA_SOCKET "socket.core"
 LUALIB_API int (luaopen_socket_core)(lua_State *L);
 
+#define LUA_BSON "bson"
+LUALIB_API int (luaopen_bson)(lua_State *L);
+
+#define LUA_MONGO "mongo"
+LUALIB_API int (luaopen_mongo_driver)(lua_State *L);
+
+#define LUA_SNAPSHOT "snapshot"
+LUALIB_API int (luaopen_snapshot)(lua_State *L);
+
 /* open all previous libraries */
 LUALIB_API void (luaL_openlibs) (lua_State *L);
 

@@ -114,6 +114,7 @@ void H_RegChan(struct lua_State *pLState)
         .beginClass<CChan>("CChan")
             .addFunction("Send", &CChan::Send)
             .addFunction("Recv", &CChan::Recv)
+            .addFunction("getTaskName", &CChan::getTaskName)
         .endClass();
 }
 

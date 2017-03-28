@@ -7,135 +7,109 @@ require("logicmacro")
 local humble = require("humble")
 local utile = require("utile")
 local cjson = require("cjson")
-local tcp2 = require("tcp2")
+local tcp3 = require("tcp3")
 local table = table
 local pairs = pairs
+local EnevtType = EnevtType
+local SockType = SockType
 local pBuffer = g_pBuffer
 
 --以下为测试
 local httpd = require("httpd")
-local websock = require("websock")
-local mqtt = require("mqtt")
 
 if not g_tChan then
     g_tChan = {}    
 end
 local tChan = g_tChan
 
-if not g_tListener then
-    g_tListener = {}
-end
-local tListener = g_tListener
-
-if not g_tLinker then
-    g_tLinker = {}
-end
-local tLinker = g_tLinker
-
---命令
-local cmdSockType = 10000
-
 --初始化  这里注册任务
 function onStart()
 	--命令监听
-	tListener.cmd = humble.addListener(cmdSockType, "127.0.0.1", 15100)
-	humble.setParser(cmdSockType, "tcp2")
+	humble.addListener(SockType.CMD, "127.0.0.1", 15100)
+	humble.setParser(SockType.CMD, "tcp3")
+	--rpc
+	humble.addListener(SockType.RPC, "0.0.0.0", 15101)
+	humble.setParser(SockType.RPC, "tcp3")
+	--链接管理
+	humble.regTask("task_link")
+    tChan.task_link = humble.getChan("task_link")
 	
+	--TODO
 	--以下为测试
-    tListener.test = humble.addListener(1, "0.0.0.0", 80)
-    tListener.test2 = humble.addListener(2, "0.0.0.0", 15001)  
-    humble.setParser(1, "http")
-	humble.setParser(2, "tcp1")
-	
-    tListener.udp = humble.addUdp("0.0.0.0", 15001)
-    
-	--ech1 - echo8 访问:http://localhost/echo1 ...http://localhost/echo9
-    humble.regTask("echo1")
+	humble.addTcpLink(SockType.RPCCLIENT, "127.0.0.1", 15101)
+	humble.setParser(SockType.RPCCLIENT, "tcp3")
+	humble.addListener(11, "0.0.0.0", 80)
+	humble.setParser(11, "http")
+	humble.regTask("echo1")
 	humble.regTask("echo2")
-	humble.regTask("echo3")
-	humble.regTask("echo4")
-	humble.regTask("echo5")
-	humble.regTask("echo6")
-	humble.regTask("echo7")
-	humble.regTask("echo8")
-	
-	humble.regTask("echo9")
-    humble.regTask("test")      
-    
-    tChan.echo = humble.getChan("echo1")
+    tChan.echo1 = humble.getChan("echo1")
+	tChan.echo2 = humble.getChan("echo2")
 end
 
---退出，主要清理掉连接防止服务器停止时还有消息送来
+--退出
 function onStop()
-	--命令
-	humble.delListener(tListener.cmd)
 	
-	
-	--以下为测试
-    humble.closeByType(1)
-    humble.delListener(tListener.test)
-    humble.delUdp(tListener.udp)
 end
 
 --链接成功 或者有新链接到达
 function onTcpLinked(sock, uiSession, usSockType)
-    --tChan.echo:Send(utile.Pack(EnevtType.NetLinked, nil, sock, uiSession, usSockType))
+    tChan.task_link:Send(utile.Pack(EnevtType.NetLinked, nil, sock, uiSession, usSockType))
 end
 
 --链接断开
 function onTcpClose(sock, uiSession, usSockType)
-    --tChan.echo:Send(utile.Pack(EnevtType.NetClose, nil, sock, uiSession, usSockType))
+    tChan.task_link:Send(utile.Pack(EnevtType.NetClose, nil, sock, uiSession, usSockType))
 end
 
 --tcp读到一完整的包
-function onTcpRead(sock, uiSession, usSockType)
-	--命令
-	if cmdSockType == usSockType then
+function onTcpRead(sock, uiSession, usSockType)	
+	if SockType.CMD == usSockType then --命令
 		local strCmd = pBuffer:getString()
 		local strTask = pBuffer:getString()
 		local strMsg = pBuffer:getString()
 		local objChan = humble.getChan(strTask)
 		if not objChan then
 			humble.sendB(sock, uiSession, 
-				tcp2.Response(cjson.encode({"fail", "not find task."})))
+				tcp3.Response(cjson.encode({"fail", "not find task."})))
 			return
 		end
 		
 		local packMsg = utile.Pack(EnevtType.CMD, strCmd, sock, uiSession, strMsg)
 		objChan:Send(packMsg)
-		return
-	end
-    
-	
-	--以下为测试
-	local strName = humble.getParserNam(usSockType)
-    if 0 == #strName then
-        return
-    end
-	if "http" == strName then
-		local buffer = httpd.parsePack(pBuffer)
-		local param = utile.Pack(EnevtType.TcpRead, buffer.url, sock, uiSession, buffer)
-		--发送消息到对应任务
-		if not humble.netToTask(buffer.url, param) then
-			utile.unPack(param)--释放掉
+	elseif ((SockType.RPC == usSockType) or (SockType.RPCCLIENT == usSockType)) then --服务器间RPC
+		local tRPC = cjson.decode(pBuffer:getByte(pBuffer:getSurpLens()))
+		if tRPC.Enevt == EnevtType.CallRPC then --调用
+			local param = utile.Pack(tRPC.Enevt, tRPC.Method, sock, uiSession, tRPC)
+			if not humble.netToTask(tRPC.Method, param) then
+				utile.unPack(param)--释放掉
+			end
+		else --调用返回
+			local objChan = humble.getChan(tRPC.RecvTask)
+			if objChan then
+				local param = utile.Pack(tRPC.Enevt, nil, sock, uiSession, tRPC)
+				objChan:Send(param)
+			else
+				utile.Log(LogLV.Warn, "not find task %s", tRPC.RecvTask)
+			end
 		end
-	end
-	
-	if "tcp1" == strName then
-		local iProto = pBuffer:getUint16()
-		local strMsg = pBuffer:getByte(pBuffer:getSurpLens())
-		local param = utile.Pack(EnevtType.TcpRead, iProto, sock, uiSession, strMsg)
-		--发送消息到对应任务
-		if not humble.netToTask(iProto, param) then
-			utile.unPack(param)--释放掉
+	else
+		--以下为测试
+		local strName = humble.getParserNam(usSockType)
+		if 0 == #strName then
+			return
 		end
-	end
+		if "http" == strName then
+			local buffer = httpd.parsePack(pBuffer)
+			local param = utile.Pack(EnevtType.TcpRead, buffer.url, sock, uiSession, buffer)
+			--发送消息到对应任务
+			if not humble.netToTask(buffer.url, param) then
+				utile.unPack(param)--释放掉
+			end
+		end
+	end	
 end
 
 --udp可读
 function onUdpRead(sock, pHost, usPort)
-	--以下为测试
-    local strBuf = pBuffer:getByte(pBuffer:getSurpLens())
-    humble.sendU(sock, pHost, usPort, strBuf.."lua1")
-    humble.broadCastU(sock, usPort, strBuf.."lua2")
+	--TODO
 end

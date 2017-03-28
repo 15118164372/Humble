@@ -18,6 +18,8 @@ public:
 
     void setTaskNam(std::string *pszName);
 
+    const char *getTaskName(void);
+
     size_t getSize(void);
 
 private:

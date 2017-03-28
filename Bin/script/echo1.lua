@@ -1,64 +1,51 @@
---以下为测试
-require("macros")
-require("logicmacro")
-require("cmd")
+--[[
+echo1
+--]]
+
+require("global")
 local utile = require("utile")
 local humble = require("humble")
 local httpd = require("httpd")
-local websock = require("websock")
-local mqtt = require("mqtt")
-local def = require("def")
-local tcp1 = require("tcp1")
-local tcp2 = require("tcp2")
-local netdisp = require("netdisp")
-local table = table
-local string = string
 local pChan = g_pChan
 
-if not g_pBinary then
-    g_pBinary = CBinary()
-end
-local pBinary = g_pBinary
+g_taskName = "echo1"
+local taskName = g_taskName
+initGlobal(taskName)
+local enevtDisp = g_enevtDisp
+local timeWheel = g_timeWheel
+local netDisp = g_netDisp
+local svRPC = g_svRPC
+local taskRPC = g_taskRPC
 
-if not g_NetDisp then
-	g_NetDisp = netdisp:new("echo1")
+local function echo1(uiSock, uiSession, tMsg)
+	local tmsg = {}
+	tmsg.rtn = 0
+	tmsg.msg = "echo1 json return"
+	local pWBinary = httpd.Response(200, tmsg)
+    humble.sendB(uiSock, uiSession, pWBinary)
 end
+netDisp:regNetEvent("/echo1", echo1)
+
+local function add(iA, iB)
+	return iA + iB
+end
+taskRPC:regRPC("echo1.add", add)
+svRPC:regRPC("echo1.add", add)
 
 --任务初始化
 function initTask()
     
 end
 
-local function readFile(file)
-	return file:read(200) 
-end
-
-local function echo(sock, session, pack)
-	local tmsg = {}
-	tmsg.rtn = 0
-	tmsg.msg = "echo1 json return"
-	--file = io.open("D:/soft/nginx-1.10.1.zip", "rb")
-	local pWBinary = httpd.Response(200, tmsg)
-    humble.sendB(sock, session, pWBinary)
-	--file:close()
-end
-g_NetDisp:regNetEvent("/echo1", echo)
-
 --有新任务执行
 function runTask()
     local varRecv = pChan:Recv()
-	if varRecv then
-		local evType, proto, msg = utile.unPack(varRecv)
-		if evType == EnevtType.CMD then
-			local sock,session,pack = table.unpack(msg)
-			doCmd(proto, sock, session, pack) 
-		end		
-		
-		if evType == EnevtType.TcpRead then
-			local sock,session,pack = table.unpack(msg)
-			g_NetDisp:onNetEvent(proto, sock, session, pack)
-		end			
+	if not varRecv then
+		return
 	end
+		
+	local evType, Proto, msgPakc = utile.unPack(varRecv)
+	enevtDisp:onEvent(evType, Proto, msgPakc)
 end
 
 --任务销毁
