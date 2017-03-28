@@ -190,6 +190,7 @@ void runSV(void)
 
 int runCommand(H_SOCK &sock, const char *pszCommand, const char *pszMode, const char *pszMsg)
 {
+    CClock objClock;
     CBinary objBinary1;
     objBinary1.setString(pszCommand);
     objBinary1.setString(pszMode);
@@ -201,6 +202,7 @@ int runCommand(H_SOCK &sock, const char *pszCommand, const char *pszMode, const 
     objBinary2.setByte(strBuf.c_str(), strBuf.size());
 
     strBuf = objBinary2.getWritedBuf();
+    objClock.reStart();
     int iRtn = send(sock, strBuf.c_str(), strBuf.size(), 0);
     if (0 >= iRtn)
     {
@@ -224,7 +226,7 @@ int runCommand(H_SOCK &sock, const char *pszCommand, const char *pszMode, const 
         return H_RTN_FAILE;
     }
 
-    printf("==>%s\n", pBuf);
+    printf("==>use time: %s  %s\n", H_ToString(objClock.Elapsed()).c_str(), pBuf);
     H_SafeDelete(pBuf);
     
     return H_RTN_OK;
