@@ -80,6 +80,10 @@ function SVRPC:removeById(rpcId)
 	end
 end
 
+function removeRPC(objRPC, rpcId)
+	objRPC:removeById(rpcId)
+end
+
 function SVRPC:createParam(...)
 	return {...}
 end

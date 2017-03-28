@@ -21,17 +21,9 @@ local function rcpBack(bOk, rtnMsg, strType)
 	print(string.format("strType : %s val %s", strType, tostring(rtnMsg)))
 end
 
-local function svRPCTimeOut(rpcId)
-	svRPC:removeById(rpcId)
-end
-
 local function rpcGetLink(bOk, rtnMsg)
 	local rpcId = svRPC:callRPC(rtnMsg[1], rtnMsg[2], taskName, "echo1.add", svRPC:createParam(5, 5), rcpBack, "server rpc")
-	DEV_Reg(timeWheel, 5, svRPCTimeOut, rpcId)
-end
-
-local function rpcTimeOut(rpcId)
-	taskRPC:removeById(rpcId)
+	DEV_Reg(timeWheel, 5, removeRPC, svRPC, rpcId)
 end
 
 --测试
@@ -43,10 +35,10 @@ local function echo2(uiSock, uiSession, tMsg)
     humble.sendB(uiSock, uiSession, pWBinary)
 	
 	local rpcId = taskRPC:callRPC("echo1", taskName, "echo1.add", taskRPC:createParam(4, 8), rcpBack, "task rpc")
-	DEV_Reg(timeWheel, 5, rpcTimeOut, rpcId)
+	DEV_Reg(timeWheel, 5, removeRPC, taskRPC, rpcId)
 	
 	rpcId = taskRPC:callRPC("task_link", taskName, "task_link.getRandLink", taskRPC:createParam(SockType.RPCCLIENT), rpcGetLink)
-	DEV_Reg(timeWheel, 5, rpcTimeOut, rpcId)
+	DEV_Reg(timeWheel, 5, removeRPC, taskRPC, rpcId)
 end
 netDisp:regNetEvent("/echo2", echo2)
 

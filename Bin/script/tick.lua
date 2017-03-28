@@ -13,7 +13,7 @@ local tChan = g_tChan
 
 --定时器初始化
 function onStart()
-	
+	tChan.echo2 = humble.getChan("echo2")
 end
 
 --定时器停止
@@ -28,6 +28,6 @@ function onTimer(uiTick, uiCount)
     
     --1秒
     if 0 == ((uiTick * uiCount) % 1000) then 
-        --tChan.timer:Send(utile.Pack(EnevtType.Second_1, nil, uiTick, uiCount))
+        tChan.echo2:Send(utile.Pack(EnevtType.Second_1, nil, uiTick, uiCount))
     end
 end

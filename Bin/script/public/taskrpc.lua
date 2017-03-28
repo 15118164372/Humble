@@ -77,6 +77,10 @@ function TaskRPC:removeById(rpcId)
 	end
 end
 
+function removeRPC(objRPC, rpcId)
+	objRPC:removeById(rpcId)
+end
+
 function TaskRPC:createParam(...)
 	return {...}
 end
