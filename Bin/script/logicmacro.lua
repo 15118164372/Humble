@@ -28,5 +28,7 @@ SockType = {
 	"RPC",--rpc
 	"RPCCLIENT",--rpc clinet
 	"MONGO",--mongodb
+	
+	--×Ô¶¨Òå
 }
 SockType = table.enum(SockType, 0)
