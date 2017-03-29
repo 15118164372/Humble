@@ -33,9 +33,8 @@ function NetDisp:onNetEvent(protocol, ...)
 end
 
 function NetDisp:regNetEvent(protocol, Func)
-	if "function" ~= type(Func) then
-        return
-    end
+	assert("string" == type(protocol) or "number" == type(protocol))
+	assert("function" == type(Func))
 	
 	humble.regProto(protocol, self.TaskName)
 	

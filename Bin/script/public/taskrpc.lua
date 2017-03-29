@@ -105,6 +105,7 @@ function TaskRPC:callRPC(strToTask, strRecvTask, strRPCName, tRPCParam, Func, ..
 	
 	local rpcId = 0
 	if Func then
+		assert("function" == type(Func))
 		rpcId = self.SnowFlake:getID()
 		local tRPCBC = {}
 		tRPCBC.Func = Func

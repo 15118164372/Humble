@@ -29,9 +29,8 @@ function EnevtDisp:onEvent(protocol, ...)
 end
 
 function EnevtDisp:regEvent(protocol, Func)
-	if "function" ~= type(Func) then
-        return
-    end
+	assert("string" == type(protocol) or "number" == type(protocol))
+	assert("function" == type(Func))
 	
 	self.Proto[protocol] = Func
     utile.Debug("register enevt protocol %s", tostring(protocol))
