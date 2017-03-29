@@ -70,9 +70,6 @@
     <Filter Include="Service\Parser">
       <UniqueIdentifier>{30dea6f7-72f1-4903-9f3a-8ae9699a7e65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3rd\lua\lmongo">
-      <UniqueIdentifier>{ec06ecee-e470-4942-b513-24429f8c7852}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3rd\lua\lsnapshot">
       <UniqueIdentifier>{32f90629-2497-4848-9047-961587d663ff}</UniqueIdentifier>
     </Filter>
@@ -1179,12 +1176,6 @@
     </ClCompile>
     <ClCompile Include="Tcp3.cpp">
       <Filter>Service\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="lmongo\bson.c">
-      <Filter>3rd\lua\lmongo</Filter>
-    </ClCompile>
-    <ClCompile Include="lmongo\mongo.c">
-      <Filter>3rd\lua\lmongo</Filter>
     </ClCompile>
     <ClCompile Include="lsnapshot\snapshot.c">
       <Filter>3rd\lua\lsnapshot</Filter>
