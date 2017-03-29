@@ -51,15 +51,21 @@ function SVRPC:onRPC(uiSock, uiSession, tRPC)
 		local Func = self.Proto[tRPC.Method]
 		if Func then
 			tRPC.Rnt, tRPC.Param = utile.callFunc(Func, table.unpack(tRPC.Param))
+			if not tRPC.Rnt then
+				utile.Log(LogLV.Err, "%s call sv rpc %s error,message: %s, .", 
+					tRPC.RecvTask, tRPC.Method, tRPC.Param)
+			end
 		else
 			tRPC.Rnt = false
 			tRPC.Param = string.format("not find service rpc method %s", tRPC.Method)
+			utile.Log(LogLV.Err, "%s", tRPC.Param)
 		end
 		
-		tRPC.Enevt = EnevtType.RPCRtn
-		
-		humble.sendB(uiSock, uiSession,
-			tcp3.Response(cjson.encode(tRPC)))
+		if 0 ~= tRPC.ID then
+			tRPC.Enevt = EnevtType.RPCRtn			
+			humble.sendB(uiSock, uiSession,
+				tcp3.Response(cjson.encode(tRPC)))
+		end	
 		
 		return
 	else
@@ -73,6 +79,10 @@ end
 
 --超时用,与timewheel配合
 function SVRPC:removeById(rpcId)
+	if 0 == rpcId then
+		return
+	end
+	
 	local rpcCash = self.RPCCash[rpcId]
 	if rpcCash then
 		utile.Log(LogLV.Warn, "call service rpc %s timeout.", rpcCash.Method)
@@ -88,14 +98,17 @@ function SVRPC:createParam(...)
 	return {...}
 end
 
---调用 Func(rpcOK, rpcMsg, ...)
+--调用 Func(rpcOK, rpcMsg, ...)  Func为nil表示不需要返回
 function SVRPC:callRPC(uiSock, uiSession, strRecvTask, strRPCName, tRPCParam, Func, ...)
-	local rpcId = self.SnowFlake:getID()
-	local tRPCBC = {}
-	tRPCBC.Func = Func
-	tRPCBC.Method = strRPCName
-	tRPCBC.Param = {...}
-	self.RPCCash[rpcId] = tRPCBC
+	local rpcId = 0
+	if Func then
+		rpcId = self.SnowFlake:getID()
+		local tRPCBC = {}
+		tRPCBC.Func = Func
+		tRPCBC.Method = strRPCName
+		tRPCBC.Param = {...}
+		self.RPCCash[rpcId] = tRPCBC
+	end
 	
 	local tCallRPC = {}
 	tCallRPC.Enevt = EnevtType.CallRPC

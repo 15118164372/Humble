@@ -89,7 +89,7 @@ function onTcpRead(sock, uiSession, usSockType)
 				local param = utile.Pack(tRPC.Enevt, nil, sock, uiSession, tRPC)
 				objChan:Send(param)
 			else
-				utile.Log(LogLV.Warn, "not find task %s", tRPC.RecvTask)
+				utile.Log(LogLV.Err, "not find task %s", tRPC.RecvTask)
 			end
 		end
 	else

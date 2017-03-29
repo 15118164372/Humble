@@ -27,7 +27,7 @@ local function rpcGetLink(bOk, rtnMsg)
 end
 
 --测试
-local function echo2(uiSock, uiSession, tMsg)
+local function echo(uiSock, uiSession, tMsg)
 	local tmsg = {}
 	tmsg.rtn = 0
 	tmsg.msg = "echo2 json return"
@@ -40,7 +40,7 @@ local function echo2(uiSock, uiSession, tMsg)
 	rpcId = taskRPC:callRPC("task_link", taskName, "task_link.getRandLink", taskRPC:createParam(SockType.RPCCLIENT), rpcGetLink)
 	DEV_Reg(timeWheel, 5, removeRPC, taskRPC, rpcId)
 end
-netDisp:regNetEvent("/echo2", echo2)
+netDisp:regNetEvent("/echo2", echo)
 
 --任务初始化
 function initTask()

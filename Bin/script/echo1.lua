@@ -17,14 +17,14 @@ local netDisp = g_netDisp
 local svRPC = g_svRPC
 local taskRPC = g_taskRPC
 
-local function echo1(uiSock, uiSession, tMsg)
+local function echo(uiSock, uiSession, tMsg)
 	local tmsg = {}
 	tmsg.rtn = 0
 	tmsg.msg = "echo1 json return"
 	local pWBinary = httpd.Response(200, tmsg)
     humble.sendB(uiSock, uiSession, pWBinary)
 end
-netDisp:regNetEvent("/echo1", echo1)
+netDisp:regNetEvent("/echo1", echo)
 
 local function add(iA, iB)
 	return iA + iB

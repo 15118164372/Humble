@@ -44,18 +44,24 @@ function TaskRPC:onRPC(tRPC)
 		local Func = self.Proto[tRPC.Method]
 		if Func then
 			tRPC.Rnt, tRPC.Param = utile.callFunc(Func, table.unpack(tRPC.Param))
+			if not tRPC.Rnt then
+				utile.Log(LogLV.Err, "%s call task rpc %s error,message: %s, .", 
+					tRPC.RecvTask, tRPC.Method, tRPC.Param)
+			end
 		else
 			tRPC.Rnt = false
 			tRPC.Param = string.format("not find task rpc method %s", tRPC.Method)
-		end
+			utile.Log(LogLV.Err, "%s", tRPC.Param)
+		end		
 		
-		tRPC.Enevt = EnevtType.TaskRPCRtn
-		
-		local objChan = humble.getChan(tRPC.RecvTask)
-		if objChan then
-			objChan:Send(utile.Pack(EnevtType.TaskRPCRtn, nil, tRPC))
-		else
-			utile.Log(LogLV.Warn, "task rpc onRPC %s, not find recv task %s.", tRPC.Method, tRPC.RecvTask)
+		if 0 ~= tRPC.ID then
+			tRPC.Enevt = EnevtType.TaskRPCRtn
+			local objChan = humble.getChan(tRPC.RecvTask)
+			if objChan then
+				objChan:Send(utile.Pack(EnevtType.TaskRPCRtn, nil, tRPC))
+			else
+				utile.Log(LogLV.Err, "task rpc %s, not find recv task %s.", tRPC.Method, tRPC.RecvTask)
+			end
 		end
 		
 		return
@@ -70,6 +76,10 @@ end
 
 --超时用,与timewheel配合
 function TaskRPC:removeById(rpcId)
+	if 0 == rpcId then
+		return
+	end
+	
 	local rpcCash = self.RPCCash[rpcId]
 	if rpcCash then
 		utile.Log(LogLV.Warn, "call task rpc %s timeout.", rpcCash.Method)
@@ -85,20 +95,23 @@ function TaskRPC:createParam(...)
 	return {...}
 end
 
---调用 Func(rpcOK, rpcMsg, ...)
+--调用 Func(rpcOK, rpcMsg, ...) Func为nil表示不需要返回
 function TaskRPC:callRPC(strToTask, strRecvTask, strRPCName, tRPCParam, Func, ...)
 	local objChan = humble.getChan(strToTask)
 	if not objChan then
-		utile.Log(LogLV.Warn, "call task rpc %s, not find to task %s.", strRPCName, strToTask)
+		utile.Log(LogLV.Err, "call task rpc %s, not find target task %s.", strRPCName, strToTask)
 		return
 	end
 	
-	local rpcId = self.SnowFlake:getID()
-	local tRPCBC = {}
-	tRPCBC.Func = Func
-	tRPCBC.Method = strRPCName
-	tRPCBC.Param = {...}
-	self.RPCCash[rpcId] = tRPCBC
+	local rpcId = 0
+	if Func then
+		rpcId = self.SnowFlake:getID()
+		local tRPCBC = {}
+		tRPCBC.Func = Func
+		tRPCBC.Method = strRPCName
+		tRPCBC.Param = {...}
+		self.RPCCash[rpcId] = tRPCBC
+	end
 	
 	local tCallRPC = {}
 	tCallRPC.Enevt = EnevtType.TaskCallRPC
