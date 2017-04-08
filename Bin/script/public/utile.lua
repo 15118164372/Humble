@@ -33,6 +33,23 @@ function utile.Sleep(uims)
     Sleep(uims)
 end
 
+local days = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
+function utile.dayInMonth(year, mon)
+	assert(mon >= 1 and mon <= 12)
+	local day = 0
+	if 2 == mon then
+		if (0 == year %4 and 0 ~= year % 100) or 0 == year % 400 then
+			day = 29
+		else
+			day = 28
+		end
+	else
+		day = days[mon]
+	end
+	
+	return day
+end
+
 function utile.Debug(fmt, ...)
     if bDebug then
         local strMsg = string.format(fmt, table.unpack({...}))
