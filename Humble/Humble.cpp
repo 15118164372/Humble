@@ -188,6 +188,34 @@ void runSV(void)
     pLog->Join();
 }
 
+H_SOCK initSock(const char *pszHost, const unsigned short &usPort)
+{
+    H_SOCK cmdSock = H_INVALID_SOCK;
+    CNETAddr objAddr;
+
+    if (H_RTN_OK != objAddr.setAddr(pszHost, usPort))
+    {
+        H_Printf("%s", "setAddr error.");
+        return H_RTN_FAILE;
+    }
+    //创建socket
+    cmdSock = socket(AF_INET, SOCK_STREAM, 0);
+    if (H_INVALID_SOCK == cmdSock)
+    {
+        H_Printf("%s", "creat socket error.");
+        return H_RTN_FAILE;
+    }
+    if (0 != connect(cmdSock, objAddr.getAddr(), (int)objAddr.getAddrSize()))
+    {
+        H_Printf("connect %s on port %d error.", pszHost, usPort);
+        evutil_closesocket(cmdSock);
+
+        return H_RTN_FAILE;
+    }
+
+    return cmdSock;
+}
+
 int runCommand(H_SOCK &sock, const char *pszCommand, const char *pszMode, const char *pszMsg)
 {
     CClock objClock;
@@ -226,10 +254,109 @@ int runCommand(H_SOCK &sock, const char *pszCommand, const char *pszMode, const 
         return H_RTN_FAILE;
     }
 
-    printf("==>use time: %s  %s\n", H_ToString(objClock.Elapsed()).c_str(), pBuf);
+    printf("==>use time: %sms  %s\n", H_ToString(objClock.Elapsed()).c_str(), pBuf);
     H_SafeDelete(pBuf);
     
     return H_RTN_OK;
+}
+
+void onCommand(H_SOCK &cmdSock)
+{
+    char acCMD[H_ONEK];
+    std::string strCmd;
+    std::string strTask;
+    bool bRunLua = false;
+
+    while (true)
+    {
+        H_Zero(acCMD, sizeof(acCMD));
+        std::cin.getline(acCMD, sizeof(acCMD) - 1);
+        std::string strInput = H_Trim(std::string(acCMD));
+        if (strInput.empty())
+        {
+            continue;
+        }
+        if (strInput == "quit")
+        {
+            break;
+        }
+
+        if (!bRunLua)
+        {
+            std::list<std::string> lstCmd;
+            std::list<std::string>::iterator itCmd;
+            H_Split(strInput, " ", lstCmd);
+            for (itCmd = lstCmd.begin(); lstCmd.end() != itCmd;)
+            {
+                if (itCmd->size() == 0)
+                {
+                    itCmd = lstCmd.erase(itCmd);
+                }
+                else
+                {
+                    itCmd++;
+                }
+            }
+
+            itCmd = lstCmd.begin();
+            if (*itCmd == "hotfix")
+            {
+                if (lstCmd.size() != 3)
+                {
+                    printf("==>command error.\n");
+                    continue;
+                }
+
+                itCmd++;
+                strTask = *itCmd;
+                itCmd++;
+                std::string strFile = *itCmd;
+                if (H_RTN_OK != runCommand(cmdSock, "hotfix", strTask.c_str(), strFile.c_str()))
+                {
+                    printf("==>connect closed.\n");
+                    break;
+                }
+                continue;
+            }
+            if (*itCmd == "do")
+            {
+                if (lstCmd.size() != 2)
+                {
+                    printf("==>command error.\n");
+                    continue;
+                }
+
+                strCmd.clear();
+                itCmd++;
+                strTask = *itCmd;
+                bRunLua = true;
+                printf("==>begin input lua code.\n");
+                continue;
+            }
+            printf("==>unknown command.\n");
+        }
+        else
+        {
+            if (strInput == "exit")
+            {
+                bRunLua = false;
+                printf("==>end input lua code.\n");
+                continue;
+            }
+            if (strInput == "done")
+            {
+                bRunLua = false;
+                printf("==>end input lua code.\n");
+                if (H_RTN_OK != runCommand(cmdSock, "do", strTask.c_str(), strCmd.c_str()))
+                {
+                    printf("==>connect closed.\n");
+                    break;
+                }
+                continue;
+            }
+            strCmd += strInput + "\n";
+        }
+    }
 }
 
 //-d 进入命令行模式 Humble -d 15001
@@ -251,124 +378,13 @@ int main(int argc, char *argv[])
         printf("command:\n    quit\n    exit\n    hotfix taskname filename\n    do taskname .... done\n");
 
         const char *pszHost = "127.0.0.1";
-        H_SOCK cmdSock = H_INVALID_SOCK;
-        CNETAddr objAddr;
-
-        if (H_RTN_OK != objAddr.setAddr(pszHost, usPort))
-        {
-            H_Printf("%s", "setAddr error.");
-            return H_RTN_FAILE;
-        }
-        //创建socket
-        cmdSock = socket(AF_INET, SOCK_STREAM, 0);
+        H_SOCK cmdSock = initSock(pszHost, usPort);
         if (H_INVALID_SOCK == cmdSock)
         {
-            H_Printf("%s", "creat socket error.");
-            return H_RTN_FAILE;
-        }
-        if (0 != connect(cmdSock, objAddr.getAddr(), (int)objAddr.getAddrSize()))
-        {
-            H_Printf("connect %s on port %d error.", pszHost, usPort);
-            evutil_closesocket(cmdSock);
-
             return H_RTN_FAILE;
         }
 
-        char acCMD[H_ONEK];
-        std::string strCmd;
-        std::string strTask;
-        bool bRunLua = false;
-
-        while (true)
-        {
-            H_Zero(acCMD, sizeof(acCMD));
-            std::cin.getline(acCMD, sizeof(acCMD) - 1);
-            std::string strInput = H_Trim(std::string(acCMD));
-            if (strInput.empty())
-            {
-                continue;
-            }
-            if (strInput == "quit")
-            {
-                break;
-            }
-
-            if (!bRunLua)
-            {
-                std::list<std::string> lstCmd;
-                std::list<std::string>::iterator itCmd;
-                H_Split(strInput, " ", lstCmd);
-                for (itCmd = lstCmd.begin(); lstCmd.end() != itCmd;)
-                {
-                    if (itCmd->size() == 0)
-                    {
-                        itCmd = lstCmd.erase(itCmd);
-                    }
-                    else
-                    {
-                        itCmd++;
-                    }
-                }
-
-                itCmd = lstCmd.begin();
-                if (*itCmd == "hotfix")
-                {
-                    if (lstCmd.size() != 3)
-                    {
-                        printf("==>command error.\n");
-                        continue;
-                    }
-
-                    itCmd++;
-                    strTask = *itCmd;
-                    itCmd++;
-                    std::string strFile = *itCmd;
-                    if (H_RTN_OK != runCommand(cmdSock, "hotfix", strTask.c_str(), strFile.c_str()))
-                    {
-                        printf("==>connect closed.\n");
-                        break;
-                    }
-                    continue;
-                }
-                if (*itCmd == "do")
-                {
-                    if (lstCmd.size() != 2)
-                    {
-                        printf("==>command error.\n");
-                        continue;
-                    }
-
-                    strCmd.clear();
-                    itCmd++;
-                    strTask = *itCmd;
-                    bRunLua = true;
-                    printf("==>begin input lua code.\n");
-                    continue;
-                }
-                printf("==>unknown command.\n");
-            }
-            else
-            {
-                if (strInput == "exit")
-                {
-                    bRunLua = false;
-                    printf("==>end input lua code.\n");
-                    continue;
-                }
-                if (strInput == "done")
-                {
-                    bRunLua = false;
-                    printf("==>end input lua code.\n");
-                    if (H_RTN_OK != runCommand(cmdSock, "do", strTask.c_str(), strCmd.c_str()))
-                    {
-                        printf("==>connect closed.\n");
-                        break;
-                    }
-                    continue;
-                }
-                strCmd += strInput + "\n";
-            }
-        }
+        onCommand(cmdSock);
 
         evutil_closesocket(cmdSock);
 
