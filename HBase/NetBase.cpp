@@ -103,10 +103,10 @@ void CNetBase::delSession(H_SOCK &sock)
     m_mapSession.erase(itSession);
 }
 
-void CNetBase::addSession(H_SOCK &sock, H_Session *pSesson)
+void CNetBase::addSession(H_SOCK &sock, H_Session *pSesson, const bool &bAccept)
 {
     m_mapSession[sock] = pSesson;
-    onLinked(pSesson);
+    onLinked(pSesson, bAccept);
 }
 
 void CNetBase::removByType(const unsigned short &usSockType)
@@ -126,7 +126,7 @@ void CNetBase::removByType(const unsigned short &usSockType)
     }
 }
 
-H_Session *CNetBase::addTcpEv(H_SOCK &sock, const unsigned short &usSockType)
+H_Session *CNetBase::addTcpEv(H_SOCK &sock, const unsigned short &usSockType, const bool bAccept)
 {
     int iFlag = 1;
     (void)setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (char *)&iFlag, sizeof(iFlag));
@@ -150,7 +150,7 @@ H_Session *CNetBase::addTcpEv(H_SOCK &sock, const unsigned short &usSockType)
 
     bufferevent_setcb(pBev, tcpReadCB, NULL, tcpEventCB, pSession);
     (void)bufferevent_enable(pBev, EV_READ);
-    addSession(sock, pSession);
+    addSession(sock, pSession, bAccept);
 
     return pSession;
 }

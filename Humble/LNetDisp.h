@@ -15,6 +15,7 @@ public:
 
     void onStart(void);
     void onStop(void);
+    void onTcpAccept(struct H_Session *pSession);
     void onTcpLinked(struct H_Session *pSession);
     void onTcpClose(struct H_Session *pSession);
     void onTcpRead(struct H_Session *pSession);
@@ -27,6 +28,7 @@ private:
     {
         LOnstart = 0,
         LOnStop,
+        LOnTcpAccept,
         LOnTcpLinked,
         LOnTcpClose,
         LOnTcpRead,

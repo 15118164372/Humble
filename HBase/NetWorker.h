@@ -19,7 +19,7 @@ public:
     void onStart(void);
     void onReadyStop(void);
     void onClose(H_Session *pSession);
-    void onLinked(H_Session *pSession);
+    void onLinked(H_Session *pSession, const bool &bAccept);
     void onRead(H_Session *pSession);
 
     void setIntf(CSVIntf *pIntf);

@@ -6,7 +6,8 @@ require("macros")
 
 --事件类型
 EnevtType = {
-	"NetLinked",--网络链接成功，或者accept到新链接
+	"NetAccept",--accept到新链接
+	"NetLinked",--网络链接成功
 	"NetClose",--网络断开
 	"TcpRead",--tcp可读
 	"UdpRead",--udp可读
@@ -26,7 +27,6 @@ EnevtType = table.enum(EnevtType, 0)
 SockType = {
 	"CMD", --命令
 	"RPC",--rpc
-	"RPCCLIENT",--rpc clinet
 	"MONGO",--mongodb
 	
 	--自定义

@@ -37,7 +37,7 @@ local function echo(uiSock, uiSession, tMsg)
 	local rpcId = taskRPC:callRPC("echo1", taskName, "echo1.add", taskRPC:createParam(4, 8), rcpBack, "task rpc")
 	DEV_Reg(timeWheel, 5, removeRPC, taskRPC, rpcId)
 	
-	rpcId = taskRPC:callRPC("task_link", taskName, "task_link.getRandLink", taskRPC:createParam(SockType.RPCCLIENT), rpcGetLink)
+	rpcId = taskRPC:callRPC("task_link", taskName, "task_link.getRandLink", taskRPC:createParam(SockType.RPC), rpcGetLink)
 	DEV_Reg(timeWheel, 5, removeRPC, taskRPC, rpcId)
 end
 netDisp:regNetEvent("/echo2", echo)

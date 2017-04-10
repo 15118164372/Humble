@@ -68,7 +68,7 @@ public:
     virtual void onStart(void) {};
     virtual void onReadyStop(void) {};
     virtual void onClose(H_Session *pSession) {};
-    virtual void onLinked(H_Session *pSession) {};
+    virtual void onLinked(H_Session *pSession, const bool &bAccept) {};
     virtual void onRead(H_Session *pSession) {};
 
     void Run(void);
@@ -83,13 +83,13 @@ public:
     {
         return m_pBase;
     };
-    H_Session *addTcpEv(H_SOCK &sock, const unsigned short &usSockType);
+    H_Session *addTcpEv(H_SOCK &sock, const unsigned short &usSockType, const bool bAccept);
 
     void setReadyStop(const unsigned int uiStatus);
     unsigned int getReadyStop(void);
     H_Session *getSession(const H_SOCK &sock);
     void delSession(H_SOCK &sock);
-    void addSession(H_SOCK &sock, H_Session *pSesson);
+    void addSession(H_SOCK &sock, H_Session *pSesson, const bool &bAccept);
     void removByType(const unsigned short &usSockType);    
 
 protected:

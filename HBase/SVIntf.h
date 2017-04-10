@@ -14,6 +14,7 @@ public:
 
     virtual void onStart(void) {};
     virtual void onStop(void) {};
+    virtual void onTcpAccept(struct H_Session *pSession) {};
     virtual void onTcpLinked(struct H_Session *pSession) {};
     virtual void onTcpClose(struct H_Session *pSession) {};
     virtual void onTcpRead(struct H_Session *pSession) {};

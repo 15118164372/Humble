@@ -112,7 +112,7 @@ void CNetWorker::acceptCB(struct evconnlistener *, H_SOCK sock, struct sockaddr 
         return;
     }
     
-    (void)pListener->pNetWorker->addTcpEv(sock, pListener->usType);
+    (void)pListener->pNetWorker->addTcpEv(sock, pListener->usType, true);
 }
 
 void CNetWorker::udpCB(H_SOCK sock, short sEv, void *arg)
@@ -222,7 +222,7 @@ void CNetWorker::onOrder(H_Order *pOrder)
             if (m_mapTcpLink.end() != itTcpLink)
             {
                 itTcpLink->second->sock = pOrder->sock;
-                H_Session *pSession = addTcpEv(itTcpLink->second->sock, itTcpLink->second->usSockType);
+                H_Session *pSession = addTcpEv(itTcpLink->second->sock, itTcpLink->second->usSockType, false);
                 pSession->bLinker = true;
             }
         }
@@ -304,10 +304,17 @@ void CNetWorker::onClose(H_Session *pSession)
     m_pIntf->onTcpClose(pSession);
 }
 
-void CNetWorker::onLinked(H_Session *pSession)
+void CNetWorker::onLinked(H_Session *pSession, const bool &bAccept)
 {
     CSender::getSingletonPtr()->addSock(pSession->sock, pSession->uiSession);
-    m_pIntf->onTcpLinked(pSession);
+    if (bAccept) 
+    {
+        m_pIntf->onTcpAccept(pSession);
+    }
+    else
+    {
+        m_pIntf->onTcpLinked(pSession);
+    }    
 }
 
 void CNetWorker::onRead(H_Session *pSession)

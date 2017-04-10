@@ -36,8 +36,7 @@ function onStart()
 	
 	--TODO
 	--以下为测试
-	humble.addTcpLink(SockType.RPCCLIENT, "127.0.0.1", 15101)
-	humble.setParser(SockType.RPCCLIENT, "tcp3")
+	humble.addTcpLink(SockType.RPC, "127.0.0.1", 15101)
 	humble.addListener(11, "0.0.0.0", 80)
 	humble.setParser(11, "http")
 	humble.regTask("echo1")
@@ -51,7 +50,12 @@ function onStop()
 	
 end
 
---链接成功 或者有新链接到达
+--accept到新链接
+function onTcpAccept(sock, uiSession, usSockType)
+	--tChan.xxx:Send(utile.Pack(EnevtType.NetAccept, nil, sock, uiSession, usSockType))
+end
+
+--链接成功
 function onTcpLinked(sock, uiSession, usSockType)
     tChan.task_link:Send(utile.Pack(EnevtType.NetLinked, nil, sock, uiSession, usSockType))
 end
@@ -76,7 +80,7 @@ function onTcpRead(sock, uiSession, usSockType)
 		
 		local packMsg = utile.Pack(EnevtType.CMD, strCmd, sock, uiSession, strMsg)
 		objChan:Send(packMsg)
-	elseif ((SockType.RPC == usSockType) or (SockType.RPCCLIENT == usSockType)) then --服务器间RPC
+	elseif SockType.RPC == usSockType then --服务器间RPC
 		local tRPC = cjson.decode(pBuffer:getByte(pBuffer:getSurpLens()))
 		if tRPC.Enevt == EnevtType.CallRPC then --调用
 			local param = utile.Pack(tRPC.Enevt, tRPC.Method, sock, uiSession, tRPC)
@@ -110,6 +114,6 @@ function onTcpRead(sock, uiSession, usSockType)
 end
 
 --udp可读
-function onUdpRead(sock, pHost, usPort)
+function onUdpRead(sock, strHost, usPort)
 	--TODO
 end
