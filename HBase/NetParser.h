@@ -63,8 +63,6 @@ private:
 
     name_map m_mapName;
     type_map m_mapType;
-    CRWLock m_objNameLck;
-    CRWLock m_objTypeLck;
 };
 
 H_ENAMSP

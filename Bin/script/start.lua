@@ -24,19 +24,21 @@ local tChan = g_tChan
 
 --初始化  这里注册任务
 function onStart()
-	--命令监听
-	humble.addListener(SockType.CMD, "127.0.0.1", 15100)
 	humble.setParser(SockType.CMD, "tcp3")
-	--rpc
-	humble.addListener(SockType.RPC, "0.0.0.0", 15101)
 	humble.setParser(SockType.RPC, "tcp3")
+
+	--命令监听
+	humble.addListener(SockType.CMD, "127.0.0.1", 15100)	
+	--rpc
+	humble.addListener(SockType.RPC, "0.0.0.0", 15200)
+	
 	--链接管理
 	humble.regTask("task_link")
     tChan.task_link = humble.getChan("task_link")
 	
 	--TODO
 	--以下为测试
-	humble.addTcpLink(SockType.RPC, "127.0.0.1", 15101)
+	humble.addTcpLink(SockType.RPC, "127.0.0.1", 15200)
 	humble.addListener(11, "0.0.0.0", 80)
 	humble.setParser(11, "http")
 	humble.regTask("echo1")
