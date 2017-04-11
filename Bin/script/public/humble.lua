@@ -102,7 +102,7 @@ function humble.regProto(proto, strTask)
 	end
 end
 
-function humble.netToTask(proto, param)
+function humble.netToTask(tChans, proto, param)
 	local protoType = type(proto)
 	assert("string" == protoType or "number" == protoType)
 	local strTask = nil
@@ -116,7 +116,7 @@ function humble.netToTask(proto, param)
 		return false
 	end
 	
-	local objChan = humble.getChan(strTask)
+	local objChan = tChans[strTask]
 	if not objChan then
 		return false
 	end

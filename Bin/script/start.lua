@@ -16,7 +16,7 @@ local pBuffer = g_pBuffer
 
 --以下为测试
 local httpd = require("httpd")
-
+--任务名与chan对应
 if not g_tChan then
     g_tChan = {}    
 end
@@ -71,7 +71,7 @@ function onTcpRead(sock, uiSession, usSockType)
 		local strCmd = pBuffer:getString()
 		local strTask = pBuffer:getString()
 		local strMsg = pBuffer:getString()
-		local objChan = humble.getChan(strTask)
+		local objChan = tChan[strTask]
 		if not objChan then
 			humble.sendB(sock, uiSession, 
 				tcp3.Response(cjson.encode({"fail", "not find task."})))
@@ -84,11 +84,11 @@ function onTcpRead(sock, uiSession, usSockType)
 		local tRPC = cjson.decode(pBuffer:getByte(pBuffer:getSurpLens()))
 		if tRPC.Enevt == EnevtType.CallRPC then --调用
 			local param = utile.Pack(tRPC.Enevt, tRPC.Method, sock, uiSession, tRPC)
-			if not humble.netToTask(tRPC.Method, param) then
+			if not humble.netToTask(tChan, tRPC.Method, param) then
 				utile.unPack(param)--释放掉
 			end
 		else --调用返回
-			local objChan = humble.getChan(tRPC.RecvTask)
+			local objChan = tChan[tRPC.RecvTask]
 			if objChan then
 				local param = utile.Pack(tRPC.Enevt, nil, sock, uiSession, tRPC)
 				objChan:Send(param)
@@ -106,7 +106,7 @@ function onTcpRead(sock, uiSession, usSockType)
 			local buffer = httpd.parsePack(pBuffer)
 			local param = utile.Pack(EnevtType.TcpRead, buffer.url, sock, uiSession, buffer)
 			--发送消息到对应任务
-			if not humble.netToTask(buffer.url, param) then
+			if not humble.netToTask(tChan, buffer.url, param) then
 				utile.unPack(param)--释放掉
 			end
 		end
