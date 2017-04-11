@@ -10,11 +10,14 @@ CHttp objHttp;
 
 #define Http_HeadEndFlag "\r\n\r\n"
 #define Http_ChunkEndFlag "\r\n0\r\n\r\n"
+#define Http_ContentLensStr "Content-Length:"
+#define Http_ChunkedStr "Transfer-Encoding: chunked"
 
 CHttp::CHttp(void)
 {
     m_iHeadEndFlagLens = strlen(Http_HeadEndFlag);
     m_iChunkEndFlagLens = strlen(Http_ChunkEndFlag);
+    m_iContentLens = strlen(Http_ContentLensStr);
     setName("http");
 }
 
@@ -35,20 +38,20 @@ size_t CHttp::getHeadLens(const char *pBuffer)
 
 bool CHttp::getContentLens(const char *pszHead, const size_t &iHeadLens, size_t &iContentLens)
 {
-    const char *pBegin = H_StrStr(pszHead, "content-length:");
+    const char *pBegin = strstr(pszHead, Http_ContentLensStr);
     if (NULL == pBegin)
     {
         return false;
     }
 
-    iContentLens = atoi(pBegin + strlen("content-length:"));
+    iContentLens = atoi(pBegin + m_iContentLens);
 
     return true;
 }
 
 bool CHttp::checkChunk(const char *pszHead, const size_t &iHeadLens)
 {
-    if (NULL == H_StrStr(pszHead, "transfer-encoding: chunked"))
+    if (NULL == strstr(pszHead, Http_ChunkedStr))
     {
         return false;
     }

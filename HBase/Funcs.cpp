@@ -465,32 +465,6 @@ std::string H_GetLastOfFlag(const std::string &strSource, const char *pszFlag)
     return strSource.substr(iPos + strlen(pszFlag), strSource.size());
 }
 
-const char* H_StrStr(const char* pszStr, const char* pszsubStr)
-{
-    if (NULL == pszStr
-        || NULL == pszsubStr)
-    {
-        return NULL;
-    }
-
-    size_t iLens(strlen(pszsubStr));
-    if (0 == iLens)
-    {
-        return NULL;
-    }
-
-    while (*pszStr)
-    {
-        if (0 == H_Strncasecmp(pszStr, pszsubStr, iLens))
-        {
-            return pszStr;
-        }
-        ++pszStr;
-    }
-
-    return NULL;
-}
-
 void H_GetTimeOfDay(struct timeval &stTime)
 {
     evutil_timerclear(&stTime);

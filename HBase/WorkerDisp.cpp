@@ -151,6 +151,14 @@ void CWorkerDisp::runSurpTask(void)
     }
 }
 
+void CWorkerDisp::initTask(void)
+{
+    for (taskit itTask = m_mapTask.begin(); m_mapTask.end() != itTask; ++itTask)
+    {
+        itTask->second->initTask();
+    }
+}
+
 void CWorkerDisp::destroyTask(void)
 {
     for (taskit itTask = m_mapTask.begin(); m_mapTask.end() != itTask; ++itTask)
@@ -168,10 +176,7 @@ void CWorkerDisp::Run(void)
     unsigned short usIndex(H_INIT_NUMBER);
 
     //初始化所有服务
-    for (taskit itTask = m_mapTask.begin(); m_mapTask.end() != itTask; ++itTask)
-    {
-        itTask->second->initTask();
-    }
+    initTask();
 
     H_AtomicAdd(&m_lCount, 1);
 

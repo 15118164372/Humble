@@ -279,7 +279,7 @@ luabridge::H_LBinary& CBinary::readLine(void)
 int CBinary::Find(const char *pFlag)
 {
     const char *pBuf = m_pParseBuffer + m_iCurParseLens;
-    const char *pPos = H_StrStr(pBuf, pFlag);
+    const char *pPos = strstr(pBuf, pFlag);
     if (NULL == pPos)
     {
         return -1;

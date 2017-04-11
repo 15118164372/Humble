@@ -24,6 +24,7 @@ private:
     bool checkChunk(const char *pszHead, const size_t &iHeadLens);
 
 private:
+    size_t m_iContentLens;
     size_t m_iHeadEndFlagLens;
     size_t m_iChunkEndFlagLens;
 };

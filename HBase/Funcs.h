@@ -18,8 +18,6 @@ std::string H_TrimRight(std::string strSource);
 std::string H_Trim(std::string strSource);
 std::string H_GetFrontOfFlag(const std::string &strSource, const char *pszFlag);
 std::string H_GetLastOfFlag(const std::string &strSource, const char *pszFlag);
-//查找不区分大小写
-const char *H_StrStr(const char *pszStr, const char *pszsubStr);
 
 //时间相关
 std::string H_Now(void);

@@ -44,6 +44,7 @@ private:
     void stopNet(void);
     void stopWorker(void);
     void runSurpTask(void);
+    void initTask(void);
     void destroyTask(void);
 
 private:
