@@ -17,12 +17,16 @@ local svRPC = g_svRPC
 local taskRPC = g_taskRPC
 
 --[[ 可选
+--accept成功
+local function onNetAccept(Proto, msgPack)
+	local uiSock, uiSession, uiType = table.unpack(msgPack)
+end
+enevtDisp:regEvent(EnevtType.NetAccept, onNetAccept)
 --链接事件
 local function onNetLinkedEvent(Proto, msgPack)
 	local uiSock, uiSession, uiType = table.unpack(msgPack)
 end
 enevtDisp:regEvent(EnevtType.NetLinked, onNetLinkedEvent)
-
 --连接断开
 local function onNetCloseEvent(Proto, msgPack)
 	local uiSock, uiSession, uiType = table.unpack(msgPack)
