@@ -54,8 +54,8 @@ local http_status_msg = {
 	[505] = "HTTP Version not supported",
 }
 
-local ContentLength = "content-length"
-local TransferEncoding = "transfer-encoding"
+local ContentLength = "Content-Length"
+local TransferEncoding = "Transfer-Encoding"
 
 local function parseHead(pBinary)    
     local tHead = {}
@@ -140,17 +140,17 @@ function httpd.Response(iCode, varBodyFunc, tHeader, ...)
 
 	local strType = type(varBodyFunc)
 	if strType == "string" then
-		strMsg = string.format("content-length: %d\r\n\r\n", #varBodyFunc)
+		strMsg = string.format("Content-Length: %d\r\n\r\n", #varBodyFunc)
         pWBinary:setByte(strMsg, #strMsg)
         pWBinary:setByte(varBodyFunc, #varBodyFunc)
 	elseif strType == "table" then
 		local strJsonMsg = cjson.encode(varBodyFunc)
-		strMsg = string.format("content-type: application/json\r\ncontent-length: %d\r\n\r\n", 
+		strMsg = string.format("Content-Type: application/json\r\nContent-Length: %d\r\n\r\n", 
 			#strJsonMsg)
         pWBinary:setByte(strMsg, #strMsg)
         pWBinary:setByte(strJsonMsg, #strJsonMsg)
 	elseif strType == "function" then
-		strMsg = "transfer-encoding: chunked\r\n"
+		strMsg = "Transfer-Encoding: chunked\r\n"
         pWBinary:setByte(strMsg, #strMsg)
         local str
 		while true do

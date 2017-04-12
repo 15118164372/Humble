@@ -35,11 +35,6 @@ private:
     H_DISALLOWCOPY(CRecvTask);
     enum
     {
-        CANADD = 0,
-        CANTADD,
-    };
-    enum
-    {
         RS_RUN = 0,
         RS_STOP,
     };
@@ -58,7 +53,7 @@ private:
 
 template <typename T>
 CRecvTask<T>::CRecvTask(void) : m_bDel(true), m_bArray(false), m_uiWait(H_INIT_NUMBER),
-    m_lExit(RS_RUN), m_lCanAdd(CANADD), m_lCount(H_INIT_NUMBER)
+    m_lExit(RS_RUN), m_lCount(H_INIT_NUMBER)
 {
     pthread_mutex_init(&m_quLock, NULL);
     pthread_cond_init(&m_objCond, NULL);
@@ -117,7 +112,6 @@ void CRecvTask<T>::Run(void)
         }
     }
 
-    CLckThis objLckThis(&m_quLock);
     while (!m_vcTask.empty())
     {
         pMsg = m_vcTask.front();
@@ -147,7 +141,7 @@ void CRecvTask<T>::waitStart(void)
 template <typename T>
 void CRecvTask<T>::addTask(T *pMsg)
 {
-    if (CANADD != H_AtomicGet(&m_lCanAdd))
+    if (RS_RUN != H_AtomicGet(&m_lExit))
     {
         return;
     }
@@ -193,7 +187,6 @@ void CRecvTask<T>::Join(void)
     }
 
     //等待任务队列完成
-    H_AtomicSet(&m_lCanAdd, CANTADD);
     H_AtomicSet(&m_lExit, RS_STOP);
     for(;;)
     {
