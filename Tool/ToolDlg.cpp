@@ -409,7 +409,7 @@ void CToolDlg::getAllFileName(const char *pszParentPathName, std::list<std::stri
         return;
     }
 
-    if (!fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY
+    if (!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
         && !(fd.dwFileAttributes & FILE_ATTRIBUTE_SYSTEM)
         && !(fd.dwFileAttributes & FILE_ATTRIBUTE_DEVICE)
         && !(fd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN))

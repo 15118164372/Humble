@@ -94,8 +94,8 @@ uint64_t CSnowFlake::getID(void)
     m_ulLastTime = uiCurTime;
 
     return ((uint64_t)(uiCurTime - Epoch) << TimestampLeftShift) | 
-        (m_uiCenterid << DatacenterIdShift) | 
-        (m_uiWorkid << WorkerIdShift) | 
+        ((uint64_t)m_uiCenterid << DatacenterIdShift) |
+        ((uint64_t)m_uiWorkid << WorkerIdShift) |
         m_lSequence;
 }
 

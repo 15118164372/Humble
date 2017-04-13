@@ -250,12 +250,12 @@ int runCommand(H_SOCK &sock, const char *pszCommand, const char *pszMode, const 
     iRtn = recv(sock, pBuf, uiPackLens, 0);
     if (iRtn != (int)uiPackLens)
     {
-        H_SafeDelete(pBuf);
+        H_SafeDelArray(pBuf);
         return H_RTN_FAILE;
     }
 
     printf("==>use time: %sms  %s\n", H_ToString(objClock.Elapsed()).c_str(), pBuf);
-    H_SafeDelete(pBuf);
+    H_SafeDelArray(pBuf);
     
     return H_RTN_OK;
 }
