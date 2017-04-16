@@ -5,7 +5,6 @@
 #include "Worker.h"
 #include "Singleton.h"
 #include "Funcs.h"
-#include "RWLock.h"
 
 H_BNAMSP
 
