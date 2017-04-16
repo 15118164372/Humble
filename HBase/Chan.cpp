@@ -18,7 +18,10 @@ void CChan::Send(void *pszVal)
     m_quData.push(pszVal);
     m_objQuLck.unLock();
 
-    CWorkerDisp::getSingletonPtr()->Notify(m_pstrName);
+	if (NULL != m_pstrName)
+	{
+		CWorkerDisp::getSingletonPtr()->Notify(m_pstrName);
+	}    
 }
 
 void *CChan::Recv(void)
