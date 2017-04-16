@@ -44,7 +44,6 @@ private:
     bool m_bArray;
     unsigned int m_uiWait;
     long m_lExit;
-    long m_lCanAdd;
     long m_lCount;
     std::queue<T*> m_vcTask;
     pthread_mutex_t m_quLock;
