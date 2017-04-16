@@ -10,10 +10,9 @@ H_BNAMSP
 SINGLETON_INIT(CWorkerDisp)
 CWorkerDisp objWorker;
 
-CWorkerDisp::CWorkerDisp(void) : m_usThreadNum(H_INIT_NUMBER),
-    m_lExit(RS_RUN), m_lCount(H_INIT_NUMBER), m_pWorker(NULL)
+CWorkerDisp::CWorkerDisp(void) : m_usThreadNum(H_INIT_NUMBER), m_pWorker(NULL)
 {
-
+    setDel(false);
 }
 
 CWorkerDisp::~CWorkerDisp(void)
@@ -111,47 +110,7 @@ void CWorkerDisp::stopWorker(void)
     }
 }
 
-void CWorkerDisp::runSurpTask(void)
-{
-    CWorkerTask *pWorkerTask = NULL;
-    std::string *pTaskNam;
-
-    for (taskit itTask = m_mapTask.begin(); m_mapTask.end() != itTask; ++itTask)
-    {
-        for (size_t i = H_INIT_NUMBER; i < itTask->second->getChan()->getSize(); ++i)
-        {
-            m_taskLck.Lock();
-            m_quTask.push(itTask->second->getName());
-            m_taskLck.unLock();
-        }
-    }
-
-    while (true)
-    {
-        pTaskNam = NULL;
-
-        m_taskLck.Lock();
-        if (!m_quTask.empty())
-        {
-            pTaskNam = m_quTask.front();
-            m_quTask.pop();
-        }
-        m_taskLck.unLock();
-
-        if (NULL == pTaskNam)
-        {
-            break;
-        }
-
-        pWorkerTask = getTask(pTaskNam);
-        if (NULL != pWorkerTask)
-        {
-            pWorkerTask->runTask();
-        }
-    }
-}
-
-void CWorkerDisp::initTask(void)
+void CWorkerDisp::initRun(void)
 {
     for (taskit itTask = m_mapTask.begin(); m_mapTask.end() != itTask; ++itTask)
     {
@@ -159,111 +118,55 @@ void CWorkerDisp::initTask(void)
     }
 }
 
-void CWorkerDisp::destroyTask(void)
+void CWorkerDisp::runTask(std::string *pszTask)
 {
-    for (taskit itTask = m_mapTask.begin(); m_mapTask.end() != itTask; ++itTask)
+    unsigned short usIndex(H_INIT_NUMBER);
+    CWorkerTask* pWorkerTask = getTask(pszTask);
+    if (NULL == pWorkerTask)
     {
-        itTask->second->destroyTask();
+        return;
     }
+    if (H_INIT_NUMBER != pWorkerTask->getRef())
+    {
+        addTask(pszTask);
+        return;
+    }
+
+    CWorker *pWorker = getFreeWorker(usIndex);
+    pWorker->setBusy();
+    pWorker->addWorker(pWorkerTask);
 }
 
-void CWorkerDisp::Run(void)
+void CWorkerDisp::stopRun(void)
 {
-    unsigned int uiSleep(H_INIT_NUMBER);
-    CWorker *pWorker = NULL;
-    CWorkerTask *pWorkerTask = NULL;
-    std::string *pTaskNam;
-    unsigned short usIndex(H_INIT_NUMBER);
-
-    //初始化所有服务
-    initTask();
-
-    H_AtomicAdd(&m_lCount, 1);
-
-    //正常调度
-    while (RS_RUN == H_AtomicGet(&m_lExit))
-    {
-        pTaskNam = NULL;
-
-        m_taskLck.Lock();
-        if (!m_quTask.empty())
-        {
-            pTaskNam = m_quTask.front();
-            m_quTask.pop();
-        }
-        m_taskLck.unLock();
-
-        if (NULL == pTaskNam)
-        {
-            H_Sleep(uiSleep);
-            ++uiSleep;
-            uiSleep = (uiSleep > 10 ? 10 : uiSleep);
-
-            continue;
-        }
-
-        uiSleep = H_INIT_NUMBER;
-        pWorkerTask = getTask(pTaskNam);
-        if (NULL == pWorkerTask)
-        {
-            continue;
-        }
-        if (H_INIT_NUMBER != pWorkerTask->getRef())
-        {
-            m_taskLck.Lock();
-            m_quTask.push(pTaskNam);
-            m_taskLck.unLock();
-
-            continue;
-        }
-
-        pWorker = getFreeWorker(usIndex);
-        pWorker->setBusy();
-        pWorker->addWorker(pWorkerTask);
-    }
-
     //停止网络
     stopNet();
     //停止工作线程
     stopWorker();
-    //执行剩余的任务
-    runSurpTask();
-    //任务清理
-    destroyTask();
-
-    H_AtomicAdd(&m_lCount, -1);
-}
-
-void CWorkerDisp::Join(void)
-{
-    if (RS_RUN != H_AtomicGet(&m_lExit))
+    //未执行完的加到队列
+    for (taskit itTask = m_mapTask.begin(); m_mapTask.end() != itTask; ++itTask)
     {
-        return;
-    }
-
-    H_AtomicSet(&m_lExit, RS_STOP);
-
-    for (;;)
-    {
-        if (H_INIT_NUMBER == H_AtomicGet(&m_lCount))
+        for (size_t i = H_INIT_NUMBER; i < itTask->second->getChan()->getSize(); ++i)
         {
-            break;
+            addTask(itTask->second->getName());
         }
-
-        H_Sleep(10);
     }
 }
 
-void CWorkerDisp::waitStart(void)
+void CWorkerDisp::runSurplusTask(std::string *pszTask)
 {
-    for (;;)
+    CWorkerTask *pWorkerTask = getTask(pszTask);
+    if (NULL != pWorkerTask)
     {
-        if (H_INIT_NUMBER != H_AtomicGet(&m_lCount))
-        {
-            return;
-        }
+        pWorkerTask->runTask();
+    }
+}
 
-        H_Sleep(10);
+void CWorkerDisp::destroyRun(void)
+{
+    for (taskit itTask = m_mapTask.begin(); m_mapTask.end() != itTask; ++itTask)
+    {
+        itTask->second->destroyTask();
     }
 }
 

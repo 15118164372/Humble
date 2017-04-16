@@ -16,7 +16,13 @@ public:
     ~CRecvTask(void);
 
     void Run(void);
+
+    //Run动作分解
+    virtual void initRun(void) {};
     virtual void runTask(T *pMsg) = 0;
+    virtual void stopRun(void) {};
+    virtual void runSurplusTask(T *pMsg);
+    virtual void destroyRun(void) {};
     
     void Join(void);
     void waitStart(void);
@@ -86,6 +92,8 @@ template <typename T>
 void CRecvTask<T>::Run(void)
 {
     T *pMsg = NULL;
+    initRun();
+
     H_AtomicAdd(&m_lCount, 1);
 
     while(RS_RUN == H_AtomicGet(&m_lExit))
@@ -111,16 +119,38 @@ void CRecvTask<T>::Run(void)
         }
     }
 
-    while (!m_vcTask.empty())
-    {
-        pMsg = m_vcTask.front();
-        m_vcTask.pop();
+    stopRun();
 
-        runTask(pMsg);
-        Free(pMsg);
+    pMsg = NULL;
+    while (true)
+    {
+        if (NULL != pMsg)
+        {
+            runSurplusTask(pMsg);
+            Free(pMsg);
+        }
+
+        CLckThis objLckThis(&m_quLock);
+        if (!m_vcTask.empty())
+        {
+            pMsg = m_vcTask.front();
+            m_vcTask.pop();
+        }
+        else
+        {
+            break;
+        }
     }
 
+    destroyRun();
+
     H_AtomicAdd(&m_lCount, -1);
+}
+
+template <typename T>
+void CRecvTask<T>::runSurplusTask(T *pMsg)
+{
+    runTask(pMsg);
 }
 
 template <typename T>
@@ -140,11 +170,6 @@ void CRecvTask<T>::waitStart(void)
 template <typename T>
 void CRecvTask<T>::addTask(T *pMsg)
 {
-    if (RS_RUN != H_AtomicGet(&m_lExit))
-    {
-        return;
-    }
-
     CLckThis objLckThis(&m_quLock);
     m_vcTask.push(pMsg);
     if (m_uiWait > H_INIT_NUMBER)

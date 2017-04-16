@@ -18,7 +18,7 @@ local svRPC = g_svRPC
 local taskRPC = g_taskRPC
 
 local function rcpBack(bOk, rtnMsg, strType)
-	print(string.format("strType : %s val %s", strType, tostring(rtnMsg)))
+	print(string.format("%d, strType : %s val %s", os.time(), strType, tostring(rtnMsg)))
 end
 
 local function rpcGetLink(bOk, rtnMsg)

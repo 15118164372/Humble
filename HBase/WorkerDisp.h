@@ -9,7 +9,7 @@
 H_BNAMSP
 
 //服务调度,服务管理
-class CWorkerDisp : public CTask, public CSingleton<CWorkerDisp>
+class CWorkerDisp : public CRecvTask<std::string>, public CSingleton<CWorkerDisp>
 {
 public:
     CWorkerDisp(void);
@@ -25,15 +25,15 @@ public:
 
     void regTask(const char *pszName, CWorkerTask *pTask);
 
-    void Run(void);
-    void Join(void);
-    void waitStart(void);
+    void initRun(void);
+    void runTask(std::string *pszTask);
+    void stopRun(void);
+    void runSurplusTask(std::string *pszTask);
+    void destroyRun(void);
 
     H_INLINE void Notify(std::string *pstrName)
     {
-        m_taskLck.Lock();
-        m_quTask.push(pstrName);
-        m_taskLck.unLock();
+        addTask(pstrName);
     };
 
 private:
@@ -41,9 +41,6 @@ private:
     CWorkerTask* getTask(std::string *pstrName);
     void stopNet(void);
     void stopWorker(void);
-    void runSurpTask(void);
-    void initTask(void);
-    void destroyTask(void);
 
 private:
     H_DISALLOWCOPY(CWorkerDisp);
@@ -61,12 +58,8 @@ private:
     };
 private:
     unsigned short m_usThreadNum;
-    long m_lExit;
-    long m_lCount;
     CWorker *m_pWorker;
     task_map m_mapTask;
-    CAtomic m_taskLck;
-    std::queue<std::string *> m_quTask;
 };
 
 H_ENAMSP
