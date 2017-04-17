@@ -8,7 +8,7 @@ H_BNAMSP
 SINGLETON_INIT(CLinker)
 CLinker objLinker;
 
-CLinker::CLinker(void)
+CLinker::CLinker(void) : CRecvTask<H_Link>(H_QULENS_LINKER)
 {
 }
 

@@ -2,6 +2,7 @@
 C++º¯Êý
 --]]
 
+local utile = require("utile")
 local string = string
 local pWorkerMgr = g_pWorkerMgr
 local pNet = g_pNetWorker
@@ -87,8 +88,8 @@ end
 function humble.getChan(strTaskNam)
     return pWorkerMgr:getChan(strTaskNam)
 end
-function humble.regTask(strTaskNam)
-    return pWorkerMgr:regTask(strTaskNam, newLuaTask())
+function humble.regTask(strTaskNam, iChanLens)
+    return pWorkerMgr:regTask(strTaskNam, newLuaTask(iChanLens))
 end
 
 --ÍøÂç·Ö·¢
@@ -113,17 +114,17 @@ function humble.netToTask(tChans, proto, param)
 	end
 	
 	if not strTask then
+		utile.freePack(param)
 		return false
 	end
 	
 	local objChan = tChans[strTask]
 	if not objChan then
+		utile.freePack(param)
 		return false
 	end
 	
-	objChan:Send(param)
-	
-	return true
+	return utile.chanSend(objChan, param)
 end
 
 return humble

@@ -4,7 +4,7 @@
 
 H_BNAMSP
 
-CChan::CChan(void) : m_pstrName(NULL)
+CChan::CChan(const int iCapacity) : m_pstrName(NULL), m_quData(iCapacity)
 {
 }
 
@@ -12,28 +12,25 @@ CChan::~CChan(void)
 {
 }
 
-void CChan::Send(void *pszVal)
+bool CChan::Send(void *pszVal)
 {
     m_objQuLck.Lock();
-    m_quData.push(pszVal);
+    bool bOk(m_quData.Push((void*)pszVal));
     m_objQuLck.unLock();
 
-	if (NULL != m_pstrName)
+	if (NULL != m_pstrName 
+        && bOk)
 	{
 		CWorkerDisp::getSingletonPtr()->Notify(m_pstrName);
-	}    
+	} 
+
+    return bOk;
 }
 
 void *CChan::Recv(void)
 {
-    void *pVal = NULL;
-
     m_objQuLck.Lock();
-    if (!m_quData.empty())
-    {
-        pVal = m_quData.front();
-        m_quData.pop();
-    }
+    void *pVal(m_quData.Pop());
     m_objQuLck.unLock();    
 
     return pVal;
@@ -41,13 +38,16 @@ void *CChan::Recv(void)
 
 size_t CChan::getSize(void)
 {
-    size_t iSize(H_INIT_NUMBER);
-
     m_objQuLck.Lock();
-    iSize = m_quData.size();
+    size_t iSize(m_quData.Size());
     m_objQuLck.unLock();
 
     return iSize;
+}
+
+size_t CChan::getCapacity(void)
+{
+    return m_quData.Capacity();
 }
 
 void CChan::setTaskNam(std::string *pszName)

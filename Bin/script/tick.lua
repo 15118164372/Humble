@@ -24,10 +24,10 @@ end
 --定时器触发
 function onTimer(uiTick, uiCount)
 	--每帧
-    --tChan.timer:Send(utile.Pack(EnevtType.Frame, nil, uiTick, uiCount))
+	--utile.chanSend(tChan.timer, utile.Pack(EnevtType.Frame, nil, uiTick, uiCount))
     
     --1秒
     if 0 == ((uiTick * uiCount) % 1000) then 
-        tChan.echo2:Send(utile.Pack(EnevtType.Second_1, nil, uiTick, uiCount))
+		utile.chanSend(tChan.echo2, utile.Pack(EnevtType.Second_1, nil, uiTick, uiCount))
     end
 end

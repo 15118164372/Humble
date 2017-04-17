@@ -644,6 +644,22 @@ lunpack(lua_State *L) {
 }
 
 static int
+lfreepack(lua_State *L) {
+    struct block * blk = lua_touserdata(L, 1);
+    if (blk == NULL) {
+        return luaL_error(L, "Need a block to free");
+    }
+
+    while (blk) {
+        struct block * next = blk->next;
+        free(blk);
+        blk = next;
+    }
+
+    return 1;
+}
+
+static int
 _dump_mem(const char * buffer, int len, int size) {
 	int i;
 	for (i=0;i<len && i<size;i++) {
@@ -770,11 +786,7 @@ luaopen_serialize(lua_State *L) {
 	luaL_Reg l[] = {
 		{ "pack", lpack },
 		{ "unpack", lunpack },
-		{ "append", lappend },
-		{ "serialize", lserialize },
-		{ "deserialize", ldeserialize },
-		{ "serialize_string", seristring },
-		{ "deseristring_string", deseristring },
+        { "freepack", lfreepack },
 		{ "dump", _dump },
 		{ NULL, NULL },
 	};

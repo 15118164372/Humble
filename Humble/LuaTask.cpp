@@ -4,7 +4,7 @@
 
 H_BNAMSP
 
-CLuaTask::CLuaTask(void)
+CLuaTask::CLuaTask(const int iCapacity) : CWorkerTask(iCapacity)
 {
     m_pLFunc = new(std::nothrow) luabridge::LuaRef *[LTASK_COUNT];
     H_ASSERT(NULL != m_pLFunc, "malloc memory error.");

@@ -27,7 +27,7 @@ enum
     UBroadCast,
 };
 
-CSender::CSender(void)
+CSender::CSender(void) : CRecvTask<H_Sender>(H_QULENS_SENDER)
 {
 
 }

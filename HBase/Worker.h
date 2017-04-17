@@ -17,7 +17,7 @@ enum
 class CWorkerTask : public CTask
 {
 public:
-    CWorkerTask() : m_uiRef(H_INIT_NUMBER)
+    CWorkerTask(const int iCapacity) : m_uiRef(H_INIT_NUMBER), m_objChan(iCapacity)
     {};
     ~CWorkerTask()
     {};
@@ -59,6 +59,7 @@ public:
     };
 
 private:
+    CWorkerTask(void);
     H_DISALLOWCOPY(CWorkerTask);
 
 private:

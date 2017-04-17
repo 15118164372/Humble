@@ -4,7 +4,8 @@
 
 H_BNAMSP
 
-CWorker::CWorker(void) : m_usIndex(H_INIT_NUMBER), m_uiStatus(WS_FREE)
+CWorker::CWorker(void) : CRecvTask<CWorkerTask>(H_QULENS_WORKER),
+    m_usIndex(H_INIT_NUMBER), m_uiStatus(WS_FREE)
 {
     setDel(false);
 }

@@ -10,7 +10,8 @@ H_BNAMSP
 SINGLETON_INIT(CWorkerDisp)
 CWorkerDisp objWorker;
 
-CWorkerDisp::CWorkerDisp(void) : m_usThreadNum(H_INIT_NUMBER), m_pWorker(NULL)
+CWorkerDisp::CWorkerDisp(void) : CRecvTask<std::string>(H_QULENS_WORKERDISP), 
+    m_usThreadNum(H_INIT_NUMBER), m_pWorker(NULL)
 {
     setDel(false);
 }

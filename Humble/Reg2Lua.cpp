@@ -32,9 +32,9 @@ std::string md5File(const char *pszFile)
     return objMD5.toString();
 }
 
-CWorkerTask *newLuaTask(void)
+CWorkerTask *newLuaTask(const int iCapacity)
 {
-    return new CLuaTask();
+    return new CLuaTask(iCapacity);
 }
 
 const char *getProPath(void)

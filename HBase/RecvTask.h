@@ -3,6 +3,7 @@
 #define H_SERVICETASK_H_
 
 #include "Task.h"
+#include "CirQueue.h"
 #include "LockThis.h"
 
 H_BNAMSP
@@ -12,7 +13,7 @@ template <typename T>
 class CRecvTask : public CTask
 {
 public:
-    CRecvTask(void);
+    CRecvTask(const int iCapacity);
     ~CRecvTask(void);
 
     void Run(void);
@@ -38,6 +39,7 @@ private:
     void Free(T *pMsg);
 
 private:
+    CRecvTask(void);
     H_DISALLOWCOPY(CRecvTask);
     enum
     {
@@ -51,14 +53,14 @@ private:
     unsigned int m_uiWait;
     long m_lExit;
     long m_lCount;
-    std::queue<T*> m_vcTask;
+    CCirQueue m_quTask;
     pthread_mutex_t m_quLock;
     pthread_cond_t m_objCond;
 };
 
 template <typename T>
-CRecvTask<T>::CRecvTask(void) : m_bDel(true), m_bArray(false), m_uiWait(H_INIT_NUMBER),
-    m_lExit(RS_RUN), m_lCount(H_INIT_NUMBER)
+CRecvTask<T>::CRecvTask(const int iCapacity) : m_bDel(true), m_bArray(false), m_uiWait(H_INIT_NUMBER),
+    m_lExit(RS_RUN), m_lCount(H_INIT_NUMBER), m_quTask(iCapacity)
 {
     pthread_mutex_init(&m_quLock, NULL);
     pthread_cond_init(&m_objCond, NULL);
@@ -102,16 +104,11 @@ void CRecvTask<T>::Run(void)
         {
             runTask(pMsg);
             Free(pMsg);
-            pMsg = NULL;
         }
 
         CLckThis objLckThis(&m_quLock);
-        if (!m_vcTask.empty())
-        {
-            pMsg = m_vcTask.front();
-            m_vcTask.pop();
-        }
-        else
+        pMsg = (T *)m_quTask.Pop();
+        if (NULL == pMsg)
         {
             ++m_uiWait;
             pthread_cond_wait(&m_objCond, objLckThis.getMutex());
@@ -131,12 +128,8 @@ void CRecvTask<T>::Run(void)
         }
 
         CLckThis objLckThis(&m_quLock);
-        if (!m_vcTask.empty())
-        {
-            pMsg = m_vcTask.front();
-            m_vcTask.pop();
-        }
-        else
+        pMsg = (T *)m_quTask.Pop();
+        if (NULL == pMsg)
         {
             break;
         }
@@ -171,11 +164,13 @@ template <typename T>
 void CRecvTask<T>::addTask(T *pMsg)
 {
     CLckThis objLckThis(&m_quLock);
-    m_vcTask.push(pMsg);
-    if (m_uiWait > H_INIT_NUMBER)
+    if (m_quTask.Push((void*)pMsg))
     {
-        pthread_cond_signal(&m_objCond);
-    }    
+        if (m_uiWait > H_INIT_NUMBER)
+        {
+            pthread_cond_signal(&m_objCond);
+        }
+    }        
 }
 
 template <typename T>

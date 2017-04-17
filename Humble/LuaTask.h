@@ -10,7 +10,7 @@ H_BNAMSP
 class CLuaTask : public CWorkerTask
 {
 public:
-    CLuaTask(void);
+    CLuaTask(const int iCapacity);
     ~CLuaTask(void);
 
     void initTask(void);
@@ -18,6 +18,7 @@ public:
     void destroyTask(void);
 
 private:
+    CLuaTask(void);
     H_DISALLOWCOPY(CLuaTask);
     enum
     {

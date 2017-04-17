@@ -8,8 +8,8 @@ H_BNAMSP
 SINGLETON_INIT(CLog)
 CLog objLog;
 
-CLog::CLog(void) : m_emLV(LOGLV_DEBUG), m_pFile(NULL),
-    m_strLogFile(H_DefLogNam)
+CLog::CLog(void) : CRecvTask<std::string>(H_QULENS_LOG),
+    m_emLV(LOGLV_DEBUG), m_pFile(NULL), m_strLogFile(H_DefLogNam)
 {
 
 }

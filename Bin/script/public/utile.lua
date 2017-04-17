@@ -107,12 +107,25 @@ function utile.Pack(evType, proto, ...)
     return serialize.pack({evType, proto, {...}})
 end
 
+function utile.freePack(pVal)
+    return serialize.freepack(pVal)
+end
+
 function utile.unPack(pVal)
 	if not pVal then
 		return nil
 	end
 	
     return table.unpack(serialize.unpack(pVal))
+end
+
+function utile.chanSend(objChan, pVal)
+	if not objChan:Send(pVal) then
+		utile.freePack(pVal)
+		return false
+	end
+	
+	return true
 end
 
 function utile.callFunc(Func, ...)

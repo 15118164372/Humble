@@ -35,11 +35,20 @@ public:
     {
         return m_iSize >= m_iCapacity;
     };
+    size_t Size(void)
+    {
+        return m_iSize;
+    };
+    size_t Capacity(void) 
+    {
+        return m_iCapacity;
+    };
 
     bool Push(void *pValue)
     {
         if (Full())
         {
+            H_Printf("%s", "cirqueue is full.");
             return false;
         }
 

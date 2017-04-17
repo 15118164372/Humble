@@ -58,7 +58,7 @@ function TaskRPC:onRPC(tRPC)
 			tRPC.Enevt = EnevtType.TaskRPCRtn
 			local objChan = humble.getChan(tRPC.RecvTask)
 			if objChan then
-				objChan:Send(utile.Pack(EnevtType.TaskRPCRtn, nil, tRPC))
+				utile.chanSend(objChan, utile.Pack(EnevtType.TaskRPCRtn, nil, tRPC))
 			else
 				utile.Log(LogLV.Err, "task rpc %s, not find recv task %s.", tRPC.Method, tRPC.RecvTask)
 			end
@@ -120,8 +120,8 @@ function TaskRPC:callRPC(strToTask, strRecvTask, strRPCName, tRPCParam, Func, ..
 	tCallRPC.Param = tRPCParam
 	tCallRPC.RecvTask = strRecvTask
 	tCallRPC.Method = strRPCName
-	
-	objChan:Send(utile.Pack(EnevtType.TaskCallRPC, nil, tCallRPC))
+
+	utile.chanSend(objChan, utile.Pack(EnevtType.TaskCallRPC, nil, tCallRPC))
 	
 	return rpcId
 end
