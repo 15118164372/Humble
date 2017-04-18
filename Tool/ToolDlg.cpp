@@ -468,6 +468,8 @@ void CToolDlg::initParser(void)
     m_CtrParser.AddString(CTcp1::getSingletonPtr()->getName());     
     pParser->addParser(CTcp2::getSingletonPtr());
     m_CtrParser.AddString(CTcp2::getSingletonPtr()->getName());
+    pParser->addParser(CTcp3::getSingletonPtr());
+    m_CtrParser.AddString(CTcp3::getSingletonPtr()->getName());
     pParser->addParser(CHttp::getSingletonPtr());
     m_CtrParser.AddString(CHttp::getSingletonPtr()->getName());
     pParser->addParser(CWebSock::getSingletonPtr());

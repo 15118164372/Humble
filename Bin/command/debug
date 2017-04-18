@@ -1,0 +1,10 @@
+local tcp3 = require("tcp3")
+local debugMsg = "local a = 22\n\
+                  return a\n"
+
+local pWBinary = CBinary()
+pWBinary:setString("do")
+pWBinary:setString("echo1")
+pWBinary:setString(debugMsg)
+
+return tcp3.Response(pWBinary:getWritedBuf())

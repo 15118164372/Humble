@@ -21,9 +21,9 @@ function onStop()
 end
 
 function onTimer(uiTick, uiCount)
-    tChan.tool:Send(utile.Pack(msgtype.tick, nil, uiTick, uiCount))
+	utile.chanSend(tChan.tool, utile.Pack(msgtype.tick, nil, uiTick, uiCount))
     --1√Î
     if 0 == ((uiTick * uiCount) % 1000) then 
-        tChan.tool:Send(utile.Pack(msgtype.onesec, nil))
+        utile.chanSend(tChan.tool, utile.Pack(msgtype.onesec, nil))
     end
 end

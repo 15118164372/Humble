@@ -74,7 +74,7 @@ function onTcpRead(sock, uiSession, usSockType)
 		local objChan = tChan[strTask]
 		if not objChan then
 			humble.sendB(sock, uiSession, 
-				tcp3.Response(cjson.encode({"fail", "not find task."})))
+				tcp3.Response(cjson.encode({"fail", string.format("not find task %s.", strTask)})))
 			return
 		end
 		

@@ -20,7 +20,7 @@ local tChan = g_tChan
 
 --≥ı ºªØ
 function onStart()
-    humble.regTask("tool")
+    humble.regTask("tool", 1024)
     tChan.tool = humble.getChan("tool")
 end
 
@@ -29,12 +29,12 @@ function onStop()
     
 end
 
-function onTcpLinked(sock, uiSession, usSockType)    
-    tChan.tool:Send(utile.Pack(msgtype.link, nil, sock, uiSession, usSockType))
+function onTcpLinked(sock, uiSession, usSockType)
+	utile.chanSend(tChan.tool, utile.Pack(msgtype.link, nil, sock, uiSession, usSockType))
 end
 
 function onTcpClose(sock, uiSession, usSockType)
-    tChan.tool:Send(utile.Pack(msgtype.close, nil, sock, uiSession, usSockType))
+    utile.chanSend(tChan.tool, utile.Pack(msgtype.close, nil, sock, uiSession, usSockType))
 end
 
 function onTcpRead(sock, uiSession, usSockType)
@@ -64,7 +64,7 @@ function onTcpRead(sock, uiSession, usSockType)
     end
     
     if buffer then
-        tChan.tool:Send(utile.Pack(msgtype.read,  nil, strName, buffer))
+        utile.chanSend(tChan.tool, utile.Pack(msgtype.read,  nil, strName, buffer))
     end
 end
 

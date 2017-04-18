@@ -5,5 +5,5 @@ local utile = require("utile")
 
 function onSend(strParser, strComm)
     local pChan = humble.getChan("tool")
-    pChan:Send(utile.Pack(msgtype.send, nil, strParser, strComm))
+	utile.chanSend(pChan, utile.Pack(msgtype.send, nil, strParser, strComm))
 end
