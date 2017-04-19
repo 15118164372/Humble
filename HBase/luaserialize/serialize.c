@@ -112,8 +112,9 @@ wb_close(struct write_block *b) {
 static void
 wb_free(struct write_block *wb) {
 	struct block *blk = wb->head;
+    struct block * next;
 	while (blk) {
-		struct block * next = blk->next;
+		next = blk->next;
 		free(blk);
 		blk = next;
 	}
@@ -180,8 +181,9 @@ rb_read(struct read_block *rb, void *buffer, int sz) {
 	tmp += copy;
 	rb->len -= copy;
 
+    struct block * next;
 	for (;;) {
-		struct block * next = rb->current->next;
+		next = rb->current->next;
 		free(rb->current);
 		rb->current = next;
 
@@ -200,8 +202,9 @@ rb_read(struct read_block *rb, void *buffer, int sz) {
 
 static void
 rb_close(struct read_block *rb) {
+    struct block * next;
 	while (rb->current) {
-		struct block * next = rb->current->next;
+		next = rb->current->next;
 		free(rb->current);
 		rb->current = next;
 	}
@@ -321,10 +324,11 @@ wb_table_array(lua_State *L, struct write_block * wb, int index, int depth) {
 static void
 wb_table_hash(lua_State *L, struct write_block * wb, int index, int depth, int array_size) {
 	lua_pushnil(L);
+    lua_Integer x;
 	while (lua_next(L, index) != 0) {
 		if (lua_type(L,-2) == LUA_TNUMBER) {
 			if (lua_isinteger(L, -2)) {
-				lua_Integer x = lua_tointeger(L,-2);
+				x = lua_tointeger(L,-2);
 				if (x>0 && x<=array_size) {
 					lua_pop(L,1);
 					continue;
@@ -627,12 +631,14 @@ lunpack(lua_State *L) {
 	rb_init(&rb, blk);
 
 	int i;
+    uint8_t type;
+    uint8_t *t;
 	for (i=0;;i++) {
 		if (i%8==7) {
 			luaL_checkstack(L,LUA_MINSTACK,NULL);
 		}
-		uint8_t type = 0;
-		uint8_t *t = rb_read(&rb, &type, 1);
+		type = 0;
+		t = rb_read(&rb, &type, 1);
 		if (t==NULL)
 			break;
 		push_value(L, &rb, *t & 0x7, *t>>3);
@@ -650,8 +656,9 @@ lfreepack(lua_State *L) {
         return luaL_error(L, "Need a block to free");
     }
 
+    struct block * next;
     while (blk) {
-        struct block * next = blk->next;
+        next = blk->next;
         free(blk);
         blk = next;
     }
@@ -729,12 +736,14 @@ deserialize_buffer(lua_State *L, void * buffer) {
 	rball_init(&rb, buffer);
 
 	int i;
+    uint8_t type;
+    uint8_t *t;
 	for (i=0;;i++) {
 		if (i%16==15) {
 			lua_checkstack(L,i);
 		}
-		uint8_t type = 0;
-		uint8_t *t = rb_read(&rb, &type, 1);
+		type = 0;
+		t = rb_read(&rb, &type, 1);
 		if (t==NULL)
 			break;
 		push_value(L, &rb, *t & 0x7, *t>>3);
@@ -787,7 +796,12 @@ luaopen_serialize(lua_State *L) {
 		{ "pack", lpack },
 		{ "unpack", lunpack },
         { "freepack", lfreepack },
-		{ "dump", _dump },
+        { "append", lappend },
+        { "serialize", lserialize },
+        { "deserialize", ldeserialize },
+        { "serialize_string", seristring },
+        { "deseristring_string", deseristring },
+        { "dump", _dump },
 		{ NULL, NULL },
 	};
 	luaL_newlib(L,l);

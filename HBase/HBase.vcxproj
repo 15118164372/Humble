@@ -122,7 +122,6 @@
     <ClInclude Include="NetBase.h" />
     <ClInclude Include="NetParser.h" />
     <ClInclude Include="NetWorker.h" />
-    <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="pbc\alloc.h" />
     <ClInclude Include="pbc\array.h" />
     <ClInclude Include="pbc\bootstrap.h" />

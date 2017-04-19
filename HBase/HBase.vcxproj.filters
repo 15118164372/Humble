@@ -532,9 +532,6 @@
     <ClInclude Include="SVIntf.h">
       <Filter>Service</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectPool.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="SHA1.h">
       <Filter>Encrypt</Filter>
     </ClInclude>
