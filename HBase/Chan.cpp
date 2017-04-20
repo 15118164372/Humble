@@ -15,7 +15,7 @@ CChan::~CChan(void)
 bool CChan::Send(void *pszVal)
 {
     m_objQuLck.Lock();
-    bool bOk(m_quData.Push((void*)pszVal));
+    bool bOk(m_quData.Push(pszVal));
     m_objQuLck.unLock();
 
 	if (NULL != m_pstrName 
