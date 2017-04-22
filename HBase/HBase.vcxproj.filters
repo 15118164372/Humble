@@ -535,9 +535,6 @@
     <ClInclude Include="SHA1.h">
       <Filter>Encrypt</Filter>
     </ClInclude>
-    <ClInclude Include="NetParser.h">
-      <Filter>Service</Filter>
-    </ClInclude>
     <ClInclude Include="CirQueue.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -620,6 +617,9 @@
       <Filter>3rd\lua\luasocket</Filter>
     </ClInclude>
     <ClInclude Include="Tcp3.h">
+      <Filter>Service\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="NetParser.h">
       <Filter>Service\Parser</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1090,9 +1090,6 @@
       <Filter>Encrypt</Filter>
     </ClCompile>
     <ClCompile Include="HBase.cpp" />
-    <ClCompile Include="NetParser.cpp">
-      <Filter>Service</Filter>
-    </ClCompile>
     <ClCompile Include="Chan.cpp">
       <Filter>Service</Filter>
     </ClCompile>
@@ -1176,6 +1173,9 @@
     </ClCompile>
     <ClCompile Include="lsnapshot\snapshot.c">
       <Filter>3rd\lua\lsnapshot</Filter>
+    </ClCompile>
+    <ClCompile Include="NetParser.cpp">
+      <Filter>Service\Parser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

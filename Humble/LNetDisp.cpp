@@ -3,6 +3,8 @@
 
 H_BNAMSP
 
+#define MAX_RECVPACK_LENS        H_ONEK * 10  //接收包最大长度,并非严格限制
+
 SINGLETON_INIT(CLNetDisp)
 CLNetDisp objLNetDisp;
 
@@ -135,6 +137,7 @@ H_INLINE void CLNetDisp::onTcpRead(struct H_Session *pSession)
     CParser *pParser = CNetParser::getSingletonPtr()->getParser(pSession->usSockType);
     if (NULL == pParser)
     {
+        CNetWorker::getSingletonPtr()->closeSock(pSession->sock, pSession->uiSession);
         H_LOG(LOGLV_ERROR, "get parser by type %d error.", pSession->usSockType);
         return;
     }
@@ -149,6 +152,7 @@ H_INLINE void CLNetDisp::onTcpRead(struct H_Session *pSession)
     }
     
     size_t iParsed(H_INIT_NUMBER);
+    size_t iSurplus(H_INIT_NUMBER);
     int iCurParsed(H_INIT_NUMBER);
 
     while (true)
@@ -160,9 +164,15 @@ H_INLINE void CLNetDisp::onTcpRead(struct H_Session *pSession)
 
         m_objBinary.reSetWrite();
         m_objBinary.setReadBuffer(NULL, H_INIT_NUMBER);
-        iCurParsed = pParser->parsePack(pSession, pBuf + iParsed, iBufLens - iParsed, &m_objBinary);
+        iSurplus = iBufLens - iParsed;
+        iCurParsed = pParser->parsePack(pSession, pBuf + iParsed, iSurplus, &m_objBinary);
         if (H_INIT_NUMBER == iCurParsed)
         {
+            if (iSurplus > MAX_RECVPACK_LENS)
+            {
+                CNetWorker::getSingletonPtr()->closeSock(pSession->sock, pSession->uiSession);
+                return;
+            }
             break;
         }
         if (H_RTN_FAILE == iCurParsed)
