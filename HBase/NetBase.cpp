@@ -25,8 +25,7 @@ CNetBase::CNetBase(void) : m_uiCount(H_INIT_NUMBER), m_uiReadyStop(RSTOP_NONE),
 
 CNetBase::~CNetBase(void)
 {
-    sessionit itSession;
-    for (itSession = m_mapSession.begin(); m_mapSession.end() != itSession; ++itSession)
+    for (sessionit itSession = m_mapSession.begin(); m_mapSession.end() != itSession; ++itSession)
     {
         freeSession(itSession->second);
     }
@@ -78,8 +77,7 @@ unsigned int CNetBase::getReadyStop(void)
 
 H_Session *CNetBase::getSession(const H_SOCK &sock)
 {
-    sessionit itSession;
-    itSession = m_mapSession.find(sock);
+    sessionit itSession = m_mapSession.find(sock);
     if (m_mapSession.end() == itSession)
     {
         return NULL;
@@ -90,8 +88,7 @@ H_Session *CNetBase::getSession(const H_SOCK &sock)
 
 void CNetBase::delSession(H_SOCK &sock)
 {
-    sessionit itSession;
-    itSession = m_mapSession.find(sock);
+    sessionit itSession = m_mapSession.find(sock);
     if (m_mapSession.end() == itSession)
     {
         return;
@@ -112,7 +109,6 @@ void CNetBase::addSession(H_SOCK &sock, H_Session *pSesson, const bool &bAccept)
 void CNetBase::removByType(const unsigned short &usSockType)
 {
     std::list<H_Session *> lstTmp;
-    std::list<H_Session *>::iterator itTmp;
     for (sessionit itSesion = m_mapSession.begin(); m_mapSession.end() != itSesion; ++itSesion)
     {
         if (usSockType == itSesion->second->usSockType)
@@ -120,7 +116,7 @@ void CNetBase::removByType(const unsigned short &usSockType)
             lstTmp.push_back(itSesion->second);
         }
     }
-    for (itTmp = lstTmp.begin(); lstTmp.end() != itTmp; ++itTmp)
+    for (std::list<H_Session *>::iterator itTmp = lstTmp.begin(); lstTmp.end() != itTmp; ++itTmp)
     {
         delSession((*itTmp)->sock);
     }
@@ -130,7 +126,7 @@ H_Session *CNetBase::addTcpEv(H_SOCK &sock, const unsigned short &usSockType, co
 {
     int iFlag = 1;
     (void)setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (char *)&iFlag, sizeof(iFlag));
-    H_KeepAlive(sock, H_SOCKKEEPALIVE_IDLE, H_SOCKKEEPALIVE_INTERVAL);
+    //H_KeepAlive(sock, H_SOCKKEEPALIVE_IDLE, H_SOCKKEEPALIVE_INTERVAL);
     struct bufferevent *pBev = bufferevent_socket_new(getBase(), sock, BEV_OPT_CLOSE_ON_FREE);
     if (NULL == pBev)
     {

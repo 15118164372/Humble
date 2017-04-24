@@ -115,13 +115,6 @@ H_INLINE void CLNetDisp::onTcpLinked(struct H_Session *pSession)
 
 H_INLINE void CLNetDisp::onTcpClose(struct H_Session *pSession)
 {
-    CParser *pParser = CNetParser::getSingletonPtr()->getParser(pSession->usSockType);
-    if (NULL == pParser)
-    {
-        H_LOG(LOGLV_ERROR, "get parser by type %d error.", pSession->usSockType);
-        return;
-    }
-
     try
     {
         (*(m_pLFunc[LOnTcpClose]))(pSession->sock, pSession->uiSession, pSession->usSockType);
