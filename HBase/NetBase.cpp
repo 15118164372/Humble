@@ -2,6 +2,7 @@
 #include "NetBase.h"
 #include "Funcs.h"
 #include "EvBuffer.h"
+#include "NetParser.h"
 
 H_BNAMSP
 
@@ -143,6 +144,7 @@ H_Session *CNetBase::addTcpEv(H_SOCK &sock, const unsigned short &usSockType, co
     pSession->usSockType = usSockType;
     pSession->uiStatus = H_INIT_NUMBER;
     pSession->pBev = pBev;
+    pSession->pParser = CNetParser::getSingletonPtr()->getParser(usSockType);
 
     bufferevent_setcb(pBev, tcpReadCB, NULL, tcpEventCB, pSession);
     (void)bufferevent_enable(pBev, EV_READ);

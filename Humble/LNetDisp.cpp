@@ -127,8 +127,7 @@ H_INLINE void CLNetDisp::onTcpClose(struct H_Session *pSession)
 
 H_INLINE void CLNetDisp::onTcpRead(struct H_Session *pSession)
 {
-    CParser *pParser = CNetParser::getSingletonPtr()->getParser(pSession->usSockType);
-    if (NULL == pParser)
+    if (NULL == pSession->pParser)
     {
         CNetWorker::getSingletonPtr()->closeSock(pSession->sock, pSession->uiSession);
         H_LOG(LOGLV_ERROR, "get parser by type %d error.", pSession->usSockType);
@@ -158,7 +157,7 @@ H_INLINE void CLNetDisp::onTcpRead(struct H_Session *pSession)
         m_objBinary.reSetWrite();
         m_objBinary.setReadBuffer(NULL, H_INIT_NUMBER);
         iSurplus = iBufLens - iParsed;
-        iCurParsed = pParser->parsePack(pSession, pBuf + iParsed, iSurplus, &m_objBinary);
+        iCurParsed = pSession->pParser->parsePack(pSession, pBuf + iParsed, iSurplus, &m_objBinary);
         if (H_INIT_NUMBER == iCurParsed)
         {
             if (iSurplus > MAX_RECVPACK_LENS)
