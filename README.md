@@ -25,8 +25,8 @@ function destroyTask()--服务释放
 end 
 
 * 2、建立监听(start.lua onStart()):     
-humble.addListener(1, "0.0.0.0", 15000)--建立监听           
-humble.setParser(1, "tcp1")--设置数据解析      
+humble.setParser(1, "tcp1")--设置数据解析    
+humble.addListener(1, "0.0.0.0", 15000)--建立监听                 
 
 * 3、注册echo服务(start.lua onStart())     
 humble.regTask("echo", 1000)      
