@@ -24,8 +24,10 @@ local tChan = g_tChan
 
 --初始化  这里注册任务
 function onStart()
+	--解析器，这个要先设置
 	humble.setParser(SockType.CMD, "tcp3")
 	humble.setParser(SockType.RPC, "tcp3")
+	
 	--命令监听
 	humble.addListener(SockType.CMD, "127.0.0.1", 15100)	
 	--rpc
