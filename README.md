@@ -50,7 +50,6 @@ do + 任务名  --回车后进入lua代码输入模式
 ...          --可以输入多行，以回车结束一行     
 ...    
 done   
- 
 如：  	
 do echo1    
 return collectgarbage("collect")    
@@ -61,8 +60,7 @@ exit
 
 * 4、热更新  
 格式：      
-hotfix + 任务名(all 所有任务都执行) + lua文件名(无扩展名)  
- 
+hotfix + 任务名(all 所有任务都执行) + lua文件名(无扩展名)   
 如：  
 hotfix echo1 global     
 
