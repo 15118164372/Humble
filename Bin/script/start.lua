@@ -67,32 +67,52 @@ function onTcpClose(sock, uiSession, usSockType)
 	utile.chanSend(tChan.task_link, utile.Pack(EnevtType.NetClose, nil, sock, uiSession, usSockType))
 end
 
+local function dispCMD(sock, uiSession)
+	local strCmd = pBuffer:getString()
+	local strTask = pBuffer:getString()
+	local strMsg = pBuffer:getString()
+	local objChan
+	
+	if "hotfix" == strCmd and "all" == strTask then
+		for _, objChan in pairs(tChan) do
+			utile.chanSend(objChan, utile.Pack(EnevtType.CMD, strCmd, -1, 0, strMsg))
+		end
+		
+		humble.sendB(sock, uiSession, 
+			tcp3.Response(cjson.encode({"ok", ""})))
+		return	
+	end
+	
+	objChan = tChan[strTask]
+	if not objChan then
+		humble.sendB(sock, uiSession, 
+			tcp3.Response(cjson.encode({"fail", string.format("not find task %s.", strTask)})))
+		return
+	end
+		
+	utile.chanSend(objChan, utile.Pack(EnevtType.CMD, strCmd, sock, uiSession, strMsg))
+end
+
+local function dispRPC(sock, uiSession)
+	local tRPC = cjson.decode(pBuffer:getByte(pBuffer:getSurpLens()))
+	if tRPC.Enevt == EnevtType.CallRPC then --调用
+		humble.netToTask(tChan, tRPC.Method, utile.Pack(tRPC.Enevt, tRPC.Method, sock, uiSession, tRPC))
+	else --调用返回
+		local objChan = tChan[tRPC.RecvTask]
+		if objChan then
+			utile.chanSend(objChan, utile.Pack(tRPC.Enevt, nil, sock, uiSession, tRPC))
+		else
+			utile.Log(LogLV.Err, "not find task %s", tRPC.RecvTask)
+		end
+	end
+end
+
 --tcp读到一完整的包
 function onTcpRead(sock, uiSession, usSockType)	
 	if SockType.CMD == usSockType then --命令
-		local strCmd = pBuffer:getString()
-		local strTask = pBuffer:getString()
-		local strMsg = pBuffer:getString()
-		local objChan = tChan[strTask]
-		if not objChan then
-			humble.sendB(sock, uiSession, 
-				tcp3.Response(cjson.encode({"fail", string.format("not find task %s.", strTask)})))
-			return
-		end
-		
-		utile.chanSend(objChan, utile.Pack(EnevtType.CMD, strCmd, sock, uiSession, strMsg))
+		dispCMD(sock, uiSession)
 	elseif SockType.RPC == usSockType then --服务器间RPC
-		local tRPC = cjson.decode(pBuffer:getByte(pBuffer:getSurpLens()))
-		if tRPC.Enevt == EnevtType.CallRPC then --调用
-			humble.netToTask(tChan, tRPC.Method, utile.Pack(tRPC.Enevt, tRPC.Method, sock, uiSession, tRPC))
-		else --调用返回
-			local objChan = tChan[tRPC.RecvTask]
-			if objChan then
-				utile.chanSend(objChan, utile.Pack(tRPC.Enevt, nil, sock, uiSession, tRPC))
-			else
-				utile.Log(LogLV.Err, "not find task %s", tRPC.RecvTask)
-			end
-		end
+		dispRPC(sock, uiSession)
 	else
 		--以下为测试
 		local strName = humble.getParserNam(usSockType)

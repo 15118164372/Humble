@@ -375,7 +375,7 @@ int main(int argc, char *argv[])
     {
         unsigned short usPort = H_ToNumber<unsigned short>((const char*)argv[2]);
         printf("Humble version %d.%d.%d, cmd port %d\n", H_MAJOR, H_MINOR, H_RELEASE, usPort);
-        printf("command:\n    quit\n    exit\n    hotfix taskname filename\n    do taskname .... done\n");
+        printf("command:\n    quit\n    exit\n    hotfix taskname(or all) filename\n    do taskname .... done\n");
 
         const char *pszHost = "127.0.0.1";
         H_SOCK cmdSock = initSock(pszHost, usPort);
