@@ -141,17 +141,7 @@ function utile.callFunc(Func, ...)
 end
 
 function utile.http_get(url)
-	local response_body = {}  
-    local res, code = http.request{  
-        url = url,  
-        method = "GET",
-        sink = ltn12.sink.table(response_body)  
-    }
-	
-    res = table.concat(response_body) 
-	response_body = nil
-  
-    return res,code 
+    return http.request(url)
 end
 
 --param table
@@ -173,7 +163,6 @@ function utile.http_post(url, param)
     }
 	
     res = table.concat(response_body) 
-	response_body = nil
   
     return res,code 
 end
