@@ -59,7 +59,6 @@ void H_RegAll(struct lua_State *pLState)
     H_RegNetWorker(pLState);
     H_RegSender(pLState);
     H_RegFuncs(pLState);
-    H_RegCharset(pLState);
     H_RegClock(pLState);
     H_RegIni(pLState);
     H_RegSnowFlake(pLState);
@@ -232,16 +231,6 @@ void H_RegClock(struct lua_State *pLState)
             .addConstructor<void(*) (void)>()
             .addFunction("reStart", &CClock::reStart)
             .addFunction("Elapsed", &CClock::Elapsed)
-        .endClass();
-}
-
-void H_RegCharset(struct lua_State *pLState)
-{
-    luabridge::getGlobalNamespace(pLState)
-        .beginClass<CCharset>("CCharset")
-            .addConstructor<void(*) (void)>()
-            .addFunction("getStrCharset", &CCharset::getStrCharset)
-            .addFunction("getFileCharset", &CCharset::getFileCharset)
         .endClass();
 }
 

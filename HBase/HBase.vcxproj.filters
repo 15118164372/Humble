@@ -19,12 +19,6 @@
     <Filter Include="3rd\RSAEuro">
       <UniqueIdentifier>{743866a1-2d44-40d6-9d32-432b1e5f3ded}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3rd\uchardet">
-      <UniqueIdentifier>{391138bc-989b-43c0-9705-278153d07727}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3rd\uchardet\LangModels">
-      <UniqueIdentifier>{5fc9f8ba-b3d0-4d8f-a7ba-aae92a36213c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3rd\zlib">
       <UniqueIdentifier>{10e9c114-8074-462a-ab5a-d2c9ed14f976}</UniqueIdentifier>
     </Filter>
@@ -69,9 +63,6 @@
     </Filter>
     <Filter Include="Service\Parser">
       <UniqueIdentifier>{30dea6f7-72f1-4903-9f3a-8ae9699a7e65}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3rd\lua\lsnapshot">
-      <UniqueIdentifier>{32f90629-2497-4848-9047-961587d663ff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -122,72 +113,6 @@
     </ClInclude>
     <ClInclude Include="zlib\zutil.h">
       <Filter>3rd\zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\CharDistribution.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\JpCntx.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsBig5Prober.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsCharSetProber.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsCodingStateMachine.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nscore.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsEscCharsetProber.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsEUCJPProber.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsEUCKRProber.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsEUCTWProber.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsGB2312Prober.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsHebrewProber.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsLatin1Prober.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsMBCSGroupProber.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsPkgInt.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsSBCharSetProber.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsSBCSGroupProber.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsSJISProber.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsUniversalDetector.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\nsUTF8Prober.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\prmem.h">
-      <Filter>3rd\uchardet</Filter>
-    </ClInclude>
-    <ClInclude Include="uchardet\uchardet.h">
-      <Filter>3rd\uchardet</Filter>
     </ClInclude>
     <ClInclude Include="RSAEuro\des.h">
       <Filter>3rd\RSAEuro</Filter>
@@ -450,9 +375,6 @@
     <ClInclude Include="Binary.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Charset.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="Clock.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -668,108 +590,6 @@
     </ClCompile>
     <ClCompile Include="zlib\zutil.c">
       <Filter>3rd\zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\CharDistribution.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\JpCntx.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsBig5Prober.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsCharSetProber.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsEscCharsetProber.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsEscSM.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsEUCJPProber.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsEUCKRProber.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsEUCTWProber.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsGB2312Prober.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsHebrewProber.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsLatin1Prober.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsMBCSGroupProber.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsMBCSSM.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsSBCharSetProber.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsSBCSGroupProber.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsSJISProber.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsUniversalDetector.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\nsUTF8Prober.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\uchardet.cpp">
-      <Filter>3rd\uchardet</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\LangModels\LangArabicModel.cpp">
-      <Filter>3rd\uchardet\LangModels</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\LangModels\LangBulgarianModel.cpp">
-      <Filter>3rd\uchardet\LangModels</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\LangModels\LangDanishModel.cpp">
-      <Filter>3rd\uchardet\LangModels</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\LangModels\LangEsperantoModel.cpp">
-      <Filter>3rd\uchardet\LangModels</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\LangModels\LangFrenchModel.cpp">
-      <Filter>3rd\uchardet\LangModels</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\LangModels\LangGermanModel.cpp">
-      <Filter>3rd\uchardet\LangModels</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\LangModels\LangGreekModel.cpp">
-      <Filter>3rd\uchardet\LangModels</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\LangModels\LangHebrewModel.cpp">
-      <Filter>3rd\uchardet\LangModels</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\LangModels\LangHungarianModel.cpp">
-      <Filter>3rd\uchardet\LangModels</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\LangModels\LangRussianModel.cpp">
-      <Filter>3rd\uchardet\LangModels</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\LangModels\LangSpanishModel.cpp">
-      <Filter>3rd\uchardet\LangModels</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\LangModels\LangThaiModel.cpp">
-      <Filter>3rd\uchardet\LangModels</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\LangModels\LangTurkishModel.cpp">
-      <Filter>3rd\uchardet\LangModels</Filter>
-    </ClCompile>
-    <ClCompile Include="uchardet\LangModels\LangVietnameseModel.cpp">
-      <Filter>3rd\uchardet\LangModels</Filter>
     </ClCompile>
     <ClCompile Include="RSAEuro\desc.c">
       <Filter>3rd\RSAEuro</Filter>
@@ -1020,9 +840,6 @@
     <ClCompile Include="Binary.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Charset.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
     <ClCompile Include="Clock.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -1171,29 +988,11 @@
     <ClCompile Include="Tcp3.cpp">
       <Filter>Service\Parser</Filter>
     </ClCompile>
-    <ClCompile Include="lsnapshot\snapshot.c">
-      <Filter>3rd\lua\lsnapshot</Filter>
-    </ClCompile>
     <ClCompile Include="NetParser.cpp">
       <Filter>Service\Parser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="uchardet\Big5Freq.tab">
-      <Filter>3rd\uchardet</Filter>
-    </None>
-    <None Include="uchardet\EUCKRFreq.tab">
-      <Filter>3rd\uchardet</Filter>
-    </None>
-    <None Include="uchardet\EUCTWFreq.tab">
-      <Filter>3rd\uchardet</Filter>
-    </None>
-    <None Include="uchardet\GB2312Freq.tab">
-      <Filter>3rd\uchardet</Filter>
-    </None>
-    <None Include="uchardet\JISFreq.tab">
-      <Filter>3rd\uchardet</Filter>
-    </None>
     <None Include="RSAEuro\des386.s">
       <Filter>3rd\RSAEuro</Filter>
     </None>

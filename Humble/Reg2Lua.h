@@ -13,7 +13,6 @@ void H_RegNetParser(struct lua_State *pLState);
 void H_RegBinary(struct lua_State *pLState);
 void H_RegNetWorker(struct lua_State *pLState);
 void H_RegSender(struct lua_State *pLState);
-void H_RegCharset(struct lua_State *pLState);
 void H_RegClock(struct lua_State *pLState);
 void H_RegIni(struct lua_State *pLState);
 void H_RegSnowFlake(struct lua_State *pLState);

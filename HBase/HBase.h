@@ -25,7 +25,6 @@
 #include "Singleton.h"
 #include "SnowFlake.h"
 #include "Clock.h"
-#include "Charset.h"
 #include "NETAddr.h"
 #include "CoreDump.h"
 #include "Chan.h"

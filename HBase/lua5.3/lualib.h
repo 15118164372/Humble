@@ -65,9 +65,6 @@ LUALIB_API int (luaopen_serialize)(lua_State *L);
 #define LUA_SOCKET "socket.core"
 LUALIB_API int (luaopen_socket_core)(lua_State *L);
 
-#define LUA_SNAPSHOT "snapshot"
-LUALIB_API int (luaopen_snapshot)(lua_State *L);
-
 /* open all previous libraries */
 LUALIB_API void (luaL_openlibs) (lua_State *L);
 

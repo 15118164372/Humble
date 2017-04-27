@@ -24,7 +24,6 @@
     <ClInclude Include="Base64.h" />
     <ClInclude Include="Binary.h" />
     <ClInclude Include="Chan.h" />
-    <ClInclude Include="Charset.h" />
     <ClInclude Include="CirQueue.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="Config.h" />
@@ -161,28 +160,6 @@
     <ClInclude Include="Tcp3.h" />
     <ClInclude Include="Thread.h" />
     <ClInclude Include="Tick.h" />
-    <ClInclude Include="uchardet\CharDistribution.h" />
-    <ClInclude Include="uchardet\JpCntx.h" />
-    <ClInclude Include="uchardet\nsBig5Prober.h" />
-    <ClInclude Include="uchardet\nsCharSetProber.h" />
-    <ClInclude Include="uchardet\nsCodingStateMachine.h" />
-    <ClInclude Include="uchardet\nscore.h" />
-    <ClInclude Include="uchardet\nsEscCharsetProber.h" />
-    <ClInclude Include="uchardet\nsEUCJPProber.h" />
-    <ClInclude Include="uchardet\nsEUCKRProber.h" />
-    <ClInclude Include="uchardet\nsEUCTWProber.h" />
-    <ClInclude Include="uchardet\nsGB2312Prober.h" />
-    <ClInclude Include="uchardet\nsHebrewProber.h" />
-    <ClInclude Include="uchardet\nsLatin1Prober.h" />
-    <ClInclude Include="uchardet\nsMBCSGroupProber.h" />
-    <ClInclude Include="uchardet\nsPkgInt.h" />
-    <ClInclude Include="uchardet\nsSBCharSetProber.h" />
-    <ClInclude Include="uchardet\nsSBCSGroupProber.h" />
-    <ClInclude Include="uchardet\nsSJISProber.h" />
-    <ClInclude Include="uchardet\nsUniversalDetector.h" />
-    <ClInclude Include="uchardet\nsUTF8Prober.h" />
-    <ClInclude Include="uchardet\prmem.h" />
-    <ClInclude Include="uchardet\uchardet.h" />
     <ClInclude Include="UEncrypt.h" />
     <ClInclude Include="UUID.h" />
     <ClInclude Include="WebSock.h" />
@@ -209,7 +186,6 @@
     <ClCompile Include="Base64.cpp" />
     <ClCompile Include="Binary.cpp" />
     <ClCompile Include="Chan.cpp" />
-    <ClCompile Include="Charset.cpp" />
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="CoreDump.cpp" />
     <ClCompile Include="CRC.cpp" />
@@ -227,7 +203,6 @@
     <ClCompile Include="lpeg\lpprint.c" />
     <ClCompile Include="lpeg\lptree.c" />
     <ClCompile Include="lpeg\lpvm.c" />
-    <ClCompile Include="lsnapshot\snapshot.c" />
     <ClCompile Include="lua5.3\lapi.c" />
     <ClCompile Include="lua5.3\lauxlib.c" />
     <ClCompile Include="lua5.3\lbaselib.c" />
@@ -334,40 +309,6 @@
     <ClCompile Include="Tcp3.cpp" />
     <ClCompile Include="Thread.cpp" />
     <ClCompile Include="Tick.cpp" />
-    <ClCompile Include="uchardet\CharDistribution.cpp" />
-    <ClCompile Include="uchardet\JpCntx.cpp" />
-    <ClCompile Include="uchardet\LangModels\LangArabicModel.cpp" />
-    <ClCompile Include="uchardet\LangModels\LangBulgarianModel.cpp" />
-    <ClCompile Include="uchardet\LangModels\LangDanishModel.cpp" />
-    <ClCompile Include="uchardet\LangModels\LangEsperantoModel.cpp" />
-    <ClCompile Include="uchardet\LangModels\LangFrenchModel.cpp" />
-    <ClCompile Include="uchardet\LangModels\LangGermanModel.cpp" />
-    <ClCompile Include="uchardet\LangModels\LangGreekModel.cpp" />
-    <ClCompile Include="uchardet\LangModels\LangHebrewModel.cpp" />
-    <ClCompile Include="uchardet\LangModels\LangHungarianModel.cpp" />
-    <ClCompile Include="uchardet\LangModels\LangRussianModel.cpp" />
-    <ClCompile Include="uchardet\LangModels\LangSpanishModel.cpp" />
-    <ClCompile Include="uchardet\LangModels\LangThaiModel.cpp" />
-    <ClCompile Include="uchardet\LangModels\LangTurkishModel.cpp" />
-    <ClCompile Include="uchardet\LangModels\LangVietnameseModel.cpp" />
-    <ClCompile Include="uchardet\nsBig5Prober.cpp" />
-    <ClCompile Include="uchardet\nsCharSetProber.cpp" />
-    <ClCompile Include="uchardet\nsEscCharsetProber.cpp" />
-    <ClCompile Include="uchardet\nsEscSM.cpp" />
-    <ClCompile Include="uchardet\nsEUCJPProber.cpp" />
-    <ClCompile Include="uchardet\nsEUCKRProber.cpp" />
-    <ClCompile Include="uchardet\nsEUCTWProber.cpp" />
-    <ClCompile Include="uchardet\nsGB2312Prober.cpp" />
-    <ClCompile Include="uchardet\nsHebrewProber.cpp" />
-    <ClCompile Include="uchardet\nsLatin1Prober.cpp" />
-    <ClCompile Include="uchardet\nsMBCSGroupProber.cpp" />
-    <ClCompile Include="uchardet\nsMBCSSM.cpp" />
-    <ClCompile Include="uchardet\nsSBCharSetProber.cpp" />
-    <ClCompile Include="uchardet\nsSBCSGroupProber.cpp" />
-    <ClCompile Include="uchardet\nsSJISProber.cpp" />
-    <ClCompile Include="uchardet\nsUniversalDetector.cpp" />
-    <ClCompile Include="uchardet\nsUTF8Prober.cpp" />
-    <ClCompile Include="uchardet\uchardet.cpp" />
     <ClCompile Include="UEncrypt.cpp" />
     <ClCompile Include="UUID.cpp" />
     <ClCompile Include="WebSock.cpp" />
@@ -395,11 +336,6 @@
     <None Include="RSAEuro\rsa386.s" />
     <None Include="RSAEuro\rsa68k.s" />
     <None Include="RSAEuro\rsasparc.s" />
-    <None Include="uchardet\Big5Freq.tab" />
-    <None Include="uchardet\EUCKRFreq.tab" />
-    <None Include="uchardet\EUCTWFreq.tab" />
-    <None Include="uchardet\GB2312Freq.tab" />
-    <None Include="uchardet\JISFreq.tab" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{34A2B7B3-2D6F-4D2F-AF82-EFAF0B4CE892}</ProjectGuid>
@@ -471,7 +407,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;../HBase/lsnapshot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -484,7 +420,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;../HBase/lsnapshot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -499,7 +435,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;../HBase/lsnapshot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -516,7 +452,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/uchardet;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;../HBase/lsnapshot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/rijndael;../HBase/redisrand;../HBase/zlib;../HBase/RSAEuro;../HBase/lua5.3;../HBase/lpeg;../HBase/luabridge;../HBase/luacjson;../HBase/luasql;../HBase/pbc;../HBase/luaserialize;../HBase/luasocket;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
