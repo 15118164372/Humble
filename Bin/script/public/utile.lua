@@ -140,30 +140,40 @@ function utile.callFunc(Func, ...)
     return xpcall(Func, onExcept, table.unpack({...}))
 end
 
---param table or string
-function utile.post(url, param)
-	if param then
-		if "table" == type(param) then
-			param = cjson.encode(param)
-		end
-	else
-		param = ""
-	end
+function utile.http_get(url)
+	local response_body = {}  
+    local res, code = http.request{  
+        url = url,  
+        method = "GET",
+        sink = ltn12.sink.table(response_body)  
+    }
+	
+    res = table.concat(response_body) 
+	response_body = nil
+  
+    return res,code 
+end
+
+--param table
+function utile.http_post(url, param)
+	assert("table" == type(param))
+	local postParam = cjson.encode(param)
 	
 	local response_body = {}  
     local res, code = http.request{  
         url = url,  
         method = "POST",  
         headers =  
-        {  
+        {
             ["Content-Type"] = "application/json",  
-            ["Content-Length"] = #param,  
+            ["Content-Length"] = #postParam,  
         },  
-        source = ltn12.source.string(param),  
+        source = ltn12.source.string(postParam),  
         sink = ltn12.sink.table(response_body)  
     }
 	
-    res = table.concat(response_body)  
+    res = table.concat(response_body) 
+	response_body = nil
   
     return res,code 
 end
