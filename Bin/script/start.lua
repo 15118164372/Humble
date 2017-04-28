@@ -26,12 +26,12 @@ local tChan = g_tChan
 function onStart()
 	--解析器，这个要先设置
 	humble.setParser(SockType.CMD, "tcp3")
-	humble.setParser(SockType.RPC, "tcp3")
-	
+	humble.setParser(SockType.RPC, "tcp3")	
 	--命令监听
 	humble.addListener(SockType.CMD, "127.0.0.1", 15100)	
 	--rpc
 	humble.addListener(SockType.RPC, "0.0.0.0", 15200)	
+	
 	--链接管理
 	humble.regTask("task_link", 1024 * 10)
     tChan.task_link = humble.getChan("task_link")
