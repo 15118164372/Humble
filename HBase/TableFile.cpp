@@ -188,7 +188,7 @@ bool CTableFile::getHead(const std::string &strHead, std::map<int, std::string> 
     }
     if (!checkHead(lstTableHead))//检查是否有空值
     {
-        H_Printf("%s", "Invalid table head.");
+        H_Printf("%s", "invalid table head.");
 
         return false;
     }
