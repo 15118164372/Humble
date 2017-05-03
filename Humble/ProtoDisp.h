@@ -22,6 +22,7 @@ private:
 
 private:
     std::vector<std::string *> m_vcTask;
+
 #ifdef H_OS_WIN 
     #define strprotoit std::unordered_map<std::string, std::string *>::iterator
     #define strproto_map std::unordered_map<std::string, std::string *>

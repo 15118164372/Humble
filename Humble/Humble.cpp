@@ -50,25 +50,9 @@ BOOL WINAPI consoleHandler(DWORD msgType)
     {
         //CTRL+C
     case CTRL_C_EVENT:
-        bRtn = TRUE;
-        break;
-
-        //关闭控制台
     case CTRL_CLOSE_EVENT:
-        bRtn = TRUE;
-        break;
-
-        //CTRL+BREAK 
     case CTRL_BREAK_EVENT:
-        bRtn = TRUE;
-        break;
-
-        //用户退出
     case CTRL_LOGOFF_EVENT:
-        bRtn = TRUE;
-        break;
-
-        //系统被关闭
     case CTRL_SHUTDOWN_EVENT:
         bRtn = TRUE;
         break;
@@ -105,31 +89,27 @@ int init(void)
     std::string strConfFile = H_FormatStr("%s%s%s%s", g_strProPath.c_str(), "config", H_PATH_SEPARATOR, "config.ini");
     CIniFile objIni(strConfFile.c_str());
 
-    if (objIni.haveNode("Log"))
-    {
-        pLog->setPriority(objIni.getIntValue("Log", "priority"));
-        std::string strLogFile = H_FormatStr("%s%s%s%s", g_strProPath.c_str(), 
-            "log", H_PATH_SEPARATOR, objIni.getStringValue("Log", "name"));
-        pLog->setLogFile(strLogFile.c_str());
-        pLog->Open();
-    }
-    else
+    if (!objIni.haveNode("Log"))
     {
         H_Printf("%s", "in config.ini not find node 'Log'");
-        return H_RTN_FAILE;
+        return H_RTN_FAILE;        
     }
 
-    if (objIni.haveNode("Main"))
-    {
-        pTick->setTick(objIni.getIntValue("Main", "tick"));
-        pWorker->setThreadNum(objIni.getIntValue("Main", "thread"));
-        pTick->setThreadNum(pWorker->getThreadNum());
-    }
-    else
+    pLog->setPriority(objIni.getIntValue("Log", "priority"));
+    std::string strLogFile = H_FormatStr("%s%s%s%s", g_strProPath.c_str(),
+        "log", H_PATH_SEPARATOR, objIni.getStringValue("Log", "name"));
+    pLog->setLogFile(strLogFile.c_str());
+    pLog->Open();
+
+    if (!objIni.haveNode("Main"))
     {
         H_Printf("%s", "in config.ini not find node 'Main'");
-        return H_RTN_FAILE;
+        return H_RTN_FAILE;        
     }
+    
+    pTick->setTick(objIni.getIntValue("Main", "tick"));
+    pWorker->setThreadNum(objIni.getIntValue("Main", "thread"));
+    pTick->setThreadNum(pWorker->getThreadNum());
 
     return H_RTN_OK;
 }
@@ -188,34 +168,6 @@ void runSV(void)
     pLog->Join();
 }
 
-H_SOCK initSock(const char *pszHost, const unsigned short &usPort)
-{
-    H_SOCK cmdSock = H_INVALID_SOCK;
-    CNETAddr objAddr;
-
-    if (H_RTN_OK != objAddr.setAddr(pszHost, usPort))
-    {
-        H_Printf("%s", "setAddr error.");
-        return H_RTN_FAILE;
-    }
-    //创建socket
-    cmdSock = socket(AF_INET, SOCK_STREAM, 0);
-    if (H_INVALID_SOCK == cmdSock)
-    {
-        H_Printf("%s", "creat socket error.");
-        return H_RTN_FAILE;
-    }
-    if (0 != connect(cmdSock, objAddr.getAddr(), (int)objAddr.getAddrSize()))
-    {
-        H_Printf("connect %s on port %d error.", pszHost, usPort);
-        evutil_closesocket(cmdSock);
-
-        return H_RTN_FAILE;
-    }
-
-    return cmdSock;
-}
-
 int runCommand(H_SOCK &sock, const char *pszCommand, const char *pszMode, const char *pszMsg)
 {
     CClock objClock;
@@ -272,78 +224,23 @@ void onCommand(H_SOCK &cmdSock)
         H_Zero(acCMD, sizeof(acCMD));
         std::cin.getline(acCMD, sizeof(acCMD) - 1);
         std::string strInput = H_Trim(std::string(acCMD));
-        if (strInput.empty())
-        {
-            continue;
-        }
-        if (strInput == "quit")
+        if (strInput.empty()
+            || "quit" == strInput)
         {
             break;
         }
 
-        if (!bRunLua)
+        //lua命令输入
+        if (bRunLua)
         {
-            std::list<std::string> lstCmd;
-            std::list<std::string>::iterator itCmd;
-            H_Split(strInput, " ", lstCmd);
-            for (itCmd = lstCmd.begin(); lstCmd.end() != itCmd;)
-            {
-                if (itCmd->size() == 0)
-                {
-                    itCmd = lstCmd.erase(itCmd);
-                }
-                else
-                {
-                    itCmd++;
-                }
-            }
-
-            itCmd = lstCmd.begin();
-            if (*itCmd == "hotfix")
-            {
-                if (lstCmd.size() != 3)
-                {
-                    printf("==>command error.\n");
-                    continue;
-                }
-
-                itCmd++;
-                strTask = *itCmd;
-                itCmd++;
-                std::string strFile = *itCmd;
-                if (H_RTN_OK != runCommand(cmdSock, "hotfix", strTask.c_str(), strFile.c_str()))
-                {
-                    printf("==>connect closed.\n");
-                    break;
-                }
-                continue;
-            }
-            if (*itCmd == "do")
-            {
-                if (lstCmd.size() != 2)
-                {
-                    printf("==>command error.\n");
-                    continue;
-                }
-
-                strCmd.clear();
-                itCmd++;
-                strTask = *itCmd;
-                bRunLua = true;
-                printf("==>begin input lua code.\n");
-                continue;
-            }
-            printf("==>unknown command.\n");
-        }
-        else
-        {
-            if (strInput == "exit")
+            if ("exit" == strInput)
             {
                 bRunLua = false;
                 printf("==>end input lua code.\n");
                 continue;
             }
-            if (strInput == "done")
+
+            if ("done" == strInput)
             {
                 bRunLua = false;
                 printf("==>end input lua code.\n");
@@ -354,8 +251,66 @@ void onCommand(H_SOCK &cmdSock)
                 }
                 continue;
             }
+
             strCmd += strInput + "\n";
+            continue;
         }
+
+        std::list<std::string> lstCmd;
+        std::list<std::string>::iterator itCmd;
+        //命令解析 去空
+        H_Split(strInput, " ", lstCmd);
+        for (itCmd = lstCmd.begin(); lstCmd.end() != itCmd;)
+        {
+            if (itCmd->empty())
+            {
+                itCmd = lstCmd.erase(itCmd);
+            }
+            else
+            {
+                itCmd++;
+            }
+        }
+
+        itCmd = lstCmd.begin();
+        //热更新
+        if ("hotfix" == *itCmd)
+        {
+            if (lstCmd.size() != 3)
+            {
+                printf("==>command error.\n");
+                continue;
+            }
+
+            itCmd++;
+            strTask = *itCmd;
+            itCmd++;
+            std::string strFile = *itCmd;
+            if (H_RTN_OK != runCommand(cmdSock, "hotfix", strTask.c_str(), strFile.c_str()))
+            {
+                printf("==>connect closed.\n");
+                break;
+            }
+            continue;
+        }
+
+        //进入lua命令输入
+        if ("do" == *itCmd)
+        {
+            if (lstCmd.size() != 2)
+            {
+                printf("==>command error.\n");
+                continue;
+            }
+
+            strCmd.clear();
+            itCmd++;
+            strTask = *itCmd;
+            bRunLua = true;
+            printf("==>begin input lua code.\n");
+            continue;
+        }
+        printf("==>unknown command.\n");
     }
 }
 
@@ -378,7 +333,7 @@ int main(int argc, char *argv[])
         printf("command:\n    quit\n    exit\n    hotfix taskname(or all) filename\n    do taskname .... done\n");
 
         const char *pszHost = "127.0.0.1";
-        H_SOCK cmdSock = initSock(pszHost, usPort);
+        H_SOCK cmdSock = H_ClientSock(pszHost, usPort);
         if (H_INVALID_SOCK == cmdSock)
         {
             return H_RTN_FAILE;

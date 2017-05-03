@@ -29,15 +29,15 @@ void CAES::setKey(const char *pszKey, const unsigned int uiKeyType)
     size_t iKeyLens(KEYLENGTH(uiKeyType));
 
     m_pEncodeRK = new(std::nothrow) unsigned long[iRKLens + 1];
-    H_ASSERT(m_pEncodeRK, "malloc memory error.");
+    H_ASSERT(NULL != m_pEncodeRK, "malloc memory error.");
     H_Zero(m_pEncodeRK, iRKLens + 1);
 
     m_pDecodeRK = new(std::nothrow) unsigned long[iRKLens + 1];
-    H_ASSERT(m_pDecodeRK, "malloc memory error.");
+    H_ASSERT(NULL != m_pDecodeRK, "malloc memory error.");
     H_Zero(m_pDecodeRK, iRKLens + 1);
 
     unsigned char * pKey = new(std::nothrow) unsigned char[iKeyLens + 1];
-    H_ASSERT(pKey, "malloc memory error.");
+    H_ASSERT(NULL != pKey, "malloc memory error.");
     H_Zero(pKey, iKeyLens + 1);
     memcpy(pKey, pszKey, strlen(pszKey) > iKeyLens ? iKeyLens : strlen(pszKey));
 
@@ -49,7 +49,7 @@ void CAES::setKey(const char *pszKey, const unsigned int uiKeyType)
 
 std::string CAES::Encode(const char *pszPlaint, const size_t iLens)
 {
-    H_ASSERT(m_pEncodeRK, "pointer is null.");
+    H_ASSERT(NULL != m_pEncodeRK, "pointer is null.");
 
     size_t iCopyLen(H_INIT_NUMBER);
     bool bFill(false);
@@ -90,7 +90,7 @@ std::string CAES::Encode(const char *pszPlaint, const size_t iLens)
 
 std::string CAES::Decode(const char *pszCipher, const size_t iLens)
 {
-    H_ASSERT(m_pDecodeRK, "pointer is null.");
+    H_ASSERT(NULL != m_pDecodeRK, "pointer is null.");
 
     unsigned char m_uacPlain[AES_BlockSize] = {0};
     unsigned char m_uacCipher[AES_BlockSize] = {0};

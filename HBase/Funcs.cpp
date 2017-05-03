@@ -120,7 +120,7 @@ std::string H_Now(void)
 
 int H_FileExist(const char *pszFileName)
 {
-    H_ASSERT(pszFileName, "pointer is null.");
+    H_ASSERT(NULL != pszFileName, "pointer is null.");
 
     return H_ACCESS(pszFileName, 0);
 }
@@ -750,6 +750,34 @@ int H_GetSockDataLens(H_SOCK &fd)
 
     return iNRead;
 #endif
+}
+
+H_SOCK H_ClientSock(const char *pszHost, const unsigned short &usPort)
+{
+    CNETAddr objAddr;
+    if (H_RTN_OK != objAddr.setAddr(pszHost, usPort))
+    {
+        H_Printf("%s", "setAddr error.");
+        return H_INVALID_SOCK;
+    }
+
+    //´´½¨socket
+    H_SOCK sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (H_INVALID_SOCK == sock)
+    {
+        H_Printf("%s", "creat socket error.");
+        return H_INVALID_SOCK;
+    }
+
+    if (0 != connect(sock, objAddr.getAddr(), (int)objAddr.getAddrSize()))
+    {
+        H_Printf("connect %s on port %d error.", pszHost, usPort);
+        evutil_closesocket(sock);
+
+        return H_INVALID_SOCK;
+    }
+
+    return sock;
 }
 
 H_ENAMSP

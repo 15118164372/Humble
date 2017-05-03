@@ -20,7 +20,7 @@ std::string H_ZEncode(const char *pszVal, const size_t iLens)
     stStream.zalloc = (alloc_func)Z_NULL;
     stStream.zfree = (free_func)Z_NULL;
 
-    iErr = deflateInit2(&stStream, Z_DEFAULT_COMPRESSION, 
+    iErr = deflateInit2(&stStream, Z_DEFAULT_COMPRESSION,
         Z_DEFLATED, MAX_WBITS, DEF_MEM_LEVEL, Z_DEFAULT_STRATEGY);
     if (Z_OK != iErr)
     {
@@ -30,38 +30,38 @@ std::string H_ZEncode(const char *pszVal, const size_t iLens)
         return "";
     }
 
-    do 
+    do
     {
         iErr = deflate(&stStream, Z_FINISH);
-        switch(iErr) 
+        switch (iErr)
         {
-        case(Z_STREAM_END):
+            case(Z_STREAM_END):
             {
                 strRtn.append(acBuffer, (stStream.total_out - iCount));
                 iCount = stStream.total_out;
             }
             break;
-        case(Z_BUF_ERROR):
+            case(Z_BUF_ERROR):
             {
-                if (stStream.avail_out > 0) 
+                if (stStream.avail_out > 0)
                 {
                     H_Printf("deflate error, code %d.", iErr);
-                    (void)deflateEnd(&stStream);                    
+                    (void)deflateEnd(&stStream);
                     return "";
                 }
             }
-        case(Z_OK):
+            case(Z_OK):
             {
                 strRtn.append(acBuffer, (stStream.total_out - iCount));
-                stStream.next_out = (unsigned char *)acBuffer;                
+                stStream.next_out = (unsigned char *)acBuffer;
                 stStream.avail_out = (uInt)sizeof(acBuffer);
                 iCount = stStream.total_out;
             }
             break;
-        default:
+            default:
             {
                 H_Printf("deflate error, code %d.", iErr);
-                (void)deflateEnd(&stStream);                
+                (void)deflateEnd(&stStream);
                 return "";
             }
             break;
@@ -96,39 +96,39 @@ std::string H_ZDecode(const char *pszVal, const size_t iLens)
 
         return "";
     }
-    
-    do 
+
+    do
     {
         iErr = inflate(&stStream, Z_FINISH);
-        switch(iErr) 
+        switch (iErr)
         {
-        case(Z_STREAM_END):
+            case(Z_STREAM_END):
             {
                 strRtn.append(acBuffer, (stStream.total_out - iCount));
                 iCount = stStream.total_out;
             }
             break;
-        case(Z_BUF_ERROR):
+            case(Z_BUF_ERROR):
             {
-                if (stStream.avail_out > 0) 
+                if (stStream.avail_out > 0)
                 {
                     H_Printf("inflate error, code %d.", iErr);
-                    (void)inflateEnd(&stStream);                    
+                    (void)inflateEnd(&stStream);
                     return "";
                 }
             }
-        case(Z_OK):
+            case(Z_OK):
             {
                 strRtn.append(acBuffer, (stStream.total_out - iCount));
-                stStream.next_out = (unsigned char *)acBuffer;                
+                stStream.next_out = (unsigned char *)acBuffer;
                 stStream.avail_out = (uInt)sizeof(acBuffer);
                 iCount = stStream.total_out;
             }
             break;
-        default:
+            default:
             {
                 H_Printf("inflate error, code %d.", iErr);
-                (void)inflateEnd(&stStream);                
+                (void)inflateEnd(&stStream);
                 return "";
             }
             break;

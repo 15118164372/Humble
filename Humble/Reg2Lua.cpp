@@ -34,7 +34,10 @@ std::string md5File(const char *pszFile)
 
 CWorkerTask *newLuaTask(const int iCapacity)
 {
-    return new CLuaTask(iCapacity);
+    CWorkerTask *pTask = new(std::nothrow) CLuaTask(iCapacity);
+    H_ASSERT(NULL != pTask, "malloc memory error.");
+
+    return pTask;
 }
 
 const char *getProPath(void)

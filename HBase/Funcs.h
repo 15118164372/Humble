@@ -39,6 +39,7 @@ void H_KeepAlive(H_SOCK &fd, const unsigned int iKeepIdle, const unsigned int iK
 int H_SockPair(H_SOCK acSock[2]);
 bool H_SockWrite(H_SOCK &fd, const char *pBuf, const size_t &iLens);
 int H_GetSockDataLens(H_SOCK &fd);
+H_SOCK H_ClientSock(const char *pszHost, const unsigned short &usPort);
 
 /*×ª×Ö·û´®*/
 template<typename T>

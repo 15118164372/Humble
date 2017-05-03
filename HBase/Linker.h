@@ -27,7 +27,6 @@ public:
 
 private:
     H_DISALLOWCOPY(CLinker);
-    H_SOCK initSock(const char *pszHost, const unsigned short &usPort);
 };
 
 H_ENAMSP

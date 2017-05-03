@@ -16,9 +16,9 @@
 
 #define H_QULENS_LINKER              H_ONEK
 #define H_QULENS_WORKER              H_ONEK
-#define H_QULENS_LOG                 H_ONEK * 10
-#define H_QULENS_SENDER              H_ONEK * 10 * 10
-#define H_QULENS_WORKERDISP          H_ONEK * 10 * 10
+#define H_QULENS_LOG                 H_ONEK * 10 * 5
+#define H_QULENS_SENDER              H_ONEK * 10 * 10 * 10
+#define H_QULENS_WORKERDISP          H_ONEK * 10 * 10 * 10
 
 #define H_INVALID_SOCK               -1
 #define H_INVALID_ID                 -1
