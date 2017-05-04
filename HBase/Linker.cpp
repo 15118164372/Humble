@@ -18,8 +18,7 @@ CLinker::~CLinker(void)
 }
 
 void CLinker::runTask(H_Link *pMsg)
-{
-    H_Printf("try link %s on port %d", pMsg->pHost, pMsg->usPort);
+{    
     H_SOCK sock = H_ClientSock(pMsg->pHost, pMsg->usPort);
     if (H_INVALID_SOCK == sock)
     {

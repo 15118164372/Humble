@@ -4,9 +4,13 @@
 
 H_BNAMSP
 
-void luaLog(const unsigned short usLV, const char *pInfo)
+unsigned short getLogPriority(void) 
 {
-    H_LOG((LOG_LEVEL)usLV, "%s", pInfo);
+    return CLog::getSingletonPtr()->getPriority();
+}
+void luaLog(const unsigned short usLV, const char *pszLuaFile, const int iLine, const char *pInfo)
+{
+    CLog::getSingletonPtr()->writeLog((LOG_LEVEL)usLV, "[%s %d] %s", pszLuaFile, iLine, pInfo);
 }
 
 void LSleep(const unsigned int uiMs)
@@ -250,6 +254,7 @@ void H_RegFuncs(struct lua_State *pLState)
 {
     luabridge::getGlobalNamespace(pLState)
         .addFunction("Sleep", LSleep)
+        .addFunction("getLogPriority", getLogPriority)
         .addFunction("H_LOG", luaLog)
         .addFunction("CRC16", H_CRC16)
         .addFunction("CRC32", H_CRC32)

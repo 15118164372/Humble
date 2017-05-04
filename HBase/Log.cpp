@@ -27,6 +27,10 @@ void CLog::setPriority(const unsigned short usLV)
 {
     m_emLV = (LOG_LEVEL)usLV;
 }
+unsigned short CLog::getPriority(void)
+{
+    return (unsigned short)m_emLV;
+}
 void CLog::setLogFile(const char *pLogFile)
 {
     m_strLogFile = pLogFile;

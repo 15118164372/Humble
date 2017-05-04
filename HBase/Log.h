@@ -23,6 +23,7 @@ public:
     ~CLog(void);
 
     void setPriority(const unsigned short usLV);
+    unsigned short getPriority(void);
     void setLogFile(const char *pLogFile);
     void Open(void);
     void runTask(std::string *pMsg);

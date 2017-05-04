@@ -179,8 +179,7 @@ void CNetWorker::onOrder(H_Order *pOrder)
                 H_SafeDelete(pListener);
                 break;
             }
-
-            H_Printf("listen at host %s port %d.", pOrder->acHost, pOrder->usPort);            
+       
             m_mapListener[pOrder->uiSession] = pListener;
         }
         break;

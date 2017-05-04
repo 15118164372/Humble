@@ -102,7 +102,7 @@ local function dispRPC(sock, uiSession)
 		if objChan then
 			utile.chanSend(objChan, utile.Pack(tRPC.Enevt, nil, sock, uiSession, tRPC))
 		else
-			utile.Log(LogLV.Err, "not find task %s", tRPC.RecvTask)
+			utile.Errorf("not find task %s", tRPC.RecvTask)
 		end
 	end
 end

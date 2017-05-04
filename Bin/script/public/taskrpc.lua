@@ -35,7 +35,7 @@ function TaskRPC:regRPC(strRPCName, Func)
 	assert("function" == type(Func))
 	
 	self.Proto[strRPCName] = Func
-    utile.Debug("register task rpc protocol %s", strRPCName)
+    utile.Debugf("register task rpc protocol %s", strRPCName)
 end
 
 function TaskRPC:onRPC(tRPC)
@@ -45,13 +45,13 @@ function TaskRPC:onRPC(tRPC)
 		if Func then
 			tRPC.Rnt, tRPC.Param = utile.callFunc(Func, table.unpack(tRPC.Param))
 			if not tRPC.Rnt then
-				utile.Log(LogLV.Err, "%s call task rpc %s error,message: %s, .", 
+				utile.Errorf("%s call task rpc %s error,message: %s, .", 
 					tRPC.RecvTask, tRPC.Method, tRPC.Param)
 			end
 		else
 			tRPC.Rnt = false
 			tRPC.Param = string.format("not find task rpc method %s", tRPC.Method)
-			utile.Log(LogLV.Err, "%s", tRPC.Param)
+			utile.Errorf("%s", tRPC.Param)
 		end		
 		
 		if 0 ~= tRPC.ID then
@@ -60,7 +60,7 @@ function TaskRPC:onRPC(tRPC)
 			if objChan then
 				utile.chanSend(objChan, utile.Pack(EnevtType.TaskRPCRtn, nil, tRPC))
 			else
-				utile.Log(LogLV.Err, "task rpc %s, not find recv task %s.", tRPC.Method, tRPC.RecvTask)
+				utile.Errorf("task rpc %s, not find recv task %s.", tRPC.Method, tRPC.RecvTask)
 			end
 		end
 		
@@ -82,7 +82,7 @@ function TaskRPC:removeById(rpcId)
 	
 	local rpcCash = self.RPCCash[rpcId]
 	if rpcCash then
-		utile.Log(LogLV.Warn, "call task rpc %s timeout.", rpcCash.Method)
+		utile.Warnf("call task rpc %s timeout.", rpcCash.Method)
 		self.RPCCash[rpcId] = nil
 	end
 end
@@ -99,7 +99,7 @@ end
 function TaskRPC:callRPC(strToTask, strRecvTask, strRPCName, tRPCParam, Func, ...)
 	local objChan = humble.getChan(strToTask)
 	if not objChan then
-		utile.Log(LogLV.Err, "call task rpc %s, not find target task %s.", strRPCName, strToTask)
+		utile.Errorf("call task rpc %s, not find target task %s.", strRPCName, strToTask)
 		return
 	end
 	

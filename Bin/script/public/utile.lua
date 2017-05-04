@@ -25,7 +25,7 @@ local b64Decode = b64Decode
 local md5Str = md5Str
 local md5File = md5File
 local LogLV = LogLV
-local bDebug = true
+local logPriority = getLogPriority()
 
 local utile = {}
 
@@ -50,16 +50,53 @@ function utile.dayInMonth(year, mon)
 	return day
 end
 
-function utile.Debug(fmt, ...)
-    if bDebug then
-        local strMsg = string.format(fmt, table.unpack({...}))
-        print(string.format("[%s][LDEBUG] %s", os.date("%Y-%m-%d %H:%M:%S"), strMsg))
-    end
+local function getFileName(strFile)
+	local strName = string.match(strFile, ".+/([^/]*%.%w+)$")
+	if nil == strName or 0 == #strName then
+		strName = string.match(strFile, ".+\\([^\\]*%.%w+)$")
+	end
+	
+	return strName
 end
 
-function utile.Log(loglv, fmt, ...)
-    local strmsg = string.format(fmt, table.unpack({...}))
-    H_LOG(loglv, strmsg)
+function utile.Debugf(fmt, ...)	
+	if LogLV.Debug > logPriority then
+		return
+	end
+	
+    local strMsg = string.format(fmt,table.unpack({...}))
+	local stack = debug.getinfo(2)
+	H_LOG(LogLV.Debug, getFileName(stack.short_src), stack.currentline, strMsg)
+end
+
+function utile.Infof(fmt, ...)
+	if LogLV.Info > logPriority then
+		return
+	end
+	
+    local strMsg = string.format(fmt, table.unpack({...}))
+	local stack = debug.getinfo(2)
+	H_LOG(LogLV.Info, getFileName(stack.short_src), stack.currentline, strMsg)
+end
+
+function utile.Warnf(fmt, ...)
+	if LogLV.Warn > logPriority then
+		return
+	end
+	
+    local strMsg = string.format(fmt, table.unpack({...}))
+	local stack = debug.getinfo(2)
+	H_LOG(LogLV.Warn, getFileName(stack.short_src), stack.currentline, strMsg)
+end
+
+function utile.Errorf(fmt, ...)
+	if LogLV.Err > logPriority then
+		return
+	end
+	
+    local strMsg = string.format(fmt, table.unpack({...}))
+	local stack = debug.getinfo(2)
+	H_LOG(LogLV.Err, getFileName(stack.short_src), stack.currentline, strMsg)
 end
 
 function utile.CRC16(strval)
@@ -132,8 +169,8 @@ function utile.callFunc(Func, ...)
 
     local function onExcept(strMsg)
         local strStack = debug.trace(3, true, 2)
-        utile.Log(LogLV.Err, "%s", strMsg)
-        utile.Log(LogLV.Err, "%s", strStack)
+        utile.Errorf("%s", strMsg)
+        utile.Errorf("%s", strStack)
     end
     
     return xpcall(Func, onExcept, table.unpack({...}))

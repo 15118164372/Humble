@@ -24,7 +24,7 @@ function EnevtDisp:onEvent(protocol, ...)
     if Func then
         utile.callFunc(Func, table.unpack{...})
 	else
-		utile.Log(LogLV.Err, "enevt protocol %s may not register.", tostring(protocol))
+		utile.Errorf("enevt protocol %s may not register.", tostring(protocol))
     end
 end
 
@@ -33,7 +33,7 @@ function EnevtDisp:regEvent(protocol, Func)
 	assert("function" == type(Func))
 	
 	self.Proto[protocol] = Func
-    utile.Debug("register enevt protocol %s", tostring(protocol))
+    utile.Debugf("register enevt protocol %s", tostring(protocol))
 end
 
 return EnevtDisp

@@ -41,7 +41,7 @@ function SVRPC:regRPC(strRPCName, Func)
 	humble.regProto(strRPCName, self.TaskName)
 	
 	self.Proto[strRPCName] = Func
-    utile.Debug("register service rpc protocol %s", strRPCName)
+    utile.Debugf("register service rpc protocol %s", strRPCName)
 end
 
 --rpc÷¥––
@@ -52,13 +52,13 @@ function SVRPC:onRPC(uiSock, uiSession, tRPC)
 		if Func then
 			tRPC.Rnt, tRPC.Param = utile.callFunc(Func, table.unpack(tRPC.Param))
 			if not tRPC.Rnt then
-				utile.Log(LogLV.Err, "%s call sv rpc %s error,message: %s, .", 
+				utile.Errorf("%s call sv rpc %s error,message: %s, .", 
 					tRPC.RecvTask, tRPC.Method, tRPC.Param)
 			end
 		else
 			tRPC.Rnt = false
 			tRPC.Param = string.format("not find service rpc method %s", tRPC.Method)
-			utile.Log(LogLV.Err, "%s", tRPC.Param)
+			utile.Errorf("%s", tRPC.Param)
 		end
 		
 		if 0 ~= tRPC.ID then
@@ -85,7 +85,7 @@ function SVRPC:removeById(rpcId)
 	
 	local rpcCash = self.RPCCash[rpcId]
 	if rpcCash then
-		utile.Log(LogLV.Warn, "call service rpc %s timeout.", rpcCash.Method)
+		utile.Warnf("call service rpc %s timeout.", rpcCash.Method)
 		self.RPCCash[rpcId] = nil
 	end
 end
