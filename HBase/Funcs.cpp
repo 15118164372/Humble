@@ -118,6 +118,16 @@ std::string H_Now(void)
     return std::string(acTimeStr);
 }
 
+std::string H_Date(void)
+{
+    char acTimeStr[H_TIME_LENS] = { 0 };
+    time_t t(time(NULL));
+
+    strftime(acTimeStr, sizeof(acTimeStr) - 1, "%Y-%m-%d", localtime(&t));
+
+    return std::string(acTimeStr);
+}
+
 int H_FileExist(const char *pszFileName)
 {
     H_ASSERT(NULL != pszFileName, "pointer is null.");
@@ -193,7 +203,9 @@ int H_DirName(const char *pszPath, std::string &strPath)
         strPath = strPath.substr(0, iPos);
     }
 #else
-    strPath = dirname((char*)pszPath);
+    char acTmp[H_FILEPATH_LENS] = { 0 };
+    memcpy(acTmp, pszPath, iLens);
+    strPath = dirname(acTmp);
 #endif 
 
     return H_RTN_OK;

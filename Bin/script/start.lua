@@ -44,7 +44,7 @@ function onStart()
 	humble.regTask("echo1", 1024 * 10)
 	humble.regTask("echo2", 1024 * 10)
     tChan.echo1 = humble.getChan("echo1")
-	tChan.echo2 = humble.getChan("echo2")
+	tChan.echo2 = humble.getChan("echo2")	
 end
 
 --ÍË³ö

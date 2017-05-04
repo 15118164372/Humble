@@ -21,6 +21,7 @@ std::string H_GetLastOfFlag(const std::string &strSource, const char *pszFlag);
 
 //时间相关
 std::string H_Now(void);
+std::string H_Date(void);
 void H_GetTimeOfDay(struct timeval &stTime);
 
 //文件相关

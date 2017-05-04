@@ -4,14 +4,13 @@
 
 H_BNAMSP
 
-#define H_DefLogNam "log.txt"
 SINGLETON_INIT(CLog)
 CLog objLog;
 
 CLog::CLog(void) : CRecvTask<std::string>(H_QULENS_LOG),
-    m_emLV(LOGLV_DEBUG), m_pFile(NULL), m_strLogFile(H_DefLogNam)
+    m_emLV(LOGLV_DEBUG), m_pFile(NULL)
 {
-
+    m_strCurDate = H_Date();
 }
 
 CLog::~CLog(void)
@@ -32,7 +31,7 @@ unsigned short CLog::getPriority(void)
     return (unsigned short)m_emLV;
 }
 void CLog::setLogFile(const char *pLogFile)
-{
+{    
     m_strLogFile = pLogFile;
 }
 
@@ -64,15 +63,55 @@ const char * CLog::getLV(LOG_LEVEL emInLogLv) const
     return "UNKNOWN";
 }
 
-void CLog::runTask(std::string *pMsg)
-{    
+void CLog::renameLog(void)
+{
+    std::string strDate = H_Date();
+    if (strDate == m_strCurDate)
+    {
+        return;
+    }
+    
     if (NULL != m_pFile)
     {
-        fwrite(pMsg->c_str(), 1, pMsg->size(), m_pFile);
+        fclose(m_pFile);
+        m_pFile = NULL;
     }
+
+    std::string strPath;
+    (void)H_DirName(m_strLogFile.c_str(), strPath);
+
+    std::string strNewName = strPath + H_PATH_SEPARATOR + m_strCurDate + ".txt";
+    int iCount = H_INIT_NUMBER;
+    while (true)
+    {
+        if (H_RTN_OK != H_FileExist(strNewName.c_str()))
+        {
+            break;
+        }
+
+        iCount++;
+        strNewName = strPath + H_PATH_SEPARATOR + m_strCurDate + "(" + H_ToString(iCount) + ").txt";
+    }
+
+    (void)rename(m_strLogFile.c_str(), strNewName.c_str());
+    Open();
+
+    m_strCurDate = strDate;
+}
+
+void CLog::runTask(std::string *pMsg)
+{
+    renameLog();
+
+    std::string strMsg = "[" + H_Now() + "]" + *pMsg;
+    if (NULL != m_pFile)
+    {
+        fwrite(strMsg.c_str(), 1, strMsg.size(), m_pFile);
+    }
+
     if (LOGLV_DEBUG == m_emLV)
     {
-        printf("%s", pMsg->c_str());
+        printf("%s", strMsg.c_str());
     }
 }
 
@@ -85,10 +124,7 @@ void CLog::writeLog(const LOG_LEVEL emInLogLv, const char *pFormat, ...)
     }
 
     std::string *pstrVa = newT();
-
     pstrVa->append("[");
-    pstrVa->append(H_Now());
-    pstrVa->append("][");
     pstrVa->append(getLV(emInLogLv));
     pstrVa->append("]");
 

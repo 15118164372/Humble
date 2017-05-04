@@ -32,11 +32,13 @@ public:
 private:
     H_DISALLOWCOPY(CLog);
     const char *getLV(LOG_LEVEL emInLogLv) const;
+    void renameLog(void);
 
 private:
     LOG_LEVEL m_emLV;
     FILE *m_pFile;
     std::string m_strLogFile;
+    std::string m_strCurDate;
 };
 
 #define H_LOG(emLogLV, acFormat, ...) \
