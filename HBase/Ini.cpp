@@ -176,6 +176,8 @@ const char *CIniFile::getStringValue(const char *pszNode, const char *pszKey, co
         }
     }
 
+    H_Printf("not find node %s key %s", pszNode, pszKey);
+
     return pszDefault;
 }
 
