@@ -58,7 +58,7 @@ void CWorkerDisp::regTask(const char *pszName, CWorkerTask *pTask)
 
     taskit itTask = m_mapTask.find(strName);
     H_ASSERT(m_mapTask.end() == itTask, H_FormatStr("task %s already exist.", pszName).c_str());
-            
+    
     pTask->setName(pszName);
     m_mapTask.insert(std::make_pair(strName, pTask));
 }
