@@ -21,15 +21,13 @@ function SVRPC:new(strTaskName)
 	assert(strTaskName and 0 ~= #strTaskName)
     local self = {}
     setmetatable(self, SVRPC)
-    
-	local objId = CSnowFlake()
-	objId:setWorkid(1)
-	objId:setCenterid(1)
 	
     self.TaskName = strTaskName
 	self.Proto = {}	
-	self.SnowFlake = objId
+	self.Id = 0
 	self.RPCCash = {}
+	self.curSock = -1
+	self.curSession = -1
 
     return self
 end
@@ -44,8 +42,16 @@ function SVRPC:regRPC(strRPCName, Func)
     utile.Debugf("register service rpc protocol %s", strRPCName)
 end
 
+--获取当前执行rpc消息的sock session 信息
+function SVRPC:getCurSock()
+	return self.curSock, self.curSession
+end
+
 --rpc执行
 function SVRPC:onRPC(uiSock, uiSession, tRPC)
+	self.curSock = uiSock
+	self.curSession = uiSession
+	
 	--rpc 调用
 	if tRPC.Enevt == EnevtType.CallRPC then
 		local Func = self.Proto[tRPC.Method]
@@ -98,12 +104,17 @@ function SVRPC:createParam(...)
 	return {...}
 end
 
+function SVRPC:getID()
+	self.Id = self.Id + 1
+	return self.Id
+end
+
 --调用 Func(rpcOK, rpcMsg, ...)  Func为nil表示不需要返回
 function SVRPC:callRPC(uiSock, uiSession, strRecvTask, strRPCName, tRPCParam, Func, ...)
 	local rpcId = 0
 	if Func then
 		assert("function" == type(Func))
-		rpcId = self.SnowFlake:getID()
+		rpcId = self:getID()
 		local tRPCBC = {}
 		tRPCBC.Func = Func
 		tRPCBC.Method = strRPCName

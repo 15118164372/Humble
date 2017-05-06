@@ -18,13 +18,9 @@ TaskRPC.__index = TaskRPC
 function TaskRPC:new()
     local self = {}
     setmetatable(self, TaskRPC)
-    
-	local objId = CSnowFlake()
-	objId:setWorkid(1)
-	objId:setCenterid(1)
-	
+    	
 	self.Proto = {}	
-	self.SnowFlake = objId
+	self.Id = 0
 	self.RPCCash = {}
 
     return self
@@ -95,6 +91,11 @@ function TaskRPC:createParam(...)
 	return {...}
 end
 
+function TaskRPC:getID()
+	self.Id = self.Id + 1
+	return self.Id
+end
+
 --调用 Func(rpcOK, rpcMsg, ...) Func为nil表示不需要返回
 function TaskRPC:callRPC(strToTask, strRecvTask, strRPCName, tRPCParam, Func, ...)
 	local objChan = humble.getChan(strToTask)
@@ -106,7 +107,7 @@ function TaskRPC:callRPC(strToTask, strRecvTask, strRPCName, tRPCParam, Func, ..
 	local rpcId = 0
 	if Func then
 		assert("function" == type(Func))
-		rpcId = self.SnowFlake:getID()
+		rpcId = self:getID()
 		local tRPCBC = {}
 		tRPCBC.Func = Func
 		tRPCBC.Method = strRPCName
@@ -120,7 +121,7 @@ function TaskRPC:callRPC(strToTask, strRecvTask, strRPCName, tRPCParam, Func, ..
 	tCallRPC.Param = tRPCParam
 	tCallRPC.RecvTask = strRecvTask
 	tCallRPC.Method = strRPCName
-
+	
 	utile.chanSend(objChan, utile.Pack(EnevtType.TaskCallRPC, nil, tCallRPC))
 	
 	return rpcId

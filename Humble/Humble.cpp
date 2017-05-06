@@ -110,6 +110,7 @@ int init(void)
     pTick->setTick(objIni.getIntValue("Main", "tick"));
     pWorker->setThreadNum(objIni.getIntValue("Main", "thread"));
     pTick->setThreadNum(pWorker->getThreadNum());
+    g_strSVId = objIni.getStringValue("Main", "id");
 
     return H_RTN_OK;
 }

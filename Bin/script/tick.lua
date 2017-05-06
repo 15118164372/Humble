@@ -13,6 +13,8 @@ local tChan = g_tChan
 
 --定时器初始化
 function onStart()
+	tChan.task_rpclink = humble.getChan("task_rpclink")
+	
 	tChan.echo2 = humble.getChan("echo2")
 end
 
@@ -27,7 +29,9 @@ function onTimer(uiTick, uiCount)
 	--utile.chanSend(tChan.timer, utile.Pack(EnevtType.Frame, nil, uiTick, uiCount))
     
     --1秒
-    if 0 == ((uiTick * uiCount) % 1000) then 
+    if 0 == ((uiTick * uiCount) % 1000) then
+		utile.chanSend(tChan.task_rpclink, utile.Pack(EnevtType.Second_1, nil, uiTick, uiCount))
+		
 		utile.chanSend(tChan.echo2, utile.Pack(EnevtType.Second_1, nil, uiTick, uiCount))
     end
 end

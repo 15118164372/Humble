@@ -4,6 +4,11 @@
 
 H_BNAMSP
 
+std::string getSVId(void)
+{
+    return g_strSVId;
+}
+
 unsigned short getLogPriority(void) 
 {
     return CLog::getSingletonPtr()->getPriority();
@@ -253,6 +258,7 @@ void H_RegGlobal(struct lua_State *pLState)
 void H_RegFuncs(struct lua_State *pLState)
 {
     luabridge::getGlobalNamespace(pLState)
+        .addFunction("getSVId", getSVId)
         .addFunction("Sleep", LSleep)
         .addFunction("getLogPriority", getLogPriority)
         .addFunction("H_LOG", luaLog)

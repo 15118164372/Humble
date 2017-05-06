@@ -14,13 +14,14 @@ local EnevtType = EnevtType
 local SockType = SockType
 local pBuffer = g_pBuffer
 
---以下为测试
-local httpd = require("httpd")
 --任务名与chan对应
 if not g_tChan then
     g_tChan = {}    
 end
 local tChan = g_tChan
+
+--以下为测试
+local httpd = require("httpd")
 
 --初始化  这里注册任务
 function onStart()
@@ -28,19 +29,18 @@ function onStart()
 	humble.setParser(SockType.CMD, "tcp3")
 	humble.setParser(SockType.RPC, "tcp3")	
 	--命令监听
-	humble.addListener(SockType.CMD, "127.0.0.1", 15100)	
+	humble.addListener(SockType.CMD, "127.0.0.1", 15100)
 	--rpc
 	humble.addListener(SockType.RPC, "0.0.0.0", 15200)	
-	
-	--链接管理
-	humble.regTask("task_link", 1024 * 10)
-    tChan.task_link = humble.getChan("task_link")
-	
+	--rpc链接管理
+	humble.regTask("task_rpclink", 1024 * 10)
+	tChan.task_rpclink = humble.getChan("task_rpclink")
+		
 	--TODO
 	--以下为测试
-	humble.addTcpLink(SockType.RPC, "127.0.0.1", 15200)
-	humble.addListener(11, "0.0.0.0", 80)
-	humble.setParser(11, "http")
+	humble.addTcpLink(SockType.RPC, "127.0.0.1", 15201)
+	humble.addListener(SockType.HTTP, "0.0.0.0", 80)
+	humble.setParser(SockType.HTTP, "http")
 	humble.regTask("echo1", 1024 * 10)
 	humble.regTask("echo2", 1024 * 10)
     tChan.echo1 = humble.getChan("echo1")
@@ -54,17 +54,26 @@ end
 
 --accept到新链接
 function onTcpAccept(sock, uiSession, usSockType)
-	--utile.chanSend(tChan.xxx, utile.Pack(EnevtType.NetAccept, nil, sock, uiSession, usSockType))
+	if SockType.RPC == usSockType then
+		utile.chanSend(tChan.task_rpclink, utile.Pack(EnevtType.NetAccept, nil, sock, uiSession, usSockType))
+	else
+	end
 end
 
 --链接成功
 function onTcpLinked(sock, uiSession, usSockType)
-	utile.chanSend(tChan.task_link, utile.Pack(EnevtType.NetLinked, nil, sock, uiSession, usSockType))
+	if SockType.RPC == usSockType then
+		utile.chanSend(tChan.task_rpclink, utile.Pack(EnevtType.NetLinked, nil, sock, uiSession, usSockType))
+	else
+	end
 end
 
 --链接断开
 function onTcpClose(sock, uiSession, usSockType)
-	utile.chanSend(tChan.task_link, utile.Pack(EnevtType.NetClose, nil, sock, uiSession, usSockType))
+	if SockType.RPC == usSockType then
+		utile.chanSend(tChan.task_rpclink, utile.Pack(EnevtType.NetClose, nil, sock, uiSession, usSockType))
+	else
+	end
 end
 
 local function dispCMD(sock, uiSession)
@@ -107,23 +116,20 @@ local function dispRPC(sock, uiSession)
 	end
 end
 
+local function dispHttp(sock, uiSession)
+	local buffer = httpd.parsePack(pBuffer)
+	humble.netToTask(tChan, buffer.url, utile.Pack(EnevtType.TcpRead, buffer.url, sock, uiSession, buffer))
+end
+
 --tcp读到一完整的包
 function onTcpRead(sock, uiSession, usSockType)	
 	if SockType.CMD == usSockType then --命令
 		dispCMD(sock, uiSession)
 	elseif SockType.RPC == usSockType then --服务器间RPC
 		dispRPC(sock, uiSession)
-	else
-		--以下为测试
-		local strName = humble.getParserNam(usSockType)
-		if 0 == #strName then
-			return
-		end
-		if "http" == strName then
-			local buffer = httpd.parsePack(pBuffer)
-			--发送消息到对应任务
-			humble.netToTask(tChan, buffer.url, utile.Pack(EnevtType.TcpRead, buffer.url, sock, uiSession, buffer))
-		end
+	elseif SockType.HTTP == usSockType then
+		dispHttp(sock, uiSession)
+	else		
 	end	
 end
 

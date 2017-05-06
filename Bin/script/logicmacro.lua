@@ -27,7 +27,7 @@ EnevtType = table.enum(EnevtType, 0)
 SockType = {
 	"CMD", --ÃüÁî
 	"RPC",--rpc
-	"MONGO",--mongodb
+	"HTTP",--http
 	
 	--×Ô¶¨Òå
 }
