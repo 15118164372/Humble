@@ -266,11 +266,10 @@ void onCommand(H_SOCK &cmdSock)
             if (itCmd->empty())
             {
                 itCmd = lstCmd.erase(itCmd);
+                continue;
             }
-            else
-            {
-                itCmd++;
-            }
+            
+            itCmd++;
         }
 
         itCmd = lstCmd.begin();

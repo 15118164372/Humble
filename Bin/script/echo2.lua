@@ -22,7 +22,11 @@ local function rcpBack(bOk, rtnMsg, strType)
 end
 
 local function rpcGetLink(bOk, rtnMsg)
-	local rpcId = svRPC:callRPC(rtnMsg[1], rtnMsg[2], taskName, "echo1.add", svRPC:createParam(5, 5), rcpBack, "server rpc")
+	if not rtnMsg then
+		return
+	end
+	
+	local rpcId = svRPC:callRPC(rtnMsg.sock, rtnMsg.session, taskName, "echo1.add", svRPC:createParam(5, 5), rcpBack, "server rpc")
 	DEV_Reg(timeWheel, 5, removeRPC, svRPC, rpcId)
 end
 
@@ -37,7 +41,7 @@ local function echo(uiSock, uiSession, tMsg)
 	local rpcId = taskRPC:callRPC("echo1", taskName, "echo1.add", taskRPC:createParam(4, 8), rcpBack, "task rpc")
 	DEV_Reg(timeWheel, 5, removeRPC, taskRPC, rpcId)
 	
-	rpcId = taskRPC:callRPC("task_link", taskName, "task_link.getRandLink", taskRPC:createParam(SockType.RPC), rpcGetLink)
+	rpcId = taskRPC:callRPC("task_rpclink", taskName, "task_rpclink.getRPCLink", taskRPC:createParam("2"), rpcGetLink)
 	DEV_Reg(timeWheel, 5, removeRPC, taskRPC, rpcId)
 end
 netDisp:regNetEvent("/echo2", echo)

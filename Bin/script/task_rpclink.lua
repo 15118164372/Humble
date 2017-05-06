@@ -27,10 +27,10 @@ end
 local m_Register = g_Register
 
 --获取服务器id的链接信息
-local function getRPC(svId)
+local function getRPCLink(svId)
 	return m_RPCLink[svId]
 end
-taskRPC:regRPC("task_rpclink.getRPC", getRPC)
+taskRPC:regRPC("task_rpclink.getRPCLink", getRPCLink)
 
 --注册超时
 local function registerTimeOut(uiSock, uiSession)
