@@ -41,11 +41,6 @@ private:
 private:
     CRecvTask(void);
     H_DISALLOWCOPY(CRecvTask);
-    enum
-    {
-        RS_RUN = 0,
-        RS_STOP,
-    };
 
 private:
     bool m_bDel;
@@ -60,7 +55,7 @@ private:
 
 template <typename T>
 CRecvTask<T>::CRecvTask(const int iCapacity) : m_bDel(true), m_bArray(false), m_uiWait(H_INIT_NUMBER),
-    m_lExit(RS_RUN), m_lCount(H_INIT_NUMBER), m_quTask(iCapacity)
+    m_lExit(H_INIT_NUMBER), m_lCount(H_INIT_NUMBER), m_quTask(iCapacity)
 {
     pthread_mutex_init(&m_quLock, NULL);
     pthread_cond_init(&m_objCond, NULL);
@@ -98,7 +93,7 @@ void CRecvTask<T>::Run(void)
 
     H_AtomicAdd(&m_lCount, 1);
 
-    while(RS_RUN == H_AtomicGet(&m_lExit))
+    while(H_INIT_NUMBER == H_AtomicGet(&m_lExit))
     {
         if (NULL != pMsg)
         {
@@ -200,16 +195,16 @@ void CRecvTask<T>::setArray(const bool bArray)
 template <typename T>
 void CRecvTask<T>::Join(void)
 {
-    if (RS_RUN != H_AtomicGet(&m_lExit))
+    if (H_INIT_NUMBER != H_AtomicGet(&m_lExit))
     {
         return;
     }
 
     //等待任务队列完成
-    H_AtomicSet(&m_lExit, RS_STOP);
+    H_AtomicSet(&m_lExit, 1);
     for(;;)
     {
-        pthread_cond_broadcast(&m_objCond);
+        pthread_cond_signal(&m_objCond);
         if (H_INIT_NUMBER == H_AtomicGet(&m_lCount))
         {
             break;

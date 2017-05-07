@@ -7,17 +7,12 @@
 
 H_BNAMSP
 
-enum
-{
-    WS_FREE = 0,
-    WS_BUSY,
-};
-
 //服务基类
 class CWorkerTask : public CTask
 {
 public:
-    CWorkerTask(const char *pszName, const int iCapacity) : m_uiRef(H_INIT_NUMBER), m_objChan(iCapacity), m_strName(pszName)
+    CWorkerTask(const char *pszName, const int iCapacity) : m_objChan(iCapacity),
+        m_uiStatus(H_INIT_NUMBER), m_strName(pszName)
     {
         m_objChan.setTaskNam(&m_strName);
     };
@@ -33,17 +28,13 @@ public:
     virtual void runTask(void) = 0;
     virtual void destroyTask(void) = 0;
 
-    void addRef(void)
+    void setStatus(const unsigned int uiStatus)
     {
-        H_AtomicAdd(&m_uiRef, 1);
+        H_AtomicSet(&m_uiStatus, uiStatus);
     };
-    void subRef(void)
+    unsigned int getStatus(void)
     {
-        H_AtomicAdd(&m_uiRef, -1);
-    };
-    unsigned int getRef(void)
-    {
-        return H_AtomicGet(&m_uiRef);
+        return H_AtomicGet(&m_uiStatus);
     };
     std::string *getName(void)
     {
@@ -60,7 +51,7 @@ private:
     H_DISALLOWCOPY(CWorkerTask);
 
 private:
-    unsigned int m_uiRef;
+    unsigned int m_uiStatus;
     CChan m_objChan;
     std::string m_strName;
 };
@@ -75,7 +66,7 @@ public:
     void runTask(CWorkerTask *pMsg);
     void addWorker(CWorkerTask *pWorker)
     {
-        pWorker->addRef();
+        pWorker->setStatus(1);
         addTask(pWorker);
     };
 

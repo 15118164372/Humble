@@ -51,11 +51,7 @@ private:
     #define taskit std::tr1::unordered_map<std::string, CWorkerTask*>::iterator
     #define task_map std::tr1::unordered_map<std::string, CWorkerTask*>
 #endif
-    enum
-    {
-        RS_RUN = 0,
-        RS_STOP,
-    };
+
 private:
     unsigned short m_usThreadNum;
     CWorker *m_pWorker;

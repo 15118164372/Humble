@@ -68,7 +68,7 @@ CWorker *CWorkerDisp::getFreeWorker(void)
     {
         for (unsigned short usI = H_INIT_NUMBER; usI < m_usThreadNum; ++usI)
         {
-            if (WS_FREE == m_pWorker[usI].getStatus())
+            if (H_INIT_NUMBER == m_pWorker[usI].getStatus())
             {
                 m_pWorker[usI].setBusy();
                 return &m_pWorker[usI];
@@ -125,7 +125,7 @@ void CWorkerDisp::runTask(std::string *pszTask)
     {
         return;
     }
-    if (H_INIT_NUMBER != pWorkerTask->getRef())
+    if (H_INIT_NUMBER != pWorkerTask->getStatus())
     {
         addTask(pszTask);
         return;
