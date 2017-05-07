@@ -4,25 +4,30 @@
 
 #include "RecvTask.h"
 #include "Chan.h"
+#include "CirQueue.h"
 
 H_BNAMSP
+
+enum
+{
+    TCMD_INIT = 0,
+    TCMD_RUN,
+    TCMD_DEL
+};
 
 //服务基类
 class CWorkerTask : public CTask
 {
 public:
-    CWorkerTask(const char *pszName, const int iCapacity) : m_objChan(iCapacity),
-        m_uiStatus(H_INIT_NUMBER), m_strName(pszName)
+    CWorkerTask(const char *pszName, const int iCapacity) : m_objChan(iCapacity), m_quCMD(iCapacity * 2),
+        m_uiStatus(H_INIT_NUMBER), m_pCMD(NULL), m_strName(pszName)
     {
-        m_objChan.setTaskNam(&m_strName);
+        m_objChan.setTask(this);
     };
     ~CWorkerTask()
     {};
 
-    void Run(void)
-    {
-        runTask();
-    };
+    void Run(void);
 
     virtual void initTask(void) = 0;
     virtual void runTask(void) = 0;
@@ -36,6 +41,12 @@ public:
     {
         return H_AtomicGet(&m_uiStatus);
     };
+
+    void setCMD(unsigned int *pCMD) 
+    {
+        m_pCMD = pCMD;
+    };
+
     std::string *getName(void)
     {
         return &m_strName;
@@ -46,13 +57,26 @@ public:
         return &m_objChan;
     };
 
+    CCirQueue *getCMDQu(void)
+    {
+        return &m_quCMD;
+    };
+
+    CAtomic *getCMDLock(void)
+    {
+        return &m_objCMDLock;
+    };
+
 private:
     CWorkerTask(void);
     H_DISALLOWCOPY(CWorkerTask);
 
-private:
+private:    
     unsigned int m_uiStatus;
+    unsigned int *m_pCMD;
     CChan m_objChan;
+    CCirQueue m_quCMD;
+    CAtomic m_objCMDLock;
     std::string m_strName;
 };
 

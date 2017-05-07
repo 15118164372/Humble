@@ -1,17 +1,16 @@
 
 #include "WorkerDisp.h"
 #include "Thread.h"
-#include "LockThis.h"
 #include "NetWorker.h"
-#include "Log.h"
 
 H_BNAMSP
 
 SINGLETON_INIT(CWorkerDisp)
 CWorkerDisp objWorker;
 
-CWorkerDisp::CWorkerDisp(void) : CRecvTask<std::string>(H_QULENS_WORKERDISP), 
-    m_usThreadNum(H_INIT_NUMBER), m_pWorker(NULL)
+CWorkerDisp::CWorkerDisp(void) : CRecvTask<CWorkerTask>(H_QULENS_WORKERDISP), 
+    m_usThreadNum(H_INIT_NUMBER), m_uiInitCMD(TCMD_INIT), m_uiRunCMD(TCMD_RUN), 
+    m_uiDestroyCMD(TCMD_DEL), m_pWorker(NULL)
 {
     setDel(false);
 }
@@ -29,7 +28,7 @@ CWorkerDisp::~CWorkerDisp(void)
 
 void CWorkerDisp::setThreadNum(const unsigned short usNum)
 {
-    m_usThreadNum = ((H_INIT_NUMBER == usNum) ? H_GetCoreCount() : usNum);
+    m_usThreadNum = ((H_INIT_NUMBER == usNum) ? H_GetCoreCount() * 2 : usNum);
     m_pWorker = new(std::nothrow) CWorker[m_usThreadNum];    
     H_ASSERT(NULL != m_pWorker, "malloc memory error.");
 
@@ -42,24 +41,50 @@ void CWorkerDisp::setThreadNum(const unsigned short usNum)
 }
 
 CChan *CWorkerDisp::getChan(const char *pszTaskName)
-{
+{   
+    CChan *pChan(NULL);
+
+    m_objTaskLock.Lock();
     taskit itTask = m_mapTask.find(std::string(pszTaskName));
     if (m_mapTask.end() != itTask)
     {
-        return itTask->second->getChan();
+        pChan = itTask->second->getChan();
     }
+    m_objTaskLock.unLock();
 
-    return NULL;
+    return pChan;
 }
 
 void CWorkerDisp::regTask(CWorkerTask *pTask)
 {
     std::string strName(*pTask->getName());
 
+    m_objTaskLock.Lock();
     taskit itTask = m_mapTask.find(strName);
-    H_ASSERT(m_mapTask.end() == itTask, "task repeat register.");
-    
+    H_ASSERT(m_mapTask.end() == itTask, H_FormatStr("task %s repeat register.", strName.c_str()).c_str());
     m_mapTask.insert(std::make_pair(strName, pTask));
+    m_objTaskLock.unLock();
+
+    notifyInit(pTask);
+}
+
+void CWorkerDisp::unregTask(const char *pszName)
+{
+    CWorkerTask *pTask(NULL);
+
+    m_objTaskLock.Lock();
+    taskit itTask = m_mapTask.find(std::string(pszName));
+    if (m_mapTask.end() != itTask)
+    {
+        pTask = itTask->second;
+        m_mapTask.erase(itTask);
+    }
+    m_objTaskLock.unLock();
+
+    if (NULL != pTask)
+    {
+        notifyDestroy(pTask);
+    }
 }
 
 CWorker *CWorkerDisp::getFreeWorker(void)
@@ -81,17 +106,6 @@ CWorker *CWorkerDisp::getFreeWorker(void)
     return NULL;
 }
 
-CWorkerTask* CWorkerDisp::getTask(std::string *pstrName)
-{
-    taskit itTask = m_mapTask.find(*pstrName);
-    if (m_mapTask.end() != itTask)
-    {
-        return itTask->second;
-    }
-    
-    return NULL;
-}
-
 void CWorkerDisp::stopNet(void)
 {
     CNetWorker *pNet = CNetWorker::getSingletonPtr();
@@ -110,29 +124,28 @@ void CWorkerDisp::stopWorker(void)
     }
 }
 
-void CWorkerDisp::initRun(void)
+void CWorkerDisp::runTask(CWorkerTask *pTask)
 {
-    for (taskit itTask = m_mapTask.begin(); m_mapTask.end() != itTask; ++itTask)
+    if (H_INIT_NUMBER != pTask->getStatus())
     {
-        itTask->second->initTask();
-    }
-}
-
-void CWorkerDisp::runTask(std::string *pszTask)
-{
-    CWorkerTask* pWorkerTask = getTask(pszTask);
-    if (NULL == pWorkerTask)
-    {
+        addTask(pTask);
         return;
     }
-    if (H_INIT_NUMBER != pWorkerTask->getStatus())
+
+    CCirQueue *pCMDQu = pTask->getCMDQu();
+    CAtomic *pCMDLock = pTask->getCMDLock();
+
+    pCMDLock->Lock();
+    unsigned int * pCMD = (unsigned int *)pCMDQu->Pop();
+    pCMDLock->unLock();
+    if (NULL == pCMD)
     {
-        addTask(pszTask);
         return;
     }
 
     CWorker *pWorker = getFreeWorker();
-    pWorker->addWorker(pWorkerTask);
+    pTask->setCMD(pCMD);
+    pWorker->addWorker(pTask);
 }
 
 void CWorkerDisp::stopRun(void)
@@ -146,18 +159,14 @@ void CWorkerDisp::stopRun(void)
     {
         for (size_t i = H_INIT_NUMBER; i < itTask->second->getChan()->getSize(); ++i)
         {
-            addTask(itTask->second->getName());
+            addTask(itTask->second);
         }
     }
 }
 
-void CWorkerDisp::runSurplusTask(std::string *pszTask)
+void CWorkerDisp::runSurplusTask(CWorkerTask *pTask)
 {
-    CWorkerTask *pWorkerTask = getTask(pszTask);
-    if (NULL != pWorkerTask)
-    {
-        pWorkerTask->runTask();
-    }
+    pTask->runTask();
 }
 
 void CWorkerDisp::destroyRun(void)

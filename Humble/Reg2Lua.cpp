@@ -117,6 +117,7 @@ void H_RegWorkerDisp(struct lua_State *pLState)
         .beginClass<CWorkerDisp>("CWorkerDisp")
             .addFunction("getChan", &CWorkerDisp::getChan)
             .addFunction("regTask", &CWorkerDisp::regTask)
+            .addFunction("unregTask", &CWorkerDisp::unregTask)
         .endClass();
 }
 
@@ -126,7 +127,6 @@ void H_RegChan(struct lua_State *pLState)
         .beginClass<CChan>("CChan")
             .addFunction("Send", &CChan::Send)
             .addFunction("Recv", &CChan::Recv)
-            .addFunction("getTaskName", &CChan::getTaskName)
         .endClass();
 }
 

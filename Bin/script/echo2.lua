@@ -44,6 +44,26 @@ local function echo(uiSock, uiSession, tMsg)
 end
 netDisp:regNetEvent("/echo2", echo)
 
+local function removeRepeatTask(strName)
+	humble.unregTask(strName)
+end
+
+local iTaskName = 0
+local function testRepeatTask()
+	iTaskName = iTaskName + 1
+	humble.regTask("echo1.lua", tostring(iTaskName), 50)
+	taskRPC:callRPC("echo1", tostring(iTaskName), "echo1.showTest", taskRPC:createParam(tostring(iTaskName)))
+	DEV_Reg(timeWheel, 5, removeRepeatTask, tostring(iTaskName))
+	
+	iTaskName = iTaskName + 1
+	humble.regTask("echo1.lua", tostring(iTaskName), 50)
+	taskRPC:callRPC("echo1", tostring(iTaskName), "echo1.showTest", taskRPC:createParam(tostring(iTaskName)))
+	DEV_Reg(timeWheel, 5, removeRepeatTask, tostring(iTaskName))
+	
+	DEV_Reg(timeWheel, 5, testRepeatTask)
+end
+DEV_Reg(timeWheel, 5, testRepeatTask)
+
 --任务初始化
 function initTask()
     

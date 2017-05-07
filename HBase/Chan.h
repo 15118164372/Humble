@@ -17,8 +17,8 @@ public:
     bool Send(void *pszVal);
     void *Recv(void);
 
-    void setTaskNam(std::string *pszName);
-    const char *getTaskName(void);
+    void setTask(class CWorkerTask *pTask);
+    class CWorkerTask *getTask(void);
 
     size_t getSize(void);
     size_t getCapacity(void);
@@ -28,7 +28,7 @@ private:
     H_DISALLOWCOPY(CChan);
 
 private:
-    std::string *m_pstrName;
+    class CWorkerTask *m_pTask;
     CAtomic m_objQuLck;
     CCirQueue m_quData;
 };

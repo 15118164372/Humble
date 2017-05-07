@@ -91,6 +91,9 @@ end
 function humble.regTask(strFile, strTaskNam, iChanLens)
     return pWorkerMgr:regTask(newLuaTask(strFile, strTaskNam, iChanLens))
 end
+function humble.unregTask(strTaskNam)
+    return pWorkerMgr:unregTask(strTaskNam)
+end
 
 --ÍøÂç·Ö·¢
 function humble.regProto(proto, strTask)

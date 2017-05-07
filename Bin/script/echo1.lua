@@ -22,13 +22,18 @@ local function echo(uiSock, uiSession, tMsg)
 	local pWBinary = httpd.Response(200, tmsg)
     humble.sendB(uiSock, uiSession, pWBinary)
 end
-netDisp:regNetEvent("/echo1", echo)
+--netDisp:regNetEvent("/echo1", echo)
 
 local function add(iA, iB)
 	return iA + iB
 end
-taskRPC:regRPC("echo1.add", add)
-svRPC:regRPC("echo1.add", add)
+--taskRPC:regRPC("echo1.add", add)
+--svRPC:regRPC("echo1.add", add)
+
+local function showTest(strName)
+	print(string.format("%s call showTest", strName))
+end
+taskRPC:regRPC("echo1.showTest", showTest)
 
 --任务初始化
 function initTask()

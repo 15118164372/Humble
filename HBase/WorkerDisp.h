@@ -9,7 +9,7 @@
 H_BNAMSP
 
 //服务调度,服务管理
-class CWorkerDisp : public CRecvTask<std::string>, public CSingleton<CWorkerDisp>
+class CWorkerDisp : public CRecvTask<CWorkerTask>, public CSingleton<CWorkerDisp>
 {
 public:
     CWorkerDisp(void);
@@ -24,23 +24,41 @@ public:
     };
 
     void regTask(CWorkerTask *pTask);
+    void unregTask(const char *pszName);
 
-    void initRun(void);
-    void runTask(std::string *pszTask);
+    void runTask(CWorkerTask *pTask);
     void stopRun(void);
-    void runSurplusTask(std::string *pszTask);
+    void runSurplusTask(CWorkerTask *pTask);
     void destroyRun(void);
-
-    H_INLINE void Notify(std::string *pstrName)
+    
+    void notifyInit(CWorkerTask *pTask) 
     {
-        addTask(pstrName);
+        Notify(pTask, &m_uiInitCMD);
+    };
+    void notifyRun(CWorkerTask *pTask)
+    {
+        Notify(pTask, &m_uiRunCMD);
+    };
+    void notifyDestroy(CWorkerTask *pTask)
+    {
+        Notify(pTask, &m_uiDestroyCMD);
     };
 
 private:
     CWorker *getFreeWorker(void);
-    CWorkerTask* getTask(std::string *pstrName);
     void stopNet(void);
     void stopWorker(void);
+    void Notify(CWorkerTask *pTask, unsigned int *pCMD)
+    {
+        CCirQueue *pCMDQu = pTask->getCMDQu();
+        CAtomic *pCMDLock = pTask->getCMDLock();
+
+        pCMDLock->Lock();
+        pCMDQu->Push((void*)pCMD);
+        pCMDLock->unLock();
+
+        addTask(pTask);
+    };
 
 private:
     H_DISALLOWCOPY(CWorkerDisp);
@@ -54,8 +72,12 @@ private:
 
 private:
     unsigned short m_usThreadNum;
+    unsigned int m_uiInitCMD;
+    unsigned int m_uiRunCMD;
+    unsigned int m_uiDestroyCMD;
     CWorker *m_pWorker;
     task_map m_mapTask;
+    CAtomic m_objTaskLock;
 };
 
 H_ENAMSP

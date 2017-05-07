@@ -4,7 +4,7 @@
 
 H_BNAMSP
 
-CChan::CChan(const int iCapacity) : m_pstrName(NULL), m_quData(iCapacity)
+CChan::CChan(const int iCapacity) : m_pTask(NULL), m_quData(iCapacity)
 {
 }
 
@@ -18,11 +18,10 @@ bool CChan::Send(void *pszVal)
     bool bOk(m_quData.Push(pszVal));
     m_objQuLck.unLock();
 
-	if (NULL != m_pstrName 
-        && !m_pstrName->empty()
+	if (NULL != m_pTask
         && bOk)
 	{
-		CWorkerDisp::getSingletonPtr()->Notify(m_pstrName);
+		CWorkerDisp::getSingletonPtr()->notifyRun(m_pTask);
 	} 
 
     return bOk;
@@ -51,14 +50,14 @@ size_t CChan::getCapacity(void)
     return m_quData.Capacity();
 }
 
-void CChan::setTaskNam(std::string *pszName)
+void CChan::setTask(class CWorkerTask *pTask)
 {
-    m_pstrName = pszName;
+    m_pTask = pTask;
 }
 
-const char *CChan::getTaskName(void)
+class CWorkerTask *CChan::getTask(void)
 {
-    return m_pstrName->c_str();
+    return m_pTask;
 }
 
 H_ENAMSP

@@ -19,7 +19,6 @@ public:
     void Run(void);
 
     //Run动作分解
-    virtual void initRun(void) {};
     virtual void runTask(T *pMsg) = 0;
     virtual void stopRun(void) {};
     virtual void runSurplusTask(T *pMsg);
@@ -89,8 +88,6 @@ template <typename T>
 void CRecvTask<T>::Run(void)
 {
     T *pMsg = NULL;
-    initRun();
-
     H_AtomicAdd(&m_lCount, 1);
 
     while(H_INIT_NUMBER == H_AtomicGet(&m_lExit))
