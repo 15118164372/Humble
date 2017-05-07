@@ -37,7 +37,7 @@ public:
     };
 
 private:
-    CWorker *getFreeWorker(unsigned short &usIndex);
+    CWorker *getFreeWorker(void);
     CWorkerTask* getTask(std::string *pstrName);
     void stopNet(void);
     void stopWorker(void);

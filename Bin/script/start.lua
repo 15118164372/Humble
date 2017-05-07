@@ -33,7 +33,7 @@ function onStart()
 	--rpc
 	humble.addListener(SockType.RPC, "0.0.0.0", 15200)	
 	--rpc¡¥Ω”π‹¿Ì
-	humble.regTask("task_rpclink", "task_rpclink", 1024 * 10)
+	humble.regTask("task_rpclink.lua", "task_rpclink", 1024 * 10)
 	tChan.task_rpclink = humble.getChan("task_rpclink")
 		
 	--TODO
@@ -41,8 +41,8 @@ function onStart()
 	humble.addTcpLink(SockType.RPC, "127.0.0.1", 15201)
 	humble.addListener(SockType.HTTP, "0.0.0.0", 80)
 	humble.setParser(SockType.HTTP, "http")
-	humble.regTask("echo1", "echo1", 1024 * 10)
-	humble.regTask("echo2", "echo2", 1024 * 10)
+	humble.regTask("echo1.lua", "echo1", 1024 * 10)
+	humble.regTask("echo2.lua", "echo2", 1024 * 10)
     tChan.echo1 = humble.getChan("echo1")
 	tChan.echo2 = humble.getChan("echo2")	
 end

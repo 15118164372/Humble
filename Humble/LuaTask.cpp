@@ -13,6 +13,9 @@ CLuaTask::CLuaTask(const char *pszFile, const char *pszName, const int iCapacity
     m_pLState = luaL_newstate();
     H_ASSERT(NULL != m_pLState, "luaL_newstate error.");
     luaL_openlibs(m_pLState);
+
+    H_RegAll(m_pLState);
+    luabridge::setGlobal(m_pLState, getChan(), "g_pChan");
     luabridge::setGlobal(m_pLState, getName()->c_str(), "g_taskName");
 
     luabridge::LuaRef *pRef = NULL;
@@ -46,10 +49,7 @@ CLuaTask::~CLuaTask(void)
 
 void CLuaTask::initTask(void)
 {
-    H_RegAll(m_pLState);
-    luabridge::setGlobal(m_pLState, getChan(), "g_pChan");
-
-    std::string strLuaFile = H_FormatStr("%s%s.lua", g_strScriptPath.c_str(), m_strFile.c_str());
+    std::string strLuaFile = g_strScriptPath.c_str() + m_strFile;
     if (H_RTN_OK != luaL_dofile(m_pLState, strLuaFile.c_str()))
     {
         const char *pError = lua_tostring(m_pLState, -1);

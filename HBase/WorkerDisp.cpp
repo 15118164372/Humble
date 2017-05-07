@@ -62,7 +62,7 @@ void CWorkerDisp::regTask(CWorkerTask *pTask)
     m_mapTask.insert(std::make_pair(strName, pTask));
 }
 
-CWorker *CWorkerDisp::getFreeWorker(unsigned short &usIndex)
+CWorker *CWorkerDisp::getFreeWorker(void)
 {
     while (true)
     {
@@ -70,7 +70,7 @@ CWorker *CWorkerDisp::getFreeWorker(unsigned short &usIndex)
         {
             if (WS_FREE == m_pWorker[usI].getStatus())
             {
-                usIndex = usI;
+                m_pWorker[usI].setBusy();
                 return &m_pWorker[usI];
             }
         }
@@ -120,7 +120,6 @@ void CWorkerDisp::initRun(void)
 
 void CWorkerDisp::runTask(std::string *pszTask)
 {
-    unsigned short usIndex(H_INIT_NUMBER);
     CWorkerTask* pWorkerTask = getTask(pszTask);
     if (NULL == pWorkerTask)
     {
@@ -132,8 +131,7 @@ void CWorkerDisp::runTask(std::string *pszTask)
         return;
     }
 
-    CWorker *pWorker = getFreeWorker(usIndex);
-    pWorker->setBusy();
+    CWorker *pWorker = getFreeWorker();
     pWorker->addWorker(pWorkerTask);
 }
 
