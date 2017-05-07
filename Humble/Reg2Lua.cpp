@@ -43,6 +43,7 @@ std::string md5File(const char *pszFile)
 
 CWorkerTask *newLuaTask(const char *pszFile, const char *pszName, const int iCapacity)
 {
+    H_ASSERT(strlen(pszName) < H_TASKNAMELENS, "task name too long.");
     CWorkerTask *pTask = new(std::nothrow) CLuaTask(pszFile, pszName, iCapacity);
     H_ASSERT(NULL != pTask, "malloc memory error.");
 
