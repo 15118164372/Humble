@@ -41,9 +41,9 @@ std::string md5File(const char *pszFile)
     return objMD5.toString();
 }
 
-CWorkerTask *newLuaTask(const int iCapacity)
+CWorkerTask *newLuaTask(const char *pszFile, const char *pszName, const int iCapacity)
 {
-    CWorkerTask *pTask = new(std::nothrow) CLuaTask(iCapacity);
+    CWorkerTask *pTask = new(std::nothrow) CLuaTask(pszFile, pszName, iCapacity);
     H_ASSERT(NULL != pTask, "malloc memory error.");
 
     return pTask;

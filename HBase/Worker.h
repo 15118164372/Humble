@@ -17,8 +17,10 @@ enum
 class CWorkerTask : public CTask
 {
 public:
-    CWorkerTask(const int iCapacity) : m_uiRef(H_INIT_NUMBER), m_objChan(iCapacity)
-    {};
+    CWorkerTask(const char *pszName, const int iCapacity) : m_uiRef(H_INIT_NUMBER), m_objChan(iCapacity), m_strName(pszName)
+    {
+        m_objChan.setTaskNam(&m_strName);
+    };
     ~CWorkerTask()
     {};
 
@@ -42,11 +44,6 @@ public:
     unsigned int getRef(void)
     {
         return H_AtomicGet(&m_uiRef);
-    };
-    void setName(const char *pszName)
-    {
-        m_strName = pszName;
-        m_objChan.setTaskNam(&m_strName);
     };
     std::string *getName(void)
     {

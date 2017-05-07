@@ -8,9 +8,7 @@ local httpd = require("httpd")
 local humble = require("humble")
 local pChan = g_pChan
 
-g_taskName = "echo2"
 local taskName = g_taskName
-initGlobal(taskName)
 local enevtDisp = g_enevtDisp
 local timeWheel = g_timeWheel
 local netDisp = g_netDisp

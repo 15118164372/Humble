@@ -10,7 +10,7 @@ H_BNAMSP
 class CLuaTask : public CWorkerTask
 {
 public:
-    CLuaTask(const int iCapacity);
+    CLuaTask(const char *pszFile, const char *pszName, const int iCapacity);
     ~CLuaTask(void);
 
     void initTask(void);
@@ -32,6 +32,7 @@ private:
 private:
     struct lua_State *m_pLState;
     luabridge::LuaRef **m_pLFunc;
+    std::string m_strFile;
 };
 
 H_ENAMSP

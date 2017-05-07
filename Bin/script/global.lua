@@ -11,7 +11,6 @@ local SVRPC = require("svrpc")
 local TaskRPC = require("taskrpc")
 local table = table
 
-g_taskName = ""
 g_netDisp = nil
 local netDisp = nil
 g_enevtDisp = nil
@@ -73,7 +72,7 @@ local function initEnevt()
 	enevtDisp:regEvent(EnevtType.Second_1, onSecond_1Enevt)
 end
 
-function initGlobal(strTaskName)
+local function initGlobal(strTaskName)
 	--¸³Öµ
 	if not g_enevtDisp then
 		g_enevtDisp = enevtdisp:new()
@@ -102,3 +101,4 @@ function initGlobal(strTaskName)
 	
 	initEnevt()
 end
+initGlobal(g_taskName)

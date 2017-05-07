@@ -88,8 +88,8 @@ end
 function humble.getChan(strTaskNam)
     return pWorkerMgr:getChan(strTaskNam)
 end
-function humble.regTask(strTaskNam, iChanLens)
-    return pWorkerMgr:regTask(strTaskNam, newLuaTask(iChanLens))
+function humble.regTask(strFile, strTaskNam, iChanLens)
+    return pWorkerMgr:regTask(newLuaTask(strFile, strTaskNam, iChanLens))
 end
 
 --ÍøÂç·Ö·¢

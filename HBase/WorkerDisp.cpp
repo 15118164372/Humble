@@ -52,14 +52,13 @@ CChan *CWorkerDisp::getChan(const char *pszTaskName)
     return NULL;
 }
 
-void CWorkerDisp::regTask(const char *pszName, CWorkerTask *pTask)
+void CWorkerDisp::regTask(CWorkerTask *pTask)
 {
-    std::string strName(pszName);
+    std::string strName(*pTask->getName());
 
     taskit itTask = m_mapTask.find(strName);
-    H_ASSERT(m_mapTask.end() == itTask, H_FormatStr("task %s already exist.", pszName).c_str());
+    H_ASSERT(m_mapTask.end() == itTask, "task repeat register.");
     
-    pTask->setName(pszName);
     m_mapTask.insert(std::make_pair(strName, pTask));
 }
 

@@ -4,7 +4,8 @@
 
 H_BNAMSP
 
-CLuaTask::CLuaTask(const int iCapacity) : CWorkerTask(iCapacity)
+CLuaTask::CLuaTask(const char *pszFile, const char *pszName, const int iCapacity) : CWorkerTask(pszName, iCapacity), 
+    m_pLState(NULL), m_pLFunc(NULL), m_strFile(pszFile)
 {
     m_pLFunc = new(std::nothrow) luabridge::LuaRef *[LTASK_COUNT];
     H_ASSERT(NULL != m_pLFunc, "malloc memory error.");
@@ -12,6 +13,7 @@ CLuaTask::CLuaTask(const int iCapacity) : CWorkerTask(iCapacity)
     m_pLState = luaL_newstate();
     H_ASSERT(NULL != m_pLState, "luaL_newstate error.");
     luaL_openlibs(m_pLState);
+    luabridge::setGlobal(m_pLState, getName()->c_str(), "g_taskName");
 
     luabridge::LuaRef *pRef = NULL;
     for (int i = 0; i < LTASK_COUNT; ++i)
@@ -47,7 +49,7 @@ void CLuaTask::initTask(void)
     H_RegAll(m_pLState);
     luabridge::setGlobal(m_pLState, getChan(), "g_pChan");
 
-    std::string strLuaFile = H_FormatStr("%s%s.lua", g_strScriptPath.c_str(), getName()->c_str());
+    std::string strLuaFile = H_FormatStr("%s%s.lua", g_strScriptPath.c_str(), m_strFile.c_str());
     if (H_RTN_OK != luaL_dofile(m_pLState, strLuaFile.c_str()))
     {
         const char *pError = lua_tostring(m_pLState, -1);

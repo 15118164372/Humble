@@ -7,8 +7,6 @@ local utile = require("utile")
 local humble = require("humble")
 local pChan = g_pChan
 
-g_taskName = "task_rpclink"
-initGlobal(g_taskName)
 local taskName = g_taskName
 local enevtDisp = g_enevtDisp
 local timeWheel = g_timeWheel

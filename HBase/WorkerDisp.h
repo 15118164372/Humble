@@ -23,7 +23,7 @@ public:
         return m_usThreadNum;
     };
 
-    void regTask(const char *pszName, CWorkerTask *pTask);
+    void regTask(CWorkerTask *pTask);
 
     void initRun(void);
     void runTask(std::string *pszTask);

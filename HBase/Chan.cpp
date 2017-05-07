@@ -19,6 +19,7 @@ bool CChan::Send(void *pszVal)
     m_objQuLck.unLock();
 
 	if (NULL != m_pstrName 
+        && !m_pstrName->empty()
         && bOk)
 	{
 		CWorkerDisp::getSingletonPtr()->Notify(m_pstrName);
