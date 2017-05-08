@@ -27,13 +27,13 @@ end
 local function add(iA, iB)
 	return iA + iB
 end
---taskRPC:regRPC("echo1.add", add)
---svRPC:regRPC("echo1.add", add)
+taskRPC:regRPC("add", add)
+svRPC:regRPC("add", add)
 
 local function showTest(strName)
 	print(string.format("%s call showTest", strName))
 end
-taskRPC:regRPC("echo1.showTest", showTest)
+taskRPC:regRPC("showTest", showTest)
 
 --任务初始化
 function initTask()

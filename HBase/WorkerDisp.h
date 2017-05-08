@@ -29,25 +29,27 @@ public:
     void runTask(CWorkerTask *pTask);
     void stopRun(void);
     void runSurplusTask(CWorkerTask *pTask);
-    void destroyRun(void);
+    void destroyRun(void);    
     
-    void notifyInit(CWorkerTask *pTask) 
-    {
-        Notify(pTask, &m_uiInitCMD);
-    };
     void notifyRun(CWorkerTask *pTask)
     {
         Notify(pTask, &m_uiRunCMD);
     };
-    void notifyDestroy(CWorkerTask *pTask)
-    {
-        Notify(pTask, &m_uiDestroyCMD);
-    };
+
+    std::string getAllName(void);
 
 private:
     CWorker *getFreeWorker(void);
     void stopNet(void);
     void stopWorker(void);
+    void notifyInit(CWorkerTask *pTask)
+    {
+        Notify(pTask, &m_uiInitCMD);
+    };
+    void notifyDestroy(CWorkerTask *pTask)
+    {
+        Notify(pTask, &m_uiDestroyCMD);
+    };
     void Notify(CWorkerTask *pTask, unsigned int *pCMD)
     {
         CCirQueue *pCMDQu = pTask->getCMDQu();
@@ -78,6 +80,8 @@ private:
     CWorker *m_pWorker;
     task_map m_mapTask;
     CAtomic m_objTaskLock;
+    std::list<std::string> m_lstAllName;
+    CAtomic m_objAllNamLock;
 };
 
 H_ENAMSP

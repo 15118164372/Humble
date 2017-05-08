@@ -3,6 +3,7 @@ C++º¯Êý
 --]]
 
 local utile = require("utile")
+local cjson = require("cjson")
 local string = string
 local pWorkerMgr = g_pWorkerMgr
 local pNet = g_pNetWorker
@@ -89,10 +90,13 @@ function humble.getChan(strTaskNam)
     return pWorkerMgr:getChan(strTaskNam)
 end
 function humble.regTask(strFile, strTaskNam, iChanLens)
-    return pWorkerMgr:regTask(newLuaTask(strFile, strTaskNam, iChanLens))
+    pWorkerMgr:regTask(newLuaTask(strFile, strTaskNam, iChanLens))
 end
 function humble.unregTask(strTaskNam)
-    return pWorkerMgr:unregTask(strTaskNam)
+    pWorkerMgr:unregTask(strTaskNam)
+end
+function humble.getAllName()
+    return cjson.decode(pWorkerMgr:getAllName())
 end
 
 --ÍøÂç·Ö·¢
@@ -106,7 +110,7 @@ function humble.regProto(proto, strTask)
 	end
 end
 
-function humble.netToTask(tChans, proto, param)
+function humble.netToTask(proto, param)
 	local protoType = type(proto)
 	assert("string" == protoType or "number" == protoType)
 	local strTask = nil
@@ -121,7 +125,7 @@ function humble.netToTask(tChans, proto, param)
 		return false
 	end
 	
-	local objChan = tChans[strTask]
+	local objChan = humble.getChan(strTask)
 	if not objChan then
 		utile.freePack(param)
 		return false

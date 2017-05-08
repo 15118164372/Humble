@@ -430,9 +430,6 @@
     <ClInclude Include="Log.h">
       <Filter>Service</Filter>
     </ClInclude>
-    <ClInclude Include="EvBuffer.h">
-      <Filter>Service</Filter>
-    </ClInclude>
     <ClInclude Include="Chan.h">
       <Filter>Service</Filter>
     </ClInclude>
@@ -543,6 +540,9 @@
     </ClInclude>
     <ClInclude Include="NetParser.h">
       <Filter>Service\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="EvBuffer.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

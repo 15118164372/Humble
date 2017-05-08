@@ -14,15 +14,6 @@ local EnevtType = EnevtType
 local SockType = SockType
 local pBuffer = g_pBuffer
 
---任务名与chan对应
-if not g_tChan then
-    g_tChan = {}    
-end
-local tChan = g_tChan
-
---以下为测试
-local httpd = require("httpd")
-
 --初始化  这里注册任务
 function onStart()
 	--解析器，这个要先设置
@@ -34,7 +25,6 @@ function onStart()
 	humble.addListener(SockType.RPC, "0.0.0.0", 15200)	
 	--rpc链接管理
 	humble.regTask("task_rpclink.lua", "task_rpclink", 1024 * 10)
-	tChan.task_rpclink = humble.getChan("task_rpclink")
 		
 	--TODO
 	--以下为测试
@@ -43,8 +33,6 @@ function onStart()
 	humble.setParser(SockType.HTTP, "http")
 	humble.regTask("echo1.lua", "echo1", 1024 * 10)
 	humble.regTask("echo2.lua", "echo2", 1024 * 10)
-    tChan.echo1 = humble.getChan("echo1")
-	tChan.echo2 = humble.getChan("echo2")	
 end
 
 --退出
@@ -55,7 +43,10 @@ end
 --accept到新链接
 function onTcpAccept(sock, uiSession, usSockType)
 	if SockType.RPC == usSockType then
-		utile.chanSend(tChan.task_rpclink, utile.Pack(EnevtType.NetAccept, nil, sock, uiSession, usSockType))
+		local objChan = humble.getChan("task_rpclink")
+		if objChan then
+			utile.chanSend(objChan, utile.Pack(EnevtType.NetAccept, nil, sock, uiSession, usSockType))
+		end
 	else
 	end
 end
@@ -63,7 +54,10 @@ end
 --链接成功
 function onTcpLinked(sock, uiSession, usSockType)
 	if SockType.RPC == usSockType then
-		utile.chanSend(tChan.task_rpclink, utile.Pack(EnevtType.NetLinked, nil, sock, uiSession, usSockType))
+		local objChan = humble.getChan("task_rpclink")
+		if objChan then
+			utile.chanSend(objChan, utile.Pack(EnevtType.NetLinked, nil, sock, uiSession, usSockType))
+		end
 	else
 	end
 end
@@ -71,7 +65,10 @@ end
 --链接断开
 function onTcpClose(sock, uiSession, usSockType)
 	if SockType.RPC == usSockType then
-		utile.chanSend(tChan.task_rpclink, utile.Pack(EnevtType.NetClose, nil, sock, uiSession, usSockType))
+		local objChan = humble.getChan("task_rpclink")
+		if objChan then
+			utile.chanSend(objChan, utile.Pack(EnevtType.NetClose, nil, sock, uiSession, usSockType))
+		end
 	else
 	end
 end
@@ -83,8 +80,11 @@ local function dispCMD(sock, uiSession)
 	local objChan
 	
 	if "hotfix" == strCmd and "all" == strTask then
-		for _, objChan in pairs(tChan) do
-			utile.chanSend(objChan, utile.Pack(EnevtType.CMD, strCmd, -1, 0, strMsg))
+		for _, strName in pairs(humble.getAllName()) do
+			objChan = humble.getChan(strName)
+			if objChan then
+				utile.chanSend(objChan, utile.Pack(EnevtType.CMD, strCmd, -1, 0, strMsg))
+			end
 		end
 		
 		humble.sendB(sock, uiSession, 
@@ -92,7 +92,7 @@ local function dispCMD(sock, uiSession)
 		return	
 	end
 	
-	objChan = tChan[strTask]
+	objChan = humble.getChan(strTask)
 	if not objChan then
 		humble.sendB(sock, uiSession, 
 			tcp3.Response(cjson.encode({"fail", string.format("not find task %s.", strTask)})))
@@ -105,9 +105,14 @@ end
 local function dispRPC(sock, uiSession)
 	local tRPC = cjson.decode(pBuffer:getByte(pBuffer:getSurpLens()))
 	if tRPC.Enevt == EnevtType.CallRPC then --调用
-		humble.netToTask(tChan, tRPC.Method, utile.Pack(tRPC.Enevt, tRPC.Method, sock, uiSession, tRPC))
+		local objChan = humble.getChan(tRPC.ToTask)
+		if objChan then
+			utile.chanSend(objChan, utile.Pack(tRPC.Enevt, nil, sock, uiSession, tRPC))
+		else
+			utile.Errorf("not find task %s", tRPC.ToTask)
+		end
 	else --调用返回
-		local objChan = tChan[tRPC.RecvTask]
+		local objChan = humble.getChan(tRPC.RecvTask)
 		if objChan then
 			utile.chanSend(objChan, utile.Pack(tRPC.Enevt, nil, sock, uiSession, tRPC))
 		else
@@ -116,9 +121,10 @@ local function dispRPC(sock, uiSession)
 	end
 end
 
+local httpd = require("httpd")
 local function dispHttp(sock, uiSession)
 	local buffer = httpd.parsePack(pBuffer)
-	humble.netToTask(tChan, buffer.url, utile.Pack(EnevtType.TcpRead, buffer.url, sock, uiSession, buffer))
+	humble.netToTask(buffer.url, utile.Pack(EnevtType.TcpRead, buffer.url, sock, uiSession, buffer))
 end
 
 --tcp读到一完整的包

@@ -24,7 +24,8 @@ void CWorkerTask::Run(void)
         case TCMD_DEL:
         {
             destroyTask();
-            delete(this);
+            CWorkerTask *pTask(this);
+            H_SafeDelete(pTask);
         }
         break;
 

@@ -24,7 +24,7 @@ local function rpcGetLink(bOk, rtnMsg)
 		return
 	end
 	
-	local rpcId = svRPC:callRPC(rtnMsg.sock, rtnMsg.session, taskName, "echo1.add", svRPC:createParam(5, 5), rcpBack, "server rpc")
+	local rpcId = svRPC:callRPC(rtnMsg.sock, rtnMsg.session, "echo1", taskName, "add", svRPC:createParam(5, 5), rcpBack, "server rpc")
 	DEV_Reg(timeWheel, 5, removeRPC, svRPC, rpcId)
 end
 
@@ -36,29 +36,30 @@ local function echo(uiSock, uiSession, tMsg)
 	local pWBinary = httpd.Response(200, tmsg)
     humble.sendB(uiSock, uiSession, pWBinary)
 	
-	local rpcId = taskRPC:callRPC("echo1", taskName, "echo1.add", taskRPC:createParam(4, 8), rcpBack, "task rpc")
+	local rpcId = taskRPC:callRPC("echo1", taskName, "add", taskRPC:createParam(4, 8), rcpBack, "task rpc")
 	DEV_Reg(timeWheel, 5, removeRPC, taskRPC, rpcId)
 	
-	rpcId = taskRPC:callRPC("task_rpclink", taskName, "task_rpclink.getRPCLink", taskRPC:createParam("2"), rpcGetLink)
+	rpcId = taskRPC:callRPC("task_rpclink", taskName, "getRPCLink", taskRPC:createParam("2"), rpcGetLink)
 	DEV_Reg(timeWheel, 5, removeRPC, taskRPC, rpcId)
 end
 netDisp:regNetEvent("/echo2", echo)
 
 local function removeRepeatTask(strName)
 	humble.unregTask(strName)
+	--print(strName)
 end
 
 local iTaskName = 0
 local function testRepeatTask()
-	iTaskName = iTaskName + 1
-	humble.regTask("echo1.lua", tostring(iTaskName), 50)
-	taskRPC:callRPC("echo1", tostring(iTaskName), "echo1.showTest", taskRPC:createParam(tostring(iTaskName)))
-	DEV_Reg(timeWheel, 5, removeRepeatTask, tostring(iTaskName))
+	for i = 1, 10 do
+		iTaskName = iTaskName + 1
+		humble.regTask("echo1.lua", tostring(iTaskName), 50)
+		--humble.unregTask(tostring(iTaskName))
+		taskRPC:callRPC("echo1", tostring(iTaskName), "showTest", taskRPC:createParam(tostring(iTaskName)))
+		DEV_Reg(timeWheel, 1, removeRepeatTask, tostring(iTaskName))
+	end
 	
-	iTaskName = iTaskName + 1
-	humble.regTask("echo1.lua", tostring(iTaskName), 50)
-	taskRPC:callRPC("echo1", tostring(iTaskName), "echo1.showTest", taskRPC:createParam(tostring(iTaskName)))
-	DEV_Reg(timeWheel, 5, removeRepeatTask, tostring(iTaskName))
+	--collectgarbage("collect") 
 	
 	DEV_Reg(timeWheel, 5, testRepeatTask)
 end

@@ -11,13 +11,12 @@ H_BNAMSP
 class CChan
 {
 public:
-    CChan(const int iCapacity);
+    CChan(class CWorkerTask *pTask, const int iCapacity);
     ~CChan(void);
 
     bool Send(void *pszVal);
     void *Recv(void);
 
-    void setTask(class CWorkerTask *pTask);
     class CWorkerTask *getTask(void);
 
     size_t getSize(void);

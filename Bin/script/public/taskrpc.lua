@@ -15,10 +15,12 @@ local tostring = tostring
 local TaskRPC = {}
 TaskRPC.__index = TaskRPC
 
-function TaskRPC:new()
+function TaskRPC:new(strTaskName)
+	assert(strTaskName and 0 ~= #strTaskName)
     local self = {}
     setmetatable(self, TaskRPC)
-    	
+    
+	self.TaskName = strTaskName
 	self.Proto = {}	
 	self.Id = 0
 	self.RPCCash = {}
@@ -26,11 +28,15 @@ function TaskRPC:new()
     return self
 end
 
+function TaskRPC:creatRPCName(strTask, strRPCName)
+	return strTask.."."..strRPCName
+end
+
 --rcp×¢²á
 function TaskRPC:regRPC(strRPCName, Func)
 	assert("function" == type(Func))
 	
-	self.Proto[strRPCName] = Func
+	self.Proto[self:creatRPCName(self.TaskName, strRPCName)] = Func
     utile.Debugf("register task rpc protocol %s", strRPCName)
 end
 
@@ -105,12 +111,13 @@ function TaskRPC:callRPC(strToTask, strRecvTask, strRPCName, tRPCParam, Func, ..
 	end
 	
 	local rpcId = 0
+	local realName = self:creatRPCName(strToTask, strRPCName)
 	if Func then
 		assert("function" == type(Func))
 		rpcId = self:getID()
 		local tRPCBC = {}
 		tRPCBC.Func = Func
-		tRPCBC.Method = strRPCName
+		tRPCBC.Method = realName
 		tRPCBC.Param = {...}
 		self.RPCCash[rpcId] = tRPCBC
 	end
@@ -120,7 +127,7 @@ function TaskRPC:callRPC(strToTask, strRecvTask, strRPCName, tRPCParam, Func, ..
 	tCallRPC.ID = rpcId
 	tCallRPC.Param = tRPCParam
 	tCallRPC.RecvTask = strRecvTask
-	tCallRPC.Method = strRPCName
+	tCallRPC.Method = realName
 	
 	utile.chanSend(objChan, utile.Pack(EnevtType.TaskCallRPC, nil, tCallRPC))
 	

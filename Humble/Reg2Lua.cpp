@@ -118,6 +118,7 @@ void H_RegWorkerDisp(struct lua_State *pLState)
             .addFunction("getChan", &CWorkerDisp::getChan)
             .addFunction("regTask", &CWorkerDisp::regTask)
             .addFunction("unregTask", &CWorkerDisp::unregTask)
+            .addFunction("getAllName", &CWorkerDisp::getAllName)
         .endClass();
 }
 

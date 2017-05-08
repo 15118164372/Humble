@@ -19,11 +19,10 @@ enum
 class CWorkerTask : public CTask
 {
 public:
-    CWorkerTask(const char *pszName, const int iCapacity) : m_objChan(iCapacity), m_quCMD(iCapacity * 2),
-        m_uiStatus(H_INIT_NUMBER), m_pCMD(NULL), m_strName(pszName)
-    {
-        m_objChan.setTask(this);
-    };
+    CWorkerTask(const char *pszName, const int iCapacity) : m_uiDestroy(H_INIT_NUMBER),         
+        m_uiStatus(H_INIT_NUMBER), m_pCMD(NULL), m_objChan(this, iCapacity), 
+        m_quCMD(iCapacity * 2), m_strName(pszName)
+    {};
     ~CWorkerTask()
     {};
 
@@ -67,11 +66,21 @@ public:
         return &m_objCMDLock;
     };
 
+    void setDestroy(void) 
+    {
+        H_AtomicSet(&m_uiDestroy, 1);
+    };
+    bool getDestroy(void)
+    {
+        return (H_INIT_NUMBER == H_AtomicGet(&m_uiDestroy)) ? false : true;
+    };
+
 private:
     CWorkerTask(void);
     H_DISALLOWCOPY(CWorkerTask);
 
-private:    
+private:
+    unsigned int m_uiDestroy;
     unsigned int m_uiStatus;
     unsigned int *m_pCMD;
     CChan m_objChan;

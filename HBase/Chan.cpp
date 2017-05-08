@@ -4,7 +4,7 @@
 
 H_BNAMSP
 
-CChan::CChan(const int iCapacity) : m_pTask(NULL), m_quData(iCapacity)
+CChan::CChan(class CWorkerTask *pTask, const int iCapacity) : m_pTask(pTask), m_quData(iCapacity)
 {
 }
 
@@ -14,15 +14,24 @@ CChan::~CChan(void)
 
 bool CChan::Send(void *pszVal)
 {
+    if (m_pTask->getDestroy())
+    {
+        H_Printf("task %s already closed.", m_pTask->getName()->c_str());
+        return false;
+    }
+
     m_objQuLck.Lock();
     bool bOk(m_quData.Push(pszVal));
     m_objQuLck.unLock();
 
-	if (NULL != m_pTask
-        && bOk)
+	if (bOk)
 	{
 		CWorkerDisp::getSingletonPtr()->notifyRun(m_pTask);
-	} 
+	}
+    else
+    {
+        H_Printf("push message to task %s error.", m_pTask->getName()->c_str());
+    }
 
     return bOk;
 }
@@ -48,11 +57,6 @@ size_t CChan::getSize(void)
 size_t CChan::getCapacity(void)
 {
     return m_quData.Capacity();
-}
-
-void CChan::setTask(class CWorkerTask *pTask)
-{
-    m_pTask = pTask;
 }
 
 class CWorkerTask *CChan::getTask(void)

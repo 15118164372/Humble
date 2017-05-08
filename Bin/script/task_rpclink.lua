@@ -28,7 +28,7 @@ local m_Register = g_Register
 local function getRPCLink(svId)
 	return m_RPCLink[svId]
 end
-taskRPC:regRPC("task_rpclink.getRPCLink", getRPCLink)
+taskRPC:regRPC("getRPCLink", getRPCLink)
 
 --×¢²á³¬Ê±
 local function registerTimeOut(uiSock, uiSession)
@@ -60,7 +60,7 @@ local function registerSVId(svId)
 	
 	return getSVId()
 end
-svRPC:regRPC("task_rpclink.registerSVId", registerSVId)
+svRPC:regRPC("registerSVId", registerSVId)
 
 --×¢²á·þÎñÆ÷id·µ»Ø
 local function registerCB(bOk, rtnMsg, uiSock)
@@ -108,7 +108,7 @@ local function onNetLinkedEvent(Proto, msgPack)
 	m_Register[uiSock] = rpcLink
 	
 	--×¢²á
-	svRPC:callRPC(uiSock, uiSession, taskName, "task_rpclink.registerSVId", 
+	svRPC:callRPC(uiSock, uiSession, taskName, taskName, "registerSVId", 
 		svRPC:createParam(getSVId()), registerCB, uiSock)		
 end
 enevtDisp:regEvent(EnevtType.NetLinked, onNetLinkedEvent)

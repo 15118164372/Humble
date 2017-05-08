@@ -1,10 +1,10 @@
+
 #include "LNetDisp.h"
 #include "LTick.h"
 
 using namespace Humble;
 
 #ifdef H_OS_WIN
-//#include "../vld/vld.h"
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "libevent.lib")
 #pragma comment(lib, "libevent_core.lib")
@@ -345,7 +345,6 @@ int main(int argc, char *argv[])
 
         return 0;
     }
-
 
     g_strProPath = H_GetProPath();
     g_strScriptPath = H_FormatStr("%s%s%s", g_strProPath.c_str(), "script", H_PATH_SEPARATOR);

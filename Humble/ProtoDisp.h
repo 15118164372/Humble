@@ -16,29 +16,25 @@ public:
     void regIProto(int iProto, const char *pszTask);
     const char *getStrProto(const char *pszProto);
     const char *getIProto(int iProto);
-
 private:
-    std::string *getTaskPoint(const char *pszTask);
-
-private:
-    std::vector<std::string *> m_vcTask;
-
 #ifdef H_OS_WIN 
-    #define strprotoit std::unordered_map<std::string, std::string *>::iterator
-    #define strproto_map std::unordered_map<std::string, std::string *>
+    #define strprotoit std::unordered_map<std::string, std::string>::iterator
+    #define strproto_map std::unordered_map<std::string, std::string>
 
-    #define iprotoit std::unordered_map<int, std::string *>::iterator
-    #define iproto_map std::unordered_map<int, std::string *>
+    #define iprotoit std::unordered_map<int, std::string>::iterator
+    #define iproto_map std::unordered_map<int, std::string>
 #else
-    #define strprotoit std::tr1::unordered_map<std::string, std::string *>::iterator
-    #define strproto_map std::tr1::unordered_map<std::string, std::string *>
+    #define strprotoit std::tr1::unordered_map<std::string, std::string>::iterator
+    #define strproto_map std::tr1::unordered_map<std::string, std::string>
 
-    #define iprotoit std::tr1::unordered_map<int, std::string *>::iterator
-    #define iproto_map std::tr1::unordered_map<int, std::string *>
+    #define iprotoit std::tr1::unordered_map<int, std::string>::iterator
+    #define iproto_map std::tr1::unordered_map<int, std::string>
 #endif
 
     strproto_map m_mapStrProto;
     iproto_map m_mapIProto;
+    CAtomic m_objStrLock;
+    CAtomic m_objILock;
 };
 
 H_ENAMSP

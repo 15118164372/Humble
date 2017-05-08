@@ -66,14 +66,19 @@ void CWorkerDisp::regTask(CWorkerTask *pTask)
     m_objTaskLock.unLock();
 
     notifyInit(pTask);
+
+    m_objAllNamLock.Lock();
+    m_lstAllName.push_back(strName);
+    m_objAllNamLock.unLock();
 }
 
 void CWorkerDisp::unregTask(const char *pszName)
 {
     CWorkerTask *pTask(NULL);
+    std::string strName(pszName);
 
     m_objTaskLock.Lock();
-    taskit itTask = m_mapTask.find(std::string(pszName));
+    taskit itTask = m_mapTask.find(strName);
     if (m_mapTask.end() != itTask)
     {
         pTask = itTask->second;
@@ -83,8 +88,20 @@ void CWorkerDisp::unregTask(const char *pszName)
 
     if (NULL != pTask)
     {
+        pTask->setDestroy();
         notifyDestroy(pTask);
     }
+
+    m_objAllNamLock.Lock();
+    for (std::list<std::string>::iterator itName = m_lstAllName.begin(); m_lstAllName.end() != itName; itName++)
+    {
+        if (*itName == strName)
+        {
+            m_lstAllName.erase(itName);
+            break;
+        }
+    }
+    m_objAllNamLock.unLock();
 }
 
 CWorker *CWorkerDisp::getFreeWorker(void)
@@ -175,6 +192,32 @@ void CWorkerDisp::destroyRun(void)
     {
         itTask->second->destroyTask();
     }
+}
+
+std::string CWorkerDisp::getAllName(void) 
+{
+    std::string strNames = "[";
+    bool bHave(false);
+
+    m_objAllNamLock.Lock();
+    if (!m_lstAllName.empty())
+    {
+        bHave = true;
+    }
+    for (std::list<std::string>::iterator itName = m_lstAllName.begin(); m_lstAllName.end() != itName; itName++)
+    {        
+        strNames += "\"" + *itName + "\",";
+    }
+    m_objAllNamLock.unLock();
+
+    if (bHave)
+    {
+        strNames = strNames.substr(0, strNames.size() - 1);       
+    }
+
+    strNames += "]";
+
+    return strNames;
 }
 
 H_ENAMSP

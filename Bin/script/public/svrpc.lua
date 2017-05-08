@@ -32,13 +32,15 @@ function SVRPC:new(strTaskName)
     return self
 end
 
+function SVRPC:creatRPCName(strTask, strRPCName)
+	return strTask.."."..strRPCName
+end
+
 --rcp注册
 function SVRPC:regRPC(strRPCName, Func)
 	assert("function" == type(Func))
 	
-	humble.regProto(strRPCName, self.TaskName)
-	
-	self.Proto[strRPCName] = Func
+	self.Proto[self:creatRPCName(self.TaskName, strRPCName)] = Func
     utile.Debugf("register service rpc protocol %s", strRPCName)
 end
 
@@ -110,14 +112,15 @@ function SVRPC:getID()
 end
 
 --调用 Func(rpcOK, rpcMsg, ...)  Func为nil表示不需要返回
-function SVRPC:callRPC(uiSock, uiSession, strRecvTask, strRPCName, tRPCParam, Func, ...)
+function SVRPC:callRPC(uiSock, uiSession, strToTask, strRecvTask, strRPCName, tRPCParam, Func, ...)
 	local rpcId = 0
+	local realName = self:creatRPCName(strToTask, strRPCName)
 	if Func then
 		assert("function" == type(Func))
 		rpcId = self:getID()
 		local tRPCBC = {}
 		tRPCBC.Func = Func
-		tRPCBC.Method = strRPCName
+		tRPCBC.Method = realName
 		tRPCBC.Param = {...}
 		self.RPCCash[rpcId] = tRPCBC
 	end
@@ -126,8 +129,9 @@ function SVRPC:callRPC(uiSock, uiSession, strRecvTask, strRPCName, tRPCParam, Fu
 	tCallRPC.Enevt = EnevtType.CallRPC
 	tCallRPC.ID = rpcId
 	tCallRPC.Param = tRPCParam
+	tCallRPC.ToTask = strToTask
 	tCallRPC.RecvTask = strRecvTask
-	tCallRPC.Method = strRPCName
+	tCallRPC.Method = realName
 	
 	humble.sendB(uiSock, uiSession,
 		tcp3.Response(cjson.encode(tCallRPC)))

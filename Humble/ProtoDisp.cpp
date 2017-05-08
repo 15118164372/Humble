@@ -12,78 +12,58 @@ CProtoDisp::CProtoDisp(void)
 
 CProtoDisp::~CProtoDisp(void)
 {
-    std::vector<std::string *>::iterator itTask;
-    for (itTask = m_vcTask.begin(); m_vcTask.end() != itTask; ++itTask)
-    {
-        H_SafeDelete(*itTask);
-    }
-
-    m_vcTask.clear();
-}
-
-std::string *CProtoDisp::getTaskPoint(const char *pszTask)
-{
-    std::vector<std::string *>::iterator itTask;
-    for (itTask = m_vcTask.begin(); m_vcTask.end() != itTask; ++itTask)
-    {
-        if (**itTask == std::string(pszTask))
-        {
-            return *itTask;
-        }
-    }
-
-    std::string *pStr = new(std::nothrow) std::string;
-    H_ASSERT(NULL != pStr, "malloc memory error");
-
-    *pStr = pszTask;
-    m_vcTask.push_back(pStr);
-
-    return pStr;
 }
 
 void CProtoDisp::regStrProto(const char *pszProto, const char *pszTask)
 {
     std::string strProto(pszProto);
+
+    m_objStrLock.Lock();
     strprotoit itProto = m_mapStrProto.find(strProto);
     if (m_mapStrProto.end() != itProto)
     {
-        H_Printf("proto %s duplicate registration", strProto.c_str());
+        H_Printf("proto %s duplicate registration", pszProto);
     }
-
-    std::string *pTask = getTaskPoint(pszTask);
-    m_mapStrProto[strProto] = pTask;
+    m_mapStrProto[strProto] = std::string(pszTask);
+    m_objStrLock.unLock();
 }
 
 void CProtoDisp::regIProto(int iProto, const char *pszTask)
 {
+    m_objILock.Lock();
     iprotoit itProto = m_mapIProto.find(iProto);
     if (m_mapIProto.end() != itProto)
     {
         H_Printf("proto %d duplicate registration", iProto);
     }
-
-    std::string *pTask = getTaskPoint(pszTask);
-    m_mapIProto[iProto] = pTask;
+    m_mapIProto[iProto] = std::string(pszTask);
+    m_objILock.unLock();
 }
 
 const char *CProtoDisp::getStrProto(const char *pszProto)
 {
+    m_objStrLock.Lock();
     strprotoit itProto = m_mapStrProto.find(std::string(pszProto));
     if (m_mapStrProto.end() != itProto)
     {
-        return itProto->second->c_str();
+        m_objStrLock.unLock();
+        return itProto->second.c_str();
     }
+    m_objStrLock.unLock();
 
     return NULL;
 }
 
 const char *CProtoDisp::getIProto(int iProto)
 {
+    m_objILock.Lock();
     iprotoit itProto = m_mapIProto.find(iProto);
     if (m_mapIProto.end() != itProto)
     {
-        return itProto->second->c_str();
+        m_objILock.unLock();
+        return itProto->second.c_str();
     }
+    m_objILock.unLock();
 
     return NULL;
 }
