@@ -28,7 +28,7 @@ function onStart()
 		
 	--TODO
 	--ртобн╙╡Бйт
-	humble.addTcpLink(SockType.RPC, "127.0.0.1", 15201)
+	--humble.addTcpLink(SockType.RPC, "127.0.0.1", 15201)
 	humble.addListener(SockType.HTTP, "0.0.0.0", 80)
 	humble.setParser(SockType.HTTP, "http")
 	humble.regTask("echo1.lua", "echo1", 1024 * 10)

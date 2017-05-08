@@ -12,12 +12,14 @@ void CWorkerTask::Run(void)
         case TCMD_INIT:
         {
             initTask();
+            setStatus(H_INIT_NUMBER);
         }
         break;
 
         case TCMD_RUN:
         {
             runTask();
+            setStatus(H_INIT_NUMBER);
         }
         break;
 
@@ -30,6 +32,7 @@ void CWorkerTask::Run(void)
         break;
 
         default:
+            setStatus(H_INIT_NUMBER);
             break;
     }
 };
@@ -55,7 +58,6 @@ void CWorker::runTask(CWorkerTask *pMsg)
     CTick::getSingletonPtr()->monitorTrigger(m_usIndex, pMsg->getName()->c_str());
     pMsg->Run();
     CTick::getSingletonPtr()->monitorTrigger(m_usIndex, NULL);
-    pMsg->setStatus(H_INIT_NUMBER);
     H_AtomicSet(&m_uiStatus, H_INIT_NUMBER);
 }
 

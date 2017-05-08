@@ -51,7 +51,7 @@ end
 
 local iTaskName = 0
 local function testRepeatTask()
-	for i = 1, 10 do
+	for i = 1, 20 do
 		iTaskName = iTaskName + 1
 		humble.regTask("echo1.lua", tostring(iTaskName), 50)
 		--humble.unregTask(tostring(iTaskName))
