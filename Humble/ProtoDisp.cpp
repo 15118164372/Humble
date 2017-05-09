@@ -16,56 +16,64 @@ CProtoDisp::~CProtoDisp(void)
 
 void CProtoDisp::regStrProto(const char *pszProto, const char *pszTask)
 {
+    CChan *pChan(CWorkerDisp::getSingletonPtr()->getChan(pszTask));
+    H_ASSERT(NULL != pChan, H_FormatStr("get chan by task %s error.", pszTask).c_str());
+
     std::string strProto(pszProto);
 
-    m_objStrLock.Lock();
+    m_objStrLock.wLock();
     strprotoit itProto = m_mapStrProto.find(strProto);
     if (m_mapStrProto.end() != itProto)
     {
         H_Printf("proto %s duplicate registration", pszProto);
     }
-    m_mapStrProto[strProto] = std::string(pszTask);
+    m_mapStrProto[strProto] = pChan;
     m_objStrLock.unLock();
+}
+
+CChan *CProtoDisp::getStrProto(const char *pszProto)
+{
+    CChan *pChan(NULL);
+
+    m_objStrLock.rLock();
+    strprotoit itProto = m_mapStrProto.find(std::string(pszProto));
+    if (m_mapStrProto.end() != itProto)
+    {
+        pChan = itProto->second;
+    }
+    m_objStrLock.unLock();
+
+    return pChan;
 }
 
 void CProtoDisp::regIProto(int iProto, const char *pszTask)
 {
-    m_objILock.Lock();
+    CChan *pChan(CWorkerDisp::getSingletonPtr()->getChan(pszTask));
+    H_ASSERT(NULL != pChan, H_FormatStr("get chan by task %s error.", pszTask).c_str());
+
+    m_objILock.wLock();
     iprotoit itProto = m_mapIProto.find(iProto);
     if (m_mapIProto.end() != itProto)
     {
         H_Printf("proto %d duplicate registration", iProto);
     }
-    m_mapIProto[iProto] = std::string(pszTask);
+    m_mapIProto[iProto] = pChan;
     m_objILock.unLock();
 }
 
-const char *CProtoDisp::getStrProto(const char *pszProto)
+CChan *CProtoDisp::getIProto(int iProto)
 {
-    m_objStrLock.Lock();
-    strprotoit itProto = m_mapStrProto.find(std::string(pszProto));
-    if (m_mapStrProto.end() != itProto)
-    {
-        m_objStrLock.unLock();
-        return itProto->second.c_str();
-    }
-    m_objStrLock.unLock();
+    CChan *pChan(NULL);
 
-    return NULL;
-}
-
-const char *CProtoDisp::getIProto(int iProto)
-{
-    m_objILock.Lock();
+    m_objILock.rLock();
     iprotoit itProto = m_mapIProto.find(iProto);
     if (m_mapIProto.end() != itProto)
     {
-        m_objILock.unLock();
-        return itProto->second.c_str();
+        pChan = itProto->second;
     }
     m_objILock.unLock();
 
-    return NULL;
+    return pChan;
 }
 
 H_ENAMSP

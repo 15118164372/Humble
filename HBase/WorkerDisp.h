@@ -4,6 +4,7 @@
 
 #include "Worker.h"
 #include "Singleton.h"
+#include "RWLock.h"
 #include "Funcs.h"
 
 H_BNAMSP
@@ -23,15 +24,15 @@ public:
         return m_usThreadNum;
     };
 
-    void regTask(CWorkerTask *pTask);
+    CChan *regTask(CWorkerTask *pTask);
     void unregTask(const char *pszName);
 
     void runTask(CWorkerTask *pTask);
-    void stopRun(void);
+    void onLoopBreak(void);
     void runSurplusTask(CWorkerTask *pTask);
     void destroyRun(void);    
     
-    void notifyRun(CWorkerTask *pTask)
+    H_INLINE void notifyRun(CWorkerTask *pTask)
     {
         Notify(pTask, &m_uiRunCMD);
     };
@@ -42,15 +43,15 @@ private:
     CWorker *getFreeWorker(void);
     void stopNet(void);
     void stopWorker(void);
-    void notifyInit(CWorkerTask *pTask)
+    H_INLINE void notifyInit(CWorkerTask *pTask)
     {
         Notify(pTask, &m_uiInitCMD);
     };
-    void notifyDestroy(CWorkerTask *pTask)
+    H_INLINE void notifyDestroy(CWorkerTask *pTask)
     {
         Notify(pTask, &m_uiDestroyCMD);
     };
-    void Notify(CWorkerTask *pTask, unsigned int *pCMD)
+    H_INLINE void Notify(CWorkerTask *pTask, unsigned int *pCMD)
     {
         CCirQueue *pCMDQu = pTask->getCMDQu();
         CAtomic *pCMDLock = pTask->getCMDLock();
@@ -79,9 +80,9 @@ private:
     unsigned int m_uiDestroyCMD;
     CWorker *m_pWorker;
     task_map m_mapTask;
-    CAtomic m_objTaskLock;
+    CRWLock m_objTaskLock;
     std::list<std::string> m_lstAllName;
-    CAtomic m_objAllNamLock;
+    CRWLock m_objAllNamLock;
 };
 
 H_ENAMSP

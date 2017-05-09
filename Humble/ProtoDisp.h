@@ -13,28 +13,31 @@ public:
     ~CProtoDisp(void);
 
     void regStrProto(const char *pszProto, const char *pszTask);
-    void regIProto(int iProto, const char *pszTask);
-    const char *getStrProto(const char *pszProto);
-    const char *getIProto(int iProto);
+    CChan *getStrProto(const char *pszProto);
+
+    void regIProto(int iProto, const char *pszTask);    
+    CChan *getIProto(int iProto);
+
 private:
 #ifdef H_OS_WIN 
-    #define strprotoit std::unordered_map<std::string, std::string>::iterator
-    #define strproto_map std::unordered_map<std::string, std::string>
+    #define strprotoit std::unordered_map<std::string, CChan*>::iterator
+    #define strproto_map std::unordered_map<std::string, CChan*>
 
-    #define iprotoit std::unordered_map<int, std::string>::iterator
-    #define iproto_map std::unordered_map<int, std::string>
+    #define iprotoit std::unordered_map<int, CChan*>::iterator
+    #define iproto_map std::unordered_map<int, CChan*>
 #else
-    #define strprotoit std::tr1::unordered_map<std::string, std::string>::iterator
-    #define strproto_map std::tr1::unordered_map<std::string, std::string>
+    #define strprotoit std::tr1::unordered_map<std::string, CChan*>::iterator
+    #define strproto_map std::tr1::unordered_map<std::string, CChan*>
 
-    #define iprotoit std::tr1::unordered_map<int, std::string>::iterator
-    #define iproto_map std::tr1::unordered_map<int, std::string>
+    #define iprotoit std::tr1::unordered_map<int, CChan*>::iterator
+    #define iproto_map std::tr1::unordered_map<int, CChan*>
 #endif
 
     strproto_map m_mapStrProto;
     iproto_map m_mapIProto;
-    CAtomic m_objStrLock;
-    CAtomic m_objILock;
+    
+    CRWLock m_objStrLock;
+    CRWLock m_objILock;
 };
 
 H_ENAMSP

@@ -20,7 +20,7 @@ public:
 
     //Run动作分解
     virtual void runTask(T *pMsg) = 0;
-    virtual void stopRun(void) {};
+    virtual void onLoopBreak(void) {};
     virtual void runSurplusTask(T *pMsg);
     virtual void destroyRun(void) {};
     
@@ -108,7 +108,7 @@ void CRecvTask<T>::Run(void)
         }
     }
 
-    stopRun();
+    onLoopBreak();
 
     pMsg = NULL;
     while (true)

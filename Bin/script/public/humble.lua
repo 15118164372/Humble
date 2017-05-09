@@ -90,7 +90,7 @@ function humble.getChan(strTaskNam)
     return pWorkerMgr:getChan(strTaskNam)
 end
 function humble.regTask(strFile, strTaskNam, iChanLens)
-    pWorkerMgr:regTask(newLuaTask(strFile, strTaskNam, iChanLens))
+    return pWorkerMgr:regTask(newLuaTask(strFile, strTaskNam, iChanLens))
 end
 function humble.unregTask(strTaskNam)
     pWorkerMgr:unregTask(strTaskNam)
@@ -113,19 +113,13 @@ end
 function humble.netToTask(proto, param)
 	local protoType = type(proto)
 	assert("string" == protoType or "number" == protoType)
-	local strTask = nil
+	local objChan = nil
 	if "string" == protoType then
-		strTask = pProtoDisp:getStrProto(proto)
+		objChan = pProtoDisp:getStrProto(proto)
 	else
-		strTask = pProtoDisp:getIProto(proto)
+		objChan = pProtoDisp:getIProto(proto)
 	end
 	
-	if not strTask then
-		utile.freePack(param)
-		return false
-	end
-	
-	local objChan = humble.getChan(strTask)
 	if not objChan then
 		utile.freePack(param)
 		return false

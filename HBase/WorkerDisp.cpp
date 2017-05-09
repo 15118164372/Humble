@@ -44,7 +44,7 @@ CChan *CWorkerDisp::getChan(const char *pszTaskName)
 {   
     CChan *pChan(NULL);
 
-    m_objTaskLock.Lock();
+    m_objTaskLock.rLock();
     taskit itTask = m_mapTask.find(std::string(pszTaskName));
     if (m_mapTask.end() != itTask)
     {
@@ -55,11 +55,12 @@ CChan *CWorkerDisp::getChan(const char *pszTaskName)
     return pChan;
 }
 
-void CWorkerDisp::regTask(CWorkerTask *pTask)
+CChan *CWorkerDisp::regTask(CWorkerTask *pTask)
 {
     std::string strName(*pTask->getName());
+    CChan *pChan = pTask->getChan();
 
-    m_objTaskLock.Lock();
+    m_objTaskLock.wLock();
     taskit itTask = m_mapTask.find(strName);
     H_ASSERT(m_mapTask.end() == itTask, H_FormatStr("task %s repeat register.", strName.c_str()).c_str());
     m_mapTask.insert(std::make_pair(strName, pTask));
@@ -67,9 +68,11 @@ void CWorkerDisp::regTask(CWorkerTask *pTask)
 
     notifyInit(pTask);
 
-    m_objAllNamLock.Lock();
+    m_objAllNamLock.wLock();
     m_lstAllName.push_back(strName);
     m_objAllNamLock.unLock();
+
+    return pChan;
 }
 
 void CWorkerDisp::unregTask(const char *pszName)
@@ -77,7 +80,7 @@ void CWorkerDisp::unregTask(const char *pszName)
     CWorkerTask *pTask(NULL);
     std::string strName(pszName);
 
-    m_objTaskLock.Lock();
+    m_objTaskLock.wLock();
     taskit itTask = m_mapTask.find(strName);
     if (m_mapTask.end() != itTask)
     {
@@ -92,7 +95,7 @@ void CWorkerDisp::unregTask(const char *pszName)
         notifyDestroy(pTask);
     }
 
-    m_objAllNamLock.Lock();
+    m_objAllNamLock.wLock();
     for (std::list<std::string>::iterator itName = m_lstAllName.begin(); m_lstAllName.end() != itName; itName++)
     {
         if (*itName == strName)
@@ -165,7 +168,7 @@ void CWorkerDisp::runTask(CWorkerTask *pTask)
     pWorker->addWorker(pTask);
 }
 
-void CWorkerDisp::stopRun(void)
+void CWorkerDisp::onLoopBreak(void)
 {
     //Í£Ö¹ÍøÂç
     stopNet();
@@ -196,24 +199,25 @@ void CWorkerDisp::destroyRun(void)
 
 std::string CWorkerDisp::getAllName(void) 
 {
-    std::string strNames = "[";
-    bool bHave(false);
+    std::string strNames("[");
+    size_t iIndex(H_INIT_NUMBER);
+    size_t iLens(H_INIT_NUMBER);
 
-    m_objAllNamLock.Lock();
-    if (!m_lstAllName.empty())
-    {
-        bHave = true;
-    }
+    m_objAllNamLock.rLock();
+    iLens = m_lstAllName.size();
     for (std::list<std::string>::iterator itName = m_lstAllName.begin(); m_lstAllName.end() != itName; itName++)
-    {        
-        strNames += "\"" + *itName + "\",";
+    {
+        iIndex++;
+        if (iLens == iIndex)
+        {
+            strNames += "\"" + *itName + "\"";
+        }
+        else
+        {
+            strNames += "\"" + *itName + "\",";
+        }        
     }
     m_objAllNamLock.unLock();
-
-    if (bHave)
-    {
-        strNames = strNames.substr(0, strNames.size() - 1);       
-    }
 
     strNames += "]";
 
