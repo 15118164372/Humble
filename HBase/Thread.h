@@ -20,8 +20,8 @@ private:
 #ifdef H_OS_WIN
     static unsigned int __stdcall threadCB(void *arg);
 #else
-    static void *threadCB(void *arg);
-#endif    
+    static void *threadCB(void *arg);    
+#endif
 };
 
 H_ENAMSP

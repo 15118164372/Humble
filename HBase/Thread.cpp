@@ -5,12 +5,10 @@ H_BNAMSP
 
 CThread::CThread(void)
 {
-
 }
 
 CThread::~CThread(void)
 {
-
 }
 
 #ifdef H_OS_WIN
@@ -34,7 +32,11 @@ pthread_t CThread::Creat(CTask *pTask)
     pThread = (HANDLE)_beginthreadex(NULL, 0, threadCB, pTask, 0, NULL);
     H_ASSERT(pThread, "_beginthreadex error.");
 #else
-    H_ASSERT((H_RTN_OK == pthread_create(&pThread, NULL, threadCB, pTask)), "pthread_create error.");
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+    H_ASSERT((H_RTN_OK == pthread_create(&pThread, &attr, threadCB, (void*)pTask)), "pthread_create error.");
+    pthread_attr_destroy(&attr);
 #endif
 
     return pThread;
