@@ -49,6 +49,7 @@ private:
     };
     H_INLINE void notifyDestroy(CWorkerTask *pTask)
     {
+        pTask->setDestroy();
         Notify(pTask, &m_uiDestroyCMD);
     };
     H_INLINE void Notify(CWorkerTask *pTask, unsigned int *pCMD)

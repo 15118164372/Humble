@@ -91,7 +91,6 @@ void CWorkerDisp::unregTask(const char *pszName)
 
     if (NULL != pTask)
     {
-        pTask->setDestroy();
         notifyDestroy(pTask);
     }
 
