@@ -10,6 +10,7 @@ local cjson = require("cjson")
 local tcp3 = require("tcp3")
 local table = table
 local pairs = pairs
+
 local EnevtType = EnevtType
 local SockType = SockType
 local pBuffer = g_pBuffer
@@ -17,7 +18,7 @@ local pBuffer = g_pBuffer
 if not g_tChan then
 	g_tChan = {}
 end
-local tChan = g_tChan
+local m_tChan = g_tChan
 
 --初始化  这里注册任务
 function onStart()
@@ -29,7 +30,7 @@ function onStart()
 	--rpc
 	humble.addListener(SockType.RPC, "0.0.0.0", 15200)	
 	--rpc链接管理
-	tChan.task_rpclink = humble.regTask("task_rpclink.lua", "task_rpclink", 1024 * 10)
+	m_tChan.task_rpclink = humble.regTask("task_rpclink.lua", "task_rpclink", 1024 * 10)
 		
 	--TODO
 	--以下为测试
@@ -48,7 +49,7 @@ end
 --accept到新链接
 function onTcpAccept(sock, uiSession, usSockType)
 	if SockType.RPC == usSockType then
-		utile.chanSend(tChan.task_rpclink, utile.Pack(EnevtType.NetAccept, nil, sock, uiSession, usSockType))
+		utile.chanSend(m_tChan.task_rpclink, utile.Pack(EnevtType.NetAccept, nil, sock, uiSession, usSockType))
 	else
 	end
 end
@@ -56,7 +57,7 @@ end
 --链接成功
 function onTcpLinked(sock, uiSession, usSockType)
 	if SockType.RPC == usSockType then
-		utile.chanSend(tChan.task_rpclink, utile.Pack(EnevtType.NetLinked, nil, sock, uiSession, usSockType))
+		utile.chanSend(m_tChan.task_rpclink, utile.Pack(EnevtType.NetLinked, nil, sock, uiSession, usSockType))
 	else
 	end
 end
@@ -64,7 +65,7 @@ end
 --链接断开
 function onTcpClose(sock, uiSession, usSockType)
 	if SockType.RPC == usSockType then
-		utile.chanSend(tChan.task_rpclink, utile.Pack(EnevtType.NetClose, nil, sock, uiSession, usSockType))
+		utile.chanSend(m_tChan.task_rpclink, utile.Pack(EnevtType.NetClose, nil, sock, uiSession, usSockType))
 	else
 	end
 end

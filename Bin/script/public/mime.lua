@@ -55,7 +55,7 @@ end
 local function format(chunk)
     if chunk then
         if chunk == "" then return "''"
-        else return string.len(chunk) end
+        else return #chunk end
     else return "nil" end
 end
 

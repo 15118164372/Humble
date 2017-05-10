@@ -64,7 +64,7 @@ local function parseHead(pBinary)
     
     while true do
         strLine = pBinary:readLine()        
-        if 0 == string.len(strLine) then
+        if 0 == #strLine then
             break
         end
         
@@ -87,7 +87,7 @@ local function parseChunked(pBinary)
     local iLens = 0
     while true do
         strLine = pBinary:readLine()
-        if 0 ~= string.len(strLine) then
+        if 0 ~= #strLine then
             iLens = tonumber(strLine, 16)
             if 0 == iLens then
                 break 

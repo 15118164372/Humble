@@ -4,7 +4,7 @@ C++º¯Êý
 
 local utile = require("utile")
 local cjson = require("cjson")
-local string = string
+
 local pWorkerMgr = g_pWorkerMgr
 local pNet = g_pNetWorker
 local pSender = g_pSender
@@ -45,7 +45,7 @@ end
 
 --·¢ËÍ
 function humble.Send(sock, uiSession, strBuf)
-    pSender:Send(sock, uiSession, strBuf, string.len(strBuf))
+    pSender:Send(sock, uiSession, strBuf, #strBuf)
 end
 function humble.sendB(sock, uiSession, pBinary)
     pSender:sendB(sock, uiSession, pBinary)
@@ -56,14 +56,14 @@ function humble.broadCast(tSock, strBuf)
         return
     end
     
-    pSender:broadCast(tSock, strBuf, string.len(strBuf))
+    pSender:broadCast(tSock, strBuf, #strBuf)
 end
 function humble.broadCastB(tSock, pBinary)
     if 0 == #tSock then
         return
     end
     
-    pSender:broadCast(tSock, pBinary)
+    pSender:broadCastB(tSock, pBinary)
 end
 --for udp
 function humble.addUdp(strHost, usPort)
@@ -73,13 +73,13 @@ function humble.delUdp(sock)
     pNet:delUdp(sock)
 end
 function humble.sendU(sock, strHost, usPort, strBuf)
-    pSender:sendU(sock, strHost, usPort, strBuf, string.len(strBuf))
+    pSender:sendU(sock, strHost, usPort, strBuf, #strBuf)
 end
 function humble.sendUB(sock, strHost, usPort, pBinary)
     pSender:sendUB(sock, strHost, usPort, pBinary)
 end
 function humble.broadCastU(sock, usPort, strBuf)
-    pSender:broadCastU(sock, usPort, strBuf, string.len(strBuf))
+    pSender:broadCastU(sock, usPort, strBuf, #strBuf)
 end
 function humble.broadCastUB(sock, usPort, pBinary)
     pSender:broadCastUB(sock, usPort, pBinary)

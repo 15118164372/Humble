@@ -10,6 +10,7 @@ local hotfix = require("hotfix")
 local cjson = require("cjson")
 local tcp3 = require("tcp3")
 local table = table
+local load = load
 
 local objEnevtDisp = EnevtDisp:new()
 

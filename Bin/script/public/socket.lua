@@ -116,7 +116,7 @@ sourcet["by-length"] = function(sock, length)
             local size = math.min(socket.BLOCKSIZE, length)
             local chunk, err = sock:receive(size)
             if err then return nil, err end
-            length = length - string.len(chunk)
+            length = length - #chunk
             return chunk
         end
     })

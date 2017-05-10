@@ -12,6 +12,8 @@ local table = table
 local string = string
 local xpcall = xpcall
 local assert = assert
+local debug = debug
+
 local Sleep = Sleep
 local H_LOG = H_LOG
 local CRC16 = CRC16
@@ -100,39 +102,39 @@ function utile.Errorf(fmt, ...)
 end
 
 function utile.CRC16(strval)
-    return CRC16(strval, string.len(strval))
+    return CRC16(strval, #strval)
 end
 
 function utile.CRC32(strval)
-    return CRC32(strval, string.len(strval))
+    return CRC32(strval, #strval)
 end
 
 function utile.urlEncode(strval)
-    return urlEncode(strval, string.len(strval))
+    return urlEncode(strval, #strval)
 end
 
 function utile.urlDecode(strval)
-    return urlDecode(strval, string.len(strval))
+    return urlDecode(strval, #strval)
 end
 
 function utile.zlibEncode(strval)
-    return zlibEncode(strval, string.len(strval))
+    return zlibEncode(strval, #strval)
 end
 
 function utile.zlibDecode(strval)
-    return zlibDecode(strval, string.len(strval))
+    return zlibDecode(strval, #strval)
 end
 
 function utile.b64Encode(strval)
-    return b64Encode(strval, string.len(strval))
+    return b64Encode(strval, #strval)
 end
 
 function utile.b64Decode(strval)
-    return b64Decode(strval, string.len(strval))
+    return b64Decode(strval, #strval)
 end
 
 function utile.md5Str(strval)
-    return md5Str(strval, string.len(strval))
+    return md5Str(strval, #strval)
 end
 
 function utile.md5File(strFile)

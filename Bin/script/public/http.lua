@@ -98,7 +98,7 @@ socket.sinkt["http-chunked"] = function(sock)
     }, {
         __call = function(self, chunk, err)
             if not chunk then return sock:send("0\r\n\r\n") end
-            local size = string.format("%X\r\n", string.len(chunk))
+            local size = string.format("%X\r\n", #chunk)
             return sock:send(size ..  chunk .. "\r\n")
         end
     })
@@ -358,7 +358,7 @@ local function genericform(u, b)
     if b then
         reqt.source = ltn12.source.string(b)
         reqt.headers = {
-            ["content-length"] = string.len(b),
+            ["content-length"] = #b,
             ["content-type"] = "application/x-www-form-urlencoded"
         }
         reqt.method = "POST"

@@ -5,14 +5,14 @@
 require("global")
 local utile = require("utile")
 local humble = require("humble")
-local pChan = g_pChan
 
-local taskName = g_taskName
-local enevtDisp = g_enevtDisp
-local timeWheel = g_timeWheel
-local netDisp = g_netDisp
-local svRPC = g_svRPC
-local taskRPC = g_taskRPC
+local pChan = g_pChan--消息chan
+local taskName = g_taskName--任务名
+local enevtDisp = g_enevtDisp--事件
+local timeWheel = g_timeWheel--时间轮
+local netDisp = g_netDisp--网络消息事件
+local svRPC = g_svRPC--网络rpc
+local taskRPC = g_taskRPC--任务间rpc
 
 if not g_RPCLink then
 	g_RPCLink = {}
