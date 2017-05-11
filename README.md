@@ -29,9 +29,7 @@ humble.setParser(1, "tcp1")--设置数据解析
 humble.addListener(1, "0.0.0.0", 15000)--建立监听                 
 
 * 3、注册echo服务(start.lua onStart())     
-humble.regTask("echo", 1000)      
---将echo消息通道保存在变量中   
-tChan.echo = humble.getChan("echo")      
+tChan.echo = humble.regTask("echo.lua", "echo", 1000)        
 
 * 4、将收到的消息发送到echo模块处理(start.lua onTcpRead(......))    
 utile.chanSend(tChan.echo, utile.Pack(...))    
