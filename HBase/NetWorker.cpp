@@ -105,7 +105,7 @@ struct event *CNetWorker::monitorLink(struct H_TcpLink *pTcpLink)
 void CNetWorker::acceptCB(struct evconnlistener *, H_SOCK sock, struct sockaddr *,
     int, void *arg)
 {
-    H_Listener *pListener = (H_Listener *)arg;
+    H_Listener *pListener((H_Listener *)arg);
     if (RSTOP_NONE != pListener->pNetWorker->getReadyStop())
     {
         evutil_closesocket(sock);

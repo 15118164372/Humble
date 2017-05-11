@@ -7,13 +7,13 @@ local utile = require("utile")
 local httpd = require("httpd")
 local humble = require("humble")
 
-local pChan = g_pChan--消息chan
-local taskName = g_taskName--任务名
-local enevtDisp = g_enevtDisp--事件
-local timeWheel = g_timeWheel--时间轮
-local netDisp = g_netDisp--网络消息事件
-local svRPC = g_svRPC--网络rpc
-local taskRPC = g_taskRPC--任务间rpc
+local m_pChan = g_pChan--消息chan
+local m_taskName = g_taskName--任务名
+local m_enevtDisp = g_enevtDisp--事件
+local m_timeWheel = g_timeWheel--时间轮
+local m_netDisp = g_netDisp--网络消息事件
+local m_svRPC = g_svRPC--网络rpc
+local m_taskRPC = g_taskRPC--任务间rpc
 
 local function rcpBack(bOk, rtnMsg, strType)
 	print(string.format("%d, strType : %s val %s", os.time(), strType, tostring(rtnMsg)))
@@ -24,8 +24,8 @@ local function rpcGetLink(bOk, rtnMsg)
 		return
 	end
 	
-	local rpcId = svRPC:callRPC(rtnMsg.sock, rtnMsg.session, "echo1", taskName, "add", svRPC:createParam(5, 5), rcpBack, "server rpc")
-	DEV_Reg(timeWheel, 5, removeRPC, svRPC, rpcId)
+	local rpcId = m_svRPC:callRPC(rtnMsg.sock, rtnMsg.session, "echo1", m_taskName, "add", m_svRPC:createParam(5, 5), rcpBack, "server rpc")
+	DEV_Reg(m_timeWheel, 5, removeRPC, m_svRPC, rpcId)
 end
 
 --测试
@@ -36,13 +36,13 @@ local function echo(uiSock, uiSession, tMsg)
 	local pWBinary = httpd.Response(200, tmsg)
     humble.sendB(uiSock, uiSession, pWBinary)
 	
-	local rpcId = taskRPC:callRPC("echo1", taskName, "add", taskRPC:createParam(4, 8), rcpBack, "task rpc")
-	DEV_Reg(timeWheel, 5, removeRPC, taskRPC, rpcId)
+	local rpcId = m_taskRPC:callRPC("echo1", m_taskName, "add", m_taskRPC:createParam(4, 8), rcpBack, "task rpc")
+	DEV_Reg(m_timeWheel, 5, removeRPC, m_taskRPC, rpcId)
 	
-	rpcId = taskRPC:callRPC("task_rpclink", taskName, "getRPCLink", taskRPC:createParam("2"), rpcGetLink)
-	DEV_Reg(timeWheel, 5, removeRPC, taskRPC, rpcId)
+	rpcId = m_taskRPC:callRPC("task_rpclink", m_taskName, "getRPCLink", m_taskRPC:createParam("2"), rpcGetLink)
+	DEV_Reg(m_timeWheel, 5, removeRPC, m_taskRPC, rpcId)
 end
-netDisp:regNetEvent("/echo2", echo)
+m_netDisp:regNetEvent("/echo2", echo)
 
 local function removeRepeatTask(strName)
 	humble.unregTask(strName)
@@ -55,15 +55,15 @@ local function testRepeatTask()
 		iTaskName = iTaskName + 1
 		humble.regTask("echo1.lua", tostring(iTaskName), 50)
 		--humble.unregTask(tostring(iTaskName))
-		taskRPC:callRPC("echo1", tostring(iTaskName), "showTest", taskRPC:createParam(tostring(iTaskName)))
-		DEV_Reg(timeWheel, 1, removeRepeatTask, tostring(iTaskName))
+		m_taskRPC:callRPC("echo1", tostring(iTaskName), "showTest", m_taskRPC:createParam(tostring(iTaskName)))
+		DEV_Reg(m_timeWheel, 1, removeRepeatTask, tostring(iTaskName))
 	end
 	
 	--collectgarbage("collect") 
 	
-	DEV_Reg(timeWheel, 5, testRepeatTask)
+	DEV_Reg(m_timeWheel, 5, testRepeatTask)
 end
-DEV_Reg(timeWheel, 5, testRepeatTask)
+DEV_Reg(m_timeWheel, 5, testRepeatTask)
 
 --任务初始化
 function initTask()
@@ -72,13 +72,13 @@ end
 
 --有新任务执行
 function runTask()
-    local varRecv = pChan:Recv()
+    local varRecv = m_pChan:Recv()
 	if not varRecv then
 		return
 	end
 		
 	local evType, Proto, msgPakc = utile.unPack(varRecv)
-	enevtDisp:onEvent(evType, Proto, msgPakc)
+	m_enevtDisp:onEvent(evType, Proto, msgPakc)
 end
 
 --任务销毁

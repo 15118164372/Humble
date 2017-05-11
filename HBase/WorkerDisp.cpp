@@ -57,22 +57,19 @@ CChan *CWorkerDisp::getChan(const char *pszTaskName)
 
 CChan *CWorkerDisp::regTask(CWorkerTask *pTask)
 {
-    std::string strName(*pTask->getName());
-    CChan *pChan = pTask->getChan();
-
     m_objTaskLock.wLock();
-    taskit itTask = m_mapTask.find(strName);
-    H_ASSERT(m_mapTask.end() == itTask, H_FormatStr("task %s repeat register.", strName.c_str()).c_str());
-    m_mapTask.insert(std::make_pair(strName, pTask));
+    taskit itTask = m_mapTask.find(*pTask->getName());
+    H_ASSERT(m_mapTask.end() == itTask, H_FormatStr("task %s repeat register.", pTask->getName()->c_str()).c_str());
+    m_mapTask.insert(std::make_pair(*pTask->getName(), pTask));
     m_objTaskLock.unLock();
 
     notifyInit(pTask);
 
     m_objAllNamLock.wLock();
-    m_lstAllName.push_back(strName);
+    m_lstAllName.push_back(*pTask->getName());
     m_objAllNamLock.unLock();
 
-    return pChan;
+    return pTask->getChan();
 }
 
 void CWorkerDisp::unregTask(const char *pszName)
@@ -89,10 +86,13 @@ void CWorkerDisp::unregTask(const char *pszName)
     }
     m_objTaskLock.unLock();
 
-    if (NULL != pTask)
+    if (NULL == pTask)
     {
-        notifyDestroy(pTask);
+        H_Printf("not find task by name %s", pszName);
+        return;
     }
+    
+    notifyDestroy(pTask);
 
     m_objAllNamLock.wLock();
     for (std::list<std::string>::iterator itName = m_lstAllName.begin(); m_lstAllName.end() != itName; itName++)
@@ -151,18 +151,15 @@ void CWorkerDisp::runTask(CWorkerTask *pTask)
         return;
     }
 
-    CCirQueue *pCMDQu = pTask->getCMDQu();
-    CAtomic *pCMDLock = pTask->getCMDLock();
-
-    pCMDLock->Lock();
-    unsigned int * pCMD = (unsigned int *)pCMDQu->Pop();
-    pCMDLock->unLock();
+    pTask->getCMDLock()->Lock();
+    unsigned int * pCMD((unsigned int *)pTask->getCMDQu()->Pop());
+    pTask->getCMDLock()->unLock();
     if (NULL == pCMD)
     {
         return;
     }
 
-    CWorker *pWorker = getFreeWorker();
+    CWorker *pWorker(getFreeWorker());
     pTask->setCMD(pCMD);
     pWorker->addWorker(pTask);
 }

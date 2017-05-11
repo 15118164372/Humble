@@ -27,6 +27,7 @@ local b64Decode = b64Decode
 local md5Str = md5Str
 local md5File = md5File
 local LogLV = LogLV
+local getSVId = getSVId
 local logPriority = getLogPriority()
 
 local utile = {}
@@ -99,6 +100,10 @@ function utile.Errorf(fmt, ...)
     local strMsg = string.format(fmt, table.unpack({...}))
 	local stack = debug.getinfo(2)
 	H_LOG(LogLV.Err, getFileName(stack.short_src), stack.currentline, strMsg)
+end
+
+function utile.getSVId()
+    return getSVId()
 end
 
 function utile.CRC16(strval)

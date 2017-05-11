@@ -66,7 +66,7 @@ public:
     };
     void *Pop(void)
     {
-        void* pValue = NULL;
+        void *pValue(NULL);
 
         if (m_iSize > H_INIT_NUMBER)
         {

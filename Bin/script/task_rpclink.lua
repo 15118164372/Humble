@@ -6,13 +6,13 @@ require("global")
 local utile = require("utile")
 local humble = require("humble")
 
-local pChan = g_pChan--消息chan
-local taskName = g_taskName--任务名
-local enevtDisp = g_enevtDisp--事件
-local timeWheel = g_timeWheel--时间轮
-local netDisp = g_netDisp--网络消息事件
-local svRPC = g_svRPC--网络rpc
-local taskRPC = g_taskRPC--任务间rpc
+local m_pChan = g_pChan--消息chan
+local m_taskName = g_taskName--任务名
+local m_enevtDisp = g_enevtDisp--事件
+local m_timeWheel = g_timeWheel--时间轮
+local m_netDisp = g_netDisp--网络消息事件
+local m_svRPC = g_svRPC--网络rpc
+local m_taskRPC = g_taskRPC--任务间rpc
 
 if not g_RPCLink then
 	g_RPCLink = {}
@@ -28,7 +28,7 @@ local m_Register = g_Register
 local function getRPCLink(svId)
 	return m_RPCLink[svId]
 end
-taskRPC:regRPC("getRPCLink", getRPCLink)
+m_taskRPC:regRPC("getRPCLink", getRPCLink)
 
 --注册超时
 local function registerTimeOut(uiSock, uiSession)
@@ -46,21 +46,28 @@ end
 
 --注册服务器id
 local function registerSVId(svId)
-	local curSock, curSession = svRPC:getCurSock()
+	local curSock, curSession = m_svRPC:getCurSock()
 	local curRegister = m_Register[curSock]
 	if not curRegister then
 		utile.Warnf("not find rpc register info.")
 		return -1
 	end
 	
+	local mySVId = utile.getSVId()
+	if mySVId == svId then
+		utile.Errorf("repeat server id %s.", svId)
+		return -1
+	end
+	
 	curRegister.svId = svId	
 	m_RPCLink[svId] = curRegister
+	utile.Infof("register server, id %s", svId)
 	
 	m_Register[curSock] = nil
 	
-	return getSVId()
+	return mySVId
 end
-svRPC:regRPC("registerSVId", registerSVId)
+m_svRPC:regRPC("registerSVId", registerSVId)
 
 --注册服务器id返回
 local function registerCB(bOk, rtnMsg, uiSock)
@@ -78,6 +85,7 @@ local function registerCB(bOk, rtnMsg, uiSock)
 	
 	curRegister.svId = rtnMsg
 	m_RPCLink[rtnMsg] = curRegister
+	utile.Infof("register server, id:%s", rtnMsg)
 	
 	m_Register[uiSock] = nil
 end
@@ -92,9 +100,9 @@ local function onNetAccept(Proto, msgPack)
 	rpcAccep.svId = 0
 	
 	m_Register[uiSock] = rpcAccep
-	DEV_Reg(timeWheel, 5, registerTimeOut, uiSock, uiSession)
+	DEV_Reg(m_timeWheel, 5, registerTimeOut, uiSock, uiSession)
 end
-enevtDisp:regEvent(EnevtType.NetAccept, onNetAccept)
+m_enevtDisp:regEvent(EnevtType.NetAccept, onNetAccept)
 
 --链接事件
 local function onNetLinkedEvent(Proto, msgPack)
@@ -108,10 +116,10 @@ local function onNetLinkedEvent(Proto, msgPack)
 	m_Register[uiSock] = rpcLink
 	
 	--注册
-	svRPC:callRPC(uiSock, uiSession, taskName, taskName, "registerSVId", 
-		svRPC:createParam(getSVId()), registerCB, uiSock)		
+	m_svRPC:callRPC(uiSock, uiSession, m_taskName, m_taskName, "registerSVId", 
+		m_svRPC:createParam(utile.getSVId()), registerCB, uiSock)		
 end
-enevtDisp:regEvent(EnevtType.NetLinked, onNetLinkedEvent)
+m_enevtDisp:regEvent(EnevtType.NetLinked, onNetLinkedEvent)
 
 --连接断开
 local function onNetCloseEvent(Proto, msgPack)
@@ -129,7 +137,7 @@ local function onNetCloseEvent(Proto, msgPack)
 		end
 	end
 end
-enevtDisp:regEvent(EnevtType.NetClose, onNetCloseEvent)
+m_enevtDisp:regEvent(EnevtType.NetClose, onNetCloseEvent)
 
 --任务初始化
 function initTask()
@@ -138,13 +146,13 @@ end
 
 --有新任务执行
 function runTask()
-    local varRecv = pChan:Recv()
+    local varRecv = m_pChan:Recv()
 	if not varRecv then
 		return
 	end
 		
 	local evType, Proto, msgPakc = utile.unPack(varRecv)
-	enevtDisp:onEvent(evType, Proto, msgPakc)
+	m_enevtDisp:onEvent(evType, Proto, msgPakc)
 end
 
 --任务销毁

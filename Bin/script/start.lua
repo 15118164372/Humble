@@ -13,7 +13,7 @@ local pairs = pairs
 
 local EnevtType = EnevtType
 local SockType = SockType
-local pBuffer = g_pBuffer
+local m_pBuffer = g_pBuffer
 
 if not g_tChan then
 	g_tChan = {}
@@ -71,9 +71,9 @@ function onTcpClose(sock, uiSession, usSockType)
 end
 
 local function dispCMD(sock, uiSession)
-	local strCmd = pBuffer:getString()
-	local strTask = pBuffer:getString()
-	local strMsg = pBuffer:getString()
+	local strCmd = m_pBuffer:getString()
+	local strTask = m_pBuffer:getString()
+	local strMsg = m_pBuffer:getString()
 	local objChan
 	
 	if "hotfix" == strCmd and "all" == strTask then
@@ -100,7 +100,7 @@ local function dispCMD(sock, uiSession)
 end
 
 local function dispRPC(sock, uiSession)
-	local tRPC = cjson.decode(pBuffer:getByte(pBuffer:getSurpLens()))
+	local tRPC = cjson.decode(m_pBuffer:getByte(m_pBuffer:getSurpLens()))
 	if tRPC.Enevt == EnevtType.CallRPC then --µ÷ÓÃ
 		local objChan = humble.getChan(tRPC.ToTask)
 		if objChan then
@@ -120,7 +120,7 @@ end
 
 local httpd = require("httpd")
 local function dispHttp(sock, uiSession)
-	local buffer = httpd.parsePack(pBuffer)
+	local buffer = httpd.parsePack(m_pBuffer)
 	humble.netToTask(buffer.url, utile.Pack(EnevtType.TcpRead, buffer.url, sock, uiSession, buffer))
 end
 

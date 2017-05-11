@@ -54,12 +54,9 @@ private:
     };
     H_INLINE void Notify(CWorkerTask *pTask, unsigned int *pCMD)
     {
-        CCirQueue *pCMDQu = pTask->getCMDQu();
-        CAtomic *pCMDLock = pTask->getCMDLock();
-
-        pCMDLock->Lock();
-        pCMDQu->Push((void*)pCMD);
-        pCMDLock->unLock();
+        pTask->getCMDLock()->Lock();
+        pTask->getCMDQu()->Push((void*)pCMD);
+        pTask->getCMDLock()->unLock();
 
         addTask(pTask);
     };

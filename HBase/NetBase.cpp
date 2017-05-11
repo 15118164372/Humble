@@ -125,7 +125,7 @@ void CNetBase::removByType(const unsigned short &usSockType)
 
 H_Session *CNetBase::addTcpEv(H_SOCK &sock, const unsigned short &usSockType, const bool bAccept)
 {
-    int iFlag = 1;
+    int iFlag(1);
     (void)setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (char *)&iFlag, sizeof(iFlag));
     //H_KeepAlive(sock, H_SOCKKEEPALIVE_IDLE, H_SOCKKEEPALIVE_INTERVAL);
     struct bufferevent *pBev = bufferevent_socket_new(getBase(), sock, BEV_OPT_CLOSE_ON_FREE);
@@ -156,13 +156,13 @@ H_Session *CNetBase::addTcpEv(H_SOCK &sock, const unsigned short &usSockType, co
 
 void CNetBase::tcpReadCB(struct bufferevent *bev, void *arg)
 {
-    H_Session *pSession = (H_Session *)arg;
+    H_Session *pSession((H_Session *)arg);
     pSession->pNetBase->onRead(pSession);
 }
 
 void CNetBase::tcpEventCB(struct bufferevent *bev, short, void *arg)
 {
-    H_Session *pSession = (H_Session *)arg;
+    H_Session *pSession((H_Session *)arg);
     pSession->pNetBase->delSession(pSession->sock);
 }
 

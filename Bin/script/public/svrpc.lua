@@ -60,7 +60,7 @@ function SVRPC:onRPC(uiSock, uiSession, tRPC)
 		if Func then
 			tRPC.Rnt, tRPC.Param = utile.callFunc(Func, table.unpack(tRPC.Param))
 			if not tRPC.Rnt then
-				utile.Errorf("%s call sv rpc %s error,message: %s, .", 
+				utile.Errorf("%s call sv rpc %s error,message: %s.", 
 					tRPC.RecvTask, tRPC.Method, tRPC.Param)
 			end
 		else
