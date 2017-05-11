@@ -199,6 +199,7 @@ int runCommand(H_SOCK &sock, const char *pszCommand, const char *pszMode, const 
     }
     unsigned int uiPackLens = ntohl(*(unsigned int*)acHead);
     char *pBuf = new char[uiPackLens + 1];
+    H_ASSERT(NULL != pBuf, "malloc memory error.");
     H_Zero(pBuf, uiPackLens + 1);
     iRtn = recv(sock, pBuf, uiPackLens, 0);
     if (iRtn != (int)uiPackLens)

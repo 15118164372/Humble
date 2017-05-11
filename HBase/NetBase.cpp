@@ -138,6 +138,7 @@ H_Session *CNetBase::addTcpEv(H_SOCK &sock, const unsigned short &usSockType, co
 
     H_Session *pSession = new(std::nothrow) H_Session;
     H_ASSERT(NULL != pSession, "malloc memory error.");
+
     pSession->pNetBase = this;
     pSession->sock = sock;
     pSession->uiSession = ++m_uiSession;

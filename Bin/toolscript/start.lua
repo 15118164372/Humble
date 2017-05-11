@@ -20,8 +20,7 @@ local tChan = g_tChan
 
 --初始化
 function onStart()
-    humble.regTask("tool", 1024)
-    tChan.tool = humble.getChan("tool")
+    tChan.tool = humble.regTask("tool.lua", "tool", 1024)
 end
 
 --退出，主要清理掉连接

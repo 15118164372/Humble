@@ -31,6 +31,8 @@ void CLinker::runTask(H_Link *pMsg)
 void CLinker::addLink(const unsigned int &uiID, const char *pszHost, const unsigned short &usPort)
 {
     H_Link *pLinker = newT();
+    H_ASSERT(NULL != pLinker, "malloc memory error.");
+
     pLinker->usPort = usPort;
     pLinker->uiID = uiID;
     pLinker->pHost = (char*)pszHost;

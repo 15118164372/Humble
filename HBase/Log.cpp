@@ -124,6 +124,8 @@ void CLog::writeLog(const LOG_LEVEL emInLogLv, const char *pFormat, ...)
     }
 
     std::string *pstrVa = newT();
+    H_ASSERT(NULL != pstrVa, "malloc memory error.");
+
     pstrVa->append("[");
     pstrVa->append(getLV(emInLogLv));
     pstrVa->append("]");

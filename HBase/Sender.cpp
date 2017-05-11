@@ -128,6 +128,7 @@ void CSender::runTask(H_Sender *pMsg)
 void CSender::Send(H_SOCK sock, const unsigned int uiSession, const char *pBuf, const size_t iLens)
 {
     H_Sender *pSender = newT();
+    H_ASSERT(NULL != pSender, "malloc memory error.");
     char *pNewBuf = new(std::nothrow) char[iLens];
     H_ASSERT(NULL != pNewBuf, "malloc memory error.");
 
@@ -193,6 +194,7 @@ void CSender::broadCastBinary(luabridge::LuaRef lTable, CBinary *pBinary)
 void CSender::broadCast(H_SenderSock *pSock, const int &iCount, const char *pBuf, const size_t &iLens)
 {
     H_Sender *pSender = newT();
+    H_ASSERT(NULL != pSender, "malloc memory error.");
     char *pNewBuf = new(std::nothrow) char[iLens];
     H_ASSERT(NULL != pNewBuf, "malloc memory error."); 
 
@@ -211,6 +213,7 @@ void CSender::sendU(H_SOCK sock, const char *pstHost, unsigned short usPort,
 {
     H_Host stHost;
     H_Sender *pSender = newT();
+    H_ASSERT(NULL != pSender, "malloc memory error.");
     char *pNewBuf = new(std::nothrow) char[iLens + sizeof(stHost)];
     H_ASSERT(NULL != pNewBuf, "malloc memory error.");
 
@@ -236,6 +239,7 @@ void CSender::sendUBinary(H_SOCK sock, const char *pstHost, unsigned short usPor
 void CSender::broadCastU(H_SOCK sock, unsigned short usPort, const char *pBuf, const size_t iLens)
 {
     H_Sender *pSender = newT();
+    H_ASSERT(NULL != pSender, "malloc memory error.");
     char *pNewBuf = new(std::nothrow) char[iLens];
     H_ASSERT(NULL != pNewBuf, "malloc memory error.");
 
@@ -258,6 +262,7 @@ void CSender::broadCastUBinary(H_SOCK sock, unsigned short usPort, CBinary *pBin
 void CSender::addSock(H_SOCK &sock, const unsigned int &uiSession)
 {
     H_Sender *pSender = newT();
+    H_ASSERT(NULL != pSender, "malloc memory error.");
 
     pSender->usCmd = AddScok;
     pSender->stSock.sock = sock;
@@ -269,6 +274,7 @@ void CSender::addSock(H_SOCK &sock, const unsigned int &uiSession)
 void CSender::delSock(H_SOCK &sock)
 {
     H_Sender *pSender = newT();
+    H_ASSERT(NULL != pSender, "malloc memory error.");
 
     pSender->usCmd = DelSock;
     pSender->stSock.sock = sock;

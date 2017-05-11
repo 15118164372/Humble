@@ -168,13 +168,13 @@ void CRecvTask<T>::addTask(T *pMsg)
 template <typename T>
 T *CRecvTask<T>::newT(void)
 {
-    return new T;
+    return new(std::nothrow) T;
 }
 
 template <typename T>
 T *CRecvTask<T>::newT(const size_t &iCount)
 {
-    return new T[iCount];
+    return new(std::nothrow) T[iCount];
 }
 
 template <typename T>

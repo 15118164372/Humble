@@ -202,6 +202,7 @@ void CNetWorker::onOrder(H_Order *pOrder)
             size_t iLens(strlen(pOrder->acHost));
             H_TcpLink *pTcpLink = new(std::nothrow) H_TcpLink;
             H_ASSERT(NULL != pTcpLink, "malloc memory error.");
+
             memcpy(pTcpLink->acHost, pOrder->acHost, iLens);
             pTcpLink->acHost[iLens] = '\0';
             pTcpLink->sock = H_INVALID_SOCK;
