@@ -6,6 +6,7 @@ require("global")
 local utile = require("utile")
 local httpd = require("httpd")
 local humble = require("humble")
+local AOI = require("aoi")
 
 local m_pChan = g_pChan--消息chan
 local m_taskName = g_taskName--任务名
@@ -28,13 +29,46 @@ local function rpcGetLink(bOk, rtnMsg)
 	DEV_Reg(m_timeWheel, 5, removeRPC, m_svRPC, rpcId)
 end
 
+local function testAoi()
+	local aoi = AOI:new(10, 10)
+	print("---------Enter-----------")
+	table.print(aoi:Enter(1, 0, 0, 2, 2))
+	print("-----------------------------")
+	table.print(aoi:Enter(2, 0, 3, 2, 2))
+	print("-----------------------------")
+	table.print(aoi:Enter(3, 0, 5, 2, 2))
+	print("-----------------------------")
+	table.print(aoi:Enter(4, 1, 1, 2, 2))
+	print("-----------------------------")
+	table.print(aoi:Enter(5, 2, 2, 2, 2))
+	print("-----------------------------")
+	table.print(aoi:Enter(6, 3, 3, 2, 2))	
+	
+	print("---------Move-----------")
+	local inArea, outArea, newArea = aoi:Move(6, 0, 5, 2, 2)
+	table.print(inArea)
+	print("-----------------------------")
+	table.print(outArea)
+	print("-----------------------------")
+	table.print(newArea)
+	print("-----------------------------")
+	--aoi:Print()
+	
+	print("---------getAOIArea-----------")
+	table.print(aoi:getAOIArea(6))
+	
+	print("---------Leave-----------")
+	table.print(aoi:Leave(6))	
+	aoi:Print()
+end
+
 --测试
 local function echo(uiSock, uiSession, tMsg)
 	local tmsg = {}
 	tmsg.rtn = 0
 	tmsg.msg = "echo2 json return"
 	local pWBinary = httpd.Response(200, tmsg)
-    humble.sendB(uiSock, uiSession, pWBinary)
+    humble.sendB(uiSock, uiSession, pWBinary)	
 	
 	local rpcId = m_taskRPC:callRPC("echo1", m_taskName, "add", m_taskRPC:createParam(4, 8), rcpBack, "task rpc")
 	DEV_Reg(m_timeWheel, 5, removeRPC, m_taskRPC, rpcId)
@@ -63,11 +97,11 @@ local function testRepeatTask()
 	
 	DEV_Reg(m_timeWheel, 5, testRepeatTask)
 end
-DEV_Reg(m_timeWheel, 5, testRepeatTask)
+--DEV_Reg(m_timeWheel, 5, testRepeatTask)
 
 --任务初始化
 function initTask()
-    
+    --testAoi()
 end
 
 --有新任务执行

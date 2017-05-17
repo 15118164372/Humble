@@ -3,48 +3,48 @@ local table = table
 local pairs = pairs
 
 --ΚµΜε
-local Entity = {}
-Entity.__index = Entity
+local Object = {}
+Object.__index = Object
 
-function Entity:new()     
+function Object:new()     
     local self = {}
-    setmetatable(self, Entity)
+    setmetatable(self, Object)
     
     return self
 end
 
-function Entity:setId(id)
+function Object:setId(id)
     self.Id = id
 end
-function Entity:getId()
+function Object:getId()
     return self.Id
 end
 
-function Entity:setX(x)
+function Object:setX(x)
     self.X = x
 end
-function Entity:getX()
+function Object:getX()
     return self.X
 end
 
-function Entity:setY(y)
+function Object:setY(y)
     self.Y = y
 end
-function Entity:getY()
+function Object:getY()
     return self.Y
 end
 
-function Entity:setXDist(xDist)
+function Object:setXDist(xDist)
     self.XDist = xDist
 end
-function Entity:getXDist()
+function Object:getXDist()
     return self.XDist
 end
 
-function Entity:setYDist(yDist)
+function Object:setYDist(yDist)
     self.YDist = yDist
 end
-function Entity:getYDist()
+function Object:getYDist()
     return self.YDist
 end
 
@@ -60,7 +60,7 @@ function AOI:new(maxX, maxY)
     self.MaxY = maxY
 	self.XList = {}
     self.YList = {}
-    self.Entity = {}
+    self.Object = {}
     
     for i = 1, self.MaxX do
         table.insert(self.XList, {})
@@ -81,111 +81,88 @@ function AOI:checkParam(x, y)
     return true
 end
 
-function AOI:getRange(objEntity)
-    local xStart = objEntity:getX() - objEntity:getXDist()
-	if xStart < 0 {
+function AOI:getRange(obj)
+    local xStart = obj:getX() - obj:getXDist()
+	if xStart < 0 then
 		xStart = 0
-	}
-	local xEnd = objEntity:getX() + objEntity:getXDist()
-	if xEnd >= self.maxX {
-		xEnd = self.maxX - 1
-	}
+	end	
+	local xEnd = obj:getX() + obj:getXDist()	
+	if xEnd >= self.MaxX then	
+		xEnd = self.MaxX - 1
+	end	
+	
 
-	local yStart = objEntity:getY() - objEntity:getYDist()
-	if yStart < 0 {
+	local yStart = obj:getY() - obj:getYDist()
+	if yStart < 0 then
 		yStart = 0
-	}
-	local yEnd = objEntity:getY() + objEntity:getYDist()
-	if yEnd >= self.maxY {
-		yEnd = self.maxY - 1
-	}
-
+	end
+	local yEnd = obj:getY() + obj:getYDist()
+	if yEnd >= self.MaxY then
+		yEnd = self.MaxY - 1
+	end	
+	
 	return xStart, xEnd, yStart, yEnd
 end
 
-function AOI:getArea(objEntity)
-    local bFind = false
+function AOI:getArea(obj)
     local inArea = {}
-    table.insert(inArea, objEntity:getId())
-    local xStart, xEnd, yStart, yEnd = self:getRange(objEntity)
-    
+    table.insert(inArea, obj:getId())
+    local xStart, xEnd, yStart, yEnd = self:getRange(obj)
     for x = xStart + 1, xEnd + 1 do
-        for _, valx in pairs(self.XList[x]) do
-            if valx:getId() ~= objEntity:getId() then
-                bFind = false
-                for y = yStart + 1, yEnd + 1 do
-                    for _, valy in pairs(self.YList[y]) do
-                        if valx:getId() == valy:getId() then
-                            bFind = true
-                            table.insert(inArea, valx:getId())
-                            break
-                        end
-                    end
-                    
-                    if bFind then
-                        break
-                    end
+        for keyX, _ in pairs(self.XList[x]) do
+            if keyX ~= obj:getId() then
+                 for y = yStart + 1, yEnd + 1 do
+					if self.YList[y][keyX] then
+						table.insert(inArea, keyX)
+						break
+					end
                 end
             end
         end    
     end
-    
+
     return inArea
 end
 
-function AOI:delXList(objEntity)
-    local xEntity = self.XList[objEntity:getX() + 1]
-    for key, val in pairs(xEntity) do
-        if val:getId() == objEntity:getId() then
-            table.remove(xEntity, key)
-            return
-        end
-    end
+function AOI:delXList(obj)
+    self.XList[obj:getX() + 1][obj:getId()] = nil
 end
-function AOI:delYList(objEntity)
-    local yEntity = self.YList[objEntity:getY() + 1]
-    for key, val in pairs(yEntity) do
-        if val:getId() == objEntity:getId() then
-            table.remove(yEntity, key)
-            return
-        end
-    end
+function AOI:delYList(obj)
+    self.YList[obj:getY() + 1][obj:getId()] = nil
 end
 
 function AOI:getEntity(id)
-    return self.Entity[id]
+    return self.Object[id]
 end
 function AOI:delEntity(id)
-    if self.Entity[id] then
-        self.Entity[id] = nil
-    end
+    self.Object[id] = nil
 end
 
-function AOI:moveData(objEntity, x, y)
+function AOI:moveData(obj, x, y)
     local bAddX = false
 	local bAddY = false
     
-    if objEntity:getX() ~= x then
+    if obj:getX() ~= x then
         bAddX = true
-        self:delXList(objEntity)
-        objEntity:setX(x)
+        self:delXList(obj)
+        obj:setX(x)
     end
     
-    if objEntity:getY() ~= y then
+    if obj:getY() ~= y then
         bAddY = true
-        self:delYList(objEntity)
-        objEntity:setY(y)
+        self:delYList(obj)
+        obj:setY(y)
     end
     
     if bAddX then
-        table.insert(self.XList[objEntity:getX() + 1], objEntity)
+        self.XList[obj:getX() + 1][obj:getId()] = obj
     end
     
     if bAddY then
-        table.insert(self.YList[objEntity:getY() + 1], objEntity)
+        self.YList[obj:getY() + 1][obj:getId()] = obj
     end
     
-    return objEntity
+    return obj
 end
 
 function AOI:getLeaveArea(oldArea, inArea)
@@ -229,11 +206,8 @@ end
 
 function AOI:Print()    
     table.print(self.XList)
-    print("----------------------------------")
     table.print(self.YList)
-    print("----------------------------------")
-    table.print(self.Entity)
-    print("..................................")
+    table.print(self.Object)
 end
 
 function AOI:Enter(id, x, y, xDist, yDist)
@@ -241,35 +215,35 @@ function AOI:Enter(id, x, y, xDist, yDist)
         return
     end
     
-    local objEntity = self:getEntity(id)
-    if objEntity then
+    local obj = self:getEntity(id)
+    if obj then
         return
     end
     
-    objEntity = Entity:new()
-    objEntity:setId(id)
-    objEntity:setX(x)
-    objEntity:setY(y)
-    objEntity:setXDist(xDist)
-    objEntity:setYDist(yDist)
+    obj = Object:new()
+    obj:setId(id)
+    obj:setX(x)
+    obj:setY(y)
+    obj:setXDist(xDist)
+    obj:setYDist(yDist)
+	
+    self.XList[x + 1][id] = obj
+    self.YList[y + 1][id] = obj
+    self.Object[id] = obj
     
-    table.insert(self.XList[x + 1], objEntity)
-    table.insert(self.YList[y + 1], objEntity)
-    self.Enter[id] = objEntity
-    
-    return self:getArea(objEntity)
+    return self:getArea(obj)
 end
 
 function AOI:Leave(id)
-    local objEntity = self:getEntity(id)
-    if not objEntity then
+    local obj = self:getEntity(id)
+    if not obj then
         return
     end
     
-    local inArea = self:getArea(objEntity)
+    local inArea = self:getArea(obj)
     
-    self:delXList(objEntity)
-    self:delYList(objEntity)
+    self:delXList(obj)
+    self:delYList(obj)
     self:delEntity(id)
     
     return inArea
@@ -280,18 +254,18 @@ function AOI:Move(id, x, y)
         return
     end
     
-    local objEntity = self:getEntity(id)
-    if not objEntity then
+    local obj = self:getEntity(id)
+    if not obj then
         return
     end
     
-    if objEntity:getX() == x and objEntity:getY() == y then
-        return self:getArea(objEntity), {}, {}
+    if obj:getX() == x and obj:getY() == y then
+        return
     end
     
-    local oldArea = self:getArea(objEntity)
-    objEntity = self:moveData(objEntity, x, y)
-    local inArea = self:getArea(objEntity)
+    local oldArea = self:getArea(obj)
+    obj = self:moveData(obj, x, y)
+    local inArea = self:getArea(obj)	
     local outArea = self:getLeaveArea(oldArea, inArea)
     local newArea = self:getEnterArea(oldArea, inArea)
     
@@ -299,12 +273,12 @@ function AOI:Move(id, x, y)
 end
 
 function AOI:getAOIArea(id)
-    local objEntity = self:getEntity(id)
-    if not objEntity then
+    local obj = self:getEntity(id)
+    if not obj then
         return
     end
     
-    return self:getArea(objEntity)
+    return self:getArea(obj)
 end
 
 return AOI
