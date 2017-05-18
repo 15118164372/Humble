@@ -6,7 +6,7 @@ require("global")
 local utile = require("utile")
 local httpd = require("httpd")
 local humble = require("humble")
-local AOI = require("aoi")
+local AOI = require("aoi_crosslist")
 
 local m_pChan = g_pChan--消息chan
 local m_taskName = g_taskName--任务名
@@ -101,7 +101,7 @@ end
 
 --任务初始化
 function initTask()
-    --testAoi()
+    testAoi()
 end
 
 --有新任务执行
