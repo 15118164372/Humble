@@ -49,12 +49,12 @@ function Object:getYDist()
 end
 
 -- ”“∞«¯”Ú
-local AOI = {}
-AOI.__index = AOI
+local AOI_CRSLST = {}
+AOI_CRSLST.__index = AOI_CRSLST
 
-function AOI:new(maxX, maxY)     
+function AOI_CRSLST:new(maxX, maxY)     
     local self = {}
-    setmetatable(self, AOI)
+    setmetatable(self, AOI_CRSLST)
     
     self.MaxX = maxX
     self.MaxY = maxY
@@ -72,7 +72,7 @@ function AOI:new(maxX, maxY)
     return self
 end
 
-function AOI:checkParam(x, y)
+function AOI_CRSLST:checkParam(x, y)
     if x < 0 or x >= self.MaxX
         or y <0 or y >= self.MaxY then
        return false 
@@ -81,7 +81,7 @@ function AOI:checkParam(x, y)
     return true
 end
 
-function AOI:getRange(obj)
+function AOI_CRSLST:getRange(obj)
     local xStart = obj:getX() - obj:getXDist()
 	if xStart < 0 then
 		xStart = 0
@@ -104,7 +104,7 @@ function AOI:getRange(obj)
 	return xStart, xEnd, yStart, yEnd
 end
 
-function AOI:getArea(obj)
+function AOI_CRSLST:getArea(obj)
     local inArea = {}
     table.insert(inArea, obj:getId())
     local xStart, xEnd, yStart, yEnd = self:getRange(obj)
@@ -124,21 +124,21 @@ function AOI:getArea(obj)
     return inArea
 end
 
-function AOI:delXList(obj)
+function AOI_CRSLST:delXList(obj)
     self.XList[obj:getX() + 1][obj:getId()] = nil
 end
-function AOI:delYList(obj)
+function AOI_CRSLST:delYList(obj)
     self.YList[obj:getY() + 1][obj:getId()] = nil
 end
 
-function AOI:getEntity(id)
+function AOI_CRSLST:getEntity(id)
     return self.Object[id]
 end
-function AOI:delEntity(id)
+function AOI_CRSLST:delEntity(id)
     self.Object[id] = nil
 end
 
-function AOI:moveData(obj, x, y)
+function AOI_CRSLST:moveData(obj, x, y)
     local bAddX = false
 	local bAddY = false
     
@@ -165,7 +165,7 @@ function AOI:moveData(obj, x, y)
     return obj
 end
 
-function AOI:getLeaveArea(oldArea, inArea)
+function AOI_CRSLST:getLeaveArea(oldArea, inArea)
     local outArea = {}
     local bInArea = false
     for _, oldVal in pairs(oldArea) do
@@ -184,7 +184,7 @@ function AOI:getLeaveArea(oldArea, inArea)
     
     return outArea
 end
-function AOI:getEnterArea(oldArea, inArea)
+function AOI_CRSLST:getEnterArea(oldArea, inArea)
     local newArea = {}
     local bInArea = false
     for _, inVal in pairs(inArea) do
@@ -204,13 +204,13 @@ function AOI:getEnterArea(oldArea, inArea)
     return newArea
 end
 
-function AOI:Print()    
+function AOI_CRSLST:Print()    
     table.print(self.XList)
     table.print(self.YList)
     table.print(self.Object)
 end
 
-function AOI:Enter(id, x, y, xDist, yDist)
+function AOI_CRSLST:Enter(id, x, y, xDist, yDist)
     if not self:checkParam(x, y) then
         return
     end
@@ -234,7 +234,7 @@ function AOI:Enter(id, x, y, xDist, yDist)
     return self:getArea(obj)
 end
 
-function AOI:Leave(id)
+function AOI_CRSLST:Leave(id)
     local obj = self:getEntity(id)
     if not obj then
         return
@@ -249,7 +249,7 @@ function AOI:Leave(id)
     return inArea
 end
 
-function AOI:Move(id, x, y)
+function AOI_CRSLST:Move(id, x, y)
     if not self:checkParam(x, y) then
         return
     end
@@ -272,7 +272,7 @@ function AOI:Move(id, x, y)
     return inArea, outArea, newArea
 end
 
-function AOI:getAOIArea(id)
+function AOI_CRSLST:getAOIArea(id)
     local obj = self:getEntity(id)
     if not obj then
         return
@@ -281,4 +281,4 @@ function AOI:getAOIArea(id)
     return self:getArea(obj)
 end
 
-return AOI
+return AOI_CRSLST
