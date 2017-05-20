@@ -19,7 +19,7 @@ PROGRAMNAME="Humble"
 #############################################
 #Humble文件夹
 HumbleDir="HBase HBase/event2 HBase/rijndael HBase/RSAEuro HBase/zlib HBase/redisrand"
-HumbleDir=$HumbleDir" HBase/lpeg HBase/lua5.3 HBase/luabridge HBase/luacjson HBase/mysql HBase/luasql HBase/pbc HBase/luaserialize HBase/luasocket"
+HumbleDir=$HumbleDir" HBase/lpeg HBase/lua5.3 HBase/luabridge HBase/luacjson HBase/mysql HBase/luasql HBase/pbc HBase/luaserialize HBase/luasocket HBase/sproto"
 HumbleDir=$HumbleDir" Humble"
 
 #main函数所在文件夹
