@@ -64,6 +64,9 @@
     <Filter Include="Service\Parser">
       <UniqueIdentifier>{30dea6f7-72f1-4903-9f3a-8ae9699a7e65}</UniqueIdentifier>
     </Filter>
+    <Filter Include="3rd\lua\sproto">
+      <UniqueIdentifier>{2e77744c-380c-4aef-91dc-fe9f53bb9bbc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -544,6 +547,12 @@
     <ClInclude Include="EvBuffer.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="sproto\msvcint.h">
+      <Filter>3rd\lua\sproto</Filter>
+    </ClInclude>
+    <ClInclude Include="sproto\sproto.h">
+      <Filter>3rd\lua\sproto</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zlib\adler32.c">
@@ -990,6 +999,12 @@
     </ClCompile>
     <ClCompile Include="NetParser.cpp">
       <Filter>Service\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="sproto\lsproto.c">
+      <Filter>3rd\lua\sproto</Filter>
+    </ClCompile>
+    <ClCompile Include="sproto\sproto.c">
+      <Filter>3rd\lua\sproto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

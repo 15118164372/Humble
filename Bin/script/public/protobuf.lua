@@ -11,6 +11,7 @@ local print = print
 local io = io
 local tinsert = table.insert
 local rawget = rawget
+local rawset = rawset
 
 local M = {}
 

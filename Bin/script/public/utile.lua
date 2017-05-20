@@ -149,11 +149,9 @@ end
 function utile.Pack(evType, proto, ...)
     return serialize.pack({evType, proto, {...}})
 end
-
 function utile.freePack(pVal)
     return serialize.freepack(pVal)
 end
-
 function utile.unPack(pVal)
 	if not pVal then
 		return nil
@@ -186,7 +184,6 @@ end
 function utile.http_get(url)
     return http.request(url)
 end
-
 --param table
 function utile.http_post(url, param)
 	assert("table" == type(param))
@@ -228,82 +225,9 @@ function string.split(str, delimiter)
     
     return arr
 end
-
 function string.trim(str) 
     return (string.gsub(str, "^%s*(.-)%s*$", "%1"))
 end 
-
-function table.print(lua_table, indent)    
-    assert("table" == type(lua_table))    
-    indent = indent or 0
-    for k, v in pairs(lua_table) do
-        if type(k) == "string" then
-            k = string.format("%q", k)
-        end
-        
-        local szSuffix = ""
-        if type(v) == "table" then
-            szSuffix = "{"
-        end
-        
-        local szPrefix = string.rep("    ", indent)
-        formatting = szPrefix.."["..k.."]".." = "..szSuffix
-        
-        if type(v) == "table" then
-            print(formatting)
-            table.print(v, indent + 1)
-            print(szPrefix.."},")
-        else
-            local szValue = ""
-            if type(v) == "string" then
-                szValue = string.format("%q", v)
-            else
-                szValue = tostring(v)
-            end
-            
-            print(formatting..szValue..",")
-        end
-    end
-end
-
-function table.empty(lua_table)
-    assert("table" == type(lua_table))    
-    for _, _ in pairs(lua_table) do
-        return false
-    end
-    
-    return true
-end
-
-function table.len(lua_table)
-    assert("table" == type(lua_table))    
-    local iCount = 0
-    for _, _ in pairs(lua_table) do
-        iCount = iCount + 1
-    end
-    
-    return iCount
-end
-
-function table.copy(tTable)
-    assert("table" == type(lua_table))    
-    local tNewTab = {}  
-    for i, v in pairs(tTable) do  
-        local vtyp = type(v)
-        
-        if ("table" == vtyp) then  
-            tNewTab[i] = table.copy(v)  
-        elseif ("thread" == vtyp) then  
-            tNewTab[i] = v  
-        elseif ("userdata" == vtyp) then  
-            tNewTab[i] = v  
-        else  
-            tNewTab[i] = v  
-        end
-    end  
-    
-    return tNewTab
-end
 
 --debug
 local function getIndent(level)
@@ -451,6 +375,49 @@ function debug.trace(depth, asStr, baseDepth)
     else
         print(sInfo)
     end 
+end
+
+function table.tostring(obj)  
+    return dump(obj)
+end
+function table.print(obj)
+    print(table.tostring(obj))
+end
+function table.empty(lua_table)
+    assert("table" == type(lua_table))    
+    for _, _ in pairs(lua_table) do
+        return false
+    end
+    
+    return true
+end
+function table.len(lua_table)
+    assert("table" == type(lua_table))    
+    local iCount = 0
+    for _, _ in pairs(lua_table) do
+        iCount = iCount + 1
+    end
+    
+    return iCount
+end
+function table.copy(tTable)
+    assert("table" == type(lua_table))    
+    local tNewTab = {}  
+    for i, v in pairs(tTable) do  
+        local vtyp = type(v)
+        
+        if ("table" == vtyp) then  
+            tNewTab[i] = table.copy(v)  
+        elseif ("thread" == vtyp) then  
+            tNewTab[i] = v  
+        elseif ("userdata" == vtyp) then  
+            tNewTab[i] = v  
+        else  
+            tNewTab[i] = v  
+        end
+    end  
+    
+    return tNewTab
 end
 
 return utile

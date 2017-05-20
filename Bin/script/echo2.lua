@@ -6,6 +6,11 @@ require("global")
 local utile = require("utile")
 local httpd = require("httpd")
 local humble = require("humble")
+local cjson = require("cjson")
+local sproto = require("sproto")
+local serialize = require("serialize")
+local protobuf = require("protobuf")
+local parser =  require("parser")
 local AOI = require("aoi_crosslist")
 
 local m_pChan = g_pChan--消息chan
@@ -28,7 +33,7 @@ local function rpcGetLink(bOk, rtnMsg)
 	local rpcId = m_svRPC:callRPC(rtnMsg.sock, rtnMsg.session, "echo1", m_taskName, "add", m_svRPC:createParam(5, 5), rcpBack, "server rpc")
 	DEV_Reg(m_timeWheel, 5, removeRPC, m_svRPC, rpcId)
 end
-
+ 
 local function testAoi()
 	local aoi = AOI:new(10, 10)
 	print("---------Enter-----------")
@@ -59,7 +64,119 @@ local function testAoi()
 	
 	print("---------Leave-----------")
 	table.print(aoi:Leave(6))	
-	aoi:Print()
+	aoi:Print()	
+end
+
+local function testSer()
+	local sp = sproto.parse [[
+		.Person {
+			name 0 : string
+			id 1 : string
+			email 2 : string
+
+			.PhoneNumber {
+				number 0 : string
+				type 1 : integer
+			}
+
+			phone 3 : *PhoneNumber
+		}
+
+		.AddressBook {
+			person 0 : *Person(id)
+			others 1 : *Person
+		}
+		]]
+	local ab = {
+		person = {
+			["10000"] = {
+				name = "Alice",
+				id = "10000",
+				phone = {
+					{ number = "123456789" , type = 1 },
+					{ number = "87654321" , type = 2 },
+				}
+			},
+			["20000"] = {
+				name = "Bob",
+				id = "20000",
+				phone = {
+					{ number = "01234567890" , type = 3 },
+				}
+			}
+		},
+		others = {			
+				name = "Carol",
+				id = 30000,
+				phone = {
+					{ number = "9876543210" },
+				}			
+		}
+	}
+	
+	local iCount = 100000
+	local objClock = CClock()
+	objClock:reStart()	
+	for i = 1, iCount do
+		local code = sp:encode("AddressBook", ab)
+		local addr = sp:decode("AddressBook", code)
+	end
+	print("sproto:" .. objClock:Elapsed())
+	
+	objClock:reStart()	
+	for i = 1, iCount do
+		local code = cjson.encode(ab)
+		local addr = cjson.decode(code)
+	end
+	print("cjson" .. objClock:Elapsed())
+	
+	objClock:reStart()
+	for i = 1, iCount do
+		local code = serialize.pack(ab)
+		local addr = serialize.unpack(code)
+	end
+	print("luaserialize" .. objClock:Elapsed())
+	
+	tProtoFile = {"testProtobuf.proto"}
+	parser.register(tProtoFile, getProPath())
+	ab = {
+		person = {
+			{
+				name = "Alice",
+				id = "10000",
+				phone = {
+					{ number = "123456789" , type = 1 },
+					{ number = "87654321" , type = 2 },
+				}
+			},
+			{
+				name = "Bob",
+				id = "20000",
+				phone = {
+					{ number = "01234567890" , type = 3 },
+				}
+			}
+		},
+		others = {			
+				name = "Carol",
+				id = 30000,
+				phone = {
+					{ number = "9876543210" },
+				}			
+		}
+	}
+
+	objClock:reStart()
+	for i = 1, iCount do
+		local code = protobuf.encode("test.AddressBook", ab)
+		assert(code, protobuf.lasterror())
+		--debug.var_dump(code)
+		local addr = protobuf.decode("test.AddressBook", code)
+		assert(addr, protobuf.lasterror())
+		--print("22222222222222:"..#addr.others.phone)
+		--debug.var_dump(addr.others.phone.number)
+	end
+	print("pbc" .. objClock:Elapsed())
 end
 
 --测试
@@ -102,6 +219,7 @@ end
 --任务初始化
 function initTask()
     testAoi()
+	testSer()
 end
 
 --有新任务执行
