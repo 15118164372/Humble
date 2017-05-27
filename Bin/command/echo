@@ -1,8 +1,0 @@
-local tcp1 = require("tcp1")
-
-local pWBinary = CBinary()
-pWBinary:setUint16(1)
-local strMsg = "this is echo test"
-pWBinary:setByte(strMsg, #strMsg)
-
-return tcp1.Response(pWBinary:getWritedBuf())
