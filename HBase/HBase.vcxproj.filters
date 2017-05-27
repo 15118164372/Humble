@@ -1,0 +1,502 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Config">
+      <UniqueIdentifier>{608e29e0-032c-4490-8a40-d971d63fa9fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Encrypt">
+      <UniqueIdentifier>{82931982-39be-4e52-bc49-a429231f323b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{6952c344-2d7c-4f41-94d5-25326ae1d508}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd">
+      <UniqueIdentifier>{2f626edb-2f75-42b7-af2c-24269601e15d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\rijndael">
+      <UniqueIdentifier>{66ddbedd-e596-4966-a7d8-058c29a00974}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\RSAEuro">
+      <UniqueIdentifier>{743866a1-2d44-40d6-9d32-432b1e5f3ded}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\zlib">
+      <UniqueIdentifier>{10e9c114-8074-462a-ab5a-d2c9ed14f976}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{359db40d-e689-402b-ba89-f3687d5d506b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Service">
+      <UniqueIdentifier>{a2bca4ae-0ca9-44b1-a789-025d71a9068e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Service\Parser">
+      <UniqueIdentifier>{840ddfaa-185f-4e4a-b0d7-7f4019ad06bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\redisrand">
+      <UniqueIdentifier>{fca34056-1fe9-4590-8e12-4df5bb28ce93}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Config.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Include.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Macros.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\crc32.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\deflate.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\gzguts.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inffast.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inffixed.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inflate.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inftrees.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\trees.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zconf.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zconf_linux.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zconf_win.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zlib.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zutil.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="RSAEuro\des.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="RSAEuro\global.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="RSAEuro\md2.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="RSAEuro\md4.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="RSAEuro\md5.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="RSAEuro\nn.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="RSAEuro\prime.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="RSAEuro\r_random.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="RSAEuro\rsa.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="RSAEuro\rsaeuro.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="RSAEuro\rsaref.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="RSAEuro\shs.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="rijndael\rijndael.h">
+      <Filter>3rd\rijndael</Filter>
+    </ClInclude>
+    <ClInclude Include="AES.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="Base64.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="CRC.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="HRSA.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="md5.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="RSAKey.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="UEncrypt.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="ZEncrypt.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="Binary.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Clock.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreDump.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Funcs.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Ini.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Library.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SnowFlake.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="TableFile.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="UUID.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Task.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Atomic.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="HBase.h" />
+    <ClInclude Include="LockThis.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="RWLock.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="NETAddr.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SHA1.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="CirQueue.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="EvBuffer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="HStruct.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Tick.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="NetWorker.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="NetBase.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="NetListener.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="NetWorkerMgr.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="NetParser.h">
+      <Filter>Service\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="redisrand\redisrand.h">
+      <Filter>3rd\redisrand</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskWorker.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskRunner.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskDispatch.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskLazy.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Linker.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Sender.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Chan.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="HEnum.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="MSGDispatch.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Tcp1.h">
+      <Filter>Service\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="Tcp2.h">
+      <Filter>Service\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="Httpd.h">
+      <Filter>Service\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="SendWorker.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="zlib\adler32.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\compress.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\crc32.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\deflate.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\gzclose.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\gzlib.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\gzread.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\gzwrite.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\infback.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inffast.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inflate.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inftrees.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\trees.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\uncompr.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\zutil.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="RSAEuro\desc.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="RSAEuro\md2c.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="RSAEuro\md4c.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="RSAEuro\md5c.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="RSAEuro\nn.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="RSAEuro\prime.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="RSAEuro\r_dh.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="RSAEuro\r_encode.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="RSAEuro\r_enhanc.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="RSAEuro\r_keygen.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="RSAEuro\r_random.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="RSAEuro\r_stdlib.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="RSAEuro\rsa.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="RSAEuro\shsc.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="rijndael\rijndael.cpp">
+      <Filter>3rd\rijndael</Filter>
+    </ClCompile>
+    <ClCompile Include="AES.cpp">
+      <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="Base64.cpp">
+      <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="CRC.cpp">
+      <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="HRSA.cpp">
+      <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="md5.cpp">
+      <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="RSAKey.cpp">
+      <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="UEncrypt.cpp">
+      <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="ZEncrypt.cpp">
+      <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="Binary.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Clock.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="CoreDump.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Funcs.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Ini.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Library.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SnowFlake.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="TableFile.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="UUID.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Atomic.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="RWLock.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="NETAddr.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SHA1.cpp">
+      <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="HBase.cpp" />
+    <ClCompile Include="Tick.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="NetWorker.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="NetBase.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="NetListener.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="NetWorkerMgr.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="NetParser.cpp">
+      <Filter>Service\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="redisrand\redisrand.c">
+      <Filter>3rd\redisrand</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskDispatch.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Linker.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Sender.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Chan.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="MSGDispatch.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskWorker.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Tcp1.cpp">
+      <Filter>Service\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="Tcp2.cpp">
+      <Filter>Service\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="Httpd.cpp">
+      <Filter>Service\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="SendWorker.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RSAEuro\des386.s">
+      <Filter>3rd\RSAEuro</Filter>
+    </None>
+    <None Include="RSAEuro\rsa68k.s">
+      <Filter>3rd\RSAEuro</Filter>
+    </None>
+    <None Include="RSAEuro\rsa386.s">
+      <Filter>3rd\RSAEuro</Filter>
+    </None>
+    <None Include="RSAEuro\rsasparc.s">
+      <Filter>3rd\RSAEuro</Filter>
+    </None>
+  </ItemGroup>
+</Project>

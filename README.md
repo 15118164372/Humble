@@ -1,8 +1,7 @@
 # Humble
 
-Humble是c++、lua语言开发的多线程服务器框架,网络底层使用libevent。    
-目前支持MQTT、WebSocket、Http等协议。    
-服务器间支持RPC调用，任务之间也支持RPC调用。      
+Humble是c++开发的多线程服务器框架,网络底层使用libevent，业务层绑定到lua。       
+服务器间通过RPC通信，任务间也是通过RPC通信。      
 
 ## 编译Humble     
 * windows使用vs2015；  
@@ -11,33 +10,28 @@ Humble是c++、lua语言开发的多线程服务器框架,网络底层使用libe
 ## 配置文件  
 * config.ini 文件配置服务器启动参数。   
 
-## 注册数据解析器    
-* 数据解析器继承CParser，将parsePack函数完成，
-然后在Humble.cpp中的initParser函数中添加该解析器。 
+## 数据解析器    
+* 数据解析器继承CParser，将parsePack、Response函数完成，    
+然后在Humble.cpp中的setParam函数中添加该解析器。     
 
-## 简单使用(回显为例)   
-* 1、创建echo服务(echo.lua，复制template.lua修改服务名即可)：     
-function initTask()--服务初始化      
-end    
-function runTask()--服务消息处理       
-end     
-function destroyTask()--服务释放   
-end 
-
-* 2、建立监听(start.lua onStart()):     
-humble.setParser(1, "tcp1")--设置数据解析    
-humble.addListener(1, "0.0.0.0", 15000)--建立监听                 
-
-* 3、注册echo服务(start.lua onStart())     
-tChan.echo = humble.regTask("echo.lua", "echo", 1000)        
-
-* 4、将收到的消息发送到echo模块处理(start.lua onTcpRead(......))    
-utile.chanSend(tChan.echo, utile.Pack(...))    
-
-* 5、回显逻辑(echo.lua runTask())             
-local _,_,_ = utile.unPack(pChan:Recv())--取出消息    
+## 简单使用(http回显为例)   
+* 1、新建echo.lua文件，复制粘贴template.lua中的内容，并增加echo函数：  
 ......       
-humble.Send(sock, uiSession, buffer)--返回消息   
+function initTask()--服务初始化      
+end       
+function destroyTask()--服务释放   
+end     
+--注册echo事件(http://localhost/echo)      
+local function echo(sock, sockType, httpInfo)      
+	httpd.Response(sock, 200, "echo return.")      
+end      
+regProto("/echo", echo)      
+
+* 2、建立监听，注册服务(start.lua):     
+humble.addListener("http", SockType.HTTP, "0.0.0.0", 80)--建立监听                     
+humble.regTask("echo.lua", "echo", 1024 * 10)      
+
+* 3、浏览器中输入访问地址，查看结果         
 
 ## 命令使用    
 * 1、进入命令模式 Humble -d 15100    
