@@ -52,7 +52,11 @@ size_t CNetListener::onOrder(CEvBuffer *pEvBuffer)
     {
         pListen = (H_ListenAt*)(pBinary + sizeof(H_ListenAt) * i);
         pParser = pParserMgr->getParser(pListen->acParser);
-        H_ASSERT(NULL != pParser, "get net parser error.");
+        if (NULL == pParser)
+        {
+            H_LOG(LOGLV_WARN, "get net parser %s error.", pListen->acParser);
+            continue;
+        }        
 
         if (H_RTN_OK != objAddr.setAddr(pListen->acHost, pListen->usPort))
         {

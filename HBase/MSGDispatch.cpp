@@ -50,6 +50,8 @@ void CMSGDispatch::regEvent(unsigned short usEvent, class CTaskWorker *pTask, co
         pDisp->lstTask.push_back(pTask);
     }    
     pDisp->objLock.unLock();
+
+    H_LOG(LOGLV_INFO, "%s register event %d", pTask->getName()->c_str(), usEvent);
 }
 
 void CMSGDispatch::sendEvent(unsigned short usEvent, void *pMsg, const size_t &iLens)
@@ -104,6 +106,7 @@ void CMSGDispatch::removeEvent(const char *pszName)
             if (0 == strcmp((*itTask)->getName()->c_str(), pszName))
             {
                 pDisp->lstTask.erase(itTask);
+                H_LOG(LOGLV_INFO, "%s unregister event %d", pszName, i);
                 break;
             }
         }
@@ -120,6 +123,8 @@ void CMSGDispatch::regNetProto(H_PROTOTYPE &iProto, class CChan *pChan)
     H_ASSERT(m_mapNetProto.end() == itNet, "repeat register proto.");
     m_mapNetProto[iProto] = pChan;
     m_objNetLock.unLock();
+
+    H_LOG(LOGLV_INFO, "%s register proto %d", pChan->getTask()->getName()->c_str(), iProto);
 }
 
 class CChan *CMSGDispatch::getNetProto(H_PROTOTYPE &iProto)
@@ -147,6 +152,8 @@ void CMSGDispatch::regStrProto(const char *pszUrl, class CChan *pChan)
     H_ASSERT(m_mapStrProto.end() == itNet, "repeat register proto.");
     m_mapStrProto[pszUrl] = pChan;
     m_objStrLock.unLock();
+
+    H_LOG(LOGLV_INFO, "%s register proto %s", pChan->getTask()->getName()->c_str(), pszUrl);
 }
 
 class CChan *CMSGDispatch::getStrProto(const char *pszUrl)

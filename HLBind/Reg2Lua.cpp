@@ -54,7 +54,11 @@ const char *getPathSeparator(void)
 void regEvent(unsigned short usEvent, const char *pszTask, const short sType)
 {
     CChan *pChan(CTaskDispatch::getSingletonPtr()->getChan(pszTask));
-    H_ASSERT(NULL != pChan, "get task error.");
+    if (NULL == pChan)
+    {
+        H_LOG(LOGLV_WARN, "get task %s error", pszTask);
+        return;
+    }
     CTaskWorker *pTask(pChan->getTask());
     CMSGDispatch::getSingletonPtr()->regEvent(usEvent, pTask, sType);
 }
@@ -62,14 +66,22 @@ void regEvent(unsigned short usEvent, const char *pszTask, const short sType)
 void regIProto(H_PROTOTYPE iProto, const char *pszTask)
 {
     CChan *pChan(CTaskDispatch::getSingletonPtr()->getChan(pszTask));
-    H_ASSERT(NULL != pChan, "get task error.");
+    if (NULL == pChan)
+    {
+        H_LOG(LOGLV_WARN, "get task %s error", pszTask);
+        return;
+    }
     CMSGDispatch::getSingletonPtr()->regNetProto(iProto, pChan);
 }
 
 void regStrProto(const char *pszProto, const char *pszTask)
 {
     CChan *pChan(CTaskDispatch::getSingletonPtr()->getChan(pszTask));
-    H_ASSERT(NULL != pChan, "get task error.");
+    if (NULL == pChan)
+    {
+        H_LOG(LOGLV_WARN, "get task %s error", pszTask);
+        return;
+    }
     CMSGDispatch::getSingletonPtr()->regStrProto(pszProto, pChan);
 }
 

@@ -20,7 +20,7 @@ end
 regAcceptEv(SockType.RPC, rpcAccept)
 
 local function rpcrtn(strMsg)
-	print("xxxxxxxxxx:")
+	print("xxxxxxxxxx:"..os.time())
 	print(strMsg)
 end
 
@@ -28,6 +28,7 @@ local function rpcLinked(sock, sockType)
 	callTaskRPC("rpclink", "add", nil, rpcrtn)
 	
 	callNetRPC(sock, "rpclink", "add", nil, rpcrtn)
+    regDelayEv(1, rpcLinked, sock, sockType)
 end
 regLinkedEv(SockType.RPC, rpcLinked)
 
