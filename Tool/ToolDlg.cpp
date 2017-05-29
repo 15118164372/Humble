@@ -613,8 +613,7 @@ void CToolDlg::OnBnClickedButton4()
     if (m_lstCommName.end() == itComm)
     {
         m_lstCommName.push_back(strName);
-        int iIndex = m_input_cmd.AddString(cstrName);
-        m_input_cmd.SetCurSel(iIndex);
+        m_input_cmd.SetCurSel(m_input_cmd.AddString(cstrName));
     }
 }
 
