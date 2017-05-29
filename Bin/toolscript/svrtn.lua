@@ -14,6 +14,11 @@ function destroyTask()
 	
 end
 
+local function onLinked(sock, sockType)
+    consoleWrite("sock linked " .. sock)
+end
+regLinkedEv(getLinkType(), onLinked)
+
 local function test(sock, sockType, netMsg)
     consoleWrite(netMsg)
 end
