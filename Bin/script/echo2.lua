@@ -7,11 +7,11 @@ local SockType = SockType
 local Proto = Proto
 
 function initTask()
-	
+	print("echo2 initTask")
 end
 
 function destroyTask()
-	
+	print("echo2 destroyTask")
 end
 
 local function echo(sock, sockType, httpInfo)

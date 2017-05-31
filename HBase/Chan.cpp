@@ -17,12 +17,6 @@ CChan::~CChan(void)
 
 bool CChan::Send(void *pszVal)
 {
-    if (m_pTask->getDestroy())
-    {
-        H_LOG(LOGLV_ERROR, "task %s already closed.", m_pTask->getName()->c_str());
-        return false;
-    }
-
     m_objQuLck.Lock();
     bool bOk(m_quData.Push(pszVal));
     m_objQuLck.unLock();

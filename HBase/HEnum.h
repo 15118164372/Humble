@@ -27,6 +27,9 @@ enum
     MSG_TIME_FRAME,
     MSG_TIME_SEC,
 
+    MSG_TASK_INIT,
+    MSG_TASK_DEL,
+
     MSG_COUNT,
 };
 

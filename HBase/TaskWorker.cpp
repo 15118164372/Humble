@@ -9,23 +9,21 @@ H_BNAMSP
 
 void CTaskWorker::Run(void)
 {
-    switch (*m_pCMD)
+    H_MSG *pMsg((H_MSG *)m_objChan.Recv());
+    if (NULL == pMsg)
     {
-        case TCMD_INIT:
+        setStatus(H_INIT_NUMBER);
+        return;
+    }
+
+    switch (pMsg->usEnevt)
+    {
+        case MSG_TASK_INIT:
         {
             initTask();
-            setStatus(H_INIT_NUMBER);
         }
         break;
-
-        case TCMD_RUN:
-        {
-            runTask();
-            setStatus(H_INIT_NUMBER);
-        }
-        break;
-
-        case TCMD_DEL:
+        case MSG_TASK_DEL:
         {
             destroyTask();
             CMSGDispatch::getSingletonPtr()->removeEvent(m_strName.c_str());
@@ -33,23 +31,6 @@ void CTaskWorker::Run(void)
             H_SafeDelete(pTask);
         }
         break;
-
-        default:
-            setStatus(H_INIT_NUMBER);
-            break;
-    }
-}
-
-void CTaskWorker::runTask(void)
-{
-    H_MSG *pMsg((H_MSG *)m_objChan.Recv());
-    if (NULL == pMsg)
-    {
-        return;
-    }
-
-    switch (pMsg->usEnevt)
-    {
         case MSG_NET_ACCEPT:
         {
             H_LINK *pLink((H_LINK *)pMsg->pEvent);
@@ -154,6 +135,11 @@ void CTaskWorker::runTask(void)
         break;
         default:
             break;
+    }
+
+    if (MSG_TASK_DEL != pMsg->usEnevt)
+    {
+        setStatus(H_INIT_NUMBER);
     }
 
     H_SafeDelete(pMsg);

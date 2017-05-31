@@ -36,16 +36,7 @@ public:
             return;
         }
 
-        pTask->getCMDLock()->Lock();
-        unsigned int * pCMD((unsigned int *)pTask->getCMDQu()->Pop());
-        pTask->getCMDLock()->unLock();
-        if (NULL == pCMD)
-        {
-            return;
-        }
-
         CTaskRunner *pWorker(getFreeWorker());
-        pTask->setCMD(pCMD);
         pWorker->addWorker(pTask);
     };
     void onLoopBreak(void);
@@ -54,7 +45,7 @@ public:
 
     H_INLINE void notifyRun(CTaskWorker *pTask)
     {
-        Notify(pTask, &m_uiRunCMD);
+        addTask(pTask);
     };
 
     std::vector<std::string> getAllName(void);
@@ -64,20 +55,24 @@ private:
     void stopWorker(void);    
     H_INLINE void notifyInit(CTaskWorker *pTask)
     {
-        Notify(pTask, &m_uiInitCMD);
+        Notify(pTask, MSG_TASK_INIT);
     };
     H_INLINE void notifyDestroy(CTaskWorker *pTask)
     {
         pTask->setDestroy();
-        Notify(pTask, &m_uiDestroyCMD);
+        Notify(pTask, MSG_TASK_DEL);
     };
-    H_INLINE void Notify(CTaskWorker *pTask, unsigned int *pCMD)
+    H_INLINE void Notify(CTaskWorker *pTask, const unsigned short usEv)
     {
-        pTask->getCMDLock()->Lock();
-        pTask->getCMDQu()->Push((void*)pCMD);
-        pTask->getCMDLock()->unLock();
+        H_MSG *pMsg = new(std::nothrow) H_MSG;
+        H_ASSERT(NULL != pMsg, "malloc memory error.");
+        pMsg->usEnevt = usEv;
 
-        addTask(pTask);
+        if (!pTask->getChan()->Send(pMsg))
+        {
+            H_SafeDelete(pMsg);
+            return;
+        }
     };
 
 private:
@@ -92,9 +87,6 @@ private:
 
 private:
     unsigned short m_usThreadNum;
-    unsigned int m_uiInitCMD;
-    unsigned int m_uiRunCMD;
-    unsigned int m_uiDestroyCMD;
     CTaskRunner *m_pRunner;
     task_map m_mapTask;
     CRWLock m_objTaskLock;

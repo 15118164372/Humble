@@ -7,11 +7,12 @@ local SockType = SockType
 local Proto = Proto
 
 function initTask()
+	print("rpclink initTask")
 	humble.linkTo("tcp2", SockType.RPC, "127.0.0.1", 16001)
 end
 
 function destroyTask()
-	
+	print("rpclink destroyTask")
 end
 
 local function rpcAccept(sock, sockType)

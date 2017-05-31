@@ -9,13 +9,6 @@
 
 H_BNAMSP
 
-enum
-{
-    TCMD_INIT = 0,
-    TCMD_RUN,
-    TCMD_DEL
-};
-
 //服务基类
 class CTaskWorker : public CTask
 {
@@ -27,8 +20,7 @@ private:
 
 public:
     CTaskWorker(const char *pszName, const int iCapacity) : m_uiDestroy(H_INIT_NUMBER),
-        m_uiStatus(H_INIT_NUMBER), m_pCMD(NULL), m_objChan(this, iCapacity),
-        m_quCMD(iCapacity * 2)
+        m_uiStatus(H_INIT_NUMBER),  m_objChan(this, iCapacity)
     {
         H_ASSERT(strlen(pszName) < H_TASKNAMELENS, "task name too long.");
         m_strName = pszName;
@@ -37,7 +29,6 @@ public:
     {};
     
     void Run(void);
-    void runTask(void);
 
     virtual void initTask(void) {};
     virtual void destroyTask(void) {};
@@ -72,12 +63,6 @@ public:
     {
         return H_AtomicGet(&m_uiStatus);
     };
-
-    void setCMD(unsigned int *pCMD)
-    {
-        m_pCMD = pCMD;
-    };
-
     std::string *getName(void)
     {
         return &m_strName;
@@ -87,17 +72,6 @@ public:
     {
         return &m_objChan;
     };
-
-    CCirQueue *getCMDQu(void)
-    {
-        return &m_quCMD;
-    };
-
-    CAtomic *getCMDLock(void)
-    {
-        return &m_objCMDLock;
-    };
-
     void setDestroy(void)
     {
         H_AtomicSet(&m_uiDestroy, 1);
@@ -131,10 +105,7 @@ private:
 private:
     unsigned int m_uiDestroy;
     unsigned int m_uiStatus;
-    unsigned int *m_pCMD;
     CChan m_objChan;
-    CCirQueue m_quCMD;
-    CAtomic m_objCMDLock;
     std::string m_strName;
     H_LISTENTYPE m_stListenType[MSG_NET_CLOSE + 1];
 };

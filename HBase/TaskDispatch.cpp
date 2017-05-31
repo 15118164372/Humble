@@ -10,8 +10,7 @@ SINGLETON_INIT(CTaskDispatch)
 CTaskDispatch objTaskDispatch;
 
 CTaskDispatch::CTaskDispatch(void) : CTaskLazy<CTaskWorker>(H_QULENS_WORKERDISP),
-    m_usThreadNum(H_INIT_NUMBER), m_uiInitCMD(TCMD_INIT), m_uiRunCMD(TCMD_RUN),
-    m_uiDestroyCMD(TCMD_DEL), m_pRunner(NULL)
+    m_usThreadNum(H_INIT_NUMBER), m_pRunner(NULL)
 {
     setDel(false);
 }
@@ -190,7 +189,7 @@ void CTaskDispatch::onLoopBreak(void)
 
 void CTaskDispatch::runSurplusTask(CTaskWorker *pTask)
 {
-    pTask->runTask();
+    pTask->Run();
 }
 
 void CTaskDispatch::destroyRun(void)

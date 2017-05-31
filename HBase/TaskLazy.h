@@ -154,8 +154,12 @@ void CTaskLazy<T>::waitStart(void)
 template <typename T>
 bool CTaskLazy<T>::addTask(T *pMsg)
 {
-    CLckThis objLckThis(&m_quLock);
-    bool bOk(m_quTask.Push((void*)pMsg));
+    bool bOk(false);
+    {
+        CLckThis objLckThis(&m_quLock);
+        bOk = m_quTask.Push((void*)pMsg);
+    }
+    
     if (bOk && m_uiWait > H_INIT_NUMBER)
     {
         pthread_cond_signal(&m_objCond);
