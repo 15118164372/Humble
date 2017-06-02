@@ -19,11 +19,11 @@
 typedef unsigned short H_PROTOTYPE;
 #define H_NTOH         ntohs
 
+#define H_MAXRUNNUM                  10      
 #define H_QULENS_LINKER              H_ONEK
-#define H_QULENS_WORKER              8
 #define H_QULENS_LOG                 H_ONEK * 10 * 5
 #define H_QULENS_SENDER              H_ONEK * 10 * 10
-#define H_QULENS_WORKERDISP          H_ONEK * 10 * 10 * 5
+#define H_MAXTASKNUM                 H_ONEK * 10 * 10
 
 #define H_INVALID_SOCK               -1
 #define H_INVALID_ID                 -1

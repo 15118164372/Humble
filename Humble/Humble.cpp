@@ -112,7 +112,7 @@ int setParam(void)
     CNetWorkerMgr::getSingletonPtr()->startWorker(unNetNum);
     CSender::getSingletonPtr()->startSender(unNetNum);
     CTick::getSingletonPtr()->setTime((unsigned int)objIni.getIntValue("Main", "tick"));
-    CTaskDispatch::getSingletonPtr()->setThreadNum((unsigned short)objIni.getIntValue("Main", "workernum"));
+    CTaskMgr::getSingletonPtr()->setThreadNum((unsigned short)objIni.getIntValue("Main", "workernum"));
 
     return H_RTN_OK;
 }
@@ -148,8 +148,6 @@ void runSV(void)
     CLog::getSingletonPtr()->waitStart();
     CThread::Creat(CLinker::getSingletonPtr());
     CLinker::getSingletonPtr()->waitStart();
-    CThread::Creat(CTaskDispatch::getSingletonPtr());
-    CTaskDispatch::getSingletonPtr()->waitStart();
     CThread::Creat(CNetListener::getSingletonPtr());
     CNetListener::getSingletonPtr()->waitStart();
     CThread::Creat(CTick::getSingletonPtr());
@@ -165,7 +163,7 @@ void runSV(void)
 
     CTick::getSingletonPtr()->Join();
     CNetListener::getSingletonPtr()->Join();
-    CTaskDispatch::getSingletonPtr()->Join();
+    CTaskMgr::getSingletonPtr()->stopWorker();
     CSender::getSingletonPtr()->stopSender();
     CNetWorkerMgr::getSingletonPtr()->stopWorker();
     CLinker::getSingletonPtr()->Join();    

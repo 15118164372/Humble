@@ -21,12 +21,16 @@ public:
 
     size_t getSize(void);
     size_t getCapacity(void);
+    CAtomic *getLock(void)
+    {
+        return &m_objQuLck;
+    };
 
 private:
     CChan(void);
     H_DISALLOWCOPY(CChan);
 
-private:
+private:    
     class CTaskWorker *m_pTask;
     CAtomic m_objQuLck;
     CCirQueue m_quData;

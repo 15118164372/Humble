@@ -40,7 +40,7 @@
 #include "Log.h"
 #include "Linker.h"
 #include "Sender.h"
-#include "TaskDispatch.h"
+#include "TaskMgr.h"
 #include "MSGDispatch.h"
 
 extern std::string g_strProPath;

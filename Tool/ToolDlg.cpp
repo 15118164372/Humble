@@ -346,7 +346,7 @@ void CToolDlg::setSVParam(void)
     CNetWorkerMgr::getSingletonPtr()->startWorker(usNum);
     CSender::getSingletonPtr()->startSender(usNum);
     CTick::getSingletonPtr()->setTime(20);
-    CTaskDispatch::getSingletonPtr()->setThreadNum(usNum);
+    CTaskMgr::getSingletonPtr()->setThreadNum(usNum);
 }
 
 void CToolDlg::runSV(void)
@@ -355,8 +355,6 @@ void CToolDlg::runSV(void)
     CLog::getSingletonPtr()->waitStart();
     CThread::Creat(CLinker::getSingletonPtr());
     CLinker::getSingletonPtr()->waitStart();
-    CThread::Creat(CTaskDispatch::getSingletonPtr());
-    CTaskDispatch::getSingletonPtr()->waitStart();
     CThread::Creat(CNetListener::getSingletonPtr());
     CNetListener::getSingletonPtr()->waitStart();
     CThread::Creat(CTick::getSingletonPtr());
@@ -403,7 +401,7 @@ void CToolDlg::stopSV(void)
 {
     CTick::getSingletonPtr()->Join();
     CNetListener::getSingletonPtr()->Join();
-    CTaskDispatch::getSingletonPtr()->Join();
+    CTaskMgr::getSingletonPtr()->stopWorker();
     CSender::getSingletonPtr()->stopSender();
     CNetWorkerMgr::getSingletonPtr()->stopWorker();
     CLinker::getSingletonPtr()->Join();

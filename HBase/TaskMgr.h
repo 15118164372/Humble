@@ -3,17 +3,16 @@
 #define H_TASKDISPATCH_H_
 
 #include "Singleton.h"
-#include "TaskLazy.h"
 #include "TaskRunner.h"
 #include "RWLock.h"
 
 H_BNAMSP
 
-class CTaskDispatch : public CTaskLazy<CTaskWorker>, public CSingleton<CTaskDispatch>
+class CTaskMgr : public CSingleton<CTaskMgr>
 {
 public:
-    CTaskDispatch(void);
-    ~CTaskDispatch(void);
+    CTaskMgr(void);
+    ~CTaskMgr(void);
     
     CChan *getChan(const char *pszTaskName);
     void taskRPCCall(unsigned int &uiId, const char *pszRPCName, const char *pszToTask, const char *pszSrcTask,
@@ -27,39 +26,17 @@ public:
 
     void regTask(CTaskWorker *pTask);
     void unregTask(const char *pszName);
-
-    H_INLINE void runTask(CTaskWorker *pTask) 
-    {
-        if (H_INIT_NUMBER != pTask->getStatus())
-        {
-            addTask(pTask);
-            return;
-        }
-
-        CTaskRunner *pWorker(getFreeWorker());
-        pWorker->addWorker(pTask);
-    };
-    void onLoopBreak(void);
-    void runSurplusTask(CTaskWorker *pTask);
-    void destroyRun(void);
-
-    H_INLINE void notifyRun(CTaskWorker *pTask)
-    {
-        addTask(pTask);
-    };
+    void stopWorker(void);
 
     std::vector<std::string> getAllName(void);
 
 private:
-    CTaskRunner *getFreeWorker(void);
-    void stopWorker(void);    
     H_INLINE void notifyInit(CTaskWorker *pTask)
     {
         Notify(pTask, MSG_TASK_INIT);
     };
     H_INLINE void notifyDestroy(CTaskWorker *pTask)
     {
-        pTask->setDestroy();
         Notify(pTask, MSG_TASK_DEL);
     };
     H_INLINE void Notify(CTaskWorker *pTask, const unsigned short usEv)
@@ -74,9 +51,9 @@ private:
             return;
         }
     };
-
+    
 private:
-    H_DISALLOWCOPY(CTaskDispatch);
+    H_DISALLOWCOPY(CTaskMgr);
 #ifdef H_OS_WIN 
     #define taskit std::unordered_map<std::string , CTaskWorker*>::iterator
     #define task_map std::unordered_map<std::string , CTaskWorker*>

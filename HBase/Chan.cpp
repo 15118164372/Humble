@@ -1,6 +1,7 @@
 
 #include "Chan.h"
-#include "TaskDispatch.h"
+#include "TaskWorker.h"
+#include "TaskGlobleQu.h"
 #include "Log.h"
 
 H_BNAMSP
@@ -19,12 +20,31 @@ bool CChan::Send(void *pszVal)
 {
     m_objQuLck.Lock();
     bool bOk(m_quData.Push(pszVal));
+    if (bOk)
+    {
+        if (!m_pTask->getInGloble())
+        {
+            CTaskGlobleQu::getSingletonPtr()->m_objQuLock.Lock();
+            if (CTaskGlobleQu::getSingletonPtr()->m_objQu.Push(m_pTask))
+            {
+                m_pTask->setInGloble(true);
+            }
+            else
+            {
+                H_LOG(LOGLV_ERROR, "add task %s in globle queue error.", m_pTask->getName()->c_str());
+            }
+            CTaskGlobleQu::getSingletonPtr()->m_objQuLock.unLock();
+        }
+    }
     m_objQuLck.unLock();
 
-	if (bOk)
-	{
-		CTaskDispatch::getSingletonPtr()->notifyRun(m_pTask);
-	}
+    if (bOk)
+    {
+        if (CTaskGlobleQu::getSingletonPtr()->m_uiWait > H_INIT_NUMBER)
+        {
+            pthread_cond_signal(&CTaskGlobleQu::getSingletonPtr()->m_objCond);
+        }
+    }
     else
     {
         H_LOG(LOGLV_ERROR, "push message to task %s error.", m_pTask->getName()->c_str());
@@ -44,11 +64,7 @@ void *CChan::Recv(void)
 
 size_t CChan::getSize(void)
 {
-    m_objQuLck.Lock();
-    size_t iSize(m_quData.Size());
-    m_objQuLck.unLock();
-
-    return iSize;
+    return m_quData.Size();
 }
 
 size_t CChan::getCapacity(void)

@@ -1,21 +1,20 @@
 
-#include "TaskDispatch.h"
+#include "TaskMgr.h"
 #include "Funcs.h"
 #include "Thread.h"
 #include "Log.h"
 
 H_BNAMSP
 
-SINGLETON_INIT(CTaskDispatch)
-CTaskDispatch objTaskDispatch;
+SINGLETON_INIT(CTaskMgr)
+CTaskMgr objTaskDispatch;
 
-CTaskDispatch::CTaskDispatch(void) : CTaskLazy<CTaskWorker>(H_QULENS_WORKERDISP),
-    m_usThreadNum(H_INIT_NUMBER), m_pRunner(NULL)
+CTaskMgr::CTaskMgr(void) : m_usThreadNum(H_INIT_NUMBER), m_pRunner(NULL)
 {
-    setDel(false);
+    
 }
 
-CTaskDispatch::~CTaskDispatch(void)
+CTaskMgr::~CTaskMgr(void)
 {
     for (taskit itTask = m_mapTask.begin(); m_mapTask.end() != itTask; ++itTask)
     {
@@ -26,7 +25,7 @@ CTaskDispatch::~CTaskDispatch(void)
     H_SafeDelArray(m_pRunner);
 }
 
-void CTaskDispatch::setThreadNum(const unsigned short usNum)
+void CTaskMgr::setThreadNum(const unsigned short usNum)
 {
     m_usThreadNum = ((H_INIT_NUMBER == usNum) ? H_GetCoreCount() * 2 : usNum);
     m_pRunner = new(std::nothrow) CTaskRunner[m_usThreadNum];
@@ -40,7 +39,7 @@ void CTaskDispatch::setThreadNum(const unsigned short usNum)
     }
 }
 
-CChan *CTaskDispatch::getChan(const char *pszTaskName)
+CChan *CTaskMgr::getChan(const char *pszTaskName)
 {
     H_ASSERT(NULL != pszTaskName, "got null pointer.");
     CChan *pChan(NULL);
@@ -56,7 +55,7 @@ CChan *CTaskDispatch::getChan(const char *pszTaskName)
     return pChan;
 }
 
-void CTaskDispatch::taskRPCCall(unsigned int &uiId, const char *pszRPCName, const char *pszToTask, const char *pszSrcTask,
+void CTaskMgr::taskRPCCall(unsigned int &uiId, const char *pszRPCName, const char *pszToTask, const char *pszSrcTask,
     const char *pMsg, const size_t &iLens)
 {
     H_ASSERT(NULL != pszRPCName 
@@ -96,7 +95,7 @@ void CTaskDispatch::taskRPCCall(unsigned int &uiId, const char *pszRPCName, cons
     }
 }
 
-void CTaskDispatch::regTask(CTaskWorker *pTask)
+void CTaskMgr::regTask(CTaskWorker *pTask)
 {
     m_objTaskLock.wLock();
     taskit itTask = m_mapTask.find(*pTask->getName());
@@ -111,7 +110,7 @@ void CTaskDispatch::regTask(CTaskWorker *pTask)
     m_objAllNamLock.unLock();
 }
 
-void CTaskDispatch::unregTask(const char *pszName)
+void CTaskMgr::unregTask(const char *pszName)
 {
     H_ASSERT(NULL != pszName, "got null pointer.");
     CTaskWorker *pTask(NULL);
@@ -146,61 +145,20 @@ void CTaskDispatch::unregTask(const char *pszName)
     m_objAllNamLock.unLock();
 }
 
-CTaskRunner *CTaskDispatch::getFreeWorker(void)
-{
-    while (true)
-    {
-        for (unsigned short usI = H_INIT_NUMBER; usI < m_usThreadNum; ++usI)
-        {
-            if (H_INIT_NUMBER == m_pRunner[usI].getStatus())
-            {
-                m_pRunner[usI].setBusy();
-                return &m_pRunner[usI];
-            }
-        }
-
-        H_Sleep(0);
-    }
-
-    return NULL;
-}
-
-void CTaskDispatch::stopWorker(void)
+void CTaskMgr::stopWorker(void)
 {
     for (unsigned short usI = H_INIT_NUMBER; usI < m_usThreadNum; ++usI)
     {
         m_pRunner[usI].Join();
     }
-}
 
-void CTaskDispatch::onLoopBreak(void)
-{
-    //停止工作线程
-    stopWorker();
-    //未执行完的加到队列
-    for (taskit itTask = m_mapTask.begin(); m_mapTask.end() != itTask; ++itTask)
-    {
-        for (size_t i = H_INIT_NUMBER; i < itTask->second->getChan()->getSize(); ++i)
-        {
-            addTask(itTask->second);
-        }
-    }
-}
-
-void CTaskDispatch::runSurplusTask(CTaskWorker *pTask)
-{
-    pTask->Run();
-}
-
-void CTaskDispatch::destroyRun(void)
-{
     for (taskit itTask = m_mapTask.begin(); m_mapTask.end() != itTask; ++itTask)
     {
         itTask->second->destroyTask();
     }
 }
 
-std::vector<std::string> CTaskDispatch::getAllName(void)
+std::vector<std::string> CTaskMgr::getAllName(void)
 {
     std::vector<std::string> vcTmp;
 

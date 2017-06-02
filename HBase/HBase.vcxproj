@@ -74,8 +74,9 @@
     <ClInclude Include="SnowFlake.h" />
     <ClInclude Include="TableFile.h" />
     <ClInclude Include="Task.h" />
-    <ClInclude Include="TaskDispatch.h" />
+    <ClInclude Include="TaskGlobleQu.h" />
     <ClInclude Include="TaskLazy.h" />
+    <ClInclude Include="TaskMgr.h" />
     <ClInclude Include="TaskRunner.h" />
     <ClInclude Include="TaskWorker.h" />
     <ClInclude Include="Tcp1.h" />
@@ -147,7 +148,9 @@
     <ClCompile Include="SHA1.cpp" />
     <ClCompile Include="SnowFlake.cpp" />
     <ClCompile Include="TableFile.cpp" />
-    <ClCompile Include="TaskDispatch.cpp" />
+    <ClCompile Include="TaskGlobleQu.cpp" />
+    <ClCompile Include="TaskMgr.cpp" />
+    <ClCompile Include="TaskRunner.cpp" />
     <ClCompile Include="TaskWorker.cpp" />
     <ClCompile Include="Tcp1.cpp" />
     <ClCompile Include="Tcp2.cpp" />

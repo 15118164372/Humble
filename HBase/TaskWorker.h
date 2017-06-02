@@ -2,7 +2,6 @@
 #ifndef H_TASKWORKER_H_
 #define H_TASKWORKER_H_
 
-#include "Task.h"
 #include "Chan.h"
 #include "HEnum.h"
 #include "HStruct.h"
@@ -10,7 +9,7 @@
 H_BNAMSP
 
 //服务基类
-class CTaskWorker : public CTask
+class CTaskWorker
 {
 private:
     struct H_LISTENTYPE
@@ -19,16 +18,15 @@ private:
     };
 
 public:
-    CTaskWorker(const char *pszName, const int iCapacity) : m_uiDestroy(H_INIT_NUMBER),
-        m_uiStatus(H_INIT_NUMBER),  m_objChan(this, iCapacity)
+    CTaskWorker(const char *pszName, const int iCapacity) : m_bInGloble(false), m_objChan(this, iCapacity)
     {
         H_ASSERT(strlen(pszName) < H_TASKNAMELENS, "task name too long.");
         m_strName = pszName;
     };
-    ~CTaskWorker()
+    virtual ~CTaskWorker()
     {};
     
-    void Run(void);
+    void Run(H_MSG *pMsg);
 
     virtual void initTask(void) {};
     virtual void destroyTask(void) {};
@@ -54,33 +52,24 @@ public:
         return NULL;
     };
     virtual void onTaskRPCRtn(const unsigned int &uiId, H_Binary *pBinary) {};
-    
-    void setStatus(const unsigned int uiStatus)
-    {
-        H_AtomicSet(&m_uiStatus, uiStatus);
-    };
-    unsigned int getStatus(void)
-    {
-        return H_AtomicGet(&m_uiStatus);
-    };
+
     std::string *getName(void)
     {
         return &m_strName;
+    };
+    void setInGloble(const bool bInGloble)
+    {
+        m_bInGloble = bInGloble;
+    };
+    bool getInGloble(void)
+    {
+        return m_bInGloble;
     };
 
     CChan *getChan(void)
     {
         return &m_objChan;
     };
-    void setDestroy(void)
-    {
-        H_AtomicSet(&m_uiDestroy, 1);
-    };
-    bool getDestroy(void)
-    {
-        return (H_INIT_NUMBER == H_AtomicGet(&m_uiDestroy)) ? false : true;
-    };
-
     void addType(const unsigned short &usEvent, const unsigned short &usType)
     {
         if (!haveType(usEvent, usType))
@@ -103,8 +92,7 @@ private:
     H_DISALLOWCOPY(CTaskWorker);
 
 private:
-    unsigned int m_uiDestroy;
-    unsigned int m_uiStatus;
+    bool m_bInGloble;
     CChan m_objChan;
     std::string m_strName;
     H_LISTENTYPE m_stListenType[MSG_NET_CLOSE + 1];

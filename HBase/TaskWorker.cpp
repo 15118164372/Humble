@@ -1,21 +1,14 @@
 
 #include "TaskWorker.h"
 #include "MSGDispatch.h"
-#include "TaskDispatch.h"
+#include "TaskMgr.h"
 #include "Sender.h"
 #include "Log.h"
 
 H_BNAMSP
 
-void CTaskWorker::Run(void)
+void CTaskWorker::Run(H_MSG *pMsg)
 {
-    H_MSG *pMsg((H_MSG *)m_objChan.Recv());
-    if (NULL == pMsg)
-    {
-        setStatus(H_INIT_NUMBER);
-        return;
-    }
-
     switch (pMsg->usEnevt)
     {
         case MSG_TASK_INIT:
@@ -136,18 +129,11 @@ void CTaskWorker::Run(void)
         default:
             break;
     }
-
-    if (MSG_TASK_DEL != pMsg->usEnevt)
-    {
-        setStatus(H_INIT_NUMBER);
-    }
-
-    H_SafeDelete(pMsg);
 }
 
 void CTaskWorker::sendTaskRPCRtn(H_RPC *pRPC, const char *pszMsg, const size_t &iLens)
 {
-    CChan *pChan(CTaskDispatch::getSingletonPtr()->getChan(pRPC->acSrcTask));
+    CChan *pChan(CTaskMgr::getSingletonPtr()->getChan(pRPC->acSrcTask));
     if (NULL == pChan)
     {
         return;

@@ -53,7 +53,7 @@ const char *getPathSeparator(void)
 
 void regEvent(unsigned short usEvent, const char *pszTask, const short sType)
 {
-    CChan *pChan(CTaskDispatch::getSingletonPtr()->getChan(pszTask));
+    CChan *pChan(CTaskMgr::getSingletonPtr()->getChan(pszTask));
     if (NULL == pChan)
     {
         H_LOG(LOGLV_WARN, "get task %s error", pszTask);
@@ -65,7 +65,7 @@ void regEvent(unsigned short usEvent, const char *pszTask, const short sType)
 
 void regIProto(H_PROTOTYPE iProto, const char *pszTask)
 {
-    CChan *pChan(CTaskDispatch::getSingletonPtr()->getChan(pszTask));
+    CChan *pChan(CTaskMgr::getSingletonPtr()->getChan(pszTask));
     if (NULL == pChan)
     {
         H_LOG(LOGLV_WARN, "get task %s error", pszTask);
@@ -76,7 +76,7 @@ void regIProto(H_PROTOTYPE iProto, const char *pszTask)
 
 void regStrProto(const char *pszProto, const char *pszTask)
 {
-    CChan *pChan(CTaskDispatch::getSingletonPtr()->getChan(pszTask));
+    CChan *pChan(CTaskMgr::getSingletonPtr()->getChan(pszTask));
     if (NULL == pChan)
     {
         H_LOG(LOGLV_WARN, "get task %s error", pszTask);
@@ -122,19 +122,19 @@ void rpcCall(H_SOCK sock, unsigned int uiId, const char *pszRPCName, const char 
 void taskRPCCall(unsigned int uiId, const char *pszRPCName, const char *pszToTask, const char *pszSrcTask,
     const char *pMsg, const size_t iLens)
 {
-    CTaskDispatch::getSingletonPtr()->taskRPCCall(uiId, pszRPCName, pszToTask, pszSrcTask, pMsg, iLens);
+    CTaskMgr::getSingletonPtr()->taskRPCCall(uiId, pszRPCName, pszToTask, pszSrcTask, pMsg, iLens);
 }
 
 void regTask(const char *pszFile, const char *pszName, const int iCapacity)
 {
     CTaskWorker *pTask = new(std::nothrow) CLTask(pszFile, pszName, iCapacity);
     H_ASSERT(NULL != pTask, "malloc memory error.");
-    CTaskDispatch::getSingletonPtr()->regTask(pTask);
+    CTaskMgr::getSingletonPtr()->regTask(pTask);
 }
 
 void unregTask(const char *pszName)
 {
-    CTaskDispatch::getSingletonPtr()->unregTask(pszName);
+    CTaskMgr::getSingletonPtr()->unregTask(pszName);
 }
 
 void H_RegFuncs(struct lua_State *pLState)

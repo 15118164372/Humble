@@ -5,7 +5,7 @@
 #include "MSGDispatch.h"
 #include "Chan.h"
 #include "Funcs.h"
-#include "TaskDispatch.h"
+#include "TaskMgr.h"
 #include "Sender.h"
 #include "Log.h"
 
@@ -277,7 +277,7 @@ void CNetWorker::dispNomal(H_PROTOTYPE &iProto, H_TCPBUF &stTcpBuf, H_Binary &st
 void CNetWorker::dispRPCCall(H_TCPBUF &stTcpBuf, H_Binary &stBinary)
 {
     H_RPC *pRPC((H_RPC *)(stBinary.pBufer + sizeof(H_PROTOTYPE)));
-    CChan *pChan(CTaskDispatch::getSingletonPtr()->getChan(pRPC->acToTask));
+    CChan *pChan(CTaskMgr::getSingletonPtr()->getChan(pRPC->acToTask));
     if (NULL == pChan)
     {
         return;
@@ -303,7 +303,7 @@ void CNetWorker::dispRPCCall(H_TCPBUF &stTcpBuf, H_Binary &stBinary)
 void CNetWorker::dispRPCRtn(H_TCPBUF &stTcpBuf, H_Binary &stInBinary)
 {
     H_RPCRTN *pRPCRtn((H_RPCRTN *)(stInBinary.pBufer + sizeof(H_PROTOTYPE)));
-    CChan *pChan(CTaskDispatch::getSingletonPtr()->getChan(pRPCRtn->acToTask));
+    CChan *pChan(CTaskMgr::getSingletonPtr()->getChan(pRPCRtn->acToTask));
     if (NULL == pChan)
     {
         return;
@@ -336,7 +336,7 @@ void CNetWorker::dispRPCRtn(H_TCPBUF &stTcpBuf, H_Binary &stInBinary)
 
 void CNetWorker::sendCMD(const char *pszTaskName, H_LINK *pLink, H_CMD *pCmd, H_TCPBUF &stTcpBuf)
 {
-    CChan *pChan(CTaskDispatch::getSingletonPtr()->getChan(pszTaskName));
+    CChan *pChan(CTaskMgr::getSingletonPtr()->getChan(pszTaskName));
     if (NULL == pChan)
     {
         std::string strRtn("[ \"fail\", \"not find task.\"]");
@@ -369,7 +369,7 @@ void CNetWorker::dispCMD(H_TCPBUF &stTcpBuf, H_Binary &stBinary)
     {
         stLink.sock = H_INVALID_SOCK;
         std::vector<std::string>::iterator itName;
-        std::vector<std::string> vcName = CTaskDispatch::getSingletonPtr()->getAllName();
+        std::vector<std::string> vcName = CTaskMgr::getSingletonPtr()->getAllName();
         for (itName = vcName.begin(); vcName.end() != itName; ++itName)
         {
             sendCMD((*itName).c_str(), &stLink, pCmd, stTcpBuf);

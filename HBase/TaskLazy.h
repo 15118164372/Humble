@@ -19,9 +19,6 @@ public:
 
     //Run动作分解
     virtual void runTask(T *pMsg) = 0;
-    virtual void onLoopBreak(void) {};
-    virtual void runSurplusTask(T *pMsg);
-    virtual void destroyRun(void) {};
 
     void Join(void);
     void waitStart(void);
@@ -29,9 +26,7 @@ public:
 protected:
     bool addTask(T *pMsg);
     T *newT(void);
-    T *newT(const size_t &iCount);
     void setDel(const bool bDel);
-    void setArray(const bool bArray);
 
 private:
     void Free(T *pMsg);
@@ -42,7 +37,6 @@ private:
 
 private:
     bool m_bDel;
-    bool m_bArray;
     unsigned int m_uiWait;
     long m_lExit;
     long m_lCount;
@@ -52,8 +46,8 @@ private:
 };
 
 template <typename T>
-CTaskLazy<T>::CTaskLazy(const int iCapacity) : m_bDel(true), m_bArray(false), m_uiWait(H_INIT_NUMBER),
-m_lExit(H_INIT_NUMBER), m_lCount(H_INIT_NUMBER), m_quTask(iCapacity)
+CTaskLazy<T>::CTaskLazy(const int iCapacity) : m_bDel(true), m_uiWait(H_INIT_NUMBER),
+    m_lExit(H_INIT_NUMBER), m_lCount(H_INIT_NUMBER), m_quTask(iCapacity)
 {
     pthread_mutex_init(&m_quLock, NULL);
     pthread_cond_init(&m_objCond, NULL);
@@ -72,14 +66,7 @@ void CTaskLazy<T>::Free(T *pMsg)
 {
     if (m_bDel)
     {
-        if (m_bArray)
-        {
-            H_SafeDelArray(pMsg);
-        }
-        else
-        {
-            H_SafeDelete(pMsg);
-        }
+        H_SafeDelete(pMsg);
     }
 }
 
@@ -107,14 +94,12 @@ void CTaskLazy<T>::Run(void)
         }
     }
 
-    onLoopBreak();
-
     pMsg = NULL;
     while (true)
     {
         if (NULL != pMsg)
         {
-            runSurplusTask(pMsg);
+            runTask(pMsg);
             Free(pMsg);
         }
 
@@ -126,15 +111,7 @@ void CTaskLazy<T>::Run(void)
         }
     }
 
-    destroyRun();
-
     H_AtomicAdd(&m_lCount, -1);
-}
-
-template <typename T>
-void CTaskLazy<T>::runSurplusTask(T *pMsg)
-{
-    runTask(pMsg);
 }
 
 template <typename T>
@@ -175,21 +152,9 @@ T *CTaskLazy<T>::newT(void)
 }
 
 template <typename T>
-T *CTaskLazy<T>::newT(const size_t &iCount)
-{
-    return new(std::nothrow) T[iCount];
-}
-
-template <typename T>
 void CTaskLazy<T>::setDel(const bool bDel)
 {
     m_bDel = bDel;
-}
-
-template <typename T>
-void CTaskLazy<T>::setArray(const bool bArray)
-{
-    m_bArray = bArray;
 }
 
 template <typename T>

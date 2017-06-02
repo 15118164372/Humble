@@ -235,9 +235,6 @@
     <ClInclude Include="TaskRunner.h">
       <Filter>Service</Filter>
     </ClInclude>
-    <ClInclude Include="TaskDispatch.h">
-      <Filter>Service</Filter>
-    </ClInclude>
     <ClInclude Include="TaskLazy.h">
       <Filter>Service</Filter>
     </ClInclude>
@@ -269,6 +266,12 @@
       <Filter>Service\Parser</Filter>
     </ClInclude>
     <ClInclude Include="SendWorker.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskMgr.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskGlobleQu.h">
       <Filter>Service</Filter>
     </ClInclude>
   </ItemGroup>
@@ -451,9 +454,6 @@
     <ClCompile Include="redisrand\redisrand.c">
       <Filter>3rd\redisrand</Filter>
     </ClCompile>
-    <ClCompile Include="TaskDispatch.cpp">
-      <Filter>Service</Filter>
-    </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Service</Filter>
     </ClCompile>
@@ -482,6 +482,15 @@
       <Filter>Service\Parser</Filter>
     </ClCompile>
     <ClCompile Include="SendWorker.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskMgr.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskRunner.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskGlobleQu.cpp">
       <Filter>Service</Filter>
     </ClCompile>
   </ItemGroup>
