@@ -59,7 +59,7 @@ void CTaskRunner::Run(void)
                         pTask->setInGloble(false);
                         H_LOG(LOGLV_ERROR, "add task %s in globle queue error.", pTask->getName()->c_str());
                     }
-                    pGlobleQu->m_objQuLock.unLock();                    
+                    pGlobleQu->m_objQuLock.unLock();
                 }
                 else
                 {
