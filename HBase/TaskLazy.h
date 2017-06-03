@@ -17,7 +17,6 @@ public:
 
     void Run(void);
 
-    //Run动作分解
     virtual void runTask(T *pMsg) = 0;
 
     void Join(void);

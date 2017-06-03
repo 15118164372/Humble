@@ -7,4 +7,4 @@ std::string g_strScriptPath;
 pthread_cond_t g_ExitCond;
 pthread_mutex_t g_objExitMu;
 
-std::string g_strSVId;
+int g_iSVId;

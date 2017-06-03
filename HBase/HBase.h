@@ -42,6 +42,7 @@
 #include "Sender.h"
 #include "TaskMgr.h"
 #include "MSGDispatch.h"
+#include "RPCLink.h"
 
 extern std::string g_strProPath;
 extern std::string g_strScriptPath;
@@ -49,6 +50,6 @@ extern std::string g_strScriptPath;
 extern pthread_cond_t g_ExitCond;
 extern pthread_mutex_t g_objExitMu;
 
-extern std::string g_strSVId;
+extern int g_iSVId;
 
 #endif//H_BASE_H_

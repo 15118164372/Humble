@@ -274,6 +274,9 @@
     <ClInclude Include="TaskGlobleQu.h">
       <Filter>Service</Filter>
     </ClInclude>
+    <ClInclude Include="RPCLink.h">
+      <Filter>Service</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zlib\adler32.c">
@@ -491,6 +494,9 @@
       <Filter>Service</Filter>
     </ClCompile>
     <ClCompile Include="TaskGlobleQu.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="RPCLink.cpp">
       <Filter>Service</Filter>
     </ClCompile>
   </ItemGroup>

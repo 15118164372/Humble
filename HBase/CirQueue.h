@@ -44,7 +44,7 @@ public:
         return m_iCapacity;
     };
 
-    bool Push(void *pValue)
+    H_INLINE bool Push(void *pValue)
     {
         if (Full())
         {
@@ -64,7 +64,7 @@ public:
 
         return true;
     };
-    void *Pop(void)
+    H_INLINE void *Pop(void)
     {
         void *pValue(NULL);
 

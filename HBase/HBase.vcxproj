@@ -53,6 +53,7 @@
     <ClInclude Include="NetWorkerMgr.h" />
     <ClInclude Include="redisrand\redisrand.h" />
     <ClInclude Include="rijndael\rijndael.h" />
+    <ClInclude Include="RPCLink.h" />
     <ClInclude Include="RSAEuro\des.h" />
     <ClInclude Include="RSAEuro\global.h" />
     <ClInclude Include="RSAEuro\md2.h" />
@@ -127,6 +128,7 @@
     <ClCompile Include="NetWorkerMgr.cpp" />
     <ClCompile Include="redisrand\redisrand.c" />
     <ClCompile Include="rijndael\rijndael.cpp" />
+    <ClCompile Include="RPCLink.cpp" />
     <ClCompile Include="RSAEuro\desc.c" />
     <ClCompile Include="RSAEuro\md2c.c" />
     <ClCompile Include="RSAEuro\md4c.c" />

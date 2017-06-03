@@ -40,7 +40,7 @@ public:
     { 
         return NULL;
     }
-    virtual const char *onRPCCall(const char *pszName, char *pszInfo,
+    virtual const char *onRPCCall(H_LINK *pLink, const char *pszName, char *pszInfo,
         const size_t &uiLens, size_t &iOutLens)
     { 
         return NULL;

@@ -87,7 +87,7 @@ void CTaskWorker::Run(H_MSG *pMsg)
             char *pRPCMsg(pMsg->pEvent + sizeof(H_LINK) + sizeof(H_RPC));
             size_t iMsgLens((size_t)ntohl((u_long)pRPC->uiMsgLens));
             size_t iOutLens(H_INIT_NUMBER);
-            const char *pRtn(onRPCCall(pRPC->acRPC, pRPCMsg, iMsgLens, iOutLens));
+            const char *pRtn(onRPCCall(pLink, pRPC->acRPC, pRPCMsg, iMsgLens, iOutLens));
             if (NULL != pRtn && 0 != ntohl((u_long)pRPC->uiId))
             {
                 CSender::getSingletonPtr()->sendRPCRtn(pLink->sock, pRPC, pRtn, iOutLens);

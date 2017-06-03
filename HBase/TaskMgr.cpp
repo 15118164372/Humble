@@ -7,7 +7,7 @@
 H_BNAMSP
 
 SINGLETON_INIT(CTaskMgr)
-CTaskMgr objTaskDispatch;
+CTaskMgr objTaskMgr;
 
 CTaskMgr::CTaskMgr(void) : m_usThreadNum(H_INIT_NUMBER), m_pRunner(NULL)
 {

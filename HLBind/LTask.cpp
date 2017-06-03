@@ -173,14 +173,14 @@ const char *CLTask::onCMD(const char *pszCmd, const char *pszInfo, size_t &iOutL
     return NULL;
 }
 
-const char *CLTask::onRPCCall(const char *pszName, char *pszInfo,
+const char *CLTask::onRPCCall(H_LINK *pLink, const char *pszName, char *pszInfo,
     const size_t &uiLens, size_t &iOutLens)
 {
     try
     {
         m_stBinary.iLens = uiLens;
         m_stBinary.pBufer = pszInfo;
-        m_stBinary = (*(m_pLFunc[LFUNC_RPCCALL]))(pszName, m_stBinary);
+        m_stBinary = (*(m_pLFunc[LFUNC_RPCCALL]))(pszName, m_stBinary, pLink->sock);
         iOutLens = m_stBinary.iLens;
 
         return m_stBinary.pBufer;

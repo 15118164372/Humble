@@ -21,7 +21,7 @@ public:
     void onFrame(H_TICK *pTick);
     void onSec(H_TICK *pTick);
     const char *onCMD(const char *pszCmd, const char *pszInfo, size_t &iOutLens);
-    const char *onRPCCall(const char *pszName, char *pszInfo,
+    const char *onRPCCall(H_LINK *pLink, const char *pszName, char *pszInfo,
         const size_t &uiLens, size_t &iOutLens);
     void onRPCRtn(const unsigned int &uiId, H_Binary *pBinary);
     const char *onTaskRPCCall(const char *pszName, char *pszInfo,

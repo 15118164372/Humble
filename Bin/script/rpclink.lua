@@ -2,43 +2,62 @@
 require("init")
 require("proto")
 local humble = require("humble")
+local rpcLinkRegister = rpcLinkRegister
+local rpcLinkUnregister = rpcLinkUnregister
 local ErrCode = ErrCode
 local SockType = SockType
 local Proto = Proto
+local m_strTaskName = g_taskName
+local m_regTimeOut = 5
+
+if not g_RPCSV then
+	g_RPCSV = {}
+end
+local m_RPCSV = g_RPCSV
 
 function initTask()
-	print("rpclink initTask")
-	humble.linkTo("tcp2", SockType.RPC, "127.0.0.1", 16001)
+	
 end
 
 function destroyTask()
-	print("rpclink destroyTask")
-end
-
-local function rpcAccept(sock, sockType)
 	
 end
-regAcceptEv(SockType.RPC, rpcAccept)
 
-local function rpcrtn(strMsg)
-	print("xxxxxxxxxx:"..os.time())
-	print(strMsg)
+local function register(sock, svId)
+	svId = tonumber(svId)
+	m_RPCSV[svId] = sock
+	rpcLinkRegister(svId, sock)
+	humble.Infof("register service %d", svId)
+
+	return tostring(humble.getSVId())
+end
+regRPC("register", register)
+
+local function registerRtn(svId, sock)
+	if 0 == #svId then
+		humble.Warnf("%s", "register service error")
+		return
+	end
+	
+	svId = tonumber(svId)
+	m_RPCSV[svId] = sock
+	rpcLinkRegister(svId, sock)
+	humble.Infof("register service %d", svId)
 end
 
 local function rpcLinked(sock, sockType)
-	callTaskRPC("rpclink", "add", nil, rpcrtn)
-	
-	callNetRPC(sock, "rpclink", "add", nil, rpcrtn)
-    regDelayEv(1, rpcLinked, sock, sockType)
+	callNetRPC(sock, m_strTaskName, "register", tostring(humble.getSVId()), registerRtn, sock)
 end
 regLinkedEv(SockType.RPC, rpcLinked)
 
 local function rpcClosed(sock, sockType)
-	print("rpcClosed")
+	for key, val in pairs(m_RPCSV) do
+		if val == sock then
+			m_RPCSV[key] = nil
+			rpcLinkUnregister(key)
+			humble.Infof("unregister service %s", key)
+			break
+		end
+	end
 end
 regClosedEv(SockType.RPC, rpcClosed)
-
-local function rpcadd()
-	return "rpcadd return"
-end
-regRPC("add", rpcadd)

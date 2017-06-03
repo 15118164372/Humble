@@ -4,9 +4,9 @@
 
 H_BNAMSP
 
-std::string getSVId(void)
+int getSVId(void)
 {
-    return g_strSVId;
+    return g_iSVId;
 }
 
 unsigned short getLogPriority(void)
@@ -137,6 +137,20 @@ void unregTask(const char *pszName)
     CTaskMgr::getSingletonPtr()->unregTask(pszName);
 }
 
+void rpcLinkRegister(int iSVId, H_SOCK sock)
+{
+    CRPCLink::getSingletonPtr()->Register(sock, iSVId);
+}
+void rpcLinkUnregister(int iSVId)
+{
+    CRPCLink::getSingletonPtr()->Unregister(iSVId);
+}
+H_SOCK getRPCLink(int iSVId)
+{
+    return CRPCLink::getSingletonPtr()->getSVLink(iSVId);
+}
+
+
 void H_RegFuncs(struct lua_State *pLState)
 {
     luabridge::getGlobalNamespace(pLState)
@@ -167,7 +181,10 @@ void H_RegFuncs(struct lua_State *pLState)
         .addFunction("rpcCall", rpcCall)
         .addFunction("taskRPCCall", taskRPCCall)
         .addFunction("regTask", regTask)
-        .addFunction("unregTask", unregTask);
+        .addFunction("unregTask", unregTask)
+        .addFunction("rpcLinkRegister", rpcLinkRegister)
+        .addFunction("rpcLinkUnregister", rpcLinkUnregister)
+        .addFunction("getRPCLink", getRPCLink);
 }
 
 void H_RegBinary(struct lua_State *pLState)

@@ -42,6 +42,9 @@ Event = {
 	"Frame",
 	"Sec",
 	
+	"TaskInit",
+	"TaskDel",
+	
 	"UserChan",
 }
 Event = table.enum(Event, 0)
