@@ -4,11 +4,8 @@ require("proto")
 local humble = require("humble")
 local rpcLinkRegister = rpcLinkRegister
 local rpcLinkUnregister = rpcLinkUnregister
-local ErrCode = ErrCode
 local SockType = SockType
-local Proto = Proto
 local m_strTaskName = g_taskName
-local m_regTimeOut = 5
 
 if not g_RPCSV then
 	g_RPCSV = {}

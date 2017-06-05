@@ -499,36 +499,13 @@ struct Stack <std::string const&>
 };
 
 template <>
-struct Stack <Humble::H_Binary &>
-{
-    static inline void push(lua_State* L, Humble::H_Binary& stBinary)
-    {
-        if (NULL == stBinary.pBufer)
-        {
-            lua_pushlstring(L, "", 0);
-        }
-        else
-        {
-            lua_pushlstring(L, stBinary.pBufer, stBinary.iLens);
-        }        
-    }
-
-    static inline Humble::H_Binary get(lua_State* L, int index)
-    {
-        Humble::H_Binary stBinary;
-        stBinary.pBufer = (char*)luaL_checklstring(L, index, &stBinary.iLens);
-        return stBinary;
-    }
-};
-
-template <>
 struct Stack <Humble::H_Binary>
 {
     static inline void push(lua_State* L, Humble::H_Binary& stBinary)
     {
         if (NULL == stBinary.pBufer)
         {
-            lua_pushlstring(L, "", 0);
+            lua_pushnil(L);
         }
         else
         {
@@ -539,7 +516,10 @@ struct Stack <Humble::H_Binary>
     static inline Humble::H_Binary get(lua_State* L, int index)
     {
         Humble::H_Binary stBinary;
-        stBinary.pBufer = (char*)luaL_checklstring(L, index, &stBinary.iLens);
+        if (lua_type(L, index) != LUA_TNIL)
+        {
+            stBinary.pBufer = (char*)luaL_checklstring(L, index, &stBinary.iLens);
+        }
         return stBinary;
     }
 };

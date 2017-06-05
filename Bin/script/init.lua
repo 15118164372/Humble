@@ -9,7 +9,7 @@ local cjson = require("cjson")
 local httpd = require("httpd")
 local table = table
 local Event = Event
-local Proto = Proto
+local SockType = SockType
 local m_strTaskName = g_taskName
 local m_RPCTimeOut = 5
 
@@ -241,7 +241,7 @@ end
 --c++调用函数
 function onNetRead(sock, sockType, iProto, netMsg)
 	--http特殊处理
-	if Proto.HTTP == iProto then		
+	if SockType.HTTP == sockType then		
 		onHttp(sock, sockType, netMsg)
 		return
 	end

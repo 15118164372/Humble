@@ -1,13 +1,23 @@
 require("init")
-require("proto")
 local humble = require("humble")
 local httpd = require("httpd")
-local ErrCode = ErrCode
-local SockType = SockType
-local Proto = Proto
+
+local function echo1RPCRtn(strNum)
+	print("echo1RPCRtn:"..strNum)
+end
+
+local function onTime(strNum)
+	callTaskRPC("echo1", "echo1RPC", tostring(tonumber(strNum) + 1), echo1RPCRtn)	
+end
+
+local function rpcOnTime(strNum)	
+	regDelayEv(2, onTime, strNum)
+end
+regRPC("rpcOnTime", rpcOnTime)
 
 function initTask()
 	print("echo2 initTask")
+	regDelayEv(2, rpcOnTime, "0")
 end
 
 function destroyTask()

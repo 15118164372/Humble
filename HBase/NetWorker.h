@@ -67,11 +67,6 @@ private:
         pSession->stLink.usType = pCMD->stLink.usType;
         pSession->stLink.sock = pCMD->stLink.sock;
         pSession->bReLink = !(pCMD->bAccept);
-        pSession->bHttp = false;
-        if (SOCKTYPE_HTTP == pSession->stLink.usType)
-        {
-            pSession->bHttp = true;
-        }
 
         bufferevent_setcb(pSession->pEv, tcpReadCB, NULL, tcpEventCB, pSession);
         (void)bufferevent_enable(pSession->pEv, EV_READ);

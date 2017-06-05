@@ -22,7 +22,6 @@ struct H_LINK
 
 struct H_Session
 {
-    bool bHttp;
     bool bReLink;
     struct bufferevent *pEv;
     class CNetWorker *pNetWorker;

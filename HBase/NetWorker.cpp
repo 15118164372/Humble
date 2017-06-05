@@ -68,7 +68,7 @@ size_t CNetWorker::onOrder(CEvBuffer *pEvBuffer)
 
 void CNetWorker::onAccept(H_Session *pSession)
 {   
-    if (pSession->bHttp)
+    if (SOCKTYPE_HTTP == pSession->stLink.usType)
     {
         return;
     }
@@ -78,7 +78,7 @@ void CNetWorker::onAccept(H_Session *pSession)
 
 void CNetWorker::onLinked(H_Session *pSession)
 {
-    if (pSession->bHttp)
+    if (SOCKTYPE_HTTP == pSession->stLink.usType)
     {
         return;
     }
@@ -88,7 +88,7 @@ void CNetWorker::onLinked(H_Session *pSession)
 
 void CNetWorker::onClose(H_Session *pSession)
 {
-    if (pSession->bHttp)
+    if (SOCKTYPE_HTTP == pSession->stLink.usType)
     {
         bufferevent_free(pSession->pEv);
         H_SafeDelete(pSession);
@@ -163,45 +163,51 @@ void CNetWorker::onRead(H_Session *pSession)
 
 void CNetWorker::dispProto(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &stBinary)
 {
-    if (pSession->bHttp)
+    switch (pSession->stLink.usType)
     {
-        dispHttp(stTcpBuf, stBinary);
-        return;
-    }
-
-    H_PROTOTYPE iProto(H_NTOH(*((H_PROTOTYPE*)stBinary.pBufer)));
-    switch (iProto)
-    {
-        case PROTO_CMD:
+        case SOCKTYPE_HTTP:
         {
-            if (SOCKTYPE_CMD != stTcpBuf.stLink.usType)
+            dispHttp(stTcpBuf, stBinary);
+        }
+        break;
+
+        case SOCKTYPE_CMD:
+        {
+            H_PROTOTYPE iProto(H_NTOH(*((H_PROTOTYPE*)stBinary.pBufer)));
+            if (PROTO_CMD == iProto)
             {
-                H_LOG(LOGLV_WARN, "%s", "cmd sock type error.");
-                return;
+                dispCMD(stTcpBuf, stBinary);
             }
-
-            dispCMD(stTcpBuf, stBinary);
         }
         break;
-        case PROTO_RPCCAL:
+
+        case SOCKTYPE_RPC:
         {
-            if (SOCKTYPE_RPC != stTcpBuf.stLink.usType)
+            H_PROTOTYPE iProto(H_NTOH(*((H_PROTOTYPE*)stBinary.pBufer)));
+            switch (iProto)
             {
-                H_LOG(LOGLV_WARN, "%s", "rpc sock type error.");
-                return;
+                case PROTO_RPCCAL:
+                {
+                    dispRPCCall(stTcpBuf, stBinary);
+                }
+                break;
+                case PROTO_RPCRTN:
+                {
+                    dispRPCRtn(stTcpBuf, stBinary);
+                }
+                break;
+                default:
+                    break;
             }
+        }
+        break;
 
-            dispRPCCall(stTcpBuf, stBinary);
-        }
-        break;
-        case PROTO_RPCRTN:
-        {
-            dispRPCRtn(stTcpBuf, stBinary);
-        }
-        break;
         default:
+        {
+            H_PROTOTYPE iProto(H_NTOH(*((H_PROTOTYPE*)stBinary.pBufer)));
             dispNomal(iProto, stTcpBuf, stBinary);
-            break;
+        }
+        break;
     }
 }
 
