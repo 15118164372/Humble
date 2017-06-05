@@ -74,8 +74,9 @@ void consoleWrite(const char *pszBuf)
         return;
     }
 
+    CString strNow = L"[" + ansiToUnicode(H_Now().c_str()) + L"] ";
+    cstrText = strNow + cstrText + L"\n";
     WriteConsole(g_hOutput, cstrText, cstrText.GetLength(), NULL, NULL);
-    WriteConsole(g_hOutput, L"\n", (DWORD)wcslen(L"\n"), NULL, NULL);
 }
 
 intptr_t getLinkSock(void)
