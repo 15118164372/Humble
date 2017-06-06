@@ -119,6 +119,11 @@ H_Binary CHttp::parsePack(char *pAllBuf, const size_t &iLens, size_t &iParsed)
 
 void CHttp::Response(H_SOCK &sock, H_PROTOTYPE &, const char *pszMsg, const size_t &iLens)
 {
+    if (H_INVALID_SOCK == sock)
+    {
+        return;
+    }
+
     CSender::getSingletonPtr()->Send(sock, pszMsg, iLens);
 }
 

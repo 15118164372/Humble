@@ -59,6 +59,7 @@ void regEvent(unsigned short usEvent, const char *pszTask, const short sType)
         H_LOG(LOGLV_WARN, "get task %s error", pszTask);
         return;
     }
+
     CTaskWorker *pTask(pChan->getTask());
     CMSGDispatch::getSingletonPtr()->regEvent(usEvent, pTask, sType);
 }
@@ -71,6 +72,7 @@ void regIProto(H_PROTOTYPE iProto, const char *pszTask)
         H_LOG(LOGLV_WARN, "get task %s error", pszTask);
         return;
     }
+
     CMSGDispatch::getSingletonPtr()->regNetProto(iProto, pChan);
 }
 
@@ -82,6 +84,7 @@ void regStrProto(const char *pszProto, const char *pszTask)
         H_LOG(LOGLV_WARN, "get task %s error", pszTask);
         return;
     }
+
     CMSGDispatch::getSingletonPtr()->regStrProto(pszProto, pChan);
 }
 

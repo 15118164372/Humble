@@ -76,7 +76,7 @@ void CTaskWorker::Run(H_MSG *pMsg)
             if (NULL != pRtn)
             {
                 CSender::getSingletonPtr()->sendCMDRtn(pLink->sock, pRtn, iOutLens);
-            }        
+            }
             H_SafeDelArray(pMsg->pEvent);
         }
         break;

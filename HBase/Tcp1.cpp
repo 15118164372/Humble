@@ -98,7 +98,12 @@ size_t CTcp1::getHeadLens(const size_t &iLens)
 }
 
 void CTcp1::Response(H_SOCK &sock, H_PROTOTYPE &iProto, const char *pszMsg, const size_t &iLens)
-{    
+{
+    if (H_INVALID_SOCK == sock)
+    {
+        return;
+    }
+
     size_t iBodyLens(iLens + sizeof(iProto));
     size_t iHeadLens(getHeadLens(iBodyLens));    
 

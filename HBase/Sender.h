@@ -20,6 +20,11 @@ public:
 
     void Send(H_SOCK &sock, const char *pszBuf, const size_t &iLens, const bool bCopy = true)
     {
+        if (H_INVALID_SOCK == sock)
+        {
+            return;
+        }
+
         m_pWorker[getIndex(sock)].addSend(sock, pszBuf, iLens, bCopy);
     };
     void sendCMDRtn(H_SOCK &sock, const char *pszBuf, const size_t &iLens);

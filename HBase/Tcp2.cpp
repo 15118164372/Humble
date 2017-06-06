@@ -41,6 +41,11 @@ H_Binary CTcp2::parsePack(char *pAllBuf, const size_t &iLens, size_t &iParsed)
 
 void CTcp2::Response(H_SOCK &sock, H_PROTOTYPE &iProto, const char *pszMsg, const size_t &iLens)
 {
+    if (H_INVALID_SOCK == sock)
+    {
+        return;
+    }
+
     size_t iBodyLens(iLens + sizeof(iProto));
     unsigned int uiHead((unsigned int)ntohl((u_long)iBodyLens));
     iProto = H_NTOH(iProto);

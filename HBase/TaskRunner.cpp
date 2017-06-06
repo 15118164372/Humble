@@ -38,7 +38,7 @@ void CTaskRunner::Run(void)
                     break;
                 }
 
-                pTask->Run(pMsg);                
+                pTask->Run(pMsg);
                 if (MSG_TASK_DEL == pMsg->usEnevt)
                 {
                     H_SafeDelete(pMsg);
