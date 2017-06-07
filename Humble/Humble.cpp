@@ -172,7 +172,7 @@ void runSV(void)
 
 //-d 进入命令行模式 Humble -d port
 int main(int argc, char *argv[])
-{    
+{
     if (cmdMode(argc, argv))
     {
         unsigned short usPort = H_ToNumber<unsigned short>((const char*)argv[2]);
