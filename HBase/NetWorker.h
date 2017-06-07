@@ -80,7 +80,6 @@ private:
             onLinked(pSession);
         }
     };
-    void closeSock(H_Session *pSession);
 
     void dispProto(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &stBinary);
 

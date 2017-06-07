@@ -33,16 +33,6 @@ void CNetWorker::tcpEventCB(struct bufferevent *bev, short, void *arg)
     pSession->pNetWorker->onClose(pSession);
 }
 
-void CNetWorker::closeSock(H_Session *pSession)
-{
-    if (pSession->bReLink)
-    {
-        CLinker::getSingletonPtr()->removeLink(pSession->stLink.sock);
-    }
-
-    onClose(pSession);
-}
-
 size_t CNetWorker::onOrder(CEvBuffer *pEvBuffer)
 {    
     size_t iCount = pEvBuffer->getTotalLens() / sizeof(H_WorkerCMD);
@@ -141,7 +131,7 @@ void CNetWorker::onRead(H_Session *pSession)
             if (iSurplus > H_MAXPACK_LENS)
             {
                 H_LOG(LOGLV_ERROR, "%s", "pack too large.");
-                closeSock(pSession);
+                onClose(pSession);
                 return;
             }
             break;
@@ -150,7 +140,7 @@ void CNetWorker::onRead(H_Session *pSession)
             || stBinary.iLens > H_MAXPACK_LENS)
         {
             H_LOG(LOGLV_ERROR, "%s", "pack length error.");
-            closeSock(pSession);
+            onClose(pSession);
             return;
         }
         iParsed += iCurParsed;
