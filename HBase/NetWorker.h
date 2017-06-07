@@ -12,8 +12,14 @@ H_BNAMSP
 class CNetWorker : public CNetBase
 {
 private:
+    enum
+    {
+        NET_CMD_ADDLINK = 0,
+        NET_CMD_DELLINK
+    };
     struct H_WorkerCMD
     {
+        char cCmd;
         bool bAccept;       
         class CParser *pParser;
         H_LINK stLink;
@@ -27,6 +33,7 @@ public:
     H_INLINE bool addLink(H_SOCK &sock, class CParser *pParser, const unsigned short &usType, const bool &bAccept)
     {
         H_WorkerCMD stCMD;
+        stCMD.cCmd = NET_CMD_ADDLINK;
         stCMD.bAccept = bAccept;
         stCMD.stLink.usType = usType;
         stCMD.pParser = pParser;
@@ -47,11 +54,11 @@ private:
     H_DISALLOWCOPY(CNetWorker);
     H_INLINE void addEvent(H_WorkerCMD *pCMD) 
     {
+        (void)setsockopt(pCMD->stLink.sock, IPPROTO_TCP, TCP_NODELAY, (char *)&m_iSockFlag, sizeof(m_iSockFlag));
+        (void)evutil_make_socket_nonblocking(pCMD->stLink.sock);
+
         H_Session *pSession = new(std::nothrow) H_Session;
         H_ASSERT(NULL != pSession, "malloc memory error.");
-
-        //(void)setsockopt(pCMD->stLink.sock, IPPROTO_TCP, TCP_NODELAY, (char *)&m_iSockFlag, sizeof(m_iSockFlag));
-        //(void)evutil_make_socket_nonblocking(pCMD->stLink.sock);
 
         pSession->pEv = bufferevent_socket_new(getBase(), pCMD->stLink.sock, BEV_OPT_CLOSE_ON_FREE);
         if (NULL == pSession->pEv)
@@ -92,8 +99,8 @@ private:
     void dispCMD(H_TCPBUF &stTcpBuf, H_Binary &stBinary);
     void sendCMD(const char *pszTaskName, H_LINK *pLink, H_CMD *pCmd, H_TCPBUF &stTcpBuf);
 
-//private:
-    //int m_iSockFlag;
+private:
+    int m_iSockFlag;
 };
 
 H_ENAMSP

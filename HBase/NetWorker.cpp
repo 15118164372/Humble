@@ -11,7 +11,7 @@
 
 H_BNAMSP
 
-CNetWorker::CNetWorker(void)// : m_iSockFlag(1)
+CNetWorker::CNetWorker(void) : m_iSockFlag(1)
 {
 
 }
@@ -48,9 +48,24 @@ size_t CNetWorker::onOrder(CEvBuffer *pEvBuffer)
         return H_INIT_NUMBER;
     }
 
+    H_WorkerCMD *pCMD;
     for (size_t i = 0; i < iCount; ++i)
     {
-        addEvent((H_WorkerCMD*)(pBinary + sizeof(H_WorkerCMD) * i));
+        pCMD = (H_WorkerCMD*)(pBinary + sizeof(H_WorkerCMD) * i);
+        switch (pCMD->cCmd)
+        {
+            case NET_CMD_ADDLINK:
+            {
+                addEvent(pCMD);
+            }
+            break;
+            case NET_CMD_DELLINK:
+            {
+            }
+            break;
+            default:
+                break;
+        }
     }
 
     return iReadLens;
