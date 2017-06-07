@@ -9,10 +9,6 @@
 UsAge="UsAge:\"./mk.sh\" or \"./mk.sh x64\" or \"./mk.sh clean\""
 X64=$1
 OSNAME=`uname`
-#############################################
-#业务处理文件路径
-LIBDIR=""
-
 #生成程序的名称
 PROGRAMNAME="Humble"
 
@@ -47,21 +43,18 @@ EXCEPTL=$MAINFILE" "
 
 MAKEFILEPATH=`pwd`
 LIBPATH="-L$MAKEFILEPATH/$RSTPATH"
+CC="gcc"
+GCC="g++"
 ARCH="ar -rv"
 INCLUDEPATH=""
 OBJFILE=""
-CFLAGS="-Wall -march=native"
-CFLAGS=$CFLAGS" -Os -Wno-strict-aliasing"
+CFLAGS="-Os -Wall -Wno-strict-aliasing"
 if [ "$X64" = "x64" ]
 then
     CFLAGS=$CFLAGS" -m64"
 fi
 
-CC="gcc"
-GCC="g++"
-
-
-LIBDIR=$HumbleDir" "$LIBDIR
+LIBDIR=$HumbleDir
 
 GetIncludePath()
 {
