@@ -144,8 +144,6 @@ function onRPCCall(rpcName, rpcParam, sock)
 	else
 		humble.Errorf("get rpc name %s error", rpcName)		
 	end
-	
-	return ""
 end
 --string task: func(param) net:func(sock, param)
 function regRPC(rpcName, func)
