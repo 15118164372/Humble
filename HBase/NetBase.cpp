@@ -4,7 +4,7 @@
 
 H_BNAMSP
 
-CNetBase::CNetBase(void) : m_uiCount(H_INIT_NUMBER), m_pEvCfg(NULL), m_pStopOrderBev(NULL), m_pOrderBev(NULL), m_pBase(NULL)
+CNetBase::CNetBase(void) : m_uiCount(H_INIT_NUMBER), m_pStopOrderBev(NULL), m_pOrderBev(NULL), m_pBase(NULL)
 {
 #ifdef H_OS_WIN
     WORD wVersionReq(MAKEWORD(2, 2));
@@ -18,24 +18,17 @@ CNetBase::CNetBase(void) : m_uiCount(H_INIT_NUMBER), m_pEvCfg(NULL), m_pStopOrde
     {
         H_Printf("%s", "event_config_set_flag set EVENT_BASE_FLAG_STARTUP_IOCP error.");
     }
-    /*if (H_RTN_OK != event_config_set_num_cpus_hint(m_pEvCfg, H_GetCoreCount()))
-    {
-        H_Printf("%s", "event_config_set_num_cpus_hint error.");
-    }*/
-#endif
-
-    memset(m_sockStopOrder, H_INVALID_SOCK, sizeof(m_sockStopOrder));
-    memset(m_sockOrder, H_INVALID_SOCK, sizeof(m_sockOrder));
-    H_ASSERT(H_RTN_OK == H_SockPair(m_sockStopOrder), "create sock pair error.");
-    H_ASSERT(H_RTN_OK == H_SockPair(m_sockOrder), "create sock pair error.");
-
-#ifdef H_OS_WIN
     m_pBase = event_base_new_with_config(m_pEvCfg);    
 #else
     m_pBase = event_base_new();
 #endif
     H_ASSERT(NULL != m_pBase, "event_base_new error.");
     H_Printf("kernel event notification mechanism %s", event_base_get_method(m_pBase));
+
+    memset(m_sockStopOrder, H_INVALID_SOCK, sizeof(m_sockStopOrder));
+    memset(m_sockOrder, H_INVALID_SOCK, sizeof(m_sockOrder));
+    H_ASSERT(H_RTN_OK == H_SockPair(m_sockStopOrder), "create sock pair error.");
+    H_ASSERT(H_RTN_OK == H_SockPair(m_sockOrder), "create sock pair error.");
 
     m_pStopOrderBev = bufferevent_socket_new(m_pBase, m_sockStopOrder[0], BEV_OPT_CLOSE_ON_FREE);
     H_ASSERT(NULL != m_pStopOrderBev, "bufferevent_socket_new error.");
@@ -79,7 +72,11 @@ CNetBase::~CNetBase(void)
     }
 
 #ifdef H_OS_WIN
-    event_config_free(m_pEvCfg);
+    if (NULL != m_pEvCfg)
+    {
+        event_config_free(m_pEvCfg);
+        m_pEvCfg = NULL;
+    }    
     (void)WSACleanup();
 #endif
 }

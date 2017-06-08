@@ -21,18 +21,6 @@ CNetWorker::~CNetWorker(void)
     
 }
 
-void CNetWorker::tcpReadCB(struct bufferevent *bev, void *arg)
-{
-    H_Session *pSession = (H_Session *)arg;
-    pSession->pNetWorker->onRead(pSession);
-}
-
-void CNetWorker::tcpEventCB(struct bufferevent *bev, short, void *arg)
-{
-    H_Session *pSession = (H_Session *)arg;
-    pSession->pNetWorker->onClose(pSession);
-}
-
 size_t CNetWorker::onOrder(CEvBuffer *pEvBuffer)
 {    
     size_t iCount = pEvBuffer->getTotalLens() / sizeof(H_WorkerCMD);
@@ -69,6 +57,18 @@ size_t CNetWorker::onOrder(CEvBuffer *pEvBuffer)
     }
 
     return iReadLens;
+}
+
+void CNetWorker::tcpReadCB(struct bufferevent *bev, void *arg)
+{
+    H_Session *pSession = (H_Session *)arg;
+    pSession->pNetWorker->onRead(pSession);
+}
+
+void CNetWorker::tcpEventCB(struct bufferevent *bev, short, void *arg)
+{
+    H_Session *pSession = (H_Session *)arg;
+    pSession->pNetWorker->onClose(pSession);
 }
 
 void CNetWorker::onAccept(H_Session *pSession)
