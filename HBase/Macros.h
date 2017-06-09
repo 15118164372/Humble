@@ -58,7 +58,6 @@ typedef unsigned short H_PROTOTYPE;
     #define H_PATH_SEPARATOR "/"
 #endif
 
-
 /*数组大小*/
 #define H_ArraySize(a) (sizeof(a)/sizeof(a[0]))
 
@@ -82,8 +81,6 @@ if (!(Exp))\
     H_Printf("%s", strMsg);\
     abort();\
 }
-
-
 
 #ifdef H_OS_WIN
     std::string H_StrError(DWORD error);
