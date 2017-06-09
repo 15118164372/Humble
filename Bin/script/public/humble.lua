@@ -6,7 +6,8 @@ local getSVId = getSVId
 local getSVType = getSVType
 local getLinkById = getLinkById
 local getLinkByType = getLinkByType
-local logPriority = getLogPriority()
+local getLogPriority = getLogPriority
+local setLogPriority = setLogPriority
 local H_LOG = H_LOG
 local CRC16 = CRC16
 local CRC32 = CRC32
@@ -50,8 +51,11 @@ local function getFileName(strFile)
 	
 	return strName
 end
+function humble.setLogPriority(logLevel)
+	setLogPriority(logLevel)
+end
 function humble.Debugf(fmt, ...)	
-	if LogLV.Debug > logPriority then
+	if LogLV.Debug > getLogPriority() then
 		return
 	end
 	
@@ -60,7 +64,7 @@ function humble.Debugf(fmt, ...)
 	H_LOG(LogLV.Debug, getFileName(stack.short_src), stack.currentline, strMsg)
 end
 function humble.Infof(fmt, ...)
-	if LogLV.Info > logPriority then
+	if LogLV.Info > getLogPriority() then
 		return
 	end
 	
@@ -69,7 +73,7 @@ function humble.Infof(fmt, ...)
 	H_LOG(LogLV.Info, getFileName(stack.short_src), stack.currentline, strMsg)
 end
 function humble.Warnf(fmt, ...)
-	if LogLV.Warn > logPriority then
+	if LogLV.Warn > getLogPriority() then
 		return
 	end
 	
@@ -78,7 +82,7 @@ function humble.Warnf(fmt, ...)
 	H_LOG(LogLV.Warn, getFileName(stack.short_src), stack.currentline, strMsg)
 end
 function humble.Errorf(fmt, ...)
-	if LogLV.Err > logPriority then
+	if LogLV.Err > getLogPriority() then
 		return
 	end
 	

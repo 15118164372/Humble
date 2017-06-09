@@ -14,6 +14,10 @@ int getSVType(void)
     return g_iSVType;
 }
 
+void setLogPriority(unsigned short usLV)
+{
+    CLog::getSingletonPtr()->setPriority(usLV);
+}
 unsigned short getLogPriority(void)
 {
     return CLog::getSingletonPtr()->getPriority();
@@ -185,6 +189,7 @@ void H_RegFuncs(struct lua_State *pLState)
         .addFunction("getSVId", getSVId)
         .addFunction("getSVType", getSVType)
         .addFunction("getLogPriority", getLogPriority)
+        .addFunction("setLogPriority", setLogPriority)
         .addFunction("H_LOG", luaLog)
         .addFunction("CRC16", H_CRC16)
         .addFunction("CRC32", H_CRC32)
