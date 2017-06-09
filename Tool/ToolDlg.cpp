@@ -224,7 +224,7 @@ BOOL CToolDlg::OnInitDialog()
     g_strProPath = H_GetProPath();
     g_strScriptPath = H_FormatStr("%s%s%s", g_strProPath.c_str(), "toolscript", H_PATH_SEPARATOR);
     m_input_ip.SetWindowTextW(L"127.0.0.1");
-    m_input_port.SetWindowTextW(L"15000");
+    m_input_port.SetWindowTextW(L"16000");
     m_input_socktype.SetWindowTextW(L"10");
 
     m_objFont.CreateFontW(20,             //×ÖÌå¸ß¶È

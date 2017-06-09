@@ -26,6 +26,16 @@ public:
 
         return m_pNetWorker[getIndex(sock)].addLink(sock, pParser, usType, bAccept);
     };
+    H_INLINE bool closeLink(H_SOCK &sock)
+    {
+        if (H_INVALID_SOCK == sock)
+        {
+            return false;
+        }
+
+        return m_pNetWorker[getIndex(sock)].closeLink(sock);
+    };
+    bool removeLink(H_SOCK &sock);
 
 private:
     H_INLINE unsigned short getIndex(H_SOCK &sock)

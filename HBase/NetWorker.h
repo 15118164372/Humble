@@ -41,6 +41,14 @@ public:
 
         return sendOrder((const void*)&stCMD, sizeof(stCMD));
     };
+    H_INLINE bool closeLink(H_SOCK &sock)
+    {
+        H_WorkerCMD stCMD;
+        stCMD.cCmd = NET_CMD_DELLINK;
+        stCMD.stLink.sock = sock;
+
+        return sendOrder((const void*)&stCMD, sizeof(stCMD));
+    };
 
     void onLinked(H_Session *pSession);
     void onAccept(H_Session *pSession);

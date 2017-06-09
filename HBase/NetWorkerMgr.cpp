@@ -40,4 +40,15 @@ void CNetWorkerMgr::stopWorker(void)
     }
 }
 
+bool CNetWorkerMgr::removeLink(H_SOCK &sock)
+{
+    if (H_INVALID_SOCK == sock)
+    {
+        return false;
+    }
+
+    CLinker::getSingletonPtr()->removeLink(sock);
+    return m_pNetWorker[getIndex(sock)].closeLink(sock);
+}
+
 H_ENAMSP

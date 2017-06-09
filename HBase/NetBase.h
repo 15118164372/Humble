@@ -49,9 +49,6 @@ private:
 
 private:
     unsigned int m_uiCount;
-#ifdef H_OS_WIN
-    struct event_config *m_pEvCfg;
-#endif
     struct bufferevent *m_pStopOrderBev;
     struct bufferevent *m_pOrderBev;
     struct event_base *m_pBase;

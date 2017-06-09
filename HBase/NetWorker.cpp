@@ -49,6 +49,11 @@ size_t CNetWorker::onOrder(CEvBuffer *pEvBuffer)
             break;
             case NET_CMD_DELLINK:
             {
+#ifdef H_OS_WIN
+                (void)shutdown(pCMD->stLink.sock, SD_BOTH);
+#else
+                (void)shutdown(pCMD->stLink.sock, SHUT_RDWR);
+#endif
             }
             break;
             default:

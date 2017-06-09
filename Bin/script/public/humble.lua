@@ -23,6 +23,8 @@ local regIProto = regIProto
 local regStrProto = regStrProto
 local addListener = addListener
 local linkTo = linkTo
+local closeLink = closeLink
+local removeLink = removeLink
 local rpcCall = rpcCall
 local taskRPCCall = taskRPCCall
 local regTask = regTask
@@ -161,6 +163,14 @@ end
 --连接
 function humble.linkTo(strParser, sockType, strHost, usPort)
 	linkTo(strParser, sockType, strHost, usPort)
+end
+--连接关闭
+function humble.closeLink(sock)
+	closeLink(sock)
+end
+--移除服务器间连接
+function humble.removeLink(sock)
+	removeLink(sock)
 end
 --调用远端rpc
 function humble.rpcCall(sock, uiId, strRPCName, toTask, srcTask, buf, lens)

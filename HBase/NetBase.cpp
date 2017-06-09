@@ -12,13 +12,15 @@ CNetBase::CNetBase(void) : m_uiCount(H_INIT_NUMBER), m_pStopOrderBev(NULL), m_pO
     (void)WSAStartup(wVersionReq, &wsData);
 
     (void)evthread_use_windows_threads();
-    m_pEvCfg = event_config_new();
-    H_ASSERT(NULL != m_pEvCfg, "event_config_new error.");
-    if (H_RTN_OK != event_config_set_flag(m_pEvCfg, EVENT_BASE_FLAG_STARTUP_IOCP))
+    struct event_config *pEvCfg(event_config_new());
+    H_ASSERT(NULL != pEvCfg, "event_config_new error.");
+    if (H_RTN_OK != event_config_set_flag(pEvCfg, EVENT_BASE_FLAG_STARTUP_IOCP))
     {
         H_Printf("%s", "event_config_set_flag set EVENT_BASE_FLAG_STARTUP_IOCP error.");
     }
-    m_pBase = event_base_new_with_config(m_pEvCfg);    
+
+    m_pBase = event_base_new_with_config(pEvCfg);
+    event_config_free(pEvCfg);
 #else
     m_pBase = event_base_new();
 #endif
@@ -71,12 +73,7 @@ CNetBase::~CNetBase(void)
         m_pBase = NULL;
     }
 
-#ifdef H_OS_WIN
-    if (NULL != m_pEvCfg)
-    {
-        event_config_free(m_pEvCfg);
-        m_pEvCfg = NULL;
-    }    
+#ifdef H_OS_WIN 
     (void)WSACleanup();
 #endif
 }
