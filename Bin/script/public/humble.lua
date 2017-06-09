@@ -3,7 +3,9 @@ require("macros")
 local string = string
 local debug = debug
 local getSVId = getSVId
-local getRPCLink = getRPCLink
+local getSVType = getSVType
+local getLinkById = getLinkById
+local getLinkByType = getLinkByType
 local logPriority = getLogPriority()
 local H_LOG = H_LOG
 local CRC16 = CRC16
@@ -87,10 +89,17 @@ end
 function humble.getSVId()
 	return getSVId()
 end
+--服务器类型
+function humble.getSVType()
+	return getSVType()
+end
 
 --获取服务器连接的socket
-function humble.getRPCLink(svId)
-	return getRPCLink(svId)
+function humble.getLinkById(svId)
+	return getLinkById(svId)
+end
+function humble.getLinkByType(svType)
+	return getLinkByType(this, svType)
 end
 
 --获取当前程序所在路径

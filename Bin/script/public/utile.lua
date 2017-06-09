@@ -233,7 +233,7 @@ function table.len(lua_table)
     return iCount
 end
 function table.copy(tTable)
-    assert("table" == type(lua_table))    
+    assert("table" == type(tTable))    
     local tNewTab = {}  
     for i, v in pairs(tTable) do  
         local vtyp = type(v)

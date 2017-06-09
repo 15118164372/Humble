@@ -51,5 +51,6 @@ extern pthread_cond_t g_ExitCond;
 extern pthread_mutex_t g_objExitMu;
 
 extern int g_iSVId;
+extern int g_iSVType;
 
 #endif//H_BASE_H_

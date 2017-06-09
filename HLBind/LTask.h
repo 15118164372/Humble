@@ -27,6 +27,7 @@ public:
     const char *onTaskRPCCall(const char *pszName, char *pszInfo,
         const size_t &uiLens, size_t &iOutLens);
     void onTaskRPCRtn(const unsigned int &uiId, H_Binary *pBinary);
+
 private:
     CLTask(void);
     H_DISALLOWCOPY(CLTask);
@@ -50,6 +51,8 @@ private:
     luabridge::LuaRef **m_pLFunc;
     std::string m_strFile;
     H_Binary m_stBinary;
+    H_LSTATE m_stState;
+    H_CURLINK m_curRPCLink;
 };
 
 H_ENAMSP

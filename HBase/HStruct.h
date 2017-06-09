@@ -71,6 +71,20 @@ struct H_MSG
     char *pEvent;
 };
 
+struct H_LSTATE
+{
+    void *pLState;
+};
+
+struct H_CURLINK
+{
+    H_SOCK sock;
+    H_SOCK getSock(void)
+    {
+        return sock;
+    };
+};
+
 H_ENAMSP
 
 #endif//H_STRUCT_H_

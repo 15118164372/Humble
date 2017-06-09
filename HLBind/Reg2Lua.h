@@ -9,6 +9,8 @@
 H_BNAMSP
 
 void H_RegFuncs(struct lua_State *pLState);
+void H_RegLState(struct lua_State *pLState);
+void H_RegCurLink(struct lua_State *pLState);
 void H_RegBinary(struct lua_State *pLState);
 void H_RegClock(struct lua_State *pLState);
 void H_RegIni(struct lua_State *pLState);

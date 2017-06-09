@@ -123,29 +123,20 @@ end
 local m_RPCSV = g_RPCSV
 
 --c++µ÷ÓÃº¯Êý
-function onRPCCall(rpcName, rpcParam, sock)
+function onRPCCall(rpcName, rpcParam)
 	local func = m_RPCSV[rpcName]
 	if func then
-		if sock then			
-			local bRtn, rtnMsg = utile.callFunc(func, sock, rpcParam)
-			if bRtn then
-				return rtnMsg
-			else
-				humble.Errorf("call rpc %s error", rpcName)
-			end
+		local bRtn, rtnMsg = utile.callFunc(func, rpcParam)
+		if bRtn then
+			return rtnMsg
 		else
-			local bRtn, rtnMsg = utile.callFunc(func, rpcParam)
-			if bRtn then
-				return rtnMsg
-			else
-				humble.Errorf("call rpc %s error", rpcName)
-			end
+			humble.Errorf("call rpc %s error", rpcName)
 		end
 	else
 		humble.Errorf("get rpc name %s error", rpcName)		
 	end
 end
---string task: func(param) net:func(sock, param)
+--string func(param)
 function regRPC(rpcName, func)
 	if not m_RPCSV[rpcName] then
 		m_RPCSV[rpcName] = func

@@ -108,6 +108,7 @@ int setParam(void)
     pLog->Open();
     
     g_iSVId = objIni.getIntValue("Main", "id");
+    g_iSVType = objIni.getIntValue("Main", "type");
     unsigned short unNetNum((unsigned short)objIni.getIntValue("Main", "netnum"));
     CNetWorkerMgr::getSingletonPtr()->startWorker(unNetNum);
     CSender::getSingletonPtr()->startSender(unNetNum);

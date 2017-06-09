@@ -21,12 +21,3 @@ local function echonumber(sock, sockType, netMsg)
 	tcp1.Response(sock, 12, "echonumber return.")
 end
 regProto(10, echonumber)
-
-local function echo1RPC(strNum)
-	print("echo1RPC:"..strNum)
-	strNum = tonumber(strNum) + 1
-	
-	callTaskRPC("echo2", "rpcOnTime", tostring(strNum))
-	return tostring(strNum)
-end
-regRPC("echo1RPC", echo1RPC)

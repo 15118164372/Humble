@@ -8,9 +8,13 @@ CLTask::CLTask(const char *pszFile, const char *pszName, const int iCapacity) : 
     m_pLState = luaL_newstate();
     H_ASSERT(NULL != m_pLState, "luaL_newstate error.");
 
+    m_stState.pLState = m_pLState;
+
     luaL_openlibs(m_pLState);
     H_RegAll(m_pLState);
     luabridge::setGlobal(m_pLState, getName()->c_str(), "g_taskName");
+    luabridge::setGlobal(m_pLState, &m_stState, "this");
+    luabridge::setGlobal(m_pLState, &m_curRPCLink, "g_curRPCLink");
 
     m_pLFunc = new(std::nothrow) luabridge::LuaRef *[LFUNC_COUNT];
     H_ASSERT(NULL != m_pLFunc, "malloc memory error.");
@@ -167,7 +171,7 @@ const char *CLTask::onCMD(const char *pszCmd, const char *pszInfo, size_t &iOutL
     }
     catch (luabridge::LuaException &e)
     {
-        H_LOG(LOGLV_ERROR, "%s", e.what());        
+        H_LOG(LOGLV_ERROR, "%s", e.what());
     }
 
     return NULL;
@@ -180,7 +184,8 @@ const char *CLTask::onRPCCall(H_LINK *pLink, const char *pszName, char *pszInfo,
     {
         m_stBinary.iLens = uiLens;
         m_stBinary.pBufer = pszInfo;
-        m_stBinary = (*(m_pLFunc[LFUNC_RPCCALL]))(pszName, m_stBinary, pLink->sock);
+        m_curRPCLink.sock = pLink->sock;
+        m_stBinary = (*(m_pLFunc[LFUNC_RPCCALL]))(pszName, m_stBinary);
         iOutLens = m_stBinary.iLens;
 
         return m_stBinary.pBufer;

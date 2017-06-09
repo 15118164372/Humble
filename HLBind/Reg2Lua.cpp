@@ -9,6 +9,11 @@ int getSVId(void)
     return g_iSVId;
 }
 
+int getSVType(void)
+{
+    return g_iSVType;
+}
+
 unsigned short getLogPriority(void)
 {
     return CLog::getSingletonPtr()->getPriority();
@@ -140,17 +145,28 @@ void unregTask(const char *pszName)
     CTaskMgr::getSingletonPtr()->unregTask(pszName);
 }
 
-void rpcLinkRegister(int iSVId, H_SOCK sock)
+void rpcLinkRegister(const int iSVId, const int iSVType, H_SOCK sock)
 {
-    CRPCLink::getSingletonPtr()->Register(sock, iSVId);
+    CRPCLink::getSingletonPtr()->Register(iSVId, iSVType, sock);
 }
-void rpcLinkUnregister(int iSVId)
+void rpcLinkUnregister(const int iSVId, const int iSVType)
 {
-    CRPCLink::getSingletonPtr()->Unregister(iSVId);
+    CRPCLink::getSingletonPtr()->Unregister(iSVId, iSVType);
 }
-H_SOCK getRPCLink(int iSVId)
+H_SOCK getLinkById(const int iSVId)
 {
-    return CRPCLink::getSingletonPtr()->getSVLink(iSVId);
+    return CRPCLink::getSingletonPtr()->getLinkById(iSVId);
+}
+luabridge::LuaRef getLinkByType(H_LSTATE *pState, const int iSVType)
+{
+    luabridge::LuaRef luaTable = luabridge::newTable((struct lua_State*)pState->pLState);
+    std::vector<H_SOCK> vcSock(CRPCLink::getSingletonPtr()->getLinkByType(iSVType));
+    for (std::vector<H_SOCK>::iterator itSock = vcSock.begin(); vcSock.end() != itSock; ++itSock)
+    {
+        luaTable.append(*itSock);
+    }
+
+    return luaTable;
 }
 
 
@@ -158,6 +174,7 @@ void H_RegFuncs(struct lua_State *pLState)
 {
     luabridge::getGlobalNamespace(pLState)
         .addFunction("getSVId", getSVId)
+        .addFunction("getSVType", getSVType)
         .addFunction("getLogPriority", getLogPriority)
         .addFunction("H_LOG", luaLog)
         .addFunction("CRC16", H_CRC16)
@@ -187,7 +204,23 @@ void H_RegFuncs(struct lua_State *pLState)
         .addFunction("unregTask", unregTask)
         .addFunction("rpcLinkRegister", rpcLinkRegister)
         .addFunction("rpcLinkUnregister", rpcLinkUnregister)
-        .addFunction("getRPCLink", getRPCLink);
+        .addFunction("getLinkById", getLinkById)
+        .addFunction("getLinkByType", getLinkByType);
+}
+
+void H_RegLState(struct lua_State *pLState)
+{
+    luabridge::getGlobalNamespace(pLState)
+        .beginClass<H_LSTATE>("H_LSTATE")
+        .endClass();
+}
+
+void H_RegCurLink(struct lua_State *pLState)
+{
+    luabridge::getGlobalNamespace(pLState)
+        .beginClass<H_CURLINK>("H_CURLINK")
+            .addFunction("getSock", &H_CURLINK::getSock)
+        .endClass();
 }
 
 void H_RegBinary(struct lua_State *pLState)
@@ -369,6 +402,8 @@ void H_RegSha1(struct lua_State *pLState)
 
 void H_RegAll(struct lua_State *pLState)
 {
+    H_RegLState(pLState);
+    H_RegCurLink(pLState);
     H_RegFuncs(pLState);
     //H_RegBinary(pLState);
     H_RegClock(pLState);
