@@ -2,6 +2,30 @@
 #include "Funcs.h"
 #include "NETAddr.h"
 
+#ifdef H_OS_WIN
+std::string H_StrError(DWORD error)
+{
+    char *pError = NULL;
+    if (!FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,
+        error,
+        MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
+        (LPTSTR)&pError,
+        0,
+        NULL))
+    {
+        return "failed in translating the error.";
+    }
+
+    std::string strErr(pError);
+    strErr = Humble::H_Trim(strErr);
+
+    LocalFree(pError);
+
+    return strErr;
+}
+#endif
+
 H_BNAMSP
 
 #define H_TCPKEEPCOUNT    5

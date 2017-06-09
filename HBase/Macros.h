@@ -83,7 +83,10 @@ if (!(Exp))\
     abort();\
 }
 
+
+
 #ifdef H_OS_WIN
+    std::string H_StrError(DWORD error);
     #define H_Strcasecmp _stricmp
     #define H_Strncasecmp _strnicmp
     #define H_StrTok strtok_s
@@ -93,9 +96,9 @@ if (!(Exp))\
     #define H_ITOA _itoa_s
     #define H_WCSICMP(pszFst, pwsiScd) _wcsicmp(pszFst, pwsiScd)
     #define H_SockError() WSAGetLastError()
-    #define H_SockError2Str(errcode) strerror(errcode)
+    #define H_SockError2Str(errcode) H_StrError(errcode).c_str()
     #define H_Error() GetLastError()
-    #define H_Error2Str(errcode) strerror(errcode)
+    #define H_Error2Str(errcode) H_StrError(errcode).c_str()
     #define H_STAT _stat
     #define H_Sleep(uiTime)  Sleep(uiTime)
     #define  H_TIMEB  _timeb

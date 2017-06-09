@@ -21,3 +21,8 @@ local function echonumber(sock, sockType, netMsg)
 	tcp1.Response(sock, 12, "echonumber return.")
 end
 regProto(10, echonumber)
+
+local function on11Close(sock, sockType)
+	print(string.format("sock %d type %d closed", sock, sockType))
+end
+regClosedEv(11, on11Close)

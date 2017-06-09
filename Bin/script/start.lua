@@ -9,11 +9,12 @@ local SockType = SockType
 humble.addListener("tcp2", SockType.CMD, "127.0.0.1", 15000)
 --rpc监听 服务期间连接
 humble.addListener("tcp2", SockType.RPC, "0.0.0.0", 15001)
+--http
+humble.addListener("http", SockType.HTTP, "0.0.0.0", 80)
 
 --TODO 你自己的
 humble.addListener("tcp1", 11, "0.0.0.0", 16000)
-humble.addListener("http", SockType.HTTP, "0.0.0.0", 80)
-humble.addListener("tcp2", 10, "0.0.0.0", 16002)
+
 
 --任务注册
 humble.regTask("rpclink.lua", "rpclink", 1024)
