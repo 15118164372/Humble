@@ -34,7 +34,7 @@ humble.regTask("echo.lua", "echo", 1024 * 10)--注册echo服务      
 * 3、浏览器中输入访问地址，查看结果         
 
 ## 命令使用    
-* 1、进入命令模式 Humble -d 15100    
+* 1、进入命令模式 Humble -d 15000    
    
 * 2、执行lua代码   
 格式：       
