@@ -28,8 +28,8 @@ end
 regProto("/echo", echo)      
 
 * 2、建立监听，注册服务(start.lua):     
-humble.addListener("http", SockType.HTTP, "0.0.0.0", 80)--建立监听                     
-humble.regTask("echo.lua", "echo", 1024 * 10)      
+humble.httpServer("0.0.0.0", 80)--建立监听                     
+humble.regTask("echo.lua", "echo", 1024 * 10)--注册echo服务      
 
 * 3、浏览器中输入访问地址，查看结果         
 
