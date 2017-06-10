@@ -1,5 +1,6 @@
 --c++导出函数
 require("macros")
+require("proto")
 local string = string
 local debug = debug
 local getSVId = getSVId
@@ -30,6 +31,7 @@ local rpcCall = rpcCall
 local taskRPCCall = taskRPCCall
 local regTask = regTask
 local unregTask = unregTask
+local SockType = SockType
 
 local humble = {}
 
@@ -160,6 +162,7 @@ end
 function humble.regStrProto(strProto, strTask)
 	regStrProto(strProto, strTask)
 end
+
 --监听
 function humble.addListener(strParser, sockType, strHost, usPort)
 	addListener(strParser, sockType, strHost, usPort)
@@ -168,6 +171,24 @@ end
 function humble.linkTo(strParser, sockType, strHost, usPort)
 	linkTo(strParser, sockType, strHost, usPort)
 end
+
+--http服务端
+function humble.httpServer(strHost, usPort)
+    addListener("http", SockType.HTTP, strHost, usPort)
+end
+--cmd服务端
+function humble.cmdServer(usPort)
+    addListener("tcp2", SockType.CMD, "127.0.0.1", usPort)
+end
+--rpc服务端
+function humble.rpcServer(strHost, usPort)
+    addListener("tcp2", SockType.RPC, strHost, usPort)
+end
+--rpc客户端
+function humble.rpcClient(strHost, usPort)
+    linkTo("tcp2", SockType.RPC, strHost, usPort)
+end
+
 --连接关闭
 function humble.closeLink(sock)
 	closeLink(sock)
@@ -176,6 +197,7 @@ end
 function humble.removeLink(sock)
 	removeLink(sock)
 end
+
 --调用远端rpc
 function humble.rpcCall(sock, uiId, strRPCName, toTask, srcTask, buf, lens)
 	rpcCall(sock, uiId, strRPCName, toTask, srcTask, buf, lens)
@@ -184,6 +206,7 @@ end
 function humble.taskRPCCall(uiId, strRPCName, toTask, srcTask, buf, lens)
 	taskRPCCall(uiId, strRPCName, toTask, srcTask, buf, lens)
 end
+
 --注册服务
 function humble.regTask(strFile, strTask, iCapacity)
 	regTask(strFile, strTask, iCapacity)

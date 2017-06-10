@@ -6,11 +6,11 @@ local SockType = SockType
 
 --监听添加
 --CMD监听
-humble.addListener("tcp2", SockType.CMD, "127.0.0.1", 15000)
+humble.cmdServer(15000)
 --rpc监听 服务期间连接
-humble.addListener("tcp2", SockType.RPC, "0.0.0.0", 15001)
+humble.rpcServer("0.0.0.0", 15001)
 --http
-humble.addListener("http", SockType.HTTP, "0.0.0.0", 80)
+humble.httpServer("0.0.0.0", 80)
 
 --TODO 你自己的
 humble.addListener("tcp1", 11, "0.0.0.0", 16000)
