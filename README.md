@@ -1,6 +1,7 @@
 # Humble
 
-Humble是c++开发的多线程服务器框架,网络底层使用libevent，业务层默认绑定到lua（也可用C++）。       
+Humble是c++开发的多线程服务器框架,网络底层使用libevent。    
+业务层默认绑定到lua（也可用C++）。       
 服务器间通过RPC通信，任务间也是通过RPC通信。      
 
 ## 编译Humble     
