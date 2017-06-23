@@ -70,7 +70,7 @@ size_t CNetListener::onOrder(CEvBuffer *pEvBuffer)
         pListener->pParser = pParser;
 
         pListener->pEvListener = evconnlistener_new_bind(getBase(), acceptCB, pListener,
-            LEV_OPT_CLOSE_ON_FREE, -1, objAddr.getAddr(), (int)objAddr.getAddrSize());
+            LEV_OPT_CLOSE_ON_FREE | LEV_OPT_CLOSE_ON_EXEC, -1, objAddr.getAddr(), (int)objAddr.getAddrSize());
         if (NULL == pListener->pEvListener)
         {
             H_LOG(LOGLV_ERROR, "listen at host %s, port %d error.", pListen->acHost, pListen->usPort);
