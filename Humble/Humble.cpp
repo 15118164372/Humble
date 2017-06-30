@@ -79,6 +79,19 @@ void sigHandEntry(int iSigNum)
     CLckThis objLckThis(&g_objExitMu);
     pthread_cond_broadcast(&g_ExitCond);
 }
+void writePid(int pId)
+{
+    std::string strPidPath = g_strProPath + ".pid";
+    std::string strPid = H_ToString(pId);
+    FILE *pFile = fopen(strPidPath.c_str(), "w");
+    if (NULL == pFile)
+    {
+        H_Printf("%s", "write pid file error.");
+    }
+
+    fwrite(strPid.c_str(), 1, strPid.size(), pFile);
+    fclose(pFile);
+}
 #endif
 
 int setParam(void)
@@ -207,7 +220,9 @@ int main(int argc, char *argv[])
     signal(SIGKILL, sigHandEntry);//立即结束程序
     signal(SIGABRT, sigHandEntry);//中止一个程序
     signal(H_SIGNAL_EXIT, sigHandEntry);
-    H_Printf("exit service by command \"kill -%d %d\".", H_SIGNAL_EXIT, getpid());
+    pid_t pId = getpid();
+    H_Printf("exit service by command \"kill -%d %d\".", H_SIGNAL_EXIT, pId);
+    writePid((int)pId);
 #endif
     
     if (H_RTN_OK != setParam())
