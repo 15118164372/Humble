@@ -3,10 +3,6 @@
 
 H_BNAMSP
 
-#ifdef WIN32
-#pragma warning(disable:4267)
-#endif
-
 static const  char* encoding = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 static const int decoding[] = { 62,-1,-1,-1,63,52,53,54,55,56,57,58,59,60,61,
     -1,-1,-1,-2,-1,-1,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,
@@ -28,7 +24,7 @@ std::string H_B64Encode(const char *pszData, const size_t iLens)
         ret += encoding[(v) & 0x3f];
     }
 
-    int padding(iLens - i);
+    int padding((int)iLens - i);
     switch (padding)
     {
         case 1:
