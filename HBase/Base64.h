@@ -7,9 +7,9 @@
 H_BNAMSP
 
 /*base64±àÂë*/
-std::string H_B64Encode(const unsigned char *pszData, const size_t iLens);
+std::string H_B64Encode(const char *pszData, const size_t iLens);
 /*base64½âÂë*/
-std::string H_B64Decode(const unsigned char *pszData, const size_t iLens);
+std::string H_B64Decode(const char *pszData, const size_t iLens);
 
 H_ENAMSP
 
