@@ -3,136 +3,104 @@
 
 H_BNAMSP
 
-static const  char* encoding = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-static const int decoding[] = { 62,-1,-1,-1,63,52,53,54,55,56,57,58,59,60,61,
-    -1,-1,-1,-2,-1,-1,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,
-    -1,-1,-1,-1,-1,-1,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51 };
+static const char *g_pCodes = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+static const unsigned char g_pMap[256] =
+{
+    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+    255, 255, 255, 255, 255, 255, 255,  62, 255, 255, 255,  63,
+    52,  53,  54,  55,  56,  57,  58,  59,  60,  61, 255, 255,
+    255, 254, 255, 255, 255,   0,   1,   2,   3,   4,   5,   6,
+    7,   8,   9,  10,  11,  12,  13,  14,  15,  16,  17,  18,
+    19,  20,  21,  22,  23,  24,  25, 255, 255, 255, 255, 255,
+    255,  26,  27,  28,  29,  30,  31,  32,  33,  34,  35,  36,
+    37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,  48,
+    49,  50,  51, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+    255, 255, 255, 255
+};
 
 std::string H_B64Encode(const char *pszData, const size_t iLens)
 {
-    int i(0);
-    uint32_t v(0);
-    std::string ret;
-    unsigned char *pText = (unsigned char *)pszData;
+    size_t i;
+    std::string strOut;
+    unsigned char *pIn = (unsigned char *)pszData;
 
-    for (i = 0; i < (int)iLens - 2; i += 3) 
+    for (i = 0; i < 3 * (iLens / 3); i += 3)
     {
-        v = pText[i] << 16 | pText[i + 1] << 8 | pText[i + 2];
-        ret += encoding[v >> 18];
-        ret += encoding[(v >> 12) & 0x3f];
-        ret += encoding[(v >> 6) & 0x3f];
-        ret += encoding[(v) & 0x3f];
+        strOut += g_pCodes[pIn[0] >> 2];
+        strOut += g_pCodes[((pIn[0] & 3) << 4) + (pIn[1] >> 4)];
+        strOut += g_pCodes[((pIn[1] & 0xf) << 2) + (pIn[2] >> 6)];
+        strOut += g_pCodes[pIn[2] & 0x3f];
+        pIn += 3;
     }
 
-    int padding((int)iLens - i);
-    switch (padding)
+    if (i < iLens)
     {
-        case 1:
-            v = pText[i];
-            ret += encoding[v >> 2];
-            ret += encoding[(v & 3) << 4];
-            ret += '=';
-            ret += '=';
-            break;
+        unsigned char a = pIn[0];
+        unsigned char b = ((i + 1) < iLens) ? pIn[1] : 0;
+        unsigned char c = 0;
 
-        case 2:
-            v = pText[i] << 8 | pText[i + 1];
-            ret += encoding[v >> 10];
-            ret += encoding[(v >> 4) & 0x3f];
-            ret += encoding[(v & 0xf) << 2];
-            ret += '=';
-            break;
+        strOut += g_pCodes[a >> 2];
+        strOut += g_pCodes[((a & 3) << 4) + (b >> 4)];
+        strOut += ((i + 1) < iLens) ? g_pCodes[((b & 0xf) << 2) + (c >> 6)] : '=';
+        strOut += '=';
     }
 
-    return ret;
-}
-
-static inline int b64index(uint8_t c)
-{
-    int decoding_size = sizeof(decoding) / sizeof(decoding[0]);
-    if (c < 43)
-    {
-        return -1;
-    }
-
-    c -= 43;
-    if (c >= decoding_size)
-    {
-        return -1;
-    }
-
-    return decoding[c];
+    return strOut;
 }
 
 std::string H_B64Decode(const char *pszData, const size_t iLens)
 {
-    int c[4];
-    int j(0), padding(0);
-    std::string ret;
-    uint32_t v(0);
-    unsigned char *pText = (unsigned char *)pszData;
+    size_t t, x, y, z;
+    unsigned char c;
+    size_t g = 3;
+    std::string strOut;
+    unsigned char *pIn = (unsigned char *)pszData;
 
-    for (int i = 0; i < (int)iLens;) 
+    for (x = y = z = t = 0; x < iLens; x++)
     {
-        padding = 0;
-        for (j = 0; j < 4;) 
+        c = g_pMap[pIn[x]];
+        if (255 == c)
         {
-            if (i >= (int)iLens)
-            {
-                return "";
-            }
-
-            c[j] = b64index(pText[i]);
-            if (c[j] == -1) 
-            {
-                ++i;
-                continue;
-            }
-
-            if (c[j] == -2) 
-            {
-                ++padding;
-            }
-            ++i;
-            ++j;
+            continue;
         }
-        
-        switch (padding)
+            
+        if (254 == c)
         {
-            case 0:
-                v = (unsigned)c[0] << 18 | c[1] << 12 | c[2] << 6 | c[3];
-                ret += v >> 16;
-                ret += (v >> 8) & 0xff;
-                ret += v & 0xff;
-                break;
+            c = 0;
+            g--; 
+        }
 
-            case 1:
-                if (c[3] != -2 || (c[2] & 3) != 0)
-                {
-                    return "";
-                }
+        t = (t << 6) | c;
 
-                v = (unsigned)c[0] << 10 | c[1] << 4 | c[2] >> 2;
-                ret += v >> 8;
-                ret += v & 0xff;
-                break;
+        if (4 == ++y)
+        {
+            strOut += (t >> 16) & 255;
+            if (g > 1)
+            {
+                strOut += (t >> 8) & 255; 
+            }
+            if (g > 2) 
+            { 
+                strOut += t & 255;
+            }
 
-            case 2:
-                if (c[3] != -2 || c[2] != -2 || (c[1] & 0xf) != 0) 
-                {
-                    return "";
-                }
-
-                v = (unsigned)c[0] << 2 | c[1] >> 4;
-                ret += v;
-                break;
-
-            default:
-                return "";
+            y = t = 0;
         }
     }
 
-    return ret;
+    return strOut;
 }
 
 H_ENAMSP

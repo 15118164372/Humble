@@ -30,7 +30,7 @@ public:
         return &m_stPrivateKey;
     };
 
-    /*保存R_RANDOM_STRUCT 公钥加密需要使用*/
+    /*保存R_RANDOM_STRUCT 公钥加密需要使用  base64编码*/
     int saveRandom(const char *pszFile);
     /*保存公钥*/
     int savePubKey(const char *pszFile);

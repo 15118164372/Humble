@@ -1,6 +1,7 @@
 
 #include "RSAKey.h"
 #include "Funcs.h"
+#include "Base64.h"
 
 H_BNAMSP
 
@@ -44,18 +45,21 @@ int CRSAKey::fileWrite(const char *pszFile, const void *pVal, const size_t iLens
 }
 
 int CRSAKey::saveRandom(const char *pszFile)
-{
-    return fileWrite(pszFile, &m_stRandom, sizeof(m_stRandom));
+{   
+    std::string strVal = H_B64Encode((const char*)&m_stRandom, sizeof(m_stRandom));
+    return fileWrite(pszFile, strVal.c_str(), strVal.size());
 }
 
 int CRSAKey::savePubKey(const char *pszFile)
 {
-    return fileWrite(pszFile, &m_stPublicKey, sizeof(m_stPublicKey));
+    std::string strVal = H_B64Encode((const char*)&m_stPublicKey, sizeof(m_stPublicKey));
+    return fileWrite(pszFile, strVal.c_str(), strVal.size());
 }
 
 int CRSAKey::savePriKey(const char *pszFile)
 {
-    return fileWrite(pszFile, &m_stPrivateKey, sizeof(m_stPrivateKey));
+    std::string strVal = H_B64Encode((const char*)&m_stPrivateKey, sizeof(m_stPrivateKey));
+    return fileWrite(pszFile, strVal.c_str(), strVal.size());
 }
 
 char *CRSAKey::fileRead(const char *pszFile)
@@ -91,7 +95,13 @@ int CRSAKey::loadPubKey(const char *pszFile)
         return H_RTN_FAILE;
     }
 
-    memcpy(&m_stPublicKey, pBuf, sizeof(m_stPublicKey));
+    std::string strVal = H_B64Decode(pBuf, strlen(pBuf));
+    if (strVal.empty())
+    {
+        H_SafeDelete(pBuf);
+        return H_RTN_FAILE;
+    }
+    memcpy(&m_stPublicKey, strVal.c_str(), sizeof(m_stPublicKey));
     H_SafeDelete(pBuf);
 
     return H_RTN_OK;
@@ -105,7 +115,13 @@ int CRSAKey::loadPriKey(const char *pszFile)
         return H_RTN_FAILE;
     }
 
-    memcpy(&m_stPrivateKey, pBuf, sizeof(m_stPrivateKey));
+    std::string strVal = H_B64Decode(pBuf, strlen(pBuf));
+    if (strVal.empty())
+    {
+        H_SafeDelete(pBuf);
+        return H_RTN_FAILE;
+    }
+    memcpy(&m_stPrivateKey, strVal.c_str(), sizeof(m_stPrivateKey));
     H_SafeDelete(pBuf);
 
     return H_RTN_OK;
@@ -119,7 +135,13 @@ int CRSAKey::loadRandom(const char *pszFile)
         return H_RTN_FAILE;
     }
 
-    memcpy(&m_stRandom, pBuf, sizeof(m_stRandom));
+    std::string strVal = H_B64Decode(pBuf, strlen(pBuf));
+    if (strVal.empty())
+    {
+        H_SafeDelete(pBuf);
+        return H_RTN_FAILE;
+    }
+    memcpy(&m_stRandom, strVal.c_str(), sizeof(m_stRandom));
     H_SafeDelete(pBuf);
 
     return H_RTN_OK;
