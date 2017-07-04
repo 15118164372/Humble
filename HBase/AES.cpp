@@ -5,7 +5,6 @@
 H_BNAMSP
 
 /*
-ECB模式  zeropadding填充方式
 最后一块的剩余字节中全部填上多余的字节数，比如最后一块大小为16字节，5字节有效，
 那在最后三字节填充11(16-5),表示有11个字节无效，这样解密后减去这部分就好了。
 如果原始数据长度刚好是16的整数倍，则多加密一个block,内容为16,
@@ -63,25 +62,27 @@ std::string CAES::Encode(const char *pszPlaint, const size_t iLens)
         bFill = true;
     }
 
-    for (size_t i = 0; i < iLens;)
+    for (size_t i = 0; i < iLens; i += AES_BlockSize)
     {
-        iCopyLen = ((iLens - i) >= AES_BlockSize) ? (AES_BlockSize) : (iLens - i); 
-        memcpy(uacPlain, pszPlaint + i, iCopyLen);
+        iCopyLen = ((iLens - i) >= AES_BlockSize) ? (AES_BlockSize) : (iLens - i);         
         if (iCopyLen < AES_BlockSize)//不足一块的以差的字节数填充
         {
+            memcpy(uacPlain, pszPlaint + i, iCopyLen);
             memset(uacPlain + iCopyLen, (int)(AES_BlockSize - iCopyLen), AES_BlockSize - iCopyLen);
+            rijndaelEncrypt(m_pEncodeRK, m_iEncodeRounds, uacPlain, uacCipher);
         }
-
-        rijndaelEncrypt(m_pEncodeRK, m_iEncodeRounds, uacPlain, uacCipher);
+        else
+        {
+            rijndaelEncrypt(m_pEncodeRK, m_iEncodeRounds, (const unsigned char*)(pszPlaint + i), uacCipher);
+        }
+        
         strRtn.append((const char*)uacCipher, AES_BlockSize);
 
-        i += AES_BlockSize;
     }
 
     if (bFill)//长度刚好为一块的整数倍，再加一块填充
     {
         memset(uacPlain, AES_BlockSize, AES_BlockSize);
-
         rijndaelEncrypt(m_pEncodeRK, m_iEncodeRounds, uacPlain, uacCipher);
         strRtn.append((const char*)uacCipher, AES_BlockSize);
     }
@@ -94,21 +95,16 @@ std::string CAES::Decode(const char *pszCipher, const size_t iLens)
     H_ASSERT(NULL != m_pDecodeRK, "pointer is null.");
 
     unsigned char m_uacPlain[AES_BlockSize] = {0};
-    unsigned char m_uacCipher[AES_BlockSize] = {0};
     std::string strRtn;
     if (0 != (iLens % AES_BlockSize))
     {
         return "";
     }
 
-    for (size_t i = 0; i < iLens; )
+    for (size_t i = 0; i < iLens; i += AES_BlockSize)
     {
-        memcpy(m_uacCipher, pszCipher + i, AES_BlockSize);
-
-        rijndaelDecrypt(m_pDecodeRK, m_iDecodeRounds, m_uacCipher, m_uacPlain);
+        rijndaelDecrypt(m_pDecodeRK, m_iDecodeRounds, (const unsigned char*)(pszCipher + i), m_uacPlain);
         strRtn.append((const char*)m_uacPlain, AES_BlockSize);
-
-        i += AES_BlockSize;
     }
 
     strRtn.erase(strRtn.size() - (size_t)m_uacPlain[AES_BlockSize - 1], strRtn.size());

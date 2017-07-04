@@ -277,6 +277,9 @@
     <ClInclude Include="RPCLink.h">
       <Filter>Service</Filter>
     </ClInclude>
+    <ClInclude Include="HDES.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zlib\adler32.c">
@@ -498,6 +501,9 @@
     </ClCompile>
     <ClCompile Include="RPCLink.cpp">
       <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="HDES.cpp">
+      <Filter>Encrypt</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

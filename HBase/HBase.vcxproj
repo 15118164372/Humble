@@ -32,6 +32,7 @@
     <ClInclude Include="EvBuffer.h" />
     <ClInclude Include="Funcs.h" />
     <ClInclude Include="HBase.h" />
+    <ClInclude Include="HDES.h" />
     <ClInclude Include="HEnum.h" />
     <ClInclude Include="HRSA.h" />
     <ClInclude Include="HStruct.h" />
@@ -112,6 +113,7 @@
     <ClCompile Include="CRC.cpp" />
     <ClCompile Include="Funcs.cpp" />
     <ClCompile Include="HBase.cpp" />
+    <ClCompile Include="HDES.cpp" />
     <ClCompile Include="HRSA.cpp" />
     <ClCompile Include="Httpd.cpp" />
     <ClCompile Include="Ini.cpp" />
