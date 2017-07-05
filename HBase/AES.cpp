@@ -53,8 +53,8 @@ std::string CAES::Encode(const char *pszPlaint, const size_t iLens)
 
     size_t iCopyLen(H_INIT_NUMBER);
     bool bFill(false);
-    unsigned char uacPlain[AES_BlockSize] = {0};
-    unsigned char uacCipher[AES_BlockSize] = {0};
+    unsigned char uacPlain[AES_BlockSize];
+    unsigned char uacCipher[AES_BlockSize];
     std::string strRtn;
 
     if (0 == iLens % AES_BlockSize)
@@ -94,7 +94,7 @@ std::string CAES::Decode(const char *pszCipher, const size_t iLens)
 {
     H_ASSERT(NULL != m_pDecodeRK, "pointer is null.");
 
-    unsigned char m_uacPlain[AES_BlockSize] = {0};
+    unsigned char m_uacPlain[AES_BlockSize];
     std::string strRtn;
     if (0 != (iLens % AES_BlockSize))
     {
