@@ -182,6 +182,14 @@ luabridge::LuaRef getLinkByType(H_LSTATE *pState, const int iSVType)
     return luaTable;
 }
 
+CMail *newMail(void)
+{
+    CMail *pMail = new(std::nothrow) CMail();
+    H_ASSERT(NULL != pMail, "malloc memory error.");
+
+    return pMail;
+}
+
 
 void H_RegFuncs(struct lua_State *pLState)
 {
@@ -221,13 +229,34 @@ void H_RegFuncs(struct lua_State *pLState)
         .addFunction("rpcLinkRegister", rpcLinkRegister)
         .addFunction("rpcLinkUnregister", rpcLinkUnregister)
         .addFunction("getLinkById", getLinkById)
-        .addFunction("getLinkByType", getLinkByType);
+        .addFunction("getLinkByType", getLinkByType)
+        .addFunction("newMail", newMail);
 }
 
 void H_RegLState(struct lua_State *pLState)
 {
     luabridge::getGlobalNamespace(pLState)
         .beginClass<H_LSTATE>("H_LSTATE")
+        .endClass();
+}
+
+void H_RegMail(struct lua_State *pLState)
+{
+    luabridge::getGlobalNamespace(pLState)
+        .beginClass<CMail>("CMail")
+            .addFunction("setAuthLogin", &CMail::setAuthLogin)
+            .addFunction("setAuthPlain", &CMail::setAuthPlain)
+            .addFunction("setSMTPSV", &CMail::setSMTPSV)
+            .addFunction("setFromAddr", &CMail::setFromAddr)
+            .addFunction("setUserName", &CMail::setUserName)
+            .addFunction("setPSW", &CMail::setPSW)
+            .addFunction("setSubject", &CMail::setSubject)
+            .addFunction("setMsg", &CMail::setMsg)
+            .addFunction("setHtml", &CMail::setHtml)
+            .addFunction("setHtmlFile", &CMail::setHtmlFile)
+            .addFunction("addToAddr", &CMail::addToAddr)
+            .addFunction("addAttach", &CMail::addAttach)
+            .addFunction("Send", &CMail::Send)
         .endClass();
 }
 
@@ -419,6 +448,7 @@ void H_RegSha1(struct lua_State *pLState)
 void H_RegAll(struct lua_State *pLState)
 {
     H_RegLState(pLState);
+    H_RegMail(pLState);
     H_RegCurLink(pLState);
     H_RegFuncs(pLState);
     //H_RegBinary(pLState);

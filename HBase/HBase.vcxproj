@@ -29,22 +29,30 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="CoreDump.h" />
     <ClInclude Include="CRC.h" />
+    <ClInclude Include="DataBase.h" />
     <ClInclude Include="EvBuffer.h" />
     <ClInclude Include="Funcs.h" />
     <ClInclude Include="HBase.h" />
     <ClInclude Include="HDES.h" />
     <ClInclude Include="HEnum.h" />
+    <ClInclude Include="HMailer.h" />
+    <ClInclude Include="HMySQL.h" />
     <ClInclude Include="HRSA.h" />
     <ClInclude Include="HStruct.h" />
     <ClInclude Include="Httpd.h" />
     <ClInclude Include="Include.h" />
     <ClInclude Include="Ini.h" />
+    <ClInclude Include="jwsmtp\jwsmtp.h" />
+    <ClInclude Include="jwsmtp\jwsmtp_base64.h" />
+    <ClInclude Include="jwsmtp\jwsmtp_compat.h" />
+    <ClInclude Include="jwsmtp\jwsmtp_mailer.h" />
     <ClInclude Include="Library.h" />
     <ClInclude Include="Linker.h" />
     <ClInclude Include="LockThis.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="md5.h" />
+    <ClInclude Include="MMap.h" />
     <ClInclude Include="MSGDispatch.h" />
     <ClInclude Include="NETAddr.h" />
     <ClInclude Include="NetBase.h" />
@@ -114,9 +122,14 @@
     <ClCompile Include="Funcs.cpp" />
     <ClCompile Include="HBase.cpp" />
     <ClCompile Include="HDES.cpp" />
+    <ClCompile Include="HMailer.cpp" />
+    <ClCompile Include="HMySQL.cpp" />
     <ClCompile Include="HRSA.cpp" />
     <ClCompile Include="Httpd.cpp" />
     <ClCompile Include="Ini.cpp" />
+    <ClCompile Include="jwsmtp\jwsmtp_base64.cpp" />
+    <ClCompile Include="jwsmtp\jwsmtp_compat.cpp" />
+    <ClCompile Include="jwsmtp\jwsmtp_mailer.cpp" />
     <ClCompile Include="Library.cpp" />
     <ClCompile Include="Linker.cpp" />
     <ClCompile Include="Log.cpp" />
@@ -255,7 +268,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/jwsmtp;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -268,7 +281,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/jwsmtp;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -283,7 +296,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/jwsmtp;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -300,7 +313,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/event2;../HBase/jwsmtp;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

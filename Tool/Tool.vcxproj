@@ -95,7 +95,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;../HLBind/sproto;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/jwsmtp;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;../HLBind/sproto;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -120,7 +120,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_WINDOWS;WIN32;_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;../HLBind/sproto;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/jwsmtp;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;../HLBind/sproto;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,7 +147,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;../HLBind/sproto;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/jwsmtp;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;../HLBind/sproto;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -176,7 +176,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_WINDOWS;WIN32;NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;../HLBind/sproto;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/jwsmtp;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;../HLBind/sproto;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

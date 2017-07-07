@@ -30,11 +30,18 @@ void CTableFile::setSplitFlag(const char *pszSplitFlag)
 
 bool CTableFile::checkNote(const std::string &strMsg) const
 {
-    if ((std::string("//") == strMsg.substr(0, strlen("//")))
-        || (std::string("#") == strMsg.substr(0, strlen("#"))))
+    if ('#' == strMsg[0])
     {
         return true;
     }
+
+    if (strMsg.size() >= 2)
+    {
+        if ('/' == strMsg[0] && '/' == strMsg[1])
+        {
+            return true;
+        }
+    }    
 
     return false;
 }

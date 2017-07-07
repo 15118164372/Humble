@@ -34,6 +34,12 @@
     <Filter Include="3rd\redisrand">
       <UniqueIdentifier>{fca34056-1fe9-4590-8e12-4df5bb28ce93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Common\DB">
+      <UniqueIdentifier>{5af6a64a-68b4-4ce8-8e89-abf0f5519d60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\jwsmtp">
+      <UniqueIdentifier>{8d06a497-505b-413b-9fa4-adde362dc097}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -280,6 +286,30 @@
     <ClInclude Include="HDES.h">
       <Filter>Encrypt</Filter>
     </ClInclude>
+    <ClInclude Include="DataBase.h">
+      <Filter>Common\DB</Filter>
+    </ClInclude>
+    <ClInclude Include="HMySQL.h">
+      <Filter>Common\DB</Filter>
+    </ClInclude>
+    <ClInclude Include="MMap.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="HMailer.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="jwsmtp\jwsmtp.h">
+      <Filter>3rd\jwsmtp</Filter>
+    </ClInclude>
+    <ClInclude Include="jwsmtp\jwsmtp_base64.h">
+      <Filter>3rd\jwsmtp</Filter>
+    </ClInclude>
+    <ClInclude Include="jwsmtp\jwsmtp_compat.h">
+      <Filter>3rd\jwsmtp</Filter>
+    </ClInclude>
+    <ClInclude Include="jwsmtp\jwsmtp_mailer.h">
+      <Filter>3rd\jwsmtp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zlib\adler32.c">
@@ -504,6 +534,21 @@
     </ClCompile>
     <ClCompile Include="HDES.cpp">
       <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="HMySQL.cpp">
+      <Filter>Common\DB</Filter>
+    </ClCompile>
+    <ClCompile Include="HMailer.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="jwsmtp\jwsmtp_base64.cpp">
+      <Filter>3rd\jwsmtp</Filter>
+    </ClCompile>
+    <ClCompile Include="jwsmtp\jwsmtp_compat.cpp">
+      <Filter>3rd\jwsmtp</Filter>
+    </ClCompile>
+    <ClCompile Include="jwsmtp\jwsmtp_mailer.cpp">
+      <Filter>3rd\jwsmtp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@ local getLinkByType = getLinkByType
 local getLogPriority = getLogPriority
 local setLogPriority = setLogPriority
 local H_LOG = H_LOG
+local newMail = newMail
 local CRC16 = CRC16
 local CRC32 = CRC32
 local urlEncode = urlEncode
@@ -91,6 +92,11 @@ function humble.Errorf(fmt, ...)
     local strMsg = string.format(fmt, table.unpack({...}))
 	local stack = debug.getinfo(2)
 	H_LOG(LogLV.Err, getFileName(stack.short_src), stack.currentline, strMsg)
+end
+
+--邮件 只能发送一次,调用Send后会销毁该对象
+function humble.newMail()
+	return newMail()
 end
 
 --服务器id

@@ -27,6 +27,8 @@
 #include "Clock.h"
 #include "NETAddr.h"
 #include "CoreDump.h"
+#include "HMySQL.h"
+#include "MMap.h"
 
 #include "Httpd.h"
 #include "Tcp1.h"
@@ -43,6 +45,7 @@
 #include "TaskMgr.h"
 #include "MSGDispatch.h"
 #include "RPCLink.h"
+#include "HMailer.h"
 
 extern std::string g_strProPath;
 extern std::string g_strScriptPath;

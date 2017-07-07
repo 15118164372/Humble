@@ -160,6 +160,8 @@ void runSV(void)
 {
     CThread::Creat(CLog::getSingletonPtr());
     CLog::getSingletonPtr()->waitStart();
+    CThread::Creat(CMailer::getSingletonPtr());
+    CMailer::getSingletonPtr()->waitStart();
     CThread::Creat(CLinker::getSingletonPtr());
     CLinker::getSingletonPtr()->waitStart();
     CThread::Creat(CNetListener::getSingletonPtr());
@@ -180,7 +182,8 @@ void runSV(void)
     CTaskMgr::getSingletonPtr()->stopWorker();
     CSender::getSingletonPtr()->stopSender();
     CNetWorkerMgr::getSingletonPtr()->stopWorker();
-    CLinker::getSingletonPtr()->Join();    
+    CLinker::getSingletonPtr()->Join(); 
+    CMailer::getSingletonPtr()->Join();
     CLog::getSingletonPtr()->Join();
 }
 

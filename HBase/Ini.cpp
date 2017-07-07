@@ -6,7 +6,6 @@ H_BNAMSP
 
 CIniFile::CIniFile(void)
 {
-
 }
 
 CIniFile::CIniFile(const char *pszFile)
@@ -29,12 +28,19 @@ void CIniFile::setFile(const char *pszFile)
 }
 
 bool CIniFile::isNote(const std::string &str) const
-{    
-    if ((std::string("//") == str.substr(0, strlen("//")))
-        || (std::string("#") == str.substr(0, strlen("#"))))
+{
+    if ('#' == str[0])
     {
         return true;
     }
+
+    if (str.size() >= 2)
+    {
+        if ('/' == str[0] && '/' == str[1])
+        {
+            return true;
+        }
+    }    
 
     return false;
 }
@@ -47,9 +53,8 @@ void CIniFile::removeNote(std::string &str) const
 
 bool CIniFile::isNode(const std::string &str) const
 {
-    if ((std::string("[") == str.substr(0, strlen("[")))
-        && (std::string("]") == str.substr(str.size() - 1, strlen("]")))
-        && str.size() > 2)
+    if (('[' == str[0])
+        && (']' == str[str.size() - 1]))
     {
         return true;
     }
