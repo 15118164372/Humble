@@ -230,7 +230,7 @@ void CNetWorker::dispHttp(H_TCPBUF &stTcpBuf, H_Binary &stBinary)
         return;
     }
     std::string strReqHeader(stBinary.pBufer, pPos - stBinary.pBufer);
-    std::string strUrl(H_GetLastOfFlag(strReqHeader, " "));
+    std::string strUrl(H_GetFrontOfFlag(H_GetLastOfFlag(strReqHeader, " "), "?"));
 
     CChan *pChan(CMSGDispatch::getSingletonPtr()->getStrProto(strUrl.c_str()));
     if (NULL == pChan)

@@ -81,22 +81,22 @@ function AOI_CRSLST:checkParam(x, y)
     return true
 end
 
-function AOI_CRSLST:getRange(obj)
-    local xStart = obj:getX() - obj:getXDist()
+function AOI_CRSLST:getRange(obj, xDist, yDist)
+    local xStart = obj:getX() - xDist
 	if xStart < 0 then
 		xStart = 0
 	end	
-	local xEnd = obj:getX() + obj:getXDist()	
+	local xEnd = obj:getX() + xDist
 	if xEnd >= self.MaxX then	
 		xEnd = self.MaxX - 1
 	end	
 	
 
-	local yStart = obj:getY() - obj:getYDist()
+	local yStart = obj:getY() - yDist
 	if yStart < 0 then
 		yStart = 0
 	end
-	local yEnd = obj:getY() + obj:getYDist()
+	local yEnd = obj:getY() + yDist
 	if yEnd >= self.MaxY then
 		yEnd = self.MaxY - 1
 	end	
@@ -104,10 +104,15 @@ function AOI_CRSLST:getRange(obj)
 	return xStart, xEnd, yStart, yEnd
 end
 
-function AOI_CRSLST:getArea(obj)
+function AOI_CRSLST:getArea(obj, xDist, yDist)
+	if not xDist or not yDist then
+		xDist = obj:getXDist()
+		yDist = obj:getYDist()
+	end
+	
     local inArea = {}
     table.insert(inArea, obj:getId())
-    local xStart, xEnd, yStart, yEnd = self:getRange(obj)
+    local xStart, xEnd, yStart, yEnd = self:getRange(obj, xDist, yDist)
     for x = xStart + 1, xEnd + 1 do
         for keyX, _ in pairs(self.XList[x]) do
             if keyX ~= obj:getId() then
@@ -266,13 +271,13 @@ function AOI_CRSLST:Move(id, x, y)
     return inArea, outArea, newArea
 end
 
-function AOI_CRSLST:getAOIArea(id)
+function AOI_CRSLST:getAOIArea(id, xDist, yDist)
     local obj = self:getEntity(id)
     if not obj then
         return
     end
     
-    return self:getArea(obj)
+    return self:getArea(obj, xDist, yDist)
 end
 
 return AOI_CRSLST

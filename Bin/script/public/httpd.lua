@@ -110,26 +110,41 @@ end
 
 function httpd.parsePack(netMsg)	
     local tInfo = {}
-    local strMethod, strUrl, tHead, pos = parseHead(netMsg)        
+    local strMethod, strUrl, tHead, pos = parseHead(netMsg)
+	local url
+	local urlParam
+	if "get" == strMethod then
+		local st,sp = string.find(strUrl, "?", 0, true)
+		if st and sp then
+			url = string.sub(strUrl, 0, st - 1)
+			urlParam = string.sub(strUrl, sp + 1, #strUrl)
+		else
+			url = strUrl
+		end
+	else
+		url = strUrl
+	end
+	
     if tHead[ContentLength] then
         local iLens = tonumber(tHead[ContentLength])
         tHead[ContentLength] = iLens            
         tInfo.method = strMethod
-        tInfo.url = strUrl
+        tInfo.url = url
         tInfo.head = tHead
         tInfo.info = string.sub(netMsg, pos, #netMsg)
     elseif (tHead[TransferEncoding] and "chunked" == tHead[TransferEncoding]) then
         local strChunked = parseChunked(netMsg, pos)            
         tInfo.method = strMethod
-        tInfo.url = strUrl
+        tInfo.url = url
         tInfo.head = tHead
         tInfo.info = strChunked
     else
         tInfo.method = strMethod
-        tInfo.url = strUrl
-        tInfo.head = tHead 
-        tInfo.info = nil            
+        tInfo.url = url
+        tInfo.head = tHead
     end
+	
+	tInfo.urlparam = urlParam
     
     return tInfo 
 end

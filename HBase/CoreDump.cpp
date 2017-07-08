@@ -29,12 +29,8 @@ CCoreDump::CCoreDump(void)
 {
     s_pMiniDumper = this;
     s_pCriticalSection = new(std::nothrow)CRITICAL_SECTION;
-    H_ASSERT(NULL != s_pCriticalSection, "malloc memory error.");
-    if(NULL != s_pCriticalSection)
-    {
-        InitializeCriticalSection(s_pCriticalSection);
-    }
-
+    H_ASSERT(NULL != s_pCriticalSection, "malloc memory error.");    
+    InitializeCriticalSection(s_pCriticalSection);
     ::SetUnhandledExceptionFilter(unhandledExceptionHandler);
 
     return;
