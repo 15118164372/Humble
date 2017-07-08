@@ -17,9 +17,6 @@ CRSAKey::~CRSAKey(void)
 
 void CRSAKey::creatKey(const unsigned short usKeyLens)
 {
-    H_ASSERT((usKeyLens >= RSAKeyMinLen) && (usKeyLens <= RSAKeyMaxLen), 
-        "key lens error, key lens must in[512 - 1024].");
-
     R_RSA_PROTO_KEY stProtoKey;
     stProtoKey.bits = usKeyLens;
     stProtoKey.useFermat4 = 1;

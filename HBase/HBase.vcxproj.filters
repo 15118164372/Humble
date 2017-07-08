@@ -40,6 +40,9 @@
     <Filter Include="3rd\jwsmtp">
       <UniqueIdentifier>{8d06a497-505b-413b-9fa4-adde362dc097}</UniqueIdentifier>
     </Filter>
+    <Filter Include="3rd\d3des">
+      <UniqueIdentifier>{fe727b38-c716-43ab-9060-4de2d2909d09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -310,6 +313,9 @@
     <ClInclude Include="jwsmtp\jwsmtp_mailer.h">
       <Filter>3rd\jwsmtp</Filter>
     </ClInclude>
+    <ClInclude Include="d3des\d3des.h">
+      <Filter>3rd\d3des</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zlib\adler32.c">
@@ -549,6 +555,9 @@
     </ClCompile>
     <ClCompile Include="jwsmtp\jwsmtp_mailer.cpp">
       <Filter>3rd\jwsmtp</Filter>
+    </ClCompile>
+    <ClCompile Include="d3des\d3des.c">
+      <Filter>3rd\d3des</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

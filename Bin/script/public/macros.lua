@@ -23,6 +23,29 @@ ErrCode = {
 }
 ErrCode = table.enum(ErrCode, -1)
 
+AES = {
+    Key128 = 128,
+    Key192 = 192,
+    Key256 = 256,
+}
+
+RSA = {
+    Key512 = 512,
+    Key1024 = 1024,
+}
+
+DES = {
+    "Des",
+    "D2Des",
+    "D3Des",
+}
+DES = table.enum(DES, 0)
+DESMode = {
+    "Encode",
+    "Decode",
+}
+DESMode = table.enum(DESMode, 0)
+
 --事件 与c++中的对应
 Event = {
 	"Accept",

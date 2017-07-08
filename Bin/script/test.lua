@@ -12,7 +12,7 @@ function destroyTask()
 end
 
 local function TestEncrypt()
-	local msg = "≤‚ ‘Encrypt*&*^^"
+	local msg = "≤‚ ‘Encrypt*&*^^1"
 	local enMsg = humble.zlibEncode(msg)
 	local deMsg = humble.zlibDecode(enMsg)
 	assert(msg == deMsg)
@@ -24,22 +24,37 @@ local function TestEncrypt()
 	enMsg = humble.md5Str("admin")
 	assert("21232f297a57a5a743894a0e4a801fc3" == enMsg)
 	
-	local aes = CAES()
-	aes:setKey("lqf1101*", 128)
-	enMsg = aes:Encode(msg, #msg)
-	deMsg = aes:Decode(enMsg, #enMsg)
-	assert(msg == deMsg)
+    for _, val in pairs(AES) do
+        local aes = CAES()
+        aes:setKey("lqf1101*", val)
+        enMsg = aes:Encode(msg, #msg)
+        deMsg = aes:Decode(enMsg, #enMsg)
+        assert(msg == deMsg)
+    end
 	
-	local rsaKey = CRSAKey()
-	rsaKey:creatKey(512)
-	local rsa = CRSA()
-	rsa:setKey(rsaKey)
-	enMsg = rsa:pubEncrypt(msg, #msg)
-	deMsg = rsa:priDecrypt(enMsg, #enMsg)
-	assert(msg == deMsg)
-	enMsg = rsa:priEncrypt(msg, #msg)
-	deMsg = rsa:pubDecrypt(enMsg, #enMsg)
-	assert(msg == deMsg)
+    for _, val in pairs(RSA) do
+        local rsaKey = CRSAKey()
+        rsaKey:creatKey(val)
+        local rsa = CRSA()
+        rsa:setKey(rsaKey)
+        enMsg = rsa:pubEncrypt(msg, #msg)
+        deMsg = rsa:priDecrypt(enMsg, #enMsg)
+        assert(msg == deMsg)
+        enMsg = rsa:priEncrypt(msg, #msg)
+        deMsg = rsa:pubDecrypt(enMsg, #enMsg)
+        assert(msg == deMsg)
+    end
+    
+    for _, val in pairs(DES) do
+        local desEncode = CDESEncrypt()
+        desEncode:setKey("lqf1101*", val, DESMode.Encode)
+        enMsg = desEncode:Encrypt(msg, #msg) 
+        
+        local desDecode = CDESEncrypt()
+        desDecode:setKey("lqf1101*", val, DESMode.Decode)
+        deMsg = desDecode:Encrypt(enMsg, #enMsg)
+        assert(msg == deMsg)
+    end
 end
 
 local function TestMail()

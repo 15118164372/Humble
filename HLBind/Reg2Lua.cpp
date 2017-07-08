@@ -407,6 +407,16 @@ void H_RegAES(struct lua_State *pLState)
         .endClass();
 }
 
+void H_RegDESEncrypt(struct lua_State *pLState)
+{
+    luabridge::getGlobalNamespace(pLState)
+        .beginClass<CDESEncrypt>("CDESEncrypt")
+            .addConstructor<void(*) (void)>()
+            .addFunction("setKey", &CDESEncrypt::setKey)
+            .addFunction("Encrypt", &CDESEncrypt::Encrypt)
+        .endClass();
+}
+
 void H_RegRSA(struct lua_State *pLState)
 {
     luabridge::getGlobalNamespace(pLState)
@@ -458,6 +468,7 @@ void H_RegAll(struct lua_State *pLState)
     H_RegTableFile(pLState);
     H_RegUUID(pLState);
     H_RegAES(pLState);
+    H_RegDESEncrypt(pLState);
     H_RegRSA(pLState);
     H_RegSha1(pLState);
     H_SetPackPath(pLState);

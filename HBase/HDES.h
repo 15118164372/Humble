@@ -3,8 +3,9 @@
 #define H_HDES_H_
 
 #include "Macros.h"
-#include "RSAEuro/rsaeuro.h"
-#include "RSAEuro/des.h"
+extern "C" {
+#include "d3des/d3des.h"
+}
 
 H_BNAMSP
 
@@ -12,35 +13,42 @@ enum
 {
     DESTYPE_DES = 0,
     DESTYPE_D2DES,
-    DESTYPE_D3DES,
+    DESTYPE_D3DES
 };
 
-class CDESEncode
+enum
 {
-public:
-    CDESEncode(const unsigned short usType);
-    ~CDESEncode(void);
-
-private:
-    CDESEncode(void);
-    H_DISALLOWCOPY(CDESEncode);
-
-private:
-    unsigned short m_usType;
+    DES_ENCODE = 0,
+    DES_DECODE
 };
 
-class CDESDecode
+class CDESEncrypt
 {
 public:
-    CDESDecode(const unsigned short usType);
-    ~CDESDecode(void);
+    CDESEncrypt(void);
+    ~CDESEncrypt(void);
+
+    //usType DESTYPE_DES...  usMode DES_ENCODE...
+    void setKey(const char *pszKey, const unsigned short usType, const unsigned short usMode);
+    std::string Encrypt(const char *pszData, const size_t iLens);
 
 private:
-    CDESDecode(void);
-    H_DISALLOWCOPY(CDESDecode);
+    H_DISALLOWCOPY(CDESEncrypt);
+
+    std::string Encode(const char *pszData, const size_t &iLens);
+    std::string DEncode(const char *pszData, const size_t &iLens);
+    std::string D2Encode(const char *pszData, const size_t &iLens);
+    std::string D3Encode(const char *pszData, const size_t &iLens);
+
+    std::string Decode(const char *pszData, const size_t &iLens);
+    std::string DDecode(const char *pszData, const size_t &iLens);
+    std::string D2Decode(const char *pszData, const size_t &iLens);
+    std::string D3Decode(const char *pszData, const size_t &iLens);
 
 private:
+    unsigned short m_usMode;
     unsigned short m_usType;
+    DESContext *m_pContext;
 };
 
 H_ENAMSP

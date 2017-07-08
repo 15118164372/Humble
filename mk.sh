@@ -14,7 +14,7 @@ PROGRAMNAME="Humble"
 
 #############################################
 #HumbleÎÄ¼þ¼Ð
-HumbleDir="HBase HBase/event2 HBase/jwsmtp HBase/mysql HBase/redisrand HBase/rijndael HBase/RSAEuro HBase/zlib"
+HumbleDir="HBase HBase/d3des HBase/event2 HBase/jwsmtp HBase/mysql HBase/redisrand HBase/rijndael HBase/RSAEuro HBase/zlib"
 HumbleDir=$HumbleDir" HLBind HLBind/lpeg HLBind/lua5.3 HLBind/luabridge HLBind/luacjson HLBind/luasocket HLBind/luasql HLBind/pbc HLBind/sproto"
 HumbleDir=$HumbleDir" Humble"
 

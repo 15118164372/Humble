@@ -356,7 +356,7 @@ unsigned long Spbox[8][64] = {
 
 void unscrunch PROTO_LIST ((unsigned char *, UINT4 *));
 void scrunch PROTO_LIST ((UINT4 *, unsigned char *));
-void deskey PROTO_LIST ((UINT4 *, unsigned char *, int));
+void rsadeskey PROTO_LIST ((UINT4 *, unsigned char *, int));
 static void cookey PROTO_LIST ((UINT4 *, UINT4 *, int));
 void desfunc PROTO_LIST ((UINT4 *, UINT4 *));
 
@@ -378,7 +378,7 @@ int encrypt;                                                                    
 
 	/* Precompute key schedule */
 
-	deskey(context->subkeys, key, encrypt);
+    rsadeskey(context->subkeys, key, encrypt);
 }
 
 /* DES-CBC block update operation. Continues a DES-CBC encryption
@@ -469,7 +469,7 @@ int encrypt;                    /* encrypt flag (1 = encrypt, 0 = decrypt) */
 
 	/* Precompute key schedule. */
 
-	deskey (context->subkeys, key, encrypt);
+    rsadeskey(context->subkeys, key, encrypt);
 }
 
 /* DESX-CBC block update operation. Continues a DESX-CBC encryption
@@ -556,9 +556,9 @@ int encrypt;                    /* encrypt flag (1 = encrypt, 0 = decrypt) */
 
 	/* Precompute key schedules. */
 
-	deskey(context->subkeys[0], encrypt ? key : &key[16], encrypt);
-	deskey(context->subkeys[1], &key[8], !encrypt);
-	deskey(context->subkeys[2], encrypt ? &key[16] : key, encrypt);
+    rsadeskey(context->subkeys[0], encrypt ? key : &key[16], encrypt);
+    rsadeskey(context->subkeys[1], &key[8], !encrypt);
+    rsadeskey(context->subkeys[2], encrypt ? &key[16] : key, encrypt);
 }
 
 int DES3_CBCUpdate(context, output, input, len)
@@ -650,7 +650,7 @@ UINT4 *outof;
 
 /* Compute DES Subkeys */
 
-void deskey(subkeys, key, encrypt)
+void rsadeskey(subkeys, key, encrypt)
 UINT4 subkeys[32];
 unsigned char key[8];
 int encrypt;

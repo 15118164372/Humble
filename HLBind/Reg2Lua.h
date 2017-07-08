@@ -19,6 +19,7 @@ void H_RegSnowFlake(struct lua_State *pLState);
 void H_RegTableFile(struct lua_State *pLState);
 void H_RegUUID(struct lua_State *pLState);
 void H_RegAES(struct lua_State *pLState);
+void H_RegDESEncrypt(struct lua_State *pLState);
 void H_RegRSA(struct lua_State *pLState);
 void H_RegSha1(struct lua_State *pLState);
 void H_SetPackPath(struct lua_State *pLState);

@@ -8,6 +8,7 @@
 #include "Thread.h"
 
 #include "AES.h"
+#include "HDES.h"
 #include "Base64.h"
 #include "CRC.h"
 #include "md5.h"

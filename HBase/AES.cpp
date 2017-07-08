@@ -49,8 +49,6 @@ void CAES::setKey(const char *pszKey, const unsigned int uiKeyType)
 
 std::string CAES::Encode(const char *pszPlaint, const size_t iLens)
 {
-    H_ASSERT(NULL != m_pEncodeRK, "pointer is null.");
-
     size_t iCopyLen(H_INIT_NUMBER);
     bool bFill(false);
     unsigned char uacPlain[AES_BlockSize];
@@ -62,6 +60,7 @@ std::string CAES::Encode(const char *pszPlaint, const size_t iLens)
         bFill = true;
     }
 
+    unsigned char *pPlain;
     for (size_t i = 0; i < iLens; i += AES_BlockSize)
     {
         iCopyLen = ((iLens - i) >= AES_BlockSize) ? (AES_BlockSize) : (iLens - i);         
@@ -69,15 +68,15 @@ std::string CAES::Encode(const char *pszPlaint, const size_t iLens)
         {
             memcpy(uacPlain, pszPlaint + i, iCopyLen);
             memset(uacPlain + iCopyLen, (int)(AES_BlockSize - iCopyLen), AES_BlockSize - iCopyLen);
-            rijndaelEncrypt(m_pEncodeRK, m_iEncodeRounds, uacPlain, uacCipher);
+            pPlain = uacPlain;
         }
         else
         {
-            rijndaelEncrypt(m_pEncodeRK, m_iEncodeRounds, (const unsigned char*)(pszPlaint + i), uacCipher);
+            pPlain = (unsigned char*)(pszPlaint + i);            
         }
+        rijndaelEncrypt(m_pEncodeRK, m_iEncodeRounds, pPlain, uacCipher);
         
         strRtn.append((const char*)uacCipher, AES_BlockSize);
-
     }
 
     if (bFill)//长度刚好为一块的整数倍，再加一块填充
@@ -92,8 +91,6 @@ std::string CAES::Encode(const char *pszPlaint, const size_t iLens)
 
 std::string CAES::Decode(const char *pszCipher, const size_t iLens)
 {
-    H_ASSERT(NULL != m_pDecodeRK, "pointer is null.");
-
     unsigned char m_uacPlain[AES_BlockSize];
     std::string strRtn;
     if (0 != (iLens % AES_BlockSize))

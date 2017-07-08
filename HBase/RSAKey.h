@@ -7,6 +7,12 @@
 
 H_BNAMSP
 
+enum
+{
+    RSAKEY_512 = 512,
+    RSAKEY_1024 = 1024
+};
+
 //RSA秘钥
 class CRSAKey
 {
@@ -14,7 +20,7 @@ public:
     CRSAKey(void);
     ~CRSAKey(void);
 
-    /*生成key(长度512 - 1024)*/
+    /*生成key*/
     void creatKey(const unsigned short usKeyLens);
 
     R_RANDOM_STRUCT *getRandom(void)
