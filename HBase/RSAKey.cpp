@@ -20,9 +20,17 @@ CRSAKey::CRSAKey(void)
 
 CRSAKey::~CRSAKey(void)
 {
-    H_SafeDelete(m_pRandom);
-    H_SafeDelete(m_pPublicKey);
-    H_SafeDelete(m_pPrivateKey);
+    R_RANDOM_STRUCT *pRandom = (R_RANDOM_STRUCT *)m_pRandom;
+    H_SafeDelete(pRandom);
+    m_pRandom = NULL;
+
+    R_RSA_PUBLIC_KEY *pPubKey = (R_RSA_PUBLIC_KEY *)m_pPublicKey;
+    H_SafeDelete(pPubKey);
+    m_pPublicKey = NULL;
+
+    R_RSA_PRIVATE_KEY *pPriKey = (R_RSA_PRIVATE_KEY *)m_pPrivateKey;
+    H_SafeDelete(pPriKey);
+    m_pPrivateKey = NULL;
 }
 
 void CRSAKey::creatKey(const unsigned short usKey)
