@@ -72,7 +72,7 @@ std::string CAES::Encode(const char *pszPlaint, const size_t iLens)
         }
         else
         {
-            pPlain = (unsigned char*)(pszPlaint + i);            
+            pPlain = (unsigned char*)(pszPlaint + i);
         }
         rijndaelEncrypt(m_pEncodeRK, m_iEncodeRounds, pPlain, uacCipher);
         
