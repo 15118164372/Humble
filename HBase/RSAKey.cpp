@@ -2,27 +2,38 @@
 #include "RSAKey.h"
 #include "Funcs.h"
 #include "Base64.h"
+#include "RSAEuro/rsa.h"
 
 H_BNAMSP
 
 CRSAKey::CRSAKey(void)
 {
+    m_pRandom = new(std::nothrow) R_RANDOM_STRUCT;
+    H_ASSERT(NULL != m_pRandom, "malloc memory error.");
 
+    m_pPublicKey = new(std::nothrow)R_RSA_PUBLIC_KEY;
+    H_ASSERT(NULL != m_pPublicKey, "malloc memory error.");
+
+    m_pPrivateKey = new(std::nothrow)R_RSA_PRIVATE_KEY;
+    H_ASSERT(NULL != m_pPrivateKey, "malloc memory error.");
 }
 
 CRSAKey::~CRSAKey(void)
 {
-
+    H_SafeDelete(m_pRandom);
+    H_SafeDelete(m_pPublicKey);
+    H_SafeDelete(m_pPrivateKey);
 }
 
-void CRSAKey::creatKey(const unsigned short usKeyLens)
+void CRSAKey::creatKey(const unsigned short usKey)
 {
     R_RSA_PROTO_KEY stProtoKey;
-    stProtoKey.bits = usKeyLens;
+    stProtoKey.bits = usKey;
     stProtoKey.useFermat4 = 1;
 
-    R_RandomCreate(&m_stRandom);
-    H_ASSERT(H_RTN_OK == R_GeneratePEMKeys(&m_stPublicKey, &m_stPrivateKey, &stProtoKey, &m_stRandom), 
+    R_RandomCreate((R_RANDOM_STRUCT*)m_pRandom);
+    H_ASSERT(H_RTN_OK == R_GeneratePEMKeys((R_RSA_PUBLIC_KEY*)m_pPublicKey, (R_RSA_PRIVATE_KEY*)m_pPrivateKey, 
+        &stProtoKey, (R_RANDOM_STRUCT*)m_pRandom),
         "generate keys error.") ;
 }
 
@@ -43,19 +54,19 @@ int CRSAKey::fileWrite(const char *pszFile, const void *pVal, const size_t iLens
 
 int CRSAKey::saveRandom(const char *pszFile)
 {   
-    std::string strVal = H_B64Encode((const char*)&m_stRandom, sizeof(m_stRandom));
+    std::string strVal = H_B64Encode((const char*)m_pRandom, sizeof(R_RANDOM_STRUCT));
     return fileWrite(pszFile, strVal.c_str(), strVal.size());
 }
 
 int CRSAKey::savePubKey(const char *pszFile)
 {
-    std::string strVal = H_B64Encode((const char*)&m_stPublicKey, sizeof(m_stPublicKey));
+    std::string strVal = H_B64Encode((const char*)m_pPublicKey, sizeof(R_RSA_PUBLIC_KEY));
     return fileWrite(pszFile, strVal.c_str(), strVal.size());
 }
 
 int CRSAKey::savePriKey(const char *pszFile)
 {
-    std::string strVal = H_B64Encode((const char*)&m_stPrivateKey, sizeof(m_stPrivateKey));
+    std::string strVal = H_B64Encode((const char*)m_pPrivateKey, sizeof(R_RSA_PRIVATE_KEY));
     return fileWrite(pszFile, strVal.c_str(), strVal.size());
 }
 
@@ -98,7 +109,7 @@ int CRSAKey::loadPubKey(const char *pszFile)
         H_SafeDelete(pBuf);
         return H_RTN_FAILE;
     }
-    memcpy(&m_stPublicKey, strVal.c_str(), sizeof(m_stPublicKey));
+    memcpy(m_pPublicKey, strVal.c_str(), sizeof(R_RSA_PUBLIC_KEY));
     H_SafeDelete(pBuf);
 
     return H_RTN_OK;
@@ -118,7 +129,7 @@ int CRSAKey::loadPriKey(const char *pszFile)
         H_SafeDelete(pBuf);
         return H_RTN_FAILE;
     }
-    memcpy(&m_stPrivateKey, strVal.c_str(), sizeof(m_stPrivateKey));
+    memcpy(m_pPrivateKey, strVal.c_str(), sizeof(R_RSA_PRIVATE_KEY));
     H_SafeDelete(pBuf);
 
     return H_RTN_OK;
@@ -138,7 +149,7 @@ int CRSAKey::loadRandom(const char *pszFile)
         H_SafeDelete(pBuf);
         return H_RTN_FAILE;
     }
-    memcpy(&m_stRandom, strVal.c_str(), sizeof(m_stRandom));
+    memcpy(&m_pRandom, strVal.c_str(), sizeof(R_RANDOM_STRUCT));
     H_SafeDelete(pBuf);
 
     return H_RTN_OK;

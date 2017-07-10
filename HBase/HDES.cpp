@@ -1,5 +1,8 @@
 
 #include "HDES.h"
+extern "C" {
+#include "d3des/d3des.h"
+}
 
 H_BNAMSP
 
@@ -27,7 +30,7 @@ CDESEncrypt::~CDESEncrypt()
 {
     if (NULL != m_pContext)
     {
-        freecontext(m_pContext);
+        freecontext((DESContext *)m_pContext);
         m_pContext = NULL;
     }
 }
@@ -39,13 +42,13 @@ void CDESEncrypt::setKey(const char *pszKey, const unsigned short usType, const 
     switch (m_usType)
     {
         case DESTYPE_DES:
-            deskey(m_pContext, (unsigned char*)pszKey, usMode);
+            deskey((DESContext *)m_pContext, (unsigned char*)pszKey, usMode);
             break;
         case DESTYPE_D2DES:
-            des2key(m_pContext, (unsigned char*)pszKey, usMode);
+            des2key((DESContext *)m_pContext, (unsigned char*)pszKey, usMode);
             break;
         case DESTYPE_D3DES:
-            des3key(m_pContext, (unsigned char*)pszKey, usMode);
+            des3key((DESContext *)m_pContext, (unsigned char*)pszKey, usMode);
             break;
     }
 }
@@ -77,7 +80,7 @@ std::string CDESEncrypt::DEncode(const char *pszData, const size_t &iLens)
         {
             pPlain = (unsigned char*)(pszData + i);
         }
-        des(m_pContext, pPlain, uacCipher);
+        des((DESContext *)m_pContext, pPlain, uacCipher);
 
         strRtn.append((const char*)uacCipher, DES_BlockSize);
 
@@ -86,7 +89,7 @@ std::string CDESEncrypt::DEncode(const char *pszData, const size_t &iLens)
     if (bFill)
     {
         memset(uacPlain, DES_BlockSize, DES_BlockSize);
-        des(m_pContext, uacPlain, uacCipher);
+        des((DESContext *)m_pContext, uacPlain, uacCipher);
         strRtn.append((const char*)uacCipher, DES_BlockSize);
     }
 
@@ -120,7 +123,7 @@ std::string CDESEncrypt::D2Encode(const char *pszData, const size_t &iLens)
         {
             pPlain = (unsigned char*)(pszData + i);
         }
-        D2des(m_pContext, pPlain, uacCipher);
+        D2des((DESContext *)m_pContext, pPlain, uacCipher);
 
         strRtn.append((const char*)uacCipher, D2ES_BlockSize);
 
@@ -129,7 +132,7 @@ std::string CDESEncrypt::D2Encode(const char *pszData, const size_t &iLens)
     if (bFill)
     {
         memset(uacPlain, D2ES_BlockSize, D2ES_BlockSize);
-        D2des(m_pContext, uacPlain, uacCipher);
+        D2des((DESContext *)m_pContext, uacPlain, uacCipher);
         strRtn.append((const char*)uacCipher, D2ES_BlockSize);
     }
 
@@ -163,7 +166,7 @@ std::string CDESEncrypt::D3Encode(const char *pszData, const size_t &iLens)
         {
             pPlain = (unsigned char*)(pszData + i);
         }
-        D3des(m_pContext, pPlain, uacCipher);
+        D3des((DESContext *)m_pContext, pPlain, uacCipher);
 
         strRtn.append((const char*)uacCipher, D3ES_BlockSize);
 
@@ -172,7 +175,7 @@ std::string CDESEncrypt::D3Encode(const char *pszData, const size_t &iLens)
     if (bFill)
     {
         memset(uacPlain, D3ES_BlockSize, D3ES_BlockSize);
-        D3des(m_pContext, uacPlain, uacCipher);
+        D3des((DESContext *)m_pContext, uacPlain, uacCipher);
         strRtn.append((const char*)uacCipher, D3ES_BlockSize);
     }
 
@@ -205,7 +208,7 @@ std::string CDESEncrypt::DDecode(const char *pszData, const size_t &iLens)
 
     for (size_t i = 0; i < iLens; i += DES_BlockSize)
     {
-        des(m_pContext, (unsigned char*)(pszData + i), m_uacPlain);
+        des((DESContext *)m_pContext, (unsigned char*)(pszData + i), m_uacPlain);
         strRtn.append((const char*)m_uacPlain, DES_BlockSize);
     }
 
@@ -225,7 +228,7 @@ std::string CDESEncrypt::D2Decode(const char *pszData, const size_t &iLens)
 
     for (size_t i = 0; i < iLens; i += D2ES_BlockSize)
     {
-        D2des(m_pContext, (unsigned char*)(pszData + i), m_uacPlain);
+        D2des((DESContext *)m_pContext, (unsigned char*)(pszData + i), m_uacPlain);
         strRtn.append((const char*)m_uacPlain, D2ES_BlockSize);
     }
 
@@ -245,7 +248,7 @@ std::string CDESEncrypt::D3Decode(const char *pszData, const size_t &iLens)
 
     for (size_t i = 0; i < iLens; i += D3ES_BlockSize)
     {
-        D3des(m_pContext, (unsigned char*)(pszData + i), m_uacPlain);
+        D3des((DESContext *)m_pContext, (unsigned char*)(pszData + i), m_uacPlain);
         strRtn.append((const char*)m_uacPlain, D3ES_BlockSize);
     }
 

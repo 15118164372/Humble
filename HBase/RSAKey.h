@@ -3,7 +3,6 @@
 #define H_RSAKEY_H_
 
 #include "Macros.h"
-#include "RSAEuro/rsa.h"
 
 H_BNAMSP
 
@@ -20,21 +19,8 @@ public:
     CRSAKey(void);
     ~CRSAKey(void);
 
-    /*生成key*/
-    void creatKey(const unsigned short usKeyLens);
-
-    R_RANDOM_STRUCT *getRandom(void)
-    {
-        return &m_stRandom;
-    };
-    R_RSA_PUBLIC_KEY *getPubKey(void)
-    {
-        return &m_stPublicKey;
-    };
-    R_RSA_PRIVATE_KEY *getPriKey(void)
-    {
-        return &m_stPrivateKey;
-    };
+    /*生成key RSAKEY_...*/
+    void creatKey(const unsigned short usKey);
 
     /*保存R_RANDOM_STRUCT 公钥加密需要使用  base64编码*/
     int saveRandom(const char *pszFile);
@@ -48,22 +34,18 @@ public:
     int loadPriKey(const char *pszFile);
     int loadRandom(const char *pszFile);
 
+    friend class CRSA;
 private:    
     int fileWrite(const char *pszFile, const void *pVal, const size_t iLens);
     char *fileRead(const char *pszFile);
 
 private:
     H_DISALLOWCOPY(CRSAKey);
-    enum RSAKeyLen
-    {
-        RSAKeyMinLen = 512,
-        RSAKeyMaxLen = 1024
-    };
 
-private:
-    R_RANDOM_STRUCT m_stRandom;
-    R_RSA_PUBLIC_KEY m_stPublicKey;    /* RSA public key */   
-    R_RSA_PRIVATE_KEY m_stPrivateKey;  /* RSA private key */
+protected:
+    void *m_pRandom;
+    void *m_pPublicKey;    /* RSA public key */
+    void *m_pPrivateKey;  /* RSA private key */
 };
 
 H_ENAMSP

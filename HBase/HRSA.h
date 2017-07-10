@@ -48,9 +48,9 @@ private:
         const size_t &iDataLens);
 
 private:
-    R_RSA_PUBLIC_KEY m_stPubKey;
-    R_RSA_PRIVATE_KEY m_stPriKey;
-    R_RANDOM_STRUCT m_stRandom;
+    void *m_pRandom;
+    void *m_pPubKey;
+    void *m_pPriKey;    
 };
 
 H_ENAMSP

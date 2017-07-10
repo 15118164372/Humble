@@ -3,9 +3,6 @@
 #define H_HDES_H_
 
 #include "Macros.h"
-extern "C" {
-#include "d3des/d3des.h"
-}
 
 H_BNAMSP
 
@@ -48,7 +45,7 @@ private:
 private:
     unsigned short m_usMode;
     unsigned short m_usType;
-    DESContext *m_pContext;
+    void *m_pContext;
 };
 
 H_ENAMSP
