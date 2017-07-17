@@ -289,9 +289,6 @@
     <ClInclude Include="HDES.h">
       <Filter>Encrypt</Filter>
     </ClInclude>
-    <ClInclude Include="DataBase.h">
-      <Filter>Common\DB</Filter>
-    </ClInclude>
     <ClInclude Include="HMySQL.h">
       <Filter>Common\DB</Filter>
     </ClInclude>

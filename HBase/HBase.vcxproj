@@ -30,7 +30,6 @@
     <ClInclude Include="CoreDump.h" />
     <ClInclude Include="CRC.h" />
     <ClInclude Include="d3des\d3des.h" />
-    <ClInclude Include="DataBase.h" />
     <ClInclude Include="EvBuffer.h" />
     <ClInclude Include="Funcs.h" />
     <ClInclude Include="HBase.h" />
