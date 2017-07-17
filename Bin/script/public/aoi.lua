@@ -26,12 +26,17 @@ end
 function Object:getX()
     return self.X
 end
-
 function Object:setY(y)
     self.Y = y
 end
 function Object:getY()
     return self.Y
+end
+function Object:setZ(z)
+	self.Z = z
+end
+function Object:getZ()
+	return self.Z
 end
 
 function Object:setXDist(xDist)
@@ -40,48 +45,59 @@ end
 function Object:getXDist()
     return self.XDist
 end
-
 function Object:setYDist(yDist)
     self.YDist = yDist
 end
 function Object:getYDist()
     return self.YDist
 end
+function Object:setZDist(zDist)
+    self.ZDist = zDist
+end
+function Object:getZDist()
+    return self.ZDist
+end
 
 --视野区域
-local AOI_CRSLST = {}
-AOI_CRSLST.__index = AOI_CRSLST
+local AOI = {}
+AOI.__index = AOI
 
-function AOI_CRSLST:new(maxX, maxY)     
+function AOI:new(maxX, maxY, maxZ)     
     local self = {}
-    setmetatable(self, AOI_CRSLST)
+    setmetatable(self, AOI)
     
+	assert(maxX > 0)
     self.MaxX = maxX
     self.MaxY = maxY
+	if 0 == maxY then
+		self.MaxY = 1
+	end
+	self.MaxZ = maxZ
+	if 0 == maxZ then
+		self.MaxZ = 1
+	end
+	
 	self.XList = {}
-    self.YList = {}
     self.Object = {}
     
     for i = 1, self.MaxX do
         table.insert(self.XList, {})
     end
-    for i = 1, self.MaxY do
-        table.insert(self.YList, {})
-    end
 
     return self
 end
 
-function AOI_CRSLST:checkParam(x, y)
+function AOI:checkParam(x, y, z)
     if x < 0 or x >= self.MaxX
-        or y <0 or y >= self.MaxY then
+        or y <0 or y >= self.MaxY
+		or z <0 or z >= self.MaxZ then
        return false 
     end
     
     return true
 end
 
-function AOI_CRSLST:getRange(obj, xDist, yDist)
+function AOI:getRange(obj, xDist, yDist, zDist)
     local xStart = obj:getX() - xDist
 	if xStart < 0 then
 		xStart = 0
@@ -89,8 +105,7 @@ function AOI_CRSLST:getRange(obj, xDist, yDist)
 	local xEnd = obj:getX() + xDist
 	if xEnd >= self.MaxX then	
 		xEnd = self.MaxX - 1
-	end	
-	
+	end
 
 	local yStart = obj:getY() - yDist
 	if yStart < 0 then
@@ -101,76 +116,78 @@ function AOI_CRSLST:getRange(obj, xDist, yDist)
 		yEnd = self.MaxY - 1
 	end	
 	
-	return xStart, xEnd, yStart, yEnd
+	local zStart = obj:getZ() - zDist
+	if zStart < 0 then
+		zStart = 0
+	end
+	local zEnd = obj:getZ() + zDist
+	if zEnd >= self.MaxZ then
+		zEnd = self.MaxZ - 1
+	end
+	
+	return xStart, xEnd, yStart, yEnd, zStart, zEnd
 end
 
-function AOI_CRSLST:getArea(obj, xDist, yDist)
-	if not xDist or not yDist then
+function AOI:getArea(obj, xDist, yDist, zDist)
+	if not xDist then
 		xDist = obj:getXDist()
+	end
+	if not yDist then
 		yDist = obj:getYDist()
+	end
+	if not zDist then
+		zDist = obj:getZDist()
 	end
 	
     local inArea = {}
     table.insert(inArea, obj:getId())
-    local xStart, xEnd, yStart, yEnd = self:getRange(obj, xDist, yDist)
+	local y,z
+    local xStart, xEnd, yStart, yEnd, zStart, zEnd = self:getRange(obj, xDist, yDist, zDist)
     for x = xStart + 1, xEnd + 1 do
-        for keyX, _ in pairs(self.XList[x]) do
-            if keyX ~= obj:getId() then
-                 for y = yStart + 1, yEnd + 1 do
-					if self.YList[y][keyX] then
-						table.insert(inArea, keyX)
-						break
+		--x遍历
+        for key, val in pairs(self.XList[x]) do
+			--排除自己
+            if key ~= obj:getId() then
+				--检查坐标范围
+				y = val:getY()
+				if y >= yStart and y <= yEnd then
+					z = val:getZ()
+					if z >= zStart and z <= zEnd then
+						table.insert(inArea, key)
 					end
-                end
+				end
             end
-        end    
+        end
     end
 
     return inArea
 end
 
-function AOI_CRSLST:delXList(obj)
+function AOI:delXList(obj)
     self.XList[obj:getX() + 1][obj:getId()] = nil
 end
-function AOI_CRSLST:delYList(obj)
-    self.YList[obj:getY() + 1][obj:getId()] = nil
-end
 
-function AOI_CRSLST:getEntity(id)
+function AOI:getEntity(id)
     return self.Object[id]
 end
-function AOI_CRSLST:delEntity(id)
+function AOI:delEntity(id)
     self.Object[id] = nil
 end
 
-function AOI_CRSLST:moveData(obj, x, y)
-    local bAddX = false
-	local bAddY = false
-    
+function AOI:moveData(obj, x, y, z)
+	obj:setY(y)
+	obj:setZ(z)
+	
     if obj:getX() ~= x then
-        bAddX = true
         self:delXList(obj)
         obj:setX(x)
-    end
-    
-    if obj:getY() ~= y then
-        bAddY = true
-        self:delYList(obj)
-        obj:setY(y)
-    end
-    
-    if bAddX then
-        self.XList[obj:getX() + 1][obj:getId()] = obj
-    end
-    
-    if bAddY then
-        self.YList[obj:getY() + 1][obj:getId()] = obj
-    end
+		self.XList[obj:getX() + 1][obj:getId()] = obj
+    end    
     
     return obj
 end
 
-function AOI_CRSLST:getLeaveArea(oldArea, inArea)
+function AOI:getLeaveArea(oldArea, inArea)
     local outArea = {}
     local bInArea = false
     for _, oldVal in pairs(oldArea) do
@@ -189,7 +206,7 @@ function AOI_CRSLST:getLeaveArea(oldArea, inArea)
     
     return outArea
 end
-function AOI_CRSLST:getEnterArea(oldArea, inArea)
+function AOI:getEnterArea(oldArea, inArea)
     local newArea = {}
     local bInArea = false
     for _, inVal in pairs(inArea) do
@@ -209,8 +226,9 @@ function AOI_CRSLST:getEnterArea(oldArea, inArea)
     return newArea
 end
 
-function AOI_CRSLST:Enter(id, x, y, xDist, yDist)
-    if not self:checkParam(x, y) then
+--进入 返回所在视野区域ids
+function AOI:Enter(id, x, y, z, xDist, yDist, zDist)
+    if not self:checkParam(x, y, z) then
         return
     end
     
@@ -223,17 +241,19 @@ function AOI_CRSLST:Enter(id, x, y, xDist, yDist)
     obj:setId(id)
     obj:setX(x)
     obj:setY(y)
+	obj:setZ(z)
     obj:setXDist(xDist)
     obj:setYDist(yDist)
+	obj:setZDist(zDist)
 	
     self.XList[x + 1][id] = obj
-    self.YList[y + 1][id] = obj
     self.Object[id] = obj
     
     return self:getArea(obj)
 end
 
-function AOI_CRSLST:Leave(id)
+--离开 返回所在视野区域ids
+function AOI:Leave(id)
     local obj = self:getEntity(id)
     if not obj then
         return
@@ -242,14 +262,14 @@ function AOI_CRSLST:Leave(id)
     local inArea = self:getArea(obj)
     
     self:delXList(obj)
-    self:delYList(obj)
     self:delEntity(id)
     
     return inArea
 end
 
-function AOI_CRSLST:Move(id, x, y)
-    if not self:checkParam(x, y) then
+--移动 返回所在视野区域ids 离开区域的  新进区域的
+function AOI:Move(id, x, y, z)
+    if not self:checkParam(x, y, z) then
         return
     end
     
@@ -258,12 +278,12 @@ function AOI_CRSLST:Move(id, x, y)
         return
     end
     
-    if obj:getX() == x and obj:getY() == y then
+    if obj:getX() == x and obj:getY() == y and obj:getZ() == z then
         return
     end
     
     local oldArea = self:getArea(obj)
-    obj = self:moveData(obj, x, y)
+    obj = self:moveData(obj, x, y, z)
     local inArea = self:getArea(obj)	
     local outArea = self:getLeaveArea(oldArea, inArea)
     local newArea = self:getEnterArea(oldArea, inArea)
@@ -271,13 +291,14 @@ function AOI_CRSLST:Move(id, x, y)
     return inArea, outArea, newArea
 end
 
-function AOI_CRSLST:getAOIArea(id, xDist, yDist)
+--获取所在视野区域的ids xDist、yDist、zDist为nil取Enter时传入的值
+function AOI:getAOIArea(id, xDist, yDist, zDist)
     local obj = self:getEntity(id)
     if not obj then
         return
     end
     
-    return self:getArea(obj, xDist, yDist)
+    return self:getArea(obj, xDist, yDist, zDist)
 end
 
-return AOI_CRSLST
+return AOI

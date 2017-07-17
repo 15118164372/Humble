@@ -6,6 +6,7 @@ local debug = debug
 local getSVId = getSVId
 local getSVType = getSVType
 local getLinkById = getLinkById
+local thisState = thisState
 local getLinkByType = getLinkByType
 local getLogPriority = getLogPriority
 local setLogPriority = setLogPriority
@@ -113,7 +114,7 @@ function humble.getLinkById(svId)
 	return getLinkById(svId)
 end
 function humble.getLinkByType(svType)
-	return getLinkByType(this, svType)
+	return getLinkByType(thisState, svType)
 end
 
 --获取当前程序所在路径

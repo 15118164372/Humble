@@ -5,16 +5,14 @@ H_BNAMSP
 
 CLTask::CLTask(const char *pszFile, const char *pszName, const int iCapacity) : CTaskWorker(pszName, iCapacity), m_strFile(pszFile)
 {
-    m_pLState = luaL_newstate();
-    H_ASSERT(NULL != m_pLState, "luaL_newstate error.");
+    m_stState.pLState = luaL_newstate();
+    H_ASSERT(NULL != m_stState.pLState, "luaL_newstate error.");
 
-    m_stState.pLState = m_pLState;
-
-    luaL_openlibs(m_pLState);
-    H_RegAll(m_pLState);
-    luabridge::setGlobal(m_pLState, getName()->c_str(), "g_taskName");
-    luabridge::setGlobal(m_pLState, &m_stState, "this");
-    luabridge::setGlobal(m_pLState, &m_curRPCLink, "g_curRPCLink");
+    luaL_openlibs((struct lua_State *)m_stState.pLState);
+    H_RegAll((struct lua_State *)m_stState.pLState);
+    luabridge::setGlobal((struct lua_State *)m_stState.pLState, getName()->c_str(), "g_taskName");
+    luabridge::setGlobal((struct lua_State *)m_stState.pLState, &m_stState, "thisState");
+    luabridge::setGlobal((struct lua_State *)m_stState.pLState, &m_curRPCLink, "g_curRPCLink");
 
     m_pLFunc = new(std::nothrow) luabridge::LuaRef *[LFUNC_COUNT];
     H_ASSERT(NULL != m_pLFunc, "malloc memory error.");
@@ -22,7 +20,7 @@ CLTask::CLTask(const char *pszFile, const char *pszName, const int iCapacity) : 
     luabridge::LuaRef *pRef = NULL;
     for (int i = 0; i < LFUNC_COUNT; ++i)
     {
-        pRef = new(std::nothrow) luabridge::LuaRef(m_pLState);
+        pRef = new(std::nothrow) luabridge::LuaRef((struct lua_State *)m_stState.pLState);
         H_ASSERT(NULL != pRef, "malloc memory error.");
         m_pLFunc[i] = pRef;
     }
@@ -41,30 +39,31 @@ CLTask::~CLTask(void)
         H_SafeDelArray(m_pLFunc);
     }
 
-    if (NULL != m_pLState)
+    if (NULL != m_stState.pLState)
     {
-        lua_close(m_pLState);
-        m_pLState = NULL;
+        struct lua_State *pState = (struct lua_State *)m_stState.pLState;
+        lua_close(pState);
+        m_stState.pLState = NULL;
     }
 }
 
 void CLTask::initTask(void)
 {
     std::string strLuaFile = g_strScriptPath + m_strFile;
-    if (H_RTN_OK != luaL_dofile(m_pLState, strLuaFile.c_str()))
+    if (H_RTN_OK != luaL_dofile((struct lua_State *)m_stState.pLState, strLuaFile.c_str()))
     {
-        const char *pErr = lua_tostring(m_pLState, -1);
+        const char *pErr = lua_tostring((struct lua_State *)m_stState.pLState, -1);
         H_ASSERT(false, pErr);
     }
 
-    *(m_pLFunc[LFUNC_INITTASK]) = luabridge::getGlobal(m_pLState, "initTask");
-    *(m_pLFunc[LFUNC_DELTASK]) = luabridge::getGlobal(m_pLState, "destroyTask");
-    *(m_pLFunc[LFUNC_ONNETEVENT]) = luabridge::getGlobal(m_pLState, "onNetEvent");
-    *(m_pLFunc[LFUNC_ONNETREAD]) = luabridge::getGlobal(m_pLState, "onNetRead");
-    *(m_pLFunc[LFUNC_ONTIME]) = luabridge::getGlobal(m_pLState, "onTimeEvent");
-    *(m_pLFunc[LFUNC_ONCMD]) = luabridge::getGlobal(m_pLState, "onCMD");
-    *(m_pLFunc[LFUNC_RPCCALL]) = luabridge::getGlobal(m_pLState, "onRPCCall");
-    *(m_pLFunc[LFUNC_RPCRTN]) = luabridge::getGlobal(m_pLState, "onRPCRtn");
+    *(m_pLFunc[LFUNC_INITTASK]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "initTask");
+    *(m_pLFunc[LFUNC_DELTASK]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "destroyTask");
+    *(m_pLFunc[LFUNC_ONNETEVENT]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onNetEvent");
+    *(m_pLFunc[LFUNC_ONNETREAD]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onNetRead");
+    *(m_pLFunc[LFUNC_ONTIME]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onTimeEvent");
+    *(m_pLFunc[LFUNC_ONCMD]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onCMD");
+    *(m_pLFunc[LFUNC_RPCCALL]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onRPCCall");
+    *(m_pLFunc[LFUNC_RPCRTN]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onRPCRtn");
 
     try
     {

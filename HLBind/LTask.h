@@ -47,7 +47,6 @@ private:
     };
 
 private:
-    struct lua_State *m_pLState;
     luabridge::LuaRef **m_pLFunc;
     std::string m_strFile;
     H_Binary m_stBinary;
