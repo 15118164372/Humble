@@ -23,6 +23,7 @@ local b64Decode = b64Decode
 local md5Str = md5Str
 local md5File = md5File
 local regEvent = regEvent
+local unRegTime = unRegTime
 local regIProto = regIProto
 local regStrProto = regStrProto
 local addListener = addListener
@@ -34,6 +35,7 @@ local taskRPCCall = taskRPCCall
 local regTask = regTask
 local unregTask = unregTask
 local SockType = SockType
+local Event = Event
 
 local humble = {}
 
@@ -161,6 +163,14 @@ end
 --事件注册 Accept, Linked, Closed, Frame, Sec 
 function humble.regEvent(usEvent, strTask, sockType)
 	regEvent(usEvent, strTask, sockType)
+end
+--帧事件移除
+function humble.unRegFrame(strTask)
+	unRegTime(Event.Frame, strTask)
+end
+--秒事件移除
+function humble.unRegSec(strTask)
+	unRegTime(Event.Sec, strTask)
 end
 --网络协议注册
 function humble.regIProto(iProto, strTask)

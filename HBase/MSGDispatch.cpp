@@ -22,7 +22,7 @@ CMSGDispatch::~CMSGDispatch(void)
 
 void CMSGDispatch::regEvent(unsigned short usEvent, class CTaskWorker *pTask, const short sType)
 {
-    H_ASSERT(usEvent < MSG_COUNT, "subscript out of range");
+    H_ASSERT(usEvent >= 0 && usEvent < MSG_COUNT, "subscript out of range");
     
     if (MSG_NET_ACCEPT == usEvent
         || MSG_NET_LINKED == usEvent
@@ -39,7 +39,7 @@ void CMSGDispatch::regEvent(unsigned short usEvent, class CTaskWorker *pTask, co
     pDisp->objLock.wLock();
     for (itTask = pDisp->lstTask.begin(); pDisp->lstTask.end() != itTask; ++itTask)
     {
-        if (pTask == (*itTask))
+        if (*(pTask->getName()) ==  *((*itTask)->getName()))
         {
             bHave = true;
             break;
@@ -54,9 +54,29 @@ void CMSGDispatch::regEvent(unsigned short usEvent, class CTaskWorker *pTask, co
     H_LOG(LOGLV_INFO, "%s register event %d", pTask->getName()->c_str(), usEvent);
 }
 
+void CMSGDispatch::unRegTime(unsigned short &usEvent, class CTaskWorker *pTask)
+{
+    H_ASSERT(usEvent == MSG_TIME_FRAME || usEvent == MSG_TIME_SEC, "only support frame and second event.");
+
+    std::list<class CTaskWorker *>::iterator itTask;
+    H_EVENTDISP *pDisp(&m_acEvent[usEvent]);
+
+    pDisp->objLock.wLock();
+    for (itTask = pDisp->lstTask.begin(); pDisp->lstTask.end() != itTask; ++itTask)
+    {
+        if (*(pTask->getName()) == *((*itTask)->getName()))
+        {
+            pDisp->lstTask.erase(itTask);
+            H_LOG(LOGLV_INFO, "%s unregister event %d", pTask->getName()->c_str(), usEvent);
+            break;
+        }
+    }
+    pDisp->objLock.unLock();
+}
+
 void CMSGDispatch::sendEvent(unsigned short usEvent, void *pMsg, const size_t &iLens)
 {
-    H_ASSERT(usEvent < MSG_COUNT, "subscript out of range");
+    H_ASSERT(usEvent >= 0 && usEvent < MSG_COUNT, "subscript out of range");
 
     H_MSG *pEv;
     std::list<class CTaskWorker *>::iterator itTask;

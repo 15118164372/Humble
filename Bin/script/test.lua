@@ -140,5 +140,7 @@ local function Test()
 	TestMail()
 	TestEncrypt()
 	print("---------------------test end-------------------------")
+	
+	unRegDelay()
 end
 regDelayEv(1, Test)

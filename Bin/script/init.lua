@@ -115,6 +115,14 @@ function regDelayAtEv(strTime, Func, ...)
 	regSecEvent()
 	DEV_AtTime(g_WheelMgr, strTime, Func, table.unpack({...}))
 end
+--移除帧事件
+function unRegFrame()
+	humble.unRegFrame(m_strTaskName)
+end
+--移除秒事件
+function unRegDelay()
+	humble.unRegSec(m_strTaskName)
+end
 
 --rpc server端
 if not g_RPCSV then

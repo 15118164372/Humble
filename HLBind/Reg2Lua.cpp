@@ -73,6 +73,19 @@ void regEvent(unsigned short usEvent, const char *pszTask, const short sType)
     CMSGDispatch::getSingletonPtr()->regEvent(usEvent, pTask, sType);
 }
 
+void unRegTime(unsigned short usEvent, const char *pszTask)
+{
+    CChan *pChan(CTaskMgr::getSingletonPtr()->getChan(pszTask));
+    if (NULL == pChan)
+    {
+        H_LOG(LOGLV_WARN, "get task %s error", pszTask);
+        return;
+    }
+
+    CTaskWorker *pTask(pChan->getTask());
+    CMSGDispatch::getSingletonPtr()->unRegTime(usEvent, pTask);
+}
+
 void regIProto(H_PROTOTYPE iProto, const char *pszTask)
 {
     CChan *pChan(CTaskMgr::getSingletonPtr()->getChan(pszTask));
@@ -213,6 +226,7 @@ void H_RegFuncs(struct lua_State *pLState)
         .addFunction("getProPath", getProPath)
         .addFunction("getScriptPath", getScriptPath)
         .addFunction("regEvent", regEvent)
+        .addFunction("unRegTime", unRegTime)
         .addFunction("regIProto", regIProto)
         .addFunction("regStrProto", regStrProto)
         .addFunction("addListener", addListener)

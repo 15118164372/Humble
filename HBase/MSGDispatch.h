@@ -22,6 +22,8 @@ public:
 
     //usType 网络事件使用
     void regEvent(unsigned short usEvent, class CTaskWorker *pTask, const short sType = -1);
+    //usEvent MSG_TIME_FRAME or MSG_TIME_SEC
+    void unRegTime(unsigned short &usEvent, class CTaskWorker *pTask);
     void sendEvent(unsigned short usEvent, void *pMsg, const size_t &iLens);
     void removeEvent(const char *pszName);
 
