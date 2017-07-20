@@ -16,27 +16,29 @@ public:
 
     void setTime(const unsigned int uiMS) 
     {
-        m_uiTick = uiMS;
-    };
-    void addCount(void) 
-    {
-        H_AtomicAdd(&m_uiCount, 1);
+        m_uiFrame = uiMS;
     };
 
     void onStart(void);
-    void onTime(void);
     static void timeCB(H_SOCK, short, void *arg);
 
 private:
-    struct event *initTimeEv(const unsigned int uiMS, event_callback_fn func);
+    struct TickEvent
+    {
+        unsigned short usType;
+        struct event *pEvent;
+        H_TICK stTick;
+    };
+
+private:
+    void initTimeEv(const unsigned int uiMS, event_callback_fn func, TickEvent *pTickEvent);
 
 private:
     H_DISALLOWCOPY(CTick);
 
 private:
-    struct event *m_pTickEvent;
-    unsigned int m_uiTick;
-    unsigned int m_uiCount;
+    unsigned int m_uiFrame;
+    std::vector<TickEvent *> m_vcTickEvent;
 };
 
 H_ENAMSP

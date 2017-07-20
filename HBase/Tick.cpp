@@ -10,72 +10,77 @@ H_BNAMSP
 SINGLETON_INIT(CTick)
 CTick objTick;
 
-CTick::CTick(void) : m_pTickEvent(NULL), m_uiTick(H_INIT_NUMBER), m_uiCount(H_INIT_NUMBER)
+CTick::CTick(void) : m_uiFrame(H_INIT_NUMBER)
 {
 
 }
 
 CTick::~CTick(void)
 {
-    if (NULL != m_pTickEvent)
+    std::vector<TickEvent *>::iterator itEvent;
+    for (itEvent = m_vcTickEvent.begin(); m_vcTickEvent.end() != itEvent; itEvent++)
     {
-        event_free(m_pTickEvent);
-        m_pTickEvent = NULL;
+        event_free((*itEvent)->pEvent);
+        H_SafeDelete(*itEvent);
     }
+    m_vcTickEvent.clear();
 }
 
-struct event *CTick::initTimeEv(const unsigned int uiMS, event_callback_fn func)
+void CTick::initTimeEv(const unsigned int uiMS, event_callback_fn func, TickEvent *pTickEvent)
 {
     timeval tVal;
     evutil_timerclear(&tVal);
     if (uiMS >= 1000)
     {
         tVal.tv_sec = uiMS / 1000;
-        tVal.tv_usec = (uiMS % 1000) * (1000);
+        tVal.tv_usec = (uiMS % 1000) * 1000;
     }
     else
     {
-        tVal.tv_usec = (uiMS * 1000);
+        tVal.tv_usec = uiMS * 1000;
     }
 
-    struct event *pEvent = event_new(getBase(),
-        -1, EV_PERSIST, func, this);
-    H_ASSERT(NULL != pEvent, "event_new error.");
-    (void)event_add(pEvent, &tVal);
-
-    return pEvent;
-}
-
-void CTick::onTime(void)
-{
-    addCount();
-
-    H_TICK stTick;
-    stTick.uiMS = m_uiTick;
-    stTick.uiCount = H_AtomicGet(&m_uiCount);
-    CMSGDispatch::getSingletonPtr()->sendEvent(MSG_TIME_FRAME, (void*)&stTick, sizeof(stTick));
-
-    if (H_INIT_NUMBER == ((stTick.uiMS * stTick.uiCount) % 1000))
-    {
-        CLinker::getSingletonPtr()->reLink();
-        CMSGDispatch::getSingletonPtr()->sendEvent(MSG_TIME_SEC, (void*)&stTick, sizeof(stTick));
-    }
+    pTickEvent->pEvent = event_new(getBase(),
+        -1, EV_PERSIST, func, pTickEvent);
+    H_ASSERT(NULL != pTickEvent->pEvent, "event_new error.");
+    (void)event_add(pTickEvent->pEvent, &tVal);
 }
 
 void CTick::timeCB(H_SOCK, short, void *arg)
 {
-    CTick *pTick = (CTick *)arg;
-    pTick->onTime();
+    TickEvent *pTickEvent = (TickEvent *)arg;
+    pTickEvent->stTick.uiCount++;
+
+    if (MSG_TIME_SEC == pTickEvent->usType)
+    {
+        CLinker::getSingletonPtr()->reLink();
+    }
+
+    CMSGDispatch::getSingletonPtr()->sendEvent(pTickEvent->usType, (void*)&pTickEvent->stTick, sizeof(pTickEvent->stTick));
 }
 
 void CTick::onStart(void)
 {
-    if (H_INIT_NUMBER == m_uiTick)
+    if (H_INIT_NUMBER == m_uiFrame)
     {
         return;
     }
 
-    m_pTickEvent = initTimeEv(m_uiTick, timeCB);
+    TickEvent *pTickFrame = new(std::nothrow) TickEvent;
+    H_ASSERT(NULL != pTickFrame, "malloc memory error.");
+    pTickFrame->usType = MSG_TIME_FRAME;
+    pTickFrame->stTick.uiCount = 0;
+    pTickFrame->stTick.uiMS = m_uiFrame;
+    initTimeEv(m_uiFrame, timeCB, pTickFrame);
+    m_vcTickEvent.push_back(pTickFrame);
+
+    TickEvent *pTickSec = new(std::nothrow) TickEvent;
+    H_ASSERT(NULL != pTickSec, "malloc memory error.");
+    pTickSec->usType = MSG_TIME_SEC;
+    pTickSec->stTick.uiCount = 0;
+    pTickSec->stTick.uiMS = 1000;
+    initTimeEv(pTickSec->stTick.uiMS, timeCB, pTickSec);
+    m_vcTickEvent.push_back(pTickSec);
 }
 
 H_ENAMSP
