@@ -155,7 +155,7 @@ function AStar:findLatelyPoint(x1, y1, aMap)
 	local minDis = 0
 	local latelyPoint
 	local xMin, xMax, yMin, yMax, dis
-	local xStart, xEnd, yStart, yEnd = self:getRange(x1, y1, aMap:getMaxX(), aMap:getMaxY(), self.searchRange)
+	local xStart, xEnd, yStart, yEnd = self:getRange(x1, y1, aMap:getMaxX(), aMap:getMaxY(), self.Range)
 	
 	for x = xStart, xEnd do
 		for y = yStart, yEnd do
