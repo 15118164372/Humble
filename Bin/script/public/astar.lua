@@ -14,7 +14,6 @@ function AStar:new()
     local self = {}
     setmetatable(self, AStar)
 	self.Range = 0
-	self.Smooth = true
 	
     return self
 end
@@ -375,6 +374,26 @@ function AStar:removePoint(path, aMap)
 	return tmpPath
 end
 
+function AStar:toFPoint(x1, y1, x2, y2, bAddStart, bAddEnd, path)
+	local pathF = {}
+	if bAddStart then
+		table.insert(pathF, APoint:new(x1, y1))
+	end
+	for i = 1, #path do
+		table.insert(pathF, path[i])		
+	end
+	if not bAddStart then
+		pathF[1]:setX(x1)
+		pathF[1]:setY(y1)
+	end
+	if not bAddEnd then
+		pathF[#pathF]:setX(x2)
+		pathF[#pathF]:setY(y2)
+	end
+	
+	return pathF
+end
+
 --A*寻路 坐标可以为浮点
 function AStar:findPath(x1, y1, x2, y2, aMap)
 	--检查起点，目标点是否可以寻，不能则找最近的点
@@ -397,16 +416,11 @@ function AStar:findPath(x1, y1, x2, y2, aMap)
 	end
 	
 	path = self:removePoint(path, aMap)
-
-	return path
+	return self:toFPoint(x1, y1, x2, y2, bAddStart, bAddEnd, path)
 end
 --起点或终点在障碍物中，搜索可用点范围
 function AStar:searchRange(iRange)
 	self.Range = iRange
-end
---是否平滑处理
-function AStar:Smooth(bSmooth)
-	self.Smooth = bSmooth
 end
 
 return AStar

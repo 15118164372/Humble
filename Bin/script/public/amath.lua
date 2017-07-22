@@ -4,7 +4,7 @@ local M = {}
 
 --向量长度
 function M.vectorMagnitude(x, y)
-	return math.sqrt(x*x + y*y)
+	return math.sqrt(x * x + y * y)
 end
 
 --向量单位化

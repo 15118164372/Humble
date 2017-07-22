@@ -146,8 +146,9 @@ local function TestAStar()
 	end
 	
 	local aStar = astar:new()
-	local objClock = CClock()
+	aStar:searchRange(10)
 	
+	local objClock = CClock()	
 	local path = aStar:findPath(17, 66, 20, 79, aMap)
 	print(objClock:Elapsed())
 	assert(0 ~= #path)
@@ -156,7 +157,7 @@ local function TestAStar()
 	path = aStar:findPath(8, 4, 117, 153, aMap)
 	print(objClock:Elapsed())
 	assert(0 ~= #path)]]--
-	aMap:Print(path)
+	--aMap:Print(path)
 end
 
 local function Test()
