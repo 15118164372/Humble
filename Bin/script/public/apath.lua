@@ -2,7 +2,7 @@
 local PathPoint = {}
 PathPoint.__index = PathPoint
 
-function PathPoint:new(point)
+function PathPoint:new(point, key)
     local self = {}
     setmetatable(self, PathPoint)
 	
@@ -10,8 +10,13 @@ function PathPoint:new(point)
 	self.FillWeight = 0
 	self.DistTraveled = 0
 	self.Point = point
+	self.PointKey = key
     
     return self
+end
+
+function PathPoint:getKey()
+	return self.PointKey
 end
 
 function PathPoint:setWeight(weight)

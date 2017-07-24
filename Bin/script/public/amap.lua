@@ -52,6 +52,15 @@ function AMap:canMove(x, y)
 	return weight >= 0
 end
 
+function AMap:canMoveK(key)
+	local weight = self.Filled[key]
+	if not weight then
+		return true
+	end
+	
+	return weight >= 0
+end
+
 function AMap:Print(points)
 	local bHave = false
 	print("")

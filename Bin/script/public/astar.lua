@@ -24,33 +24,30 @@ function AStar:setWeight(pathpoint, fill_weight, end_point)
 	end
 	
 	local curpoint = pathpoint:getPoint()
-	local weight = pathpoint:getFillWeight() + pathpoint:getDistTraveled() + 
-		math.abs(curpoint:getX() - end_point:getX()) + math.abs(curpoint:getY() - end_point:getY())
-	pathpoint:setWeight(weight)
+	pathpoint:setWeight(pathpoint:getFillWeight() + pathpoint:getDistTraveled() + 
+		math.abs(curpoint:getX() - end_point:getX()) + math.abs(curpoint:getY() - end_point:getY()))
 	
 	return true
 end
 
-function AStar:getSurrounding(point, aMap)
-	local surrounding = {}
-	local x = point:getX()
-	local y = point:getY()
-	
-	if x > 0 then
-		table.insert(surrounding, APoint:new(x - 1, y))
+function AStar:handlePoint(p, curKey, current, source, openList, listOpen)	
+	local fill_weight = aMap:getPFilled(p)
+	local path_point = PathPoint:new(p, curKey)
+	path_point:setParent(current)
+	path_point:setFillWeight(current:getFillWeight() + fill_weight)
+	path_point:setDistTraveled(current:getDistTraveled() + 1)
+					
+	self:setWeight(path_point, fill_weight, source)
+					
+	local existing_point = openList[curKey]
+	if not existing_point then
+		openList[curKey] = path_point
+		listOpen:Push(path_point)
+	else
+		if path_point:getWeight() < existing_point:getWeight() then
+			existing_point:setParent(path_point:getParent())
+		end
 	end
-	if x < aMap:getMaxX() - 1 then
-		table.insert(surrounding, APoint:new(x + 1, y))
-	end
-	
-	if y > 0 then
-		table.insert(surrounding, APoint:new(x, y - 1))
-	end
-	if y < aMap:getMaxY() - 1 then
-		table.insert(surrounding, APoint:new(x, y + 1))
-	end
-	
-	return surrounding
 end
 
 --a*寻路
@@ -59,19 +56,21 @@ function AStar:Find(source, target, aMap)
 	local closeList = {}
 	local listOpen = ListPath:new()
 	
+	local curKey = aMap:getPKey(target)
 	local target_weight = aMap:getPFilled(target)
-	local target_point = PathPoint:new(target)
+	local target_point = PathPoint:new(target, curKey)
 	target_point:setFillWeight(target_weight)
 	
 	if self:setWeight(target_point, target_weight, source) then
-		openList[aMap:getPKey(target)] = target_point
+		openList[curKey] = target_point
 		listOpen:Push(target_point)
 	end
 	
 	local current
-	local curPoint
-	local curKey
-	local surrounding
+	local curPoint	
+	local maxX = aMap:getMaxX()
+	local maxY = aMap:getMaxY()
+	local x, y
 	
 	while(true)
 	do
@@ -85,33 +84,36 @@ function AStar:Find(source, target, aMap)
 			break
 		end
 		
-		curKey = aMap:getPKey(curPoint)
+		curKey = current:getKey()		
 		openList[curKey] = nil
 		closeList[curKey] = current
 		
-		surrounding = self:getSurrounding(curPoint, aMap)
-		for _, p in pairs(surrounding) do
-			curKey = aMap:getPKey(p)
-			if not closeList[curKey] then
-				if aMap:canMove(p:getX(), p:getY()) then
-					local fill_weight = aMap:getPFilled(p)
-					local path_point = PathPoint:new(p)
-					path_point:setParent(current)
-					path_point:setFillWeight(current:getFillWeight() + fill_weight)
-					path_point:setDistTraveled(current:getDistTraveled() + 1)
-					
-					self:setWeight(path_point, fill_weight, source)
-					
-					local existing_point = openList[curKey]
-					if not existing_point then
-						openList[curKey] = path_point
-						listOpen:Push(path_point)
-					else
-						if path_point:getWeight() < existing_point:getWeight() then
-							existing_point:setParent(path_point:getParent())
-						end
-					end
-				end
+		x = curPoint:getX()
+		y = curPoint:getY()
+		
+		if x > 0 then
+			curKey = aMap:getKey(x - 1, y)			
+			if aMap:canMoveK(curKey) and not closeList[curKey] then
+				self:handlePoint(APoint:new(x - 1, y), curKey, current, source, openList, listOpen)
+			end
+		end
+		if x < maxX - 1 then
+			curKey = aMap:getKey(x + 1, y)
+			if aMap:canMoveK(curKey) and not closeList[curKey] then
+				self:handlePoint(APoint:new(x + 1, y), curKey, current, source, openList, listOpen)
+			end
+		end
+		
+		if y > 0 then
+			curKey = aMap:getKey(x, y - 1)
+			if aMap:canMoveK(curKey) and not closeList[curKey] then
+				self:handlePoint(APoint:new(x, y - 1), curKey, current, source, openList, listOpen)
+			end
+		end
+		if y < maxY - 1 then
+			curKey = aMap:getKey(x, y + 1)
+			if aMap:canMoveK(curKey) and not closeList[curKey] then
+				self:handlePoint(APoint:new(x, y + 1), curKey, current, source, openList, listOpen)
 			end
 		end
 	end

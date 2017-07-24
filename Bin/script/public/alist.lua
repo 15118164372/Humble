@@ -19,7 +19,7 @@ function ListPath:Push(pathpoint)
 	local preNode
 	while(curNode)
 	do
-		if curNode:getWeight() > pathpoint:getWeight() then
+		if curNode:getWeight() >= pathpoint:getWeight() then
 			if not preNode then
 				--±íÍ·
 				self.Head = pathpoint
