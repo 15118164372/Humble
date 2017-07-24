@@ -5,6 +5,7 @@ local aoi = require("aoi")
 local APoint = require("apoint")
 local amap = require("amap")
 local astar = require("astar")
+local m_strTaskName = g_taskName
 
 function initTask()
 	
@@ -169,5 +170,6 @@ local function Test()
 	print("---------------------test end-------------------------")
 	
 	unRegDelay()
+	humble.unregTask(m_strTaskName)
 end
 regDelayEv(1, Test)

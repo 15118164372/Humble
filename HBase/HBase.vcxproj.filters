@@ -156,9 +156,6 @@
     <ClInclude Include="ZEncrypt.h">
       <Filter>Encrypt</Filter>
     </ClInclude>
-    <ClInclude Include="Binary.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="Clock.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -428,9 +425,6 @@
     </ClCompile>
     <ClCompile Include="ZEncrypt.cpp">
       <Filter>Encrypt</Filter>
-    </ClCompile>
-    <ClCompile Include="Binary.cpp">
-      <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Clock.cpp">
       <Filter>Common</Filter>

@@ -22,7 +22,6 @@
     <ClInclude Include="AES.h" />
     <ClInclude Include="Atomic.h" />
     <ClInclude Include="Base64.h" />
-    <ClInclude Include="Binary.h" />
     <ClInclude Include="Chan.h" />
     <ClInclude Include="CirQueue.h" />
     <ClInclude Include="Clock.h" />
@@ -114,7 +113,6 @@
     <ClCompile Include="AES.cpp" />
     <ClCompile Include="Atomic.cpp" />
     <ClCompile Include="Base64.cpp" />
-    <ClCompile Include="Binary.cpp" />
     <ClCompile Include="Chan.cpp" />
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="CoreDump.cpp" />

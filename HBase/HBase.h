@@ -21,7 +21,6 @@
 #include "Ini.h"
 #include "TableFile.h"
 #include "Library.h"
-#include "Binary.h"
 #include "Funcs.h"
 #include "Singleton.h"
 #include "SnowFlake.h"

@@ -2,7 +2,7 @@
 #ifndef H_EVENTBUFFER_H_
 #define H_EVENTBUFFER_H_
 
-#include "Binary.h"
+#include "Macros.h"
 
 H_BNAMSP
 

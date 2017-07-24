@@ -6,7 +6,7 @@
 
 H_BNAMSP
 
-//循环队列
+//队列
 class CCirQueue
 {
 public:
