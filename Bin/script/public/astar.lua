@@ -36,9 +36,9 @@ function AStar:handlePoint(p, curKey, current, source, openList, listOpen)
 	path_point:setParent(current)
 	path_point:setFillWeight(current:getFillWeight() + fill_weight)
 	path_point:setDistTraveled(current:getDistTraveled() + 1)
-					
+	
 	self:setWeight(path_point, fill_weight, source)
-					
+	
 	local existing_point = openList[curKey]
 	if not existing_point then
 		openList[curKey] = path_point
