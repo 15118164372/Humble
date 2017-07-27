@@ -1,6 +1,8 @@
 
 #include "Reg2Lua.h"
 #include "LTask.h"
+#include "LAOI.h"
+#include "LAStar.h"
 
 H_BNAMSP
 
@@ -254,6 +256,42 @@ void H_RegLState(struct lua_State *pLState)
         .endClass();
 }
 
+void H_RegAOI(struct lua_State *pLState)
+{
+    luabridge::getGlobalNamespace(pLState)
+        .beginClass<CAOI>("CAOI")
+            .addConstructor<void(*)(int, int, int)>()
+            .addFunction("Enter", &CAOI::Enter)
+            .addFunction("Leave", &CAOI::Leave)
+            .addFunction("Move", &CAOI::Move)
+        .endClass()
+        .deriveClass<CLAOI, CAOI>("CLAOI")
+            .addConstructor<void(*)(H_LSTATE *, int, int, int)>()
+            .addFunction("getArea", &CLAOI::getLArea)
+        .endClass();
+}
+
+void H_RegAStar(struct lua_State *pLState)
+{
+    luabridge::getGlobalNamespace(pLState)
+        .beginClass<CAMap>("CAMap")
+            .addConstructor<void(*)(int, int)>()
+            .addFunction("Filled", &CAMap::Filled)
+        .endClass();
+
+    luabridge::getGlobalNamespace(pLState)
+        .beginClass<CAStar>("CAStar")
+            .addConstructor<void(*)()>()
+            .addFunction("setSmooth", &CAStar::setSmooth)
+            .addFunction("setRange", &CAStar::setRange)
+        .endClass()
+        .deriveClass<CLAStar, CAStar>("CLAStar")
+            .addConstructor<void(*)(H_LSTATE *)>()
+            .addFunction("findPath", &CLAStar::astarPath)
+            .addFunction("Print", &CLAStar::printMap)
+        .endClass();
+}
+
 void H_RegMail(struct lua_State *pLState)
 {
     luabridge::getGlobalNamespace(pLState)
@@ -412,6 +450,8 @@ void H_RegSha1(struct lua_State *pLState)
 void H_RegAll(struct lua_State *pLState)
 {
     H_RegLState(pLState);
+    H_RegAOI(pLState);
+    H_RegAStar(pLState);
     H_RegMail(pLState);
     H_RegCurLink(pLState);
     H_RegFuncs(pLState);

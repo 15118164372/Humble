@@ -20,6 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AES.h" />
+    <ClInclude Include="AOI.h" />
+    <ClInclude Include="AStar.h" />
+    <ClInclude Include="AStarStruct.h" />
     <ClInclude Include="Atomic.h" />
     <ClInclude Include="Base64.h" />
     <ClInclude Include="Chan.h" />
@@ -111,6 +114,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AES.cpp" />
+    <ClCompile Include="AOI.cpp" />
+    <ClCompile Include="AStar.cpp" />
     <ClCompile Include="Atomic.cpp" />
     <ClCompile Include="Base64.cpp" />
     <ClCompile Include="Chan.cpp" />

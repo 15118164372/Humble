@@ -9,6 +9,7 @@ CLTask::CLTask(const char *pszFile, const char *pszName, const int iCapacity) : 
     H_ASSERT(NULL != m_stState.pLState, "luaL_newstate error.");
 
     luaL_openlibs((struct lua_State *)m_stState.pLState);
+
     H_RegAll((struct lua_State *)m_stState.pLState);
     luabridge::setGlobal((struct lua_State *)m_stState.pLState, getName()->c_str(), "g_taskName");
     luabridge::setGlobal((struct lua_State *)m_stState.pLState, &m_stState, "thisState");

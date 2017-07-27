@@ -7,6 +7,9 @@
 #include "LockThis.h"
 #include "Thread.h"
 
+#include "AOI.h"
+#include "AStar.h"
+
 #include "AES.h"
 #include "HDES.h"
 #include "Base64.h"

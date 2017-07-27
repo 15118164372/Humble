@@ -43,6 +43,9 @@
     <Filter Include="3rd\d3des">
       <UniqueIdentifier>{fe727b38-c716-43ab-9060-4de2d2909d09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Algorithm">
+      <UniqueIdentifier>{fefd085f-3b09-4408-a4a8-2d756ab5cbe1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -310,6 +313,15 @@
     <ClInclude Include="d3des\d3des.h">
       <Filter>3rd\d3des</Filter>
     </ClInclude>
+    <ClInclude Include="AOI.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="AStar.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="AStarStruct.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zlib\adler32.c">
@@ -549,6 +561,12 @@
     </ClCompile>
     <ClCompile Include="d3des\d3des.c">
       <Filter>3rd\d3des</Filter>
+    </ClCompile>
+    <ClCompile Include="AOI.cpp">
+      <Filter>Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="AStar.cpp">
+      <Filter>Algorithm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
