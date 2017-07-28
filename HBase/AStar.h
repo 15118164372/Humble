@@ -14,11 +14,14 @@ public:
     ~CAMap(void);
 
     void Filled(int iX, int iY, int iWeight);
+
+    friend class CAStar;
+
+protected:
     int filledTiles(PointI &stPoint);
     bool canMove(int iX, int iY);
     bool canMove(PointI &stPoint);
 
-    friend class CAStar;
 private:
     CAMap(void);
     H_DISALLOWCOPY(CAMap);
