@@ -45,7 +45,7 @@
 #include "global.h"
 #include "md2.h"                               /* allow access to others */
 #include "md4.h"
-#include "md5.h"
+#include "md5/md5.h"
 #include "shs.h"
 #include "nn.h"
 #include "des.h"
@@ -214,7 +214,7 @@ typedef struct {
   union {                                      /* digest sub-context */
 		MD2_CTX md2;
 		MD4_CTX md4;
-		MD5_CTX md5;
+        md5_state_t md5;
 		SHS_CTX shs;
 	} context;
 } R_DIGEST_CTX;

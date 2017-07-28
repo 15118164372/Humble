@@ -21,7 +21,6 @@ local zlibDecode = zlibDecode
 local b64Encode = b64Encode
 local b64Decode = b64Decode
 local md5Str = md5Str
-local md5File = md5File
 local regEvent = regEvent
 local unRegTime = unRegTime
 local regIProto = regIProto
@@ -155,9 +154,6 @@ end
 
 function humble.md5Str(strval)
     return md5Str(strval, #strval)
-end
-function humble.md5File(strFile)
-    return md5File(strFile)
 end
 
 --ÊÂ¼þ×¢²á Accept, Linked, Closed, Frame, Sec 

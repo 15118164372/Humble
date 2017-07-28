@@ -46,6 +46,12 @@
     <Filter Include="Algorithm">
       <UniqueIdentifier>{fefd085f-3b09-4408-a4a8-2d756ab5cbe1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="3rd\conhash">
+      <UniqueIdentifier>{86c31d63-2865-46a1-934c-939c0df125db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\md5">
+      <UniqueIdentifier>{eb538389-d61e-40c3-b927-a95c4d89556a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -108,9 +114,6 @@
     <ClInclude Include="RSAEuro\md4.h">
       <Filter>3rd\RSAEuro</Filter>
     </ClInclude>
-    <ClInclude Include="RSAEuro\md5.h">
-      <Filter>3rd\RSAEuro</Filter>
-    </ClInclude>
     <ClInclude Include="RSAEuro\nn.h">
       <Filter>3rd\RSAEuro</Filter>
     </ClInclude>
@@ -145,9 +148,6 @@
       <Filter>Encrypt</Filter>
     </ClInclude>
     <ClInclude Include="HRSA.h">
-      <Filter>Encrypt</Filter>
-    </ClInclude>
-    <ClInclude Include="md5.h">
       <Filter>Encrypt</Filter>
     </ClInclude>
     <ClInclude Include="RSAKey.h">
@@ -322,6 +322,24 @@
     <ClInclude Include="AStarStruct.h">
       <Filter>Algorithm</Filter>
     </ClInclude>
+    <ClInclude Include="conhash\configure.h">
+      <Filter>3rd\conhash</Filter>
+    </ClInclude>
+    <ClInclude Include="conhash\conhash.h">
+      <Filter>3rd\conhash</Filter>
+    </ClInclude>
+    <ClInclude Include="conhash\conhash_inter.h">
+      <Filter>3rd\conhash</Filter>
+    </ClInclude>
+    <ClInclude Include="conhash\util_rbtree.h">
+      <Filter>3rd\conhash</Filter>
+    </ClInclude>
+    <ClInclude Include="md5\md5.h">
+      <Filter>3rd\md5</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsistentHash.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zlib\adler32.c">
@@ -378,9 +396,6 @@
     <ClCompile Include="RSAEuro\md4c.c">
       <Filter>3rd\RSAEuro</Filter>
     </ClCompile>
-    <ClCompile Include="RSAEuro\md5c.c">
-      <Filter>3rd\RSAEuro</Filter>
-    </ClCompile>
     <ClCompile Include="RSAEuro\nn.c">
       <Filter>3rd\RSAEuro</Filter>
     </ClCompile>
@@ -424,9 +439,6 @@
       <Filter>Encrypt</Filter>
     </ClCompile>
     <ClCompile Include="HRSA.cpp">
-      <Filter>Encrypt</Filter>
-    </ClCompile>
-    <ClCompile Include="md5.cpp">
       <Filter>Encrypt</Filter>
     </ClCompile>
     <ClCompile Include="RSAKey.cpp">
@@ -566,6 +578,24 @@
       <Filter>Algorithm</Filter>
     </ClCompile>
     <ClCompile Include="AStar.cpp">
+      <Filter>Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="conhash\conhash.c">
+      <Filter>3rd\conhash</Filter>
+    </ClCompile>
+    <ClCompile Include="conhash\conhash_inter.c">
+      <Filter>3rd\conhash</Filter>
+    </ClCompile>
+    <ClCompile Include="conhash\conhash_util.c">
+      <Filter>3rd\conhash</Filter>
+    </ClCompile>
+    <ClCompile Include="conhash\util_rbtree.c">
+      <Filter>3rd\conhash</Filter>
+    </ClCompile>
+    <ClCompile Include="md5\md5.c">
+      <Filter>3rd\md5</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsistentHash.cpp">
       <Filter>Algorithm</Filter>
     </ClCompile>
   </ItemGroup>

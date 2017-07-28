@@ -128,7 +128,7 @@ int digesttype;                 /* message-digest algorithm */
 		break;
 
 	case DA_MD5:
-		MD5Init(&context->context.md5);
+		md5_init(&context->context.md5);
 		break;
 
 	default:
@@ -157,7 +157,7 @@ unsigned int partInLen;         /* length of next data part */
 		break;
 
 	case DA_MD5:
-		MD5Update(&context->context.md5, partIn, partInLen);
+		md5_append(&context->context.md5, partIn, partInLen);
 		break;
 
 	default:
@@ -188,7 +188,7 @@ unsigned int *digestLen;        /* length of message digest */
 		break;
 
 	case DA_MD5:
-		MD5Final(digest, &context->context.md5);
+		md5_finish(&context->context.md5, digest);
 		break;
 
 	default:

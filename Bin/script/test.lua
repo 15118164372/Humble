@@ -155,6 +155,54 @@ local function TestAStar()
 	--aStar:Print(path, pMap)
 end
 
+local function TestConHash()
+	local bPrint = false
+	connHash = CConHash()	
+	connHash:addNode("titanic", 32)
+	connHash:addNode("terminator2018", 24)
+	connHash:addNode("Xenomorph", 25)
+	connHash:addNode("True Lies", 10)
+	connHash:addNode("avantar", 48)
+	
+	local vNum = connHash:getVNodeNum()
+	assert(vNum == 139)
+	if bPrint then
+		print("")
+		print("virtual nodes number:"..vNum)
+	end
+	
+	local strObj
+	local strMsg
+	if bPrint then
+		print("the hashing results--------------------------------------")
+	end
+	for i = 1, 20 do
+		strObj = string.format("James.km%03d", i)
+		strMsg = string.format("%s is in node : %s", strObj, connHash:findNode(strObj))
+		if bPrint then
+			print(strMsg)
+		end
+	end
+	
+	connHash:delNode("Xenomorph")
+	vNum = connHash:getVNodeNum()
+	assert(vNum == 114)
+	if bPrint then
+		print("remove node Xenomorph, virtual nodes number:"..vNum)
+	end
+	
+	if bPrint then
+		print("the hashing results--------------------------------------")
+	end
+	for i = 1, 20 do
+		strObj = string.format("James.km%03d", i)
+		strMsg = string.format("%s is in node : %s", strObj, connHash:findNode(strObj))
+		if bPrint then
+			print(strMsg)
+		end
+	end
+end
+
 local function Test()
 	print("---------------------test bagin-------------------------")
 	local objClock = CClock()
@@ -170,6 +218,11 @@ local function Test()
 	objClock:reStart()
 	TestMail()
 	print("TestMail use time:"..objClock:Elapsed())
+	
+	objClock:reStart()
+	TestConHash()
+	print("TestConHash use time:"..objClock:Elapsed())
+	
 	print("---------------------test end-------------------------")
 	
 	unRegDelay()

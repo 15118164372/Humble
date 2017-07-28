@@ -82,13 +82,13 @@ R_RANDOM_STRUCT *random;        /* random structure */
 unsigned char *block;           /* block of values to mix in */
 unsigned int len;               /* length of block */
 {
-	MD5_CTX context;
+    md5_state_t context;
 	BYTE digest[16];
     unsigned short int i, j;
 
-	MD5Init(&context);
-	MD5Update(&context, block, len);
-	MD5Final(digest, &context);
+    md5_init(&context);
+    md5_append(&context, block, len);
+    md5_finish(&context, digest);
 
 	/* add digest to state */
 
@@ -127,7 +127,7 @@ unsigned char *block;                             /* block */
 unsigned int len;                                 /* length of block */
 R_RANDOM_STRUCT *random;                          /* random structure */
 {
-	MD5_CTX context;
+    md5_state_t context;
 	unsigned int avail, i;
 
 	if(random->bytesNeeded)
@@ -142,9 +142,9 @@ R_RANDOM_STRUCT *random;                          /* random structure */
 
 		/* generate new output */
 
-		MD5Init(&context);
-		MD5Update(&context, random->state, 16);
-		MD5Final(random->output, &context);
+        md5_init(&context);
+        md5_append(&context, random->state, 16);
+        md5_finish(&context, random->output);
 		avail = 16;
 
 		/* increment state */
@@ -212,7 +212,7 @@ void R_RandomMix(random)
 R_RANDOM_STRUCT *random;
 {
 	unsigned int i;
-	MD5_CTX context;
+    md5_state_t context;
 
     for(i = 0; i < MIX_CNT; i++) {
         random->state[i] ^= (unsigned char) clock();
@@ -221,9 +221,9 @@ R_RANDOM_STRUCT *random;
 
 	/* Clear any old state with new data */
 
-	MD5Init(&context);
-	MD5Update(&context, random->state, 16);
-	MD5Final(random->output, &context);
+    md5_init(&context);
+    md5_append(&context, random->state, 16);
+    md5_finish(&context, random->output);
 
 	/* tell R_GenerateBytes there is new output */
 

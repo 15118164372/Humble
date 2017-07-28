@@ -31,20 +31,16 @@ void luaLog(const unsigned short usLV, const char *pszLuaFile, const int iLine, 
 
 std::string md5Str(const char *pszVal, const size_t iLens)
 {
-    CMD5 objMD5;
+    char digestStr[33];
+    md5_byte_t digest[16];
+    md5_state_t md5;
 
-    objMD5.update(pszVal, iLens);
+    md5_init(&md5);
+    md5_append(&md5, (md5_byte_t*)pszVal, (int)iLens);
+    md5_finish(&md5, digest);
+    md5_tostring(digest, digestStr);
 
-    return objMD5.toString();
-}
-
-std::string md5File(const char *pszFile)
-{
-    CMD5 objMD5;
-
-    objMD5.updatefile(pszFile);
-
-    return objMD5.toString();
+    return std::string(digestStr);
 }
 
 const char *getProPath(void)
@@ -223,7 +219,6 @@ void H_RegFuncs(struct lua_State *pLState)
         .addFunction("b64Encode", H_B64Encode)
         .addFunction("b64Decode", H_B64Decode)
         .addFunction("md5Str", md5Str)
-        .addFunction("md5File", md5File)
         .addFunction("getPathSeparator", getPathSeparator)
         .addFunction("getProPath", getProPath)
         .addFunction("getScriptPath", getScriptPath)
@@ -289,6 +284,18 @@ void H_RegAStar(struct lua_State *pLState)
             .addConstructor<void(*)(H_LSTATE *)>()
             .addFunction("findPath", &CLAStar::astarPath)
             .addFunction("Print", &CLAStar::printMap)
+        .endClass();
+}
+
+void H_RegConHash(struct lua_State *pLState)
+{
+    luabridge::getGlobalNamespace(pLState)
+        .beginClass<CConHash>("CConHash")
+            .addConstructor<void(*)()>()
+            .addFunction("addNode", &CConHash::addNode)
+            .addFunction("delNode", &CConHash::delNode)
+            .addFunction("findNode", &CConHash::findNode)
+            .addFunction("getVNodeNum", &CConHash::getVNodeNum)
         .endClass();
 }
 
@@ -452,6 +459,7 @@ void H_RegAll(struct lua_State *pLState)
     H_RegLState(pLState);
     H_RegAOI(pLState);
     H_RegAStar(pLState);
+    H_RegConHash(pLState);
     H_RegMail(pLState);
     H_RegCurLink(pLState);
     H_RegFuncs(pLState);

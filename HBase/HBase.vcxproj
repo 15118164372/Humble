@@ -29,6 +29,11 @@
     <ClInclude Include="CirQueue.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="conhash\configure.h" />
+    <ClInclude Include="conhash\conhash.h" />
+    <ClInclude Include="conhash\conhash_inter.h" />
+    <ClInclude Include="conhash\util_rbtree.h" />
+    <ClInclude Include="ConsistentHash.h" />
     <ClInclude Include="CoreDump.h" />
     <ClInclude Include="CRC.h" />
     <ClInclude Include="d3des\d3des.h" />
@@ -53,7 +58,7 @@
     <ClInclude Include="LockThis.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Macros.h" />
-    <ClInclude Include="md5.h" />
+    <ClInclude Include="md5\md5.h" />
     <ClInclude Include="MMap.h" />
     <ClInclude Include="MSGDispatch.h" />
     <ClInclude Include="NETAddr.h" />
@@ -69,7 +74,6 @@
     <ClInclude Include="RSAEuro\global.h" />
     <ClInclude Include="RSAEuro\md2.h" />
     <ClInclude Include="RSAEuro\md4.h" />
-    <ClInclude Include="RSAEuro\md5.h" />
     <ClInclude Include="RSAEuro\nn.h" />
     <ClInclude Include="RSAEuro\prime.h" />
     <ClInclude Include="RSAEuro\rsa.h" />
@@ -120,6 +124,11 @@
     <ClCompile Include="Base64.cpp" />
     <ClCompile Include="Chan.cpp" />
     <ClCompile Include="Clock.cpp" />
+    <ClCompile Include="conhash\conhash.c" />
+    <ClCompile Include="conhash\conhash_inter.c" />
+    <ClCompile Include="conhash\conhash_util.c" />
+    <ClCompile Include="conhash\util_rbtree.c" />
+    <ClCompile Include="ConsistentHash.cpp" />
     <ClCompile Include="CoreDump.cpp" />
     <ClCompile Include="CRC.cpp" />
     <ClCompile Include="d3des\d3des.c" />
@@ -137,7 +146,7 @@
     <ClCompile Include="Library.cpp" />
     <ClCompile Include="Linker.cpp" />
     <ClCompile Include="Log.cpp" />
-    <ClCompile Include="md5.cpp" />
+    <ClCompile Include="md5\md5.c" />
     <ClCompile Include="MSGDispatch.cpp" />
     <ClCompile Include="NETAddr.cpp" />
     <ClCompile Include="NetBase.cpp" />
@@ -151,7 +160,6 @@
     <ClCompile Include="RSAEuro\desc.c" />
     <ClCompile Include="RSAEuro\md2c.c" />
     <ClCompile Include="RSAEuro\md4c.c" />
-    <ClCompile Include="RSAEuro\md5c.c" />
     <ClCompile Include="RSAEuro\nn.c" />
     <ClCompile Include="RSAEuro\prime.c" />
     <ClCompile Include="RSAEuro\rsa.c" />
@@ -272,7 +280,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/conhash;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/md5;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -285,7 +293,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/conhash;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/md5;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -300,7 +308,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/conhash;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/md5;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -317,7 +325,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/conhash;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/md5;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -9,12 +9,13 @@
 
 #include "AOI.h"
 #include "AStar.h"
+#include "ConsistentHash.h"
 
 #include "AES.h"
 #include "HDES.h"
 #include "Base64.h"
 #include "CRC.h"
-#include "md5.h"
+#include "md5/md5.h"
 #include "RSAKey.h"
 #include "HRSA.h"
 #include "ZEncrypt.h"

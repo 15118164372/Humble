@@ -12,6 +12,7 @@ void H_RegFuncs(struct lua_State *pLState);
 void H_RegLState(struct lua_State *pLState);
 void H_RegAOI(struct lua_State *pLState);
 void H_RegAStar(struct lua_State *pLState);
+void H_RegConHash(struct lua_State *pLState);
 void H_RegMail(struct lua_State *pLState);
 void H_RegCurLink(struct lua_State *pLState);
 void H_RegClock(struct lua_State *pLState);
