@@ -16,12 +16,6 @@ local function echo(sock, sockType, httpInfo)
 end
 regProto("/echo1", echo)
 
-local function echonumber(sock, sockType, netMsg)
-	print(netMsg)
-	tcp1.Response(sock, 12, "echonumber return.")
-end
-regProto(10, echonumber)
-
 local function on11Close(sock, sockType)
 	print(string.format("sock %d type %d closed", sock, sockType))
 end

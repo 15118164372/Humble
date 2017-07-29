@@ -43,7 +43,7 @@ local function registerRtn(rpcParam, sock)
 	end
 	
 	local regInfo = cjson.decode(rpcParam)
-	m_RPCReg[sock] = table.copy(regInfo)
+	m_RPCReg[sock] = regInfo
 	rpcLinkRegister(regInfo.svId, regInfo.svType, sock)
 	humble.Infof("register server %d, type %d, sock %d", regInfo.svId, regInfo.svType, sock)
 end
