@@ -15,8 +15,3 @@ local function echo(sock, sockType, httpInfo)
 	httpd.Response(sock, 200, "echo1 return.")
 end
 regProto("/echo1", echo)
-
-local function on11Close(sock, sockType)
-	print(string.format("sock %d type %d closed", sock, sockType))
-end
-regClosedEv(11, on11Close)
