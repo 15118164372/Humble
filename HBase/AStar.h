@@ -77,7 +77,6 @@ private:
     std::vector<PointI> Find(PointI &stSource, PointI &stTarget, CAMap *pAMap);
     bool correctPoint(float &fX, float &fY, PointI &stPoint, bool &bAdd, CAMap *pAMap);
     int clampInt(int iValue, int iMin, int iMax);
-    bool checkSurrounding(PointI &stPoint, CAMap *pAMap);
     bool findLatelyPoint(const int iX1, const int iY1, PointI &stPoint, CAMap *pAMap);
     std::vector<PointI> removePoint(std::vector<PointI> &vcPath, CAMap *pAMap);
     void toFPoint(float &fX1, float &fY1, float &fX2, float &fY2,

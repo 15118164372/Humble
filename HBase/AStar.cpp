@@ -208,37 +208,6 @@ int CAStar::clampInt(int iValue, int iMin, int iMax)
     return iValue;
 }
 
-bool CAStar::checkSurrounding(PointI &stPoint, CAMap *pAMap)
-{
-    int iSub(stPoint.iX - 1);
-    int xStart((iSub >= 0 ? iSub : 0));
-    int iAdd(stPoint.iX + 1);
-    int xEnd((iAdd >= pAMap->m_maxX ? pAMap->m_maxX - 1 : iAdd));
-
-    iSub = stPoint.iY - 1;
-    int yStart((iSub >= 0 ? iSub : 0));
-    iAdd = stPoint.iY + 1;
-    int yEnd((iAdd >= pAMap->m_maxY ? pAMap->m_maxY - 1 : iAdd));
-
-    for (int x = xStart; x <= xEnd; ++x)
-    {
-        for (int y = yStart; y <= yEnd; ++y)
-        {
-            if (x == stPoint.iX && y == stPoint.iY)
-            {
-                continue;
-            }
-
-            if (!pAMap->canMove(x, y))
-            {
-                return false;
-            }
-        }
-    }
-
-    return true;
-}
-
 bool CAStar::findLatelyPoint(const int iX1, const int iY1, PointI &stPoint, CAMap *pAMap)
 {
     int iSub(iX1 - m_iSearchRange);
@@ -267,11 +236,6 @@ bool CAStar::findLatelyPoint(const int iX1, const int iY1, PointI &stPoint, CAMa
             stCurPoint.iX = x;
             stCurPoint.iY = y;
             if (!pAMap->canMove(stCurPoint))
-            {
-                continue;
-            }
-
-            if (!checkSurrounding(stCurPoint, pAMap))
             {
                 continue;
             }
