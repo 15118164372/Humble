@@ -15,60 +15,39 @@ CTaskRunner::~CTaskRunner(void)
 
 }
 
+bool CTaskRunner::runTask(class CTaskWorker *pTask)
+{
+    H_MSG *pMsg;
+    for (int iCount = H_INIT_NUMBER; iCount < H_MAXRUNNUM; ++iCount)
+    {
+        pMsg = (H_MSG*)pTask->getChan()->Recv();
+        if (NULL == pMsg)
+        {
+            break;
+        }
+
+        pTask->Run(pMsg);
+        if (MSG_TASK_DEL == pMsg->usEnevt)
+        {
+            H_SafeDelete(pMsg);
+            return true;
+        }
+        H_SafeDelete(pMsg);
+    }
+
+    return false;
+}
+
 void CTaskRunner::Run(void)
 {
-    bool bDel(false);
-    H_MSG *pMsg(NULL);
+    bool bDel(false);    
     CTaskWorker *pTask(NULL);
-    int iCount(H_INIT_NUMBER);
     CTaskGlobleQu *pGlobleQu(CTaskGlobleQu::getSingletonPtr());
 
     H_AtomicAdd(&m_lCount, 1);
 
     while (H_INIT_NUMBER == H_AtomicGet(&m_lExit))
     {
-        if (NULL != pTask)
-        {
-            bDel = false;
-            for (iCount = H_INIT_NUMBER; iCount < H_MAXRUNNUM; ++iCount)
-            {
-                pMsg = (H_MSG*)pTask->getChan()->Recv();
-                if (NULL == pMsg)
-                {
-                    break;
-                }
-
-                pTask->Run(pMsg);
-                if (MSG_TASK_DEL == pMsg->usEnevt)
-                {
-                    H_SafeDelete(pMsg);
-                    bDel = true;
-                    break;
-                }
-                H_SafeDelete(pMsg);
-            }
-
-            if (!bDel)
-            {
-                pTask->getChan()->getLock()->Lock();
-                if (H_INIT_NUMBER != pTask->getChan()->getSize())
-                {
-                    pGlobleQu->m_objQuLock.Lock();
-                    if (!pGlobleQu->m_objQu.Push(pTask))
-                    {
-                        pTask->setInGloble(false);
-                        H_LOG(LOGLV_ERROR, "add task %s in globle queue error.", pTask->getName()->c_str());
-                    }
-                    pGlobleQu->m_objQuLock.unLock();
-                }
-                else
-                {
-                    pTask->setInGloble(false);
-                }
-                pTask->getChan()->getLock()->unLock();
-            }
-        }        
-        
         pGlobleQu->m_objQuLock.Lock();
         pTask = (CTaskWorker *)pGlobleQu->m_objQu.Pop();
         pGlobleQu->m_objQuLock.unLock();
@@ -78,7 +57,32 @@ void CTaskRunner::Run(void)
             ++pGlobleQu->m_uiWait;
             pthread_cond_wait(&(pGlobleQu->m_objCond), objLock.getMutex());
             --pGlobleQu->m_uiWait;
+
+            continue;
         }
+
+        bDel = runTask(pTask);        
+        if (bDel)
+        {
+            continue;
+        }
+
+        pTask->getInGlobleLock()->Lock();
+        if (H_INIT_NUMBER != pTask->getChan()->getSize())
+        {
+            pGlobleQu->m_objQuLock.Lock();
+            if (!pGlobleQu->m_objQu.Push(pTask))
+            {
+                pTask->setInGloble(false);
+                H_LOG(LOGLV_ERROR, "add task %s in globle queue error.", pTask->getName()->c_str());
+            }
+            pGlobleQu->m_objQuLock.unLock();
+        }
+        else
+        {
+            pTask->setInGloble(false);
+        }
+        pTask->getInGlobleLock()->unLock();
     }
 
     runSurplus();
@@ -94,32 +98,29 @@ void CTaskRunner::runSurplus(void)
 
     while (true)
     {
-        if (NULL != pTask)
-        {
-            while (true)
-            {
-                pMsg = (H_MSG*)pTask->getChan()->Recv();
-                if (NULL == pMsg)
-                {
-                    break;
-                }
-
-                pTask->Run(pMsg);
-                if (MSG_TASK_DEL == pMsg->usEnevt)
-                {
-                    H_SafeDelete(pMsg);
-                    break;
-                }
-                H_SafeDelete(pMsg);
-            }
-        }
-
         pGlobleQu->m_objQuLock.Lock();
         pTask = (CTaskWorker *)pGlobleQu->m_objQu.Pop();
         pGlobleQu->m_objQuLock.unLock();
         if (NULL == pTask)
         {
             break;
+        }
+
+        while (true)
+        {
+            pMsg = (H_MSG*)pTask->getChan()->Recv();
+            if (NULL == pMsg)
+            {
+                break;
+            }
+
+            pTask->Run(pMsg);
+            if (MSG_TASK_DEL == pMsg->usEnevt)
+            {
+                H_SafeDelete(pMsg);
+                break;
+            }
+            H_SafeDelete(pMsg);
         }
     }
 }

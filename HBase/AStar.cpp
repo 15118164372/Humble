@@ -208,59 +208,111 @@ int CAStar::clampInt(int iValue, int iMin, int iMax)
     return iValue;
 }
 
+void CAStar::checkEdge(const int &iX1, const int &iY1, const bool bY, const int &iRange,
+    std::vector<PointI> &vcPoint, CAMap *pAMap)
+{
+    PointI stTmpPoint;
+
+    if (bY)
+    {
+        stTmpPoint.iX = iX1;
+
+        int iYMin(iY1 - iRange);
+        iYMin = iYMin < 0 ? 0 : iYMin;
+        int iYMax(iY1 + iRange);
+        iYMax = iYMax >= pAMap->m_maxY ? pAMap->m_maxY - 1 : iYMax;
+
+        for (int iY = iYMin; iY <= iYMax; ++iY)
+        {
+            stTmpPoint.iY = iY;
+            if (pAMap->canMove(stTmpPoint))
+            {
+                vcPoint.push_back(stTmpPoint);
+            }
+        }
+
+        return;
+    }
+
+    stTmpPoint.iY = iY1;
+
+    int iXMin(iX1 - iRange);
+    iXMin = iXMin < 0 ? 0 : iXMin;
+    int iXMax(iX1 + iRange);
+    iXMax = iXMax >= pAMap->m_maxX ? pAMap->m_maxX - 1 : iXMax;
+
+    for (int iX = iXMin; iX <= iXMax; ++iX)
+    {
+        stTmpPoint.iX = iX;
+        if (pAMap->canMove(stTmpPoint))
+        {
+            vcPoint.push_back(stTmpPoint);
+        }
+    }
+}
+
 bool CAStar::findLatelyPoint(const int iX1, const int iY1, PointI &stPoint, CAMap *pAMap)
 {
-    int iSub(iX1 - m_iSearchRange);
-    int xStart((iSub >= 0 ? iSub : 0));
-    int iAdd(iX1 + m_iSearchRange);
-    int xEnd((iAdd >= pAMap->m_maxX ? pAMap->m_maxX - 1 : iAdd));
-
-    iSub = iY1 - m_iSearchRange;
-    int yStart((iSub >= 0 ? iSub : 0));
-    iAdd = iY1 + m_iSearchRange;
-    int yEnd((iAdd >= pAMap->m_maxY ? pAMap->m_maxY - 1 : iAdd));
-
-    bool bFirst(true);
     int iMinDis(0);
     int iDis;
-    PointI stCurPoint;
-    for (int x = xStart; x <= xEnd; ++x)
+    int iX, iY;
+    std::vector<PointI> vcPoint;
+    std::vector<PointI>::iterator itPoint;
+
+    for (int i = 1; i <= m_iSearchRange; ++i)
     {
-        for (int y = yStart; y <= yEnd; ++y)
+        //вС
+        iX = iX1 - i;
+        if (iX >= 0)
         {
-            if (x == iX1 && y == iY1)
-            {
-                continue;
-            }
+            checkEdge(iX, iY1, true, i, vcPoint, pAMap);
+        }
+        //ср
+        iX = iX1 + i;
+        if (iX < pAMap->m_maxX)
+        {
+            checkEdge(iX, iY1, true, i, vcPoint, pAMap);
+        }
+        //ио
+        iY = iY1 + i;
+        if (iY < pAMap->m_maxY)
+        {
+            checkEdge(iX1, iY, false, i, vcPoint, pAMap);
+        }
+        //об
+        iY = iY1 - i;
+        if (iY >= 0)
+        {
+            checkEdge(iX1, iY, false, i, vcPoint, pAMap);
+        }
 
-            stCurPoint.iX = x;
-            stCurPoint.iY = y;
-            if (!pAMap->canMove(stCurPoint))
-            {
-                continue;
-            }
+        if (vcPoint.empty())
+        {
+            continue;
+        }
 
-            iDis = (iX1 - x) * (iX1 - x) + (iY1 - y)*(iY1 - y);
-            if (bFirst)
+        for (itPoint = vcPoint.begin(); vcPoint.end() != itPoint; ++itPoint)
+        {
+            iDis = abs(iX1 - itPoint->iX) + abs(iY1 - itPoint->iY);
+            if (itPoint == vcPoint.begin())
             {
                 iMinDis = iDis;
-                bFirst = false;
-                stPoint.iX = x;
-                stPoint.iY = y;
+                stPoint = *itPoint;
             }
             else
             {
                 if (iDis < iMinDis)
                 {
                     iMinDis = iDis;
-                    stPoint.iX = x;
-                    stPoint.iY = y;
+                    stPoint = *itPoint;
                 }
             }
         }
+
+        return true;
     }
 
-    return !bFirst;
+    return false;
 }
 
 bool CAStar::correctPoint(float &fX, float &fY, PointI &stPoint, bool &bAdd, CAMap *pAMap)

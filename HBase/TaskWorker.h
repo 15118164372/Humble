@@ -5,6 +5,7 @@
 #include "Chan.h"
 #include "HEnum.h"
 #include "HStruct.h"
+#include "Atomic.h"
 
 H_BNAMSP
 
@@ -57,6 +58,7 @@ public:
     {
         return &m_strName;
     };
+
     void setInGloble(const bool bInGloble)
     {
         m_bInGloble = bInGloble;
@@ -64,6 +66,10 @@ public:
     bool getInGloble(void)
     {
         return m_bInGloble;
+    };
+    CAtomic *getInGlobleLock(void)
+    {
+        return &m_objInGlobleLock;
     };
 
     CChan *getChan(void)
@@ -95,6 +101,7 @@ private:
     bool m_bInGloble;
     CChan m_objChan;
     std::string m_strName;
+    CAtomic m_objInGlobleLock;
     H_LISTENTYPE m_stListenType[MSG_NET_CLOSE + 1];
 };
 

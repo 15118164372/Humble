@@ -21,10 +21,6 @@ public:
 
     size_t getSize(void);
     size_t getCapacity(void);
-    CAtomic *getLock(void)
-    {
-        return &m_objQuLck;
-    };
 
 private:
     CChan(void);

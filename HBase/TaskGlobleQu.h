@@ -15,6 +15,10 @@ public:
     CTaskGlobleQu(const int iCapacity);
     ~CTaskGlobleQu(void);
 
+    friend class CChan;
+    friend class CTaskRunner;
+
+protected:
     unsigned int m_uiWait;
     CCirQueue m_objQu;
     CAtomic m_objQuLock;

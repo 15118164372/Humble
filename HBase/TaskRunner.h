@@ -25,6 +25,7 @@ public:
 
 private:
     void runSurplus(void);
+    bool runTask(class CTaskWorker *pTask);
 
 private:
     H_DISALLOWCOPY(CTaskRunner);

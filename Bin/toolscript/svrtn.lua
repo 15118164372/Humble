@@ -22,4 +22,6 @@ regLinkedEv(getLinkType(), onLinked)
 local function test(sock, sockType, netMsg)
     consoleWrite(netMsg)
 end
-regProto(12, test)
+for i=1, 1000 do
+	regProto(i, test)
+end
