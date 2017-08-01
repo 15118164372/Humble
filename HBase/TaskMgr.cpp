@@ -50,7 +50,7 @@ CChan *CTaskMgr::getChan(const char *pszTaskName)
     {
         pChan = itTask->second->getChan();
     }
-    m_objTaskLock.unLock();
+    m_objTaskLock.runLock();
 
     return pChan;
 }
@@ -101,13 +101,13 @@ void CTaskMgr::regTask(CTaskWorker *pTask)
     taskit itTask = m_mapTask.find(*pTask->getName());
     H_ASSERT(m_mapTask.end() == itTask, "task repeat register.");
     m_mapTask.insert(std::make_pair(*pTask->getName(), pTask));
-    m_objTaskLock.unLock();
+    m_objTaskLock.wunLock();
 
     notifyInit(pTask);
 
     m_objAllNamLock.wLock();
     m_lstAllName.push_back(*pTask->getName());
-    m_objAllNamLock.unLock();
+    m_objAllNamLock.wunLock();
 }
 
 void CTaskMgr::unregTask(const char *pszName)
@@ -123,7 +123,7 @@ void CTaskMgr::unregTask(const char *pszName)
         pTask = itTask->second;
         m_mapTask.erase(itTask);
     }
-    m_objTaskLock.unLock();
+    m_objTaskLock.wunLock();
 
     if (NULL == pTask)
     {
@@ -142,7 +142,7 @@ void CTaskMgr::unregTask(const char *pszName)
             break;
         }
     }
-    m_objAllNamLock.unLock();
+    m_objAllNamLock.wunLock();
 }
 
 void CTaskMgr::stopWorker(void)
@@ -167,7 +167,7 @@ std::vector<std::string> CTaskMgr::getAllName(void)
     {
         vcTmp.push_back(*itName);
     }
-    m_objAllNamLock.unLock();
+    m_objAllNamLock.runLock();
 
     return vcTmp;
 }

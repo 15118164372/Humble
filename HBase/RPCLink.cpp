@@ -38,7 +38,7 @@ void CRPCLink::Register(const int &iSVId, const int &iSVType, H_SOCK &sock)
 
         m_mapSVType[iSVType] = lstTmp;
     }
-    m_objLock.unLock();
+    m_objLock.wunLock();
 }
 
 void CRPCLink::Unregister(const int &iSVId, const int &iSVType)
@@ -62,7 +62,7 @@ void CRPCLink::Unregister(const int &iSVId, const int &iSVType)
             }
         }
     }
-    m_objLock.unLock();
+    m_objLock.wunLock();
 }
 
 H_SOCK CRPCLink::getLinkById(const int &iSVId)
@@ -75,7 +75,7 @@ H_SOCK CRPCLink::getLinkById(const int &iSVId)
     {
         sock = it->second;
     }
-    m_objLock.unLock();
+    m_objLock.runLock();
 
     return sock;
 }
@@ -92,7 +92,7 @@ std::vector<H_SOCK> CRPCLink::getLinkByType(const int &iSVType)
             vsSock.push_back(itLink->sock);
         }
     }
-    m_objLock.unLock();
+    m_objLock.runLock();
 
     return vsSock;
 }

@@ -49,7 +49,7 @@ void CMSGDispatch::regEvent(unsigned short usEvent, class CTaskWorker *pTask, co
     {
         pDisp->lstTask.push_back(pTask);
     }    
-    pDisp->objLock.unLock();
+    pDisp->objLock.wunLock();
 
     H_LOG(LOGLV_INFO, "%s register event %d", pTask->getName()->c_str(), usEvent);
 }
@@ -71,7 +71,7 @@ void CMSGDispatch::unRegTime(unsigned short &usEvent, class CTaskWorker *pTask)
             break;
         }
     }
-    pDisp->objLock.unLock();
+    pDisp->objLock.wunLock();
 }
 
 void CMSGDispatch::sendEvent(unsigned short usEvent, void *pMsg, const size_t &iLens)
@@ -110,7 +110,7 @@ void CMSGDispatch::sendEvent(unsigned short usEvent, void *pMsg, const size_t &i
             H_LOG(LOGLV_ERROR, "%s", "add message to CirQueue error.");
         }
     }
-    pDisp->objLock.unLock();
+    pDisp->objLock.runLock();
 }
 
 void CMSGDispatch::removeEvent(const char *pszName)
@@ -130,7 +130,7 @@ void CMSGDispatch::removeEvent(const char *pszName)
                 break;
             }
         }
-        pDisp->objLock.unLock();
+        pDisp->objLock.wunLock();
     }
 }
 
@@ -142,7 +142,7 @@ void CMSGDispatch::regNetProto(H_PROTOTYPE &iProto, class CChan *pChan)
     itNet = m_mapNetProto.find(iProto);
     H_ASSERT(m_mapNetProto.end() == itNet, "repeat register proto.");
     m_mapNetProto[iProto] = pChan;
-    m_objNetLock.unLock();
+    m_objNetLock.wunLock();
 
     H_LOG(LOGLV_INFO, "%s register proto %d", pChan->getTask()->getName()->c_str(), iProto);
 }
@@ -158,7 +158,7 @@ class CChan *CMSGDispatch::getNetProto(H_PROTOTYPE &iProto)
     {
         pChan = itNet->second;
     }
-    m_objNetLock.unLock();
+    m_objNetLock.runLock();
 
     return pChan;
 }
@@ -171,7 +171,7 @@ void CMSGDispatch::regStrProto(const char *pszUrl, class CChan *pChan)
     itNet = m_mapStrProto.find(pszUrl);
     H_ASSERT(m_mapStrProto.end() == itNet, "repeat register proto.");
     m_mapStrProto[pszUrl] = pChan;
-    m_objStrLock.unLock();
+    m_objStrLock.wunLock();
 
     H_LOG(LOGLV_INFO, "%s register proto %s", pChan->getTask()->getName()->c_str(), pszUrl);
 }
@@ -187,7 +187,7 @@ class CChan *CMSGDispatch::getStrProto(const char *pszUrl)
     {
         pChan = itNet->second;
     }
-    m_objStrLock.unLock();
+    m_objStrLock.runLock();
 
     return pChan;
 }

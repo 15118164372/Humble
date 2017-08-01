@@ -58,6 +58,10 @@
 #define H_MYSQL
 
 #ifdef H_OS_WIN
+    #if WINVER < _WIN32_WINNT_VISTA
+        #pragma error "vista or new requested!"
+    #endif
+
     #define H_CPP11
 #endif
 
