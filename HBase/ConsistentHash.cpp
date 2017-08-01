@@ -1,12 +1,13 @@
 
 #include "ConsistentHash.h"
+#include "Funcs.h"
 #include "conhash/conhash.h"
 
 H_BNAMSP
 
 CConHash::CConHash(void)
 {
-    m_pConHash = conhash_init(NULL);
+    m_pConHash = conhash_init(H_HashStr);
 }
 
 CConHash::~CConHash(void)

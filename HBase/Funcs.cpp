@@ -789,4 +789,16 @@ H_SOCK H_ClientSock(const char *pszHost, const unsigned short &usPort)
     return sock;
 }
 
+long H_HashStr(const char *pszStr)
+{
+    unsigned int uiSeed = 131;
+    unsigned int uiHash = 0;
+    while (*pszStr)
+    {
+        uiHash = uiHash * uiSeed + (*pszStr++);
+    }
+
+    return (long)(uiHash & 0x7FFFFFFF);
+}
+
 H_ENAMSP

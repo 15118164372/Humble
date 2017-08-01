@@ -66,6 +66,8 @@ T H_ToNumber(const char *pszNumber)
     return iValue;
 };
 
+long H_HashStr(const char *pszStr);
+
 H_ENAMSP
 
 #endif//H_FUNCS_H_
