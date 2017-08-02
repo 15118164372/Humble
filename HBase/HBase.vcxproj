@@ -101,6 +101,7 @@
     <ClInclude Include="Tick.h" />
     <ClInclude Include="UEncrypt.h" />
     <ClInclude Include="UUID.h" />
+    <ClInclude Include="WebSocket.h" />
     <ClInclude Include="ZEncrypt.h" />
     <ClInclude Include="zlib\crc32.h" />
     <ClInclude Include="zlib\deflate.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="Tick.cpp" />
     <ClCompile Include="UEncrypt.cpp" />
     <ClCompile Include="UUID.cpp" />
+    <ClCompile Include="WebSocket.cpp" />
     <ClCompile Include="ZEncrypt.cpp" />
     <ClCompile Include="zlib\adler32.c" />
     <ClCompile Include="zlib\compress.c" />

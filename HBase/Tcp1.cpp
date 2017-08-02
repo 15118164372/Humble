@@ -15,7 +15,7 @@ CTcp1 objTcp1;
 
 CTcp1::CTcp1(void)
 {
-    setName("tcp1");
+    setName(H_PARSER_TCP1);
 }
 
 CTcp1::~CTcp1(void)
@@ -97,17 +97,13 @@ size_t CTcp1::getHeadLens(const size_t &iLens)
     }
 }
 
-void CTcp1::Response(H_SOCK &sock, H_PROTOTYPE &iProto, const char *pszMsg, const size_t &iLens)
+H_Binary CTcp1::createPack(H_PROTOTYPE &iProto, const char *pszMsg, const size_t &iLens)
 {
-    if (H_INVALID_SOCK == sock)
-    {
-        return;
-    }
-
     size_t iBodyLens(iLens + sizeof(iProto));
-    size_t iHeadLens(getHeadLens(iBodyLens));    
+    size_t iHeadLens(getHeadLens(iBodyLens));
+    size_t iTotalLens(iHeadLens + iBodyLens);
 
-    char *pBuf = new(std::nothrow) char[iHeadLens + iBodyLens];
+    char *pBuf = new(std::nothrow) char[iTotalLens];
     H_ASSERT(NULL != pBuf, "malloc memory error.");
     if (iBodyLens <= TCPBUFLENS_125)
     {
@@ -133,7 +129,22 @@ void CTcp1::Response(H_SOCK &sock, H_PROTOTYPE &iProto, const char *pszMsg, cons
         memcpy(pBuf + iHeadLens + sizeof(iProto), pszMsg, iLens);
     }
 
-    CSender::getSingletonPtr()->Send(sock, pBuf, iHeadLens + iBodyLens, false);
+    H_Binary stRtn;
+    stRtn.iLens = iTotalLens;
+    stRtn.pBufer = pBuf;
+
+    return stRtn;
+}
+
+void CTcp1::Response(H_SOCK &sock, H_PROTOTYPE &iProto, const char *pszMsg, const size_t &iLens)
+{
+    if (H_INVALID_SOCK == sock)
+    {
+        return;
+    }
+
+    H_Binary stBinary(createPack(iProto, pszMsg, iLens));
+    CSender::getSingletonPtr()->Send(sock, stBinary.pBufer, stBinary.iLens, false);
 }
 
 H_ENAMSP

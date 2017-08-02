@@ -6,6 +6,7 @@ tcp1
 --]]
 
 local tcp1Response = tcp1Response
+local tcp1BroadCast = tcp1BroadCast
 
 local tcp1 = {}
 
@@ -14,6 +15,14 @@ function tcp1.Response(sock, proto, val)
 		tcp1Response(sock, proto, val, #val)
 	else
 		tcp1Response(sock, proto, val, 0)
+	end
+end
+
+function tcp1.broadCast(socks, proto, val)
+	if val then
+		tcp1BroadCast(socks, proto, val, #val)
+	else
+		tcp1BroadCast(socks, proto, val, 0)
 	end
 end
 

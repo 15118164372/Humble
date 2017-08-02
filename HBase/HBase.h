@@ -37,6 +37,7 @@
 #include "Httpd.h"
 #include "Tcp1.h"
 #include "Tcp2.h"
+#include "WebSocket.h"
 
 #include "EvBuffer.h"
 #include "NetParser.h"

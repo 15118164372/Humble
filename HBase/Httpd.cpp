@@ -18,7 +18,7 @@ CHttp::CHttp(void)
     m_iHeadEndFlagLens = strlen(Http_HeadEndFlag);
     m_iChunkEndFlagLens = strlen(Http_ChunkEndFlag);
     m_iContentLens = strlen(Http_ContentLensStr);
-    setName("http");
+    setName(H_PARSER_HTTP);
 }
 
 CHttp::~CHttp(void)
@@ -113,6 +113,15 @@ H_Binary CHttp::parsePack(char *pAllBuf, const size_t &iLens, size_t &iParsed)
 
     stBinary.iLens = iTotalLens;
     stBinary.pBufer = pAllBuf;
+
+    return stBinary;
+}
+
+H_Binary CHttp::createPack(H_PROTOTYPE &iProto, const char *pszMsg, const size_t &iLens)
+{
+    H_Binary stBinary;
+    stBinary.pBufer = (char*)pszMsg;
+    stBinary.iLens = iLens;
 
     return stBinary;
 }

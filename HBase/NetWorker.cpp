@@ -155,7 +155,7 @@ void CNetWorker::onRead(H_Session *pSession)
                 return;
             }
             break;
-        }        
+        }
         if (stBinary.iLens < sizeof(H_PROTOTYPE)
             || stBinary.iLens > H_MAXPACK_LENS)
         {

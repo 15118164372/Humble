@@ -135,14 +135,37 @@ void httpResponse(H_SOCK sock, const char *pszBuf, const size_t iLens)
     CHttp::getSingletonPtr()->Response(sock, iProto, pszBuf, iLens);
 }
 
+std::vector<H_SOCK> getSockFromTabel(luabridge::LuaRef lTable)
+{
+    std::vector<H_SOCK> vcSock;
+    for (int i = 1; i <= lTable.length(); ++i)
+    {
+        vcSock.push_back(lTable[i]);
+    }
+
+    return vcSock;
+}
+
 void tcp1Response(H_SOCK sock, H_PROTOTYPE iProto, const char *pszBuf, const size_t iLens)
 {
     CTcp1::getSingletonPtr()->Response(sock, iProto, pszBuf, iLens);
+}
+void tcp1BroadCast(luabridge::LuaRef lTable, H_PROTOTYPE iProto, const char *pszBuf, const size_t iLens)
+{
+    std::vector<H_SOCK> vcSock(getSockFromTabel(lTable));
+    H_Binary stBinary(CTcp1::getSingletonPtr()->createPack(iProto, pszBuf, iLens));
+    CSender::getSingletonPtr()->broadCast(vcSock, stBinary);
 }
 
 void tcp2Response(H_SOCK sock, H_PROTOTYPE iProto, const char *pszBuf, const size_t iLens)
 {
     CTcp2::getSingletonPtr()->Response(sock, iProto, pszBuf, iLens);
+}
+void tcp2BroadCast(luabridge::LuaRef lTable, H_PROTOTYPE iProto, const char *pszBuf, const size_t iLens)
+{
+    std::vector<H_SOCK> vcSock(getSockFromTabel(lTable));
+    H_Binary stBinary(CTcp2::getSingletonPtr()->createPack(iProto, pszBuf, iLens));
+    CSender::getSingletonPtr()->broadCast(vcSock, stBinary);
 }
 
 void rpcCall(H_SOCK sock, unsigned int uiId, const char *pszRPCName, const char *pszToTask, const char *pszSrcTask,
@@ -232,7 +255,9 @@ void H_RegFuncs(struct lua_State *pLState)
         .addFunction("removeLink", removeLink)
         .addFunction("httpResponse", httpResponse)
         .addFunction("tcp1Response", tcp1Response)
+        .addFunction("tcp1BroadCast", tcp1BroadCast)
         .addFunction("tcp2Response", tcp2Response)
+        .addFunction("tcp2BroadCast", tcp2BroadCast)
         .addFunction("rpcCall", rpcCall)
         .addFunction("taskRPCCall", taskRPCCall)
         .addFunction("regTask", regTask)

@@ -31,6 +31,11 @@ public:
         return stBinary;
     };
 
+    virtual H_Binary createPack(H_PROTOTYPE &iProto, const char *pszMsg, const size_t &iLens) 
+    { 
+        H_Binary stBinary;
+        return stBinary; 
+    };
     virtual void Response(H_SOCK &sock, H_PROTOTYPE &iProto, const char *pszMsg, const size_t &iLens) {};
 
 protected:

@@ -25,6 +25,11 @@ typedef unsigned short H_PROTOTYPE;
 #define H_QULENS_SENDER              H_ONEK * 10 * 10
 #define H_MAXTASKNUM                 H_ONEK * 10 * 10
 
+#define H_PARSER_HTTP                "http"
+#define H_PARSER_TCP1                "tcp1"
+#define H_PARSER_TCP2                "tcp2"
+#define H_PARSER_WS                  "websocket"
+
 #define H_INVALID_SOCK               -1
 #define H_INVALID_ID                 -1
 #define H_INIT_NUMBER                0

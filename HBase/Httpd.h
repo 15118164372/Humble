@@ -15,6 +15,7 @@ public:
     ~CHttp(void);
 
     H_Binary parsePack(char *pAllBuf, const size_t &iLens, size_t &iParsed);
+    H_Binary createPack(H_PROTOTYPE &iProto, const char *pszMsg, const size_t &iLens);
     void Response(H_SOCK &sock, H_PROTOTYPE &, const char *pszMsg, const size_t &iLens);
 
 private:

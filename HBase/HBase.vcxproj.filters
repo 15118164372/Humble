@@ -340,6 +340,9 @@
     <ClInclude Include="ConsistentHash.h">
       <Filter>Algorithm</Filter>
     </ClInclude>
+    <ClInclude Include="WebSocket.h">
+      <Filter>Service\Parser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zlib\adler32.c">
@@ -597,6 +600,9 @@
     </ClCompile>
     <ClCompile Include="ConsistentHash.cpp">
       <Filter>Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="WebSocket.cpp">
+      <Filter>Service\Parser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

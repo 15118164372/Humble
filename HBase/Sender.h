@@ -27,6 +27,31 @@ public:
 
         m_pWorker[getIndex(sock)].addSend(sock, pszBuf, iLens, bCopy);
     };
+    void broadCast(std::vector<H_SOCK> &vcSock, H_Binary &stBinary)
+    {
+        if (vcSock.empty())
+        {
+            H_SafeDelArray(stBinary.pBufer);
+            return;
+        }
+
+        unsigned int *pRef = new(std::nothrow) unsigned int;
+        H_ASSERT(NULL != pRef, "malloc memory error.");
+        *pRef = (unsigned int)vcSock.size();
+
+        for (std::vector<H_SOCK>::iterator itSock = vcSock.begin(); vcSock.end() != itSock; ++itSock)
+        {
+            if (!m_pWorker[getIndex(*itSock)].broadCast(*itSock, pRef, stBinary.pBufer, stBinary.iLens))
+            {
+                if (1 == H_AtomicAdd(pRef, -1))
+                {
+                    H_SafeDelArray(stBinary.pBufer);
+                    H_SafeDelete(pRef);
+                    return;
+                }
+            }
+        }
+    };
     void sendCMDRtn(H_SOCK &sock, const char *pszBuf, const size_t &iLens);
     void sendRPCCall(H_SOCK &sock, unsigned int &uiId, const char *pszRPCName, const char *pszToTask, const char *pszSrcTask, 
         const char *pMsg, const size_t &iLens);

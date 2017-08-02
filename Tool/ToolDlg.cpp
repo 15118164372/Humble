@@ -329,11 +329,11 @@ void CToolDlg::setConsole(void)
 void CToolDlg::setSVParam(void)
 {
     CParserMgr::getSingletonPtr()->addParser(CHttp::getSingletonPtr());
-    m_lstParser.AddString(L"http");
+    m_lstParser.AddString(TEXT(H_PARSER_HTTP));
     CParserMgr::getSingletonPtr()->addParser(CTcp1::getSingletonPtr());
-    m_lstParser.AddString(L"tcp1");
+    m_lstParser.AddString(TEXT(H_PARSER_TCP1));
     CParserMgr::getSingletonPtr()->addParser(CTcp2::getSingletonPtr());
-    m_lstParser.AddString(L"tcp2");
+    m_lstParser.AddString(TEXT(H_PARSER_TCP2));
     m_lstParser.SetCurSel(0);
 
     CLog *pLog = CLog::getSingletonPtr();
