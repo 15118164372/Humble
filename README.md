@@ -59,5 +59,5 @@ hotfix echo1 global
 * 5、退出命令模式       
 quit
 
-## 联系我    
-279133271@qq.com    
+## QQqun    
+486602190    
