@@ -10,8 +10,7 @@ Humble是c++开发的多线程服务器框架,网络底层使用libevent. 业务
 * config.ini 文件配置服务器启动参数.   
 
 ## 数据解析器    
-* 数据解析器继承于CParser,主要负责socket数据的解包、组包          
-目前实现了一些常用协议如websocket等.     
+* 数据解析器继承于CParser,主要负责socket数据的解包、组包. 目前实现了一些常用协议如websocket等.     
 
 ## 简单使用(http回显为例)   
 * 1、新建echo.lua文件并增加如下函数:      
@@ -30,7 +29,7 @@ regProto("/echo", echo)
 humble.httpServer("0.0.0.0", 80)--建立监听                     
 humble.regTask("echo.lua", "echo", 1024 * 10)--注册echo服务      
 
-* 3、浏览器中输入访问地址(http://localhost/echo)查看结果         
+* 3、浏览器中输入访问地址 (http://localhost/echo) 查看结果         
 
 ## 命令使用    
 * 1、进入命令模式 Humble -d 15000    
