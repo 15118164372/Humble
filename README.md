@@ -59,5 +59,5 @@ hotfix echo1 global
 * 5、退出命令模式       
 quit
 
-## QQqun    
+## QQ群    
 486602190    
