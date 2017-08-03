@@ -286,33 +286,35 @@ bool CAStar::findLatelyPoint(const int iX1, const int iY1, PointI &stPoint, CAMa
             checkEdge(iX1, iY, false, i, vcPoint, pAMap);
         }
 
-        if (vcPoint.empty())
+        if (!vcPoint.empty())
         {
-            continue;
+            break;
         }
-
-        for (itPoint = vcPoint.begin(); vcPoint.end() != itPoint; ++itPoint)
-        {
-            iDis = abs(iX1 - itPoint->iX) + abs(iY1 - itPoint->iY);
-            if (itPoint == vcPoint.begin())
-            {
-                iMinDis = iDis;
-                stPoint = *itPoint;
-            }
-            else
-            {
-                if (iDis < iMinDis)
-                {
-                    iMinDis = iDis;
-                    stPoint = *itPoint;
-                }
-            }
-        }
-
-        return true;
     }
 
-    return false;
+    if (vcPoint.empty())
+    {
+        return false;
+    }
+
+    for (itPoint = vcPoint.begin(); vcPoint.end() != itPoint; ++itPoint)
+    {
+        iDis = abs(iX1 - itPoint->iX) + abs(iY1 - itPoint->iY);
+        if (itPoint == vcPoint.begin())
+        {
+            iMinDis = iDis;
+            stPoint = *itPoint;
+            continue;
+        }
+        
+        if (iDis < iMinDis)
+        {
+            iMinDis = iDis;
+            stPoint = *itPoint;
+        }
+    }
+
+    return true;
 }
 
 bool CAStar::correctPoint(float &fX, float &fY, PointI &stPoint, bool &bAdd, CAMap *pAMap)
@@ -376,14 +378,10 @@ bool CAStar::detectMoveCollisionBetween(PointI &stPoint1, PointI &stPoint2, CAMa
     }
 
     float fRatio(fabs((fY1 - fY0) / (fX1 - fX0)));
-    int iMirror;
+    int iMirror(-1);
     if (fY1 > fY0)
     {
         iMirror = 1;
-    }
-    else
-    {
-        iMirror = -1;
     }
 
     bool bSkip(false);
@@ -728,7 +726,6 @@ std::vector<PointF> CAStar::findPath(float &fX1, float &fY1, float &fX2, float &
 
 void CAStar::Print(std::vector<PointF> &vcPoint, CAMap *pAMap)
 {
-    bool bHave;
     PointI stCur;
     std::string strMsg;
     std::vector<PointF>::iterator itP;
@@ -741,7 +738,6 @@ void CAStar::Print(std::vector<PointF> &vcPoint, CAMap *pAMap)
         {
             stCur.iX = x;
             stCur.iY = y;
-            bHave = false;
             for (itP = vcPoint.begin(); vcPoint.end() != itP; ++itP)
             {
                 if (int(itP->fX) == x && int(itP->fY) == y)
@@ -754,12 +750,11 @@ void CAStar::Print(std::vector<PointF> &vcPoint, CAMap *pAMap)
                     {
                         strMsg += "*";
                     }
-                    bHave = true;
                     break;
                 }
             }
 
-            if (!bHave)
+            if (itP == vcPoint.end())
             {
                 if (!pAMap->canMove(stCur))
                 {
