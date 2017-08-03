@@ -60,7 +60,7 @@ bool CTcp1::readHead(char *pBuffer, const size_t &iLens, size_t &iBufLens, size_
     return true;
 }
 
-H_Binary CTcp1::parsePack(char *pAllBuf, const size_t &iLens, size_t &iParsed)
+H_Binary CTcp1::parsePack(H_Session *, char *pAllBuf, const size_t &iLens, size_t &iParsed, bool &)
 {
     H_Binary stBinary;
     size_t iBufLens(H_INIT_NUMBER);

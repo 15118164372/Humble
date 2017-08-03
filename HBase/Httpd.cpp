@@ -72,7 +72,7 @@ bool CHttp::getChunkLens(const char *pBuffer, size_t &iChunkLens)
     return true;
 }
 
-H_Binary CHttp::parsePack(char *pAllBuf, const size_t &iLens, size_t &iParsed)
+H_Binary CHttp::parsePack(H_Session *, char *pAllBuf, const size_t &iLens, size_t &iParsed, bool &)
 {
     H_Binary stBinary;
     size_t iHeadLens = getHeadLens(pAllBuf);

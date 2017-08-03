@@ -168,6 +168,17 @@ void tcp2BroadCast(luabridge::LuaRef lTable, H_PROTOTYPE iProto, const char *psz
     CSender::getSingletonPtr()->broadCast(vcSock, stBinary);
 }
 
+void wsResponse(H_SOCK sock, H_PROTOTYPE iProto, const char *pszBuf, const size_t iLens)
+{
+    CWebSocket::getSingletonPtr()->Response(sock, iProto, pszBuf, iLens);
+}
+void wsBroadCast(luabridge::LuaRef lTable, H_PROTOTYPE iProto, const char *pszBuf, const size_t iLens)
+{
+    std::vector<H_SOCK> vcSock(getSockFromTabel(lTable));
+    H_Binary stBinary(CWebSocket::getSingletonPtr()->createPack(iProto, pszBuf, iLens));
+    CSender::getSingletonPtr()->broadCast(vcSock, stBinary);
+}
+
 void rpcCall(H_SOCK sock, unsigned int uiId, const char *pszRPCName, const char *pszToTask, const char *pszSrcTask,
     const char *pMsg, const size_t iLens)
 {
@@ -258,6 +269,8 @@ void H_RegFuncs(struct lua_State *pLState)
         .addFunction("tcp1BroadCast", tcp1BroadCast)
         .addFunction("tcp2Response", tcp2Response)
         .addFunction("tcp2BroadCast", tcp2BroadCast)
+        .addFunction("wsResponse", wsResponse)
+        .addFunction("wsBroadCast", wsBroadCast)
         .addFunction("rpcCall", rpcCall)
         .addFunction("taskRPCCall", taskRPCCall)
         .addFunction("regTask", regTask)

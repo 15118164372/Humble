@@ -23,6 +23,7 @@ struct H_LINK
 struct H_Session
 {
     bool bReLink;
+    bool bHandShake;
     struct bufferevent *pEv;
     class CNetWorker *pNetWorker;
     class CParser *pParser;

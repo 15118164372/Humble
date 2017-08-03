@@ -16,7 +16,7 @@ CTcp2::~CTcp2(void)
 {
 }
 
-H_Binary CTcp2::parsePack(char *pAllBuf, const size_t &iLens, size_t &iParsed)
+H_Binary CTcp2::parsePack(H_Session *, char *pAllBuf, const size_t &iLens, size_t &iParsed, bool &)
 {
     H_Binary stBinary;
     unsigned int uiBufLens(H_INIT_NUMBER);

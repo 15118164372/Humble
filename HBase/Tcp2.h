@@ -14,7 +14,7 @@ public:
     CTcp2(void);
     ~CTcp2(void);
 
-    H_Binary parsePack(char *pAllBuf, const size_t &iLens, size_t &iParsed);
+    H_Binary parsePack(H_Session *, char *pAllBuf, const size_t &iLens, size_t &iParsed, bool &);
     H_Binary createPack(H_PROTOTYPE &iProto, const char *pszMsg, const size_t &iLens);
     void Response(H_SOCK &sock, H_PROTOTYPE &iProto, const char *pszMsg, const size_t &iLens);
 

@@ -20,7 +20,12 @@ public:
         return m_strName.c_str();
     };
 
-    virtual H_Binary parsePack(char *pAllBuf, const size_t &iLens, size_t &iParsed)
+    virtual bool handShake(H_Session *, char *, const size_t &, size_t &, bool &)
+    {
+        return true;
+    };
+
+    virtual H_Binary parsePack(H_Session *, char *pAllBuf, const size_t &iLens, size_t &iParsed, bool &)
     {
         H_Binary stBinary;
 
@@ -31,12 +36,12 @@ public:
         return stBinary;
     };
 
-    virtual H_Binary createPack(H_PROTOTYPE &iProto, const char *pszMsg, const size_t &iLens) 
+    virtual H_Binary createPack(H_PROTOTYPE &, const char *, const size_t &) 
     { 
         H_Binary stBinary;
         return stBinary; 
     };
-    virtual void Response(H_SOCK &sock, H_PROTOTYPE &iProto, const char *pszMsg, const size_t &iLens) {};
+    virtual void Response(H_SOCK &, H_PROTOTYPE &, const char *, const size_t &) {};
 
 protected:
     void setName(const char *pszNam)

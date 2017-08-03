@@ -1,6 +1,5 @@
 
 #include "NetWorker.h"
-#include "NetParser.h"
 #include "Linker.h"
 #include "MSGDispatch.h"
 #include "Chan.h"
@@ -127,6 +126,7 @@ void CNetWorker::onRead(H_Session *pSession)
         return;
     }
 
+    bool bClose;
     H_TCPBUF stTcpBuf;
     H_Binary stBinary;
     size_t iParsed(H_INIT_NUMBER);
@@ -143,9 +143,37 @@ void CNetWorker::onRead(H_Session *pSession)
             break;
         }
 
+        //需要握手的
+        if (pSession->bHandShake)
+        {
+            bClose = false;
+            iCurParsed = H_INIT_NUMBER;
+            iSurplus = iBufLens - iParsed;
+            bool bOk(pSession->pParser->handShake(pSession, pBuf + iParsed, iSurplus, iCurParsed, bClose));
+            if (bClose)
+            {
+                onClose(pSession);
+                return;
+            }
+            if (!bOk)
+            {
+                break;
+            }
+
+            pSession->bHandShake = false;
+            iParsed += iCurParsed;
+            continue;
+        }
+
+        bClose = false;
         iCurParsed = H_INIT_NUMBER;
         iSurplus = iBufLens - iParsed;
-        stBinary = pSession->pParser->parsePack(pBuf + iParsed, iSurplus, iCurParsed);
+        stBinary = pSession->pParser->parsePack(pSession, pBuf + iParsed, iSurplus, iCurParsed, bClose);
+        if (bClose)
+        {
+            onClose(pSession);
+            return;
+        }
         if (H_INIT_NUMBER == iCurParsed)
         {
             if (iSurplus > H_MAXPACK_LENS)
@@ -156,15 +184,13 @@ void CNetWorker::onRead(H_Session *pSession)
             }
             break;
         }
-        if (stBinary.iLens < sizeof(H_PROTOTYPE)
-            || stBinary.iLens > H_MAXPACK_LENS)
+        if (NULL == stBinary.pBufer)
         {
-            H_LOG(LOGLV_ERROR, "%s", "pack length error.");
-            onClose(pSession);
-            return;
+            iParsed += iCurParsed;
+            continue;
         }
-        iParsed += iCurParsed;
 
+        iParsed += iCurParsed;
         dispProto(pSession, stTcpBuf, stBinary);
     }
 
