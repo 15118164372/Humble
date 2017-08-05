@@ -5,12 +5,10 @@ H_BNAMSP
 
 CAMap::CAMap(int maxX, int maxY) : m_maxX(maxX), m_maxY(maxY)
 {
-
 }
 
 CAMap::~CAMap(void)
 {
-
 }
 
 void CAMap::Filled(int iX, int iY, int iWeight)

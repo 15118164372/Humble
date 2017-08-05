@@ -7,12 +7,10 @@ H_BNAMSP
 
 CSendWorker::CSendWorker(void) : CTaskLazy<H_NetSendMsg>(H_QULENS_SENDER)
 {
-
 }
 
 CSendWorker::~CSendWorker(void)
 {
-
 }
 
 void CSendWorker::runTask(H_NetSendMsg *pMsg)

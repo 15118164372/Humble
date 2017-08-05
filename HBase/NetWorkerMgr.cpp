@@ -10,8 +10,7 @@ SINGLETON_INIT(CNetWorkerMgr)
 CNetWorkerMgr objNetWorkerMgr;
 
 CNetWorkerMgr::CNetWorkerMgr(void) : m_usWorkerNum(H_INIT_NUMBER), m_pNetWorker(NULL)
-{
-    
+{ 
 }
 
 CNetWorkerMgr::~CNetWorkerMgr(void)
@@ -21,7 +20,7 @@ CNetWorkerMgr::~CNetWorkerMgr(void)
 
 void CNetWorkerMgr::startWorker(const unsigned short usNum)
 {
-    m_usWorkerNum = ((H_INIT_NUMBER == usNum) ? H_GetCoreCount() : usNum);
+    m_usWorkerNum = usNum;
     m_pNetWorker = new(std::nothrow) CNetWorker[m_usWorkerNum];
     H_ASSERT(NULL != m_pNetWorker, "malloc memory error.");
 

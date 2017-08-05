@@ -14,9 +14,10 @@ public:
     CTick(void);
     ~CTick(void);
 
-    void setTime(const unsigned int uiMS) 
+    void setTime(const unsigned int uiFrame, const unsigned int uiLoad)
     {
-        m_uiFrame = uiMS;
+        m_uiFrame = uiFrame;
+        m_uiLoad = uiLoad;
     };
 
     void onStart(void);
@@ -27,6 +28,7 @@ private:
     {
         unsigned short usType;
         struct event *pEvent;
+        unsigned int uiLoad;
         H_TICK stTick;
     };
 
@@ -38,6 +40,7 @@ private:
 
 private:
     unsigned int m_uiFrame;
+    unsigned int m_uiLoad;
     std::vector<TickEvent *> m_vcTickEvent;
 };
 

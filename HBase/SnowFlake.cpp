@@ -30,7 +30,6 @@ CSnowFlake::CSnowFlake(void) : m_uiWorkid(H_INIT_NUMBER), m_lSequence(H_INIT_NUM
 
 CSnowFlake::~CSnowFlake(void)
 {
-
 }
 
 void CSnowFlake::setWorkid(const int uiID)

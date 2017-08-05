@@ -1,5 +1,7 @@
 
 #include "TaskMgr.h"
+#include "TaskWorker.h"
+#include "TaskGlobleQu.h"
 #include "Funcs.h"
 #include "Thread.h"
 #include "Log.h"
@@ -9,9 +11,10 @@ H_BNAMSP
 SINGLETON_INIT(CTaskMgr)
 CTaskMgr objTaskMgr;
 
-CTaskMgr::CTaskMgr(void) : m_usThreadNum(H_INIT_NUMBER), m_pRunner(NULL)
+CTaskMgr::CTaskMgr(void) : CTaskLazy<unsigned int>(H_ONEK/16), 
+    m_uiDiffer(H_INIT_NUMBER), m_usThreadNum(H_INIT_NUMBER), m_pRunner(NULL)
 {
-    
+    setDel(false);
 }
 
 CTaskMgr::~CTaskMgr(void)
@@ -25,9 +28,82 @@ CTaskMgr::~CTaskMgr(void)
     H_SafeDelArray(m_pRunner);
 }
 
+void CTaskMgr::setDiffer(unsigned int uiDiff)
+{
+    H_ASSERT(uiDiff > H_INIT_NUMBER, "load differ must big than zero.");
+    m_uiDiffer = uiDiff;
+}
+
+void CTaskMgr::adjustLoad(unsigned int &uiTick)
+{
+    (void)addTask(&uiTick);
+}
+
+void CTaskMgr::runTask(unsigned int *)
+{
+    //只有一个线程则不调整
+    if (1 == m_usThreadNum)
+    {
+        return;
+    }
+
+    TaskQueue *pTaskQueue;
+    unsigned int uiUseTime(H_INIT_NUMBER);
+    unsigned int uiMax(H_INIT_NUMBER);
+    unsigned int uiMin(H_INIT_NUMBER);
+    unsigned short usMax(H_INIT_NUMBER);
+    unsigned short usMin(H_INIT_NUMBER);
+
+    for (unsigned short usI = H_INIT_NUMBER; usI < m_usThreadNum; ++usI)
+    {
+        pTaskQueue = CTaskGlobleQu::getSingletonPtr()->getQueue(usI);
+        uiUseTime = H_AtomicGet(&(pTaskQueue->uiTime));
+        H_AtomicSet(&(pTaskQueue->uiTime), H_INIT_NUMBER);
+
+        H_LOG(LOGLV_INFO, "thread %d have task number %d. this interval run time %d(ms)", 
+            usI, H_AtomicGet(&(pTaskQueue->uiTaskNum)), uiUseTime/1000);        
+
+        if (H_INIT_NUMBER == usI)
+        {
+            uiMax = uiUseTime;
+            uiMin = uiUseTime;
+            usMin = usI;
+            usMax = usI;
+
+            continue;
+        }
+
+        if (uiMin > uiUseTime)
+        {
+            uiMin = uiUseTime;
+            usMin = usI;
+        }
+        if (uiMax < uiUseTime)
+        {
+            uiMax = uiUseTime;
+            usMax = usI;
+        }
+    }
+
+    if (usMin == usMax)
+    {
+        return;
+    }
+
+    unsigned int uiDiffer((uiMax - uiMin)/1000);
+    H_LOG(LOGLV_INFO, "max run time:%d(ms),thread %d. min run time: %d(ms), thread %d. D-value %d.", 
+        uiMax/1000, usMax, uiMin/1000, usMin, uiDiffer);
+    if (uiDiffer < m_uiDiffer)
+    {
+        return;
+    }
+
+    m_pRunner[usMax].setAdjustLoad(usMin);
+}
+
 void CTaskMgr::setThreadNum(const unsigned short usNum)
 {
-    m_usThreadNum = ((H_INIT_NUMBER == usNum) ? H_GetCoreCount() * 2 : usNum);
+    m_usThreadNum = usNum;
     m_pRunner = new(std::nothrow) CTaskRunner[m_usThreadNum];
     H_ASSERT(NULL != m_pRunner, "malloc memory error.");
 
@@ -97,6 +173,12 @@ void CTaskMgr::taskRPCCall(unsigned int &uiId, const char *pszRPCName, const cha
 
 void CTaskMgr::regTask(CTaskWorker *pTask)
 {
+    unsigned short usIndex(H_HashStr(pTask->getName()->c_str()) % m_usThreadNum);
+    pTask->setIndex(usIndex);
+    //工作线程任务数加一
+    TaskQueue *pTaskQueue(CTaskGlobleQu::getSingletonPtr()->getQueue(usIndex));
+    H_AtomicAdd(&(pTaskQueue->uiTaskNum), 1);
+
     m_objTaskLock.wLock();
     taskit itTask = m_mapTask.find(*pTask->getName());
     H_ASSERT(m_mapTask.end() == itTask, "task repeat register.");

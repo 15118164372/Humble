@@ -47,6 +47,7 @@
 #include "Log.h"
 #include "Linker.h"
 #include "Sender.h"
+#include "TaskGlobleQu.h"
 #include "TaskMgr.h"
 #include "MSGDispatch.h"
 #include "RPCLink.h"

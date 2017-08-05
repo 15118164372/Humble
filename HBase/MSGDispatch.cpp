@@ -12,12 +12,10 @@ CMSGDispatch objMSGDispatch;
 
 CMSGDispatch::CMSGDispatch(void)
 {
-
 }
 
 CMSGDispatch::~CMSGDispatch(void)
 {
-
 }
 
 void CMSGDispatch::regEvent(unsigned short usEvent, class CTaskWorker *pTask, const short sType)

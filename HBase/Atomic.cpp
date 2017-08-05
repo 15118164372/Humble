@@ -4,13 +4,11 @@
 H_BNAMSP
 
 CAtomic::CAtomic(void) : m_lLock(unLocked)
-{
-    
+{ 
 }
 
 CAtomic::~CAtomic(void)
 {
-
 }
 
 void CAtomic::Lock(void)

@@ -14,7 +14,6 @@ H_BNAMSP
 CAES::CAES(void) : m_pEncodeRK(NULL), m_pDecodeRK(NULL), 
     m_iEncodeRounds(H_INIT_NUMBER), m_iDecodeRounds(H_INIT_NUMBER)
 {
-   
 }
 
 CAES::~CAES(void)

@@ -346,7 +346,7 @@ void CToolDlg::setSVParam(void)
     unsigned short usNum = H_GetCoreCount();
     CNetWorkerMgr::getSingletonPtr()->startWorker(usNum);
     CSender::getSingletonPtr()->startSender(usNum);
-    CTick::getSingletonPtr()->setTime(20);
+    CTick::getSingletonPtr()->setTime(20, 20);
     CTaskMgr::getSingletonPtr()->setThreadNum(usNum);
 }
 

@@ -3,6 +3,7 @@
 #include "Funcs.h"
 #include "Linker.h"
 #include "MSGDispatch.h"
+#include "TaskMgr.h"
 #include "Log.h"
 
 H_BNAMSP
@@ -10,9 +11,8 @@ H_BNAMSP
 SINGLETON_INIT(CTick)
 CTick objTick;
 
-CTick::CTick(void) : m_uiFrame(H_INIT_NUMBER)
+CTick::CTick(void) : m_uiFrame(H_INIT_NUMBER), m_uiLoad(H_INIT_NUMBER)
 {
-
 }
 
 CTick::~CTick(void)
@@ -54,6 +54,11 @@ void CTick::timeCB(H_SOCK, short, void *arg)
     if (MSG_TIME_SEC == pTickEvent->usType)
     {
         CLinker::getSingletonPtr()->reLink();
+
+        if (H_INIT_NUMBER == pTickEvent->stTick.uiCount % pTickEvent->uiLoad)
+        {
+            CTaskMgr::getSingletonPtr()->adjustLoad(pTickEvent->uiLoad);
+        }
     }
 
     CMSGDispatch::getSingletonPtr()->sendEvent(pTickEvent->usType, (void*)&pTickEvent->stTick, sizeof(pTickEvent->stTick));
@@ -61,15 +66,13 @@ void CTick::timeCB(H_SOCK, short, void *arg)
 
 void CTick::onStart(void)
 {
-    if (H_INIT_NUMBER == m_uiFrame)
-    {
-        return;
-    }
+    H_ASSERT((H_INIT_NUMBER != m_uiFrame && H_INIT_NUMBER != m_uiLoad), "time counfig error.");
 
     TickEvent *pTickFrame = new(std::nothrow) TickEvent;
     H_ASSERT(NULL != pTickFrame, "malloc memory error.");
     pTickFrame->usType = MSG_TIME_FRAME;
-    pTickFrame->stTick.uiCount = 0;
+    pTickFrame->stTick.uiCount = H_INIT_NUMBER;
+    pTickFrame->uiLoad = H_INIT_NUMBER;
     pTickFrame->stTick.uiMS = m_uiFrame;
     initTimeEv(m_uiFrame, timeCB, pTickFrame);
     m_vcTickEvent.push_back(pTickFrame);
@@ -77,7 +80,8 @@ void CTick::onStart(void)
     TickEvent *pTickSec = new(std::nothrow) TickEvent;
     H_ASSERT(NULL != pTickSec, "malloc memory error.");
     pTickSec->usType = MSG_TIME_SEC;
-    pTickSec->stTick.uiCount = 0;
+    pTickSec->uiLoad = m_uiLoad;
+    pTickSec->stTick.uiCount = H_INIT_NUMBER;
     pTickSec->stTick.uiMS = 1000;
     initTimeEv(pTickSec->stTick.uiMS, timeCB, pTickSec);
     m_vcTickEvent.push_back(pTickSec);

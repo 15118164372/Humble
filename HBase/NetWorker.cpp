@@ -12,12 +12,10 @@ H_BNAMSP
 
 CNetWorker::CNetWorker(void) : m_iSockFlag(1)
 {
-
 }
 
 CNetWorker::~CNetWorker(void)
 {
-    
 }
 
 size_t CNetWorker::onOrder(CEvBuffer *pEvBuffer)

@@ -97,6 +97,7 @@ void writePid(int pId)
 
 int setParam(void)
 {
+    //添加解析器
     CParserMgr::getSingletonPtr()->addParser(CHttp::getSingletonPtr());
     CParserMgr::getSingletonPtr()->addParser(CTcp1::getSingletonPtr());
     CParserMgr::getSingletonPtr()->addParser(CTcp2::getSingletonPtr());
@@ -115,6 +116,7 @@ int setParam(void)
         return H_RTN_FAILE;
     }
 
+    //日志
     CLog *pLog = CLog::getSingletonPtr();
     pLog->setPriority(objIni.getIntValue("Log", "priority"));
     std::string strLogFile = H_FormatStr("%s%s%s%s", g_strProPath.c_str(),
@@ -122,19 +124,35 @@ int setParam(void)
     pLog->setLogFile(strLogFile.c_str());
     pLog->Open();
     
+    //一些全局变量
     g_iSVId = objIni.getIntValue("Main", "id");
     g_iSVType = objIni.getIntValue("Main", "type");
-    unsigned short unNetNum((unsigned short)objIni.getIntValue("Main", "netnum"));
-    CNetWorkerMgr::getSingletonPtr()->startWorker(unNetNum);
-    CSender::getSingletonPtr()->startSender(unNetNum);
-    CTick::getSingletonPtr()->setTime((unsigned int)objIni.getIntValue("Main", "tick"));
-    CTaskMgr::getSingletonPtr()->setThreadNum((unsigned short)objIni.getIntValue("Main", "workernum"));
+
+    //定时器
+    CTick::getSingletonPtr()->setTime((unsigned int)objIni.getIntValue("Main", "tick"), 
+        (unsigned int)objIni.getIntValue("Main", "loadtick"));
+    //线程负载参数
+    CTaskMgr::getSingletonPtr()->setDiffer((unsigned int)objIni.getIntValue("Main", "loaddiffer"));
+
+    //网络线程数
+    unsigned short usCoreCount(H_GetCoreCount());
+    unsigned short usNetNum((unsigned short)objIni.getIntValue("Main", "netnum"));    
+    usNetNum = ((H_INIT_NUMBER == usNetNum) ? usCoreCount : usNetNum);
+    CNetWorkerMgr::getSingletonPtr()->startWorker(usNetNum);
+    CSender::getSingletonPtr()->startSender(usNetNum);
+
+    //任务线程数
+    unsigned short usWorkerNum((unsigned short)objIni.getIntValue("Main", "workernum"));
+    usWorkerNum = ((H_INIT_NUMBER == usWorkerNum) ? usCoreCount * 2 : usWorkerNum);
+    CTaskGlobleQu::getSingletonPtr()->setThreadNum(usWorkerNum);
+    CTaskMgr::getSingletonPtr()->setThreadNum(usWorkerNum);
 
     return H_RTN_OK;
 }
 
 int initData(void)
 {
+    //注册任务，监听等
     struct lua_State *pLState = luaL_newstate();
     if (NULL == pLState)
     {
@@ -147,7 +165,7 @@ int initData(void)
 
     std::string strLuaFile = g_strScriptPath + "start.lua";
     if (H_RTN_OK != luaL_dofile(pLState, strLuaFile.c_str()))
-    {        
+    {
         H_Printf("%s", lua_tostring(pLState, -1));
         lua_close(pLState);
         return H_RTN_FAILE;
@@ -168,6 +186,8 @@ void runSV(void)
     CLinker::getSingletonPtr()->waitStart();
     CThread::Creat(CNetListener::getSingletonPtr());
     CNetListener::getSingletonPtr()->waitStart();
+    CThread::Creat(CTaskMgr::getSingletonPtr());
+    CTaskMgr::getSingletonPtr()->waitStart();
     CThread::Creat(CTick::getSingletonPtr());
     CTick::getSingletonPtr()->waitStart();
     
@@ -180,11 +200,12 @@ void runSV(void)
     }
 
     CTick::getSingletonPtr()->Join();
+    CTaskMgr::getSingletonPtr()->Join();
     CNetListener::getSingletonPtr()->Join();
     CTaskMgr::getSingletonPtr()->stopWorker();
-    CSender::getSingletonPtr()->stopSender();
     CNetWorkerMgr::getSingletonPtr()->stopWorker();
-    CLinker::getSingletonPtr()->Join(); 
+    CLinker::getSingletonPtr()->Join();
+    CSender::getSingletonPtr()->stopSender();
     CMailer::getSingletonPtr()->Join();
     CLog::getSingletonPtr()->Join();
 }

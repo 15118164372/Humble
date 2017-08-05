@@ -8,12 +8,10 @@ H_BNAMSP
 
 CChan::CChan(class CTaskWorker *pTask, const int iCapacity) : m_pTask(pTask), m_quData(iCapacity)
 {
-
 }
 
 CChan::~CChan(void)
 {
-
 }
 
 bool CChan::Send(void *pszVal)
@@ -28,11 +26,12 @@ bool CChan::Send(void *pszVal)
         return false;
     }
 
-    m_pTask->getInGlobleLock()->Lock();
+    m_pTask->getLock()->Lock();
+    TaskQueue *pTaskQueue(CTaskGlobleQu::getSingletonPtr()->getQueue(m_pTask->getIndex()));
     if (!m_pTask->getInGloble())
     {
-        CTaskGlobleQu::getSingletonPtr()->m_objQuLock.Lock();
-        if (CTaskGlobleQu::getSingletonPtr()->m_objQu.Push(m_pTask))
+        pTaskQueue->objQuLock.Lock();
+        if (pTaskQueue->objQueue.Push(m_pTask))
         {
             m_pTask->setInGloble(true);
         }
@@ -40,13 +39,13 @@ bool CChan::Send(void *pszVal)
         {
             H_LOG(LOGLV_ERROR, "add task %s in globle queue error.", m_pTask->getName()->c_str());
         }
-        CTaskGlobleQu::getSingletonPtr()->m_objQuLock.unLock();
+        pTaskQueue->objQuLock.unLock();
     }
-    m_pTask->getInGlobleLock()->unLock();
+    m_pTask->getLock()->unLock();
 
-    if (CTaskGlobleQu::getSingletonPtr()->m_uiWait > H_INIT_NUMBER)
+    if (pTaskQueue->uiWait > H_INIT_NUMBER)
     {
-        pthread_cond_signal(&CTaskGlobleQu::getSingletonPtr()->m_objCond);
+        pthread_cond_signal(&pTaskQueue->objCond);
     }
 
     return true;

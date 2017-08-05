@@ -13,7 +13,6 @@ CLinker objLinker;
 
 CLinker::CLinker(void) : CTaskLazy<H_LinkCMD>(H_QULENS_LINKER)
 {
-
 }
 
 CLinker::~CLinker(void)

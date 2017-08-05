@@ -4,18 +4,32 @@
 H_BNAMSP
 
 SINGLETON_INIT(CTaskGlobleQu)
-CTaskGlobleQu objTaskGlobleQu(H_MAXTASKNUM);
+CTaskGlobleQu objTaskGlobleQu;
 
-CTaskGlobleQu::CTaskGlobleQu(const int iCapacity) : m_uiWait(H_INIT_NUMBER), m_objQu(iCapacity)
+CTaskGlobleQu::CTaskGlobleQu(void) : m_usThreadNum(H_INIT_NUMBER)
 {
-    pthread_mutex_init(&m_objMutex, NULL);
-    pthread_cond_init(&m_objCond, NULL);
 }
 
 CTaskGlobleQu::~CTaskGlobleQu()
 {
-    pthread_cond_destroy(&m_objCond);
-    pthread_mutex_destroy(&m_objMutex);
+    std::vector<TaskQueue *>::iterator itQu;
+    for (itQu = m_vcQueue.begin(); m_vcQueue.end() != itQu; ++itQu)
+    {
+        H_SafeDelete((*itQu));
+    }
+    m_vcQueue.clear();
+}
+
+void CTaskGlobleQu::setThreadNum(const unsigned short usNum)
+{
+    TaskQueue *pQueue;
+    m_usThreadNum = usNum;    
+    for (unsigned short usI = H_INIT_NUMBER; usI < m_usThreadNum; ++usI)
+    {
+        pQueue = new(std::nothrow) TaskQueue(H_MAXTASKNUM);
+        H_ASSERT(NULL != pQueue, "malloc memory error.");
+        m_vcQueue.push_back(pQueue);
+    }
 }
 
 H_ENAMSP

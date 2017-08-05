@@ -3,16 +3,21 @@
 #define H_TASKDISPATCH_H_
 
 #include "Singleton.h"
+#include "TaskLazy.h"
 #include "TaskRunner.h"
 #include "RWLock.h"
 
 H_BNAMSP
 
-class CTaskMgr : public CSingleton<CTaskMgr>
+class CTaskMgr : public CTaskLazy<unsigned int>, public CSingleton<CTaskMgr>
 {
 public:
     CTaskMgr(void);
     ~CTaskMgr(void);
+
+    void setDiffer(unsigned int uiDiff);
+    void adjustLoad(unsigned int &uiTick);
+    void runTask(unsigned int *);
     
     CChan *getChan(const char *pszTaskName);
     void taskRPCCall(unsigned int &uiId, const char *pszRPCName, const char *pszToTask, const char *pszSrcTask,
@@ -64,6 +69,7 @@ private:
 
 private:
     unsigned short m_usThreadNum;
+    unsigned int m_uiDiffer;
     CTaskRunner *m_pRunner;
     task_map m_mapTask;
     CRWLock m_objTaskLock;

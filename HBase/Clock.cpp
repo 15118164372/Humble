@@ -16,22 +16,12 @@ CClock::CClock(void)
         m_bUseFrequency = false;
         ftime(&m_BgTime);
     }
+    
 #else
     gettimeofday(&m_stStart, NULL);
 #endif
 }
 
-/************************************************************************
-* Function name:reStart
-* Description  :重置计时器
-* IN           :NONE
-* OUT          :NONE
-* Return       :NONE
-* Make By      :lqf/200309129@163.com
-* Date Time    :2014/04/30
-* Modification 
-* ......record :first program
-************************************************************************/
 void CClock::reStart(void)
 {
 #ifdef H_OS_WIN
@@ -48,17 +38,6 @@ void CClock::reStart(void)
 #endif
 }
 
-/************************************************************************
-* Function name:Elapsed
-* Description  :返回流逝的时间(ms)
-* IN           :NONE
-* OUT          :NONE
-* Return       :double
-* Make By      :lqf/200309129@163.com
-* Date Time    :2014/04/30
-* Modification 
-* ......record :first program
-************************************************************************/
 double CClock::Elapsed(void)
 {
 #ifdef H_OS_WIN

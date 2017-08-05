@@ -56,6 +56,7 @@ public:
     void sendRPCCall(H_SOCK &sock, unsigned int &uiId, const char *pszRPCName, const char *pszToTask, const char *pszSrcTask, 
         const char *pMsg, const size_t &iLens);
     void sendRPCRtn(H_SOCK &sock, H_RPC *pRPC, const char *pszMsg, const size_t &iLens);
+    void sendTaskRPCRtn(H_RPC *pRPC, const char *pszMsg, const size_t &iLens);
 
 private:
     H_DISALLOWCOPY(CSender);

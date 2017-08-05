@@ -14,7 +14,6 @@ CNetListener objListener;
 
 CNetListener::CNetListener(void)
 {
-
 }
 
 CNetListener::~CNetListener(void)

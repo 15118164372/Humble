@@ -6,28 +6,53 @@
 #include "Singleton.h"
 #include "LockThis.h"
 #include "Atomic.h"
+#include "Clock.h"
 
 H_BNAMSP
+
+struct TaskQueue
+{
+    unsigned int uiWait;
+    unsigned int uiTime;
+    unsigned int uiTaskNum;
+    CCirQueue objQueue;
+    CAtomic objQuLock;
+    CClock objClock;
+    pthread_mutex_t objMutex;
+    pthread_cond_t objCond;
+
+    TaskQueue(const int iCapacity) : uiWait(H_INIT_NUMBER), 
+        uiTime(H_INIT_NUMBER), uiTaskNum(H_INIT_NUMBER), objQueue(iCapacity)
+    {
+        pthread_mutex_init(&objMutex, NULL);
+        pthread_cond_init(&objCond, NULL);
+    };
+    ~TaskQueue(void)
+    {
+        pthread_cond_destroy(&objCond);
+        pthread_mutex_destroy(&objMutex);
+    };
+};
 
 class CTaskGlobleQu : public CSingleton<CTaskGlobleQu>
 {
 public:
-    CTaskGlobleQu(const int iCapacity);
+    CTaskGlobleQu(void);
     ~CTaskGlobleQu(void);
 
-    friend class CChan;
-    friend class CTaskRunner;
-
-protected:
-    unsigned int m_uiWait;
-    CCirQueue m_objQu;
-    CAtomic m_objQuLock;
-    pthread_mutex_t m_objMutex;
-    pthread_cond_t m_objCond;
+    void setThreadNum(const unsigned short usNum);
+    TaskQueue *getQueue(const unsigned short &usIndex) 
+    {
+        H_ASSERT(usIndex < m_usThreadNum, "out of rang.");
+        return m_vcQueue[usIndex];
+    };
 
 private:
-    CTaskGlobleQu(void);
     H_DISALLOWCOPY(CTaskGlobleQu);
+
+private:
+    unsigned short m_usThreadNum;
+    std::vector<TaskQueue *> m_vcQueue;
 };
 
 H_ENAMSP

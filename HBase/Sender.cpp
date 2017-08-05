@@ -1,6 +1,7 @@
 
 #include "Sender.h"
 #include "Log.h"
+#include "TaskMgr.h"
 #include "Funcs.h"
 #include "Thread.h"
 #include "HEnum.h"
@@ -12,7 +13,6 @@ CSender objSender;
 
 CSender::CSender(void) : m_usWorkerNum(H_INIT_NUMBER), m_pWorker(NULL)
 {
-
 }
 
 CSender::~CSender(void)
@@ -22,7 +22,7 @@ CSender::~CSender(void)
 
 void CSender::startSender(const unsigned short usNum)
 {
-    m_usWorkerNum = ((H_INIT_NUMBER == usNum) ? H_GetCoreCount() : usNum);
+    m_usWorkerNum = usNum;
     m_pWorker = new(std::nothrow) CSendWorker[m_usWorkerNum];
     H_ASSERT(NULL != m_pWorker, "malloc memory error.");
 
@@ -120,6 +120,38 @@ void CSender::sendRPCRtn(H_SOCK &sock, H_RPC *pRPC, const char *pszMsg, const si
     }
 
     Send(sock, pBuf, sizeof(H_RPCRTN) + iLens + sizeof(H_PROTOTYPE) + sizeof(uiLens), false);
+}
+
+void CSender::sendTaskRPCRtn(H_RPC *pRPC, const char *pszMsg, const size_t &iLens)
+{
+    CChan *pChan(CTaskMgr::getSingletonPtr()->getChan(pRPC->acSrcTask));
+    if (NULL == pChan)
+    {
+        return;
+    }
+
+    H_Binary stBinary;
+    stBinary.iLens = iLens;
+    stBinary.pBufer = new(std::nothrow) char[iLens];
+    H_ASSERT(NULL != stBinary.pBufer, "malloc memory error.");
+    memcpy(stBinary.pBufer, pszMsg, iLens);
+
+    H_MSG *pMsg = new(std::nothrow) H_MSG;
+    H_ASSERT(NULL != pMsg, "malloc memory error.");
+    pMsg->pEvent = new(std::nothrow) char[sizeof(stBinary) + sizeof(pRPC->uiId)];
+    H_ASSERT(NULL != pMsg->pEvent, "malloc memory error.");
+    memcpy(pMsg->pEvent, &pRPC->uiId, sizeof(pRPC->uiId));
+    memcpy(pMsg->pEvent + sizeof(pRPC->uiId), &stBinary, sizeof(stBinary));
+    pMsg->usEnevt = MSG_TASK_RPCRTN;
+
+    if (!pChan->Send(pMsg))
+    {
+        H_SafeDelArray(stBinary.pBufer);
+        H_SafeDelArray(pMsg->pEvent);
+        H_SafeDelete(pMsg);
+
+        H_LOG(LOGLV_ERROR, "%s", "add message to CirQueue error.");
+    }
 }
 
 H_ENAMSP

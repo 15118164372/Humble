@@ -19,7 +19,8 @@ private:
     };
 
 public:
-    CTaskWorker(const char *pszName, const int iCapacity) : m_bInGloble(false), m_objChan(this, iCapacity)
+    CTaskWorker(const char *pszName, const int iCapacity) : m_bInGloble(false),
+        m_usIndex(H_INIT_NUMBER), m_objChan(this, iCapacity)
     {
         H_ASSERT(strlen(pszName) < H_TASKNAMELENS, "task name too long.");
         m_strName = pszName;
@@ -59,6 +60,15 @@ public:
         return &m_strName;
     };
 
+    void setIndex(const unsigned short &usIndex)
+    {
+        m_usIndex = usIndex;
+    };
+    unsigned short getIndex(void)
+    {
+        return m_usIndex;
+    };
+
     void setInGloble(const bool bInGloble)
     {
         m_bInGloble = bInGloble;
@@ -67,9 +77,9 @@ public:
     {
         return m_bInGloble;
     };
-    CAtomic *getInGlobleLock(void)
+    CAtomic *getLock(void)
     {
-        return &m_objInGlobleLock;
+        return &m_objLock;
     };
 
     CChan *getChan(void)
@@ -91,17 +101,15 @@ public:
     };
 
 private:
-    void sendTaskRPCRtn(H_RPC *pRPC, const char *pszMsg, const size_t &iLens);
-
-private:
     CTaskWorker(void);
     H_DISALLOWCOPY(CTaskWorker);
 
 private:
     bool m_bInGloble;
+    unsigned short m_usIndex;
     CChan m_objChan;
     std::string m_strName;
-    CAtomic m_objInGlobleLock;
+    CAtomic m_objLock;
     H_LISTENTYPE m_stListenType[MSG_NET_CLOSE + 1];
 };
 
