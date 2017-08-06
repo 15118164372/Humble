@@ -347,7 +347,8 @@ void CToolDlg::setSVParam(void)
     CNetWorkerMgr::getSingletonPtr()->startWorker(usNum);
     CSender::getSingletonPtr()->startSender(usNum);
     CTick::getSingletonPtr()->setTime(20, 20);
-    CTaskMgr::getSingletonPtr()->setThreadNum(usNum);
+    CTaskGlobleQu::getSingletonPtr()->setThreadNum(usNum);
+    CTaskMgr::getSingletonPtr()->setThreadNum(usNum);    
 }
 
 void CToolDlg::runSV(void)
