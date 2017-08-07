@@ -12,7 +12,7 @@ SINGLETON_INIT(CTaskMgr)
 CTaskMgr objTaskMgr;
 
 CTaskMgr::CTaskMgr(void) : CTaskLazy<unsigned int>(H_ONEK/16), 
-    m_uiDiffer(H_INIT_NUMBER), m_usThreadNum(H_INIT_NUMBER), m_pRunner(NULL)
+    m_usThreadNum(H_INIT_NUMBER), m_uiDiffer(H_INIT_NUMBER), m_pRunner(NULL)
 {
     setDel(false);
 }
