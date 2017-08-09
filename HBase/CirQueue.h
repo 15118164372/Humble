@@ -48,7 +48,6 @@ public:
     {
         if (Full())
         {
-            H_Printf("%s", "cirqueue is full.");
             return false;
         }
 
