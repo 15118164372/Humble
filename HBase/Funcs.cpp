@@ -729,7 +729,6 @@ bool H_SockWrite(H_SOCK &fd, const char *pBuf, const size_t &iLens)
                 continue;
             }
 
-            H_Printf("send error. error code %d, message %s ", iRtn, H_SockError2Str(iRtn));
             return false;
         }
 
