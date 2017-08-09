@@ -42,13 +42,23 @@ void CTaskMgr::adjustLoad(unsigned int &uiTick)
 void CTaskMgr::runTask(unsigned int *)
 {
     //打印任务队列任务数
+    size_t iSize;
+    bool bPrint(false);
     std::string strInfo("task queue size:\ntask name\tsize\n");
     std::vector<std::string> vcAllTask = getAllName();
     for (std::vector<std::string>::iterator itTask = vcAllTask.begin(); vcAllTask.end() != itTask; ++itTask)
     {
-        strInfo += H_FormatStr("%s\t%d\n", itTask->c_str(), getQueueSize(itTask->c_str()));
+        iSize = getQueueSize(itTask->c_str());
+        if (iSize > 0)
+        {
+            bPrint = true;
+        }
+        strInfo += H_FormatStr("%s\t%d\n", itTask->c_str(), iSize);
     }
-    H_LOG(LOGLV_SYS, "%s", strInfo.c_str());
+    if (bPrint)
+    {
+        H_LOG(LOGLV_SYS, "%s", strInfo.c_str());
+    }    
 
     //只有一个线程则不调整
     if (1 == m_usThreadNum)
