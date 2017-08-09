@@ -10,18 +10,18 @@ Humble是c++开发的多线程服务器框架,网络底层使用libevent. 业务
 * config.ini 文件配置服务器启动参数.   
 
 ## 数据解析器    
-* 数据解析器继承于CParser,主要负责socket数据的解包、组包. 目前实现了一些常用协议如websocket等.     
+* 数据解析器继承于CParser,主要负责socket数据的解包、组包. 目前实现了一些常用协议如websocket、http等.     
 
 ## 简单使用(http回显为例)   
 * 1、新建echo.lua文件并增加如下函数:      
 ......       
 function initTask()--服务初始化      
 end       
-function destroyTask()--服务释放   
+    function destroyTask()--服务释放   
 end     
 --注册echo事件      
 local function echo(sock, sockType, httpInfo)      
-	httpd.Response(sock, 200, "echo return.")      
+    httpd.Response(sock, 200, "echo return.")      
 end      
 regProto("/echo", echo)      
 
