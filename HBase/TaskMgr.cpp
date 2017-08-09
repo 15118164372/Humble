@@ -60,9 +60,6 @@ void CTaskMgr::runTask(unsigned int *)
         uiUseTime = H_AtomicGet(&(pTaskQueue->uiTime));
         H_AtomicSet(&(pTaskQueue->uiTime), H_INIT_NUMBER);
 
-        H_LOG(LOGLV_INFO, "thread %d have task number %d. this interval run time %d(ms)", 
-            usI, H_AtomicGet(&(pTaskQueue->uiTaskNum)), uiUseTime/1000);        
-
         if (H_INIT_NUMBER == usI)
         {
             uiMax = uiUseTime;
@@ -91,8 +88,6 @@ void CTaskMgr::runTask(unsigned int *)
     }
 
     unsigned int uiDiffer((uiMax - uiMin)/1000);
-    H_LOG(LOGLV_INFO, "max run time:%d(ms),thread %d. min run time: %d(ms), thread %d. D-value %d.", 
-        uiMax/1000, usMax, uiMin/1000, usMin, uiDiffer);
     if (uiDiffer < m_uiDiffer)
     {
         return;
