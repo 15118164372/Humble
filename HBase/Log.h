@@ -9,7 +9,8 @@ H_BNAMSP
 
 enum LOG_LEVEL
 {
-    LOGLV_ERROR = 1, 
+    LOGLV_SYS = 0,
+    LOGLV_ERROR, 
     LOGLV_WARN,
     LOGLV_INFO,
     LOGLV_DEBUG,

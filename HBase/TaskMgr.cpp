@@ -41,6 +41,15 @@ void CTaskMgr::adjustLoad(unsigned int &uiTick)
 
 void CTaskMgr::runTask(unsigned int *)
 {
+    //打印任务队列任务数
+    std::string strInfo("task queue size:\ntask name\tsize\n");
+    std::vector<std::string> vcAllTask = getAllName();
+    for (std::vector<std::string>::iterator itTask = vcAllTask.begin(); vcAllTask.end() != itTask; ++itTask)
+    {
+        strInfo += H_FormatStr("%s\t%d\n", itTask->c_str(), getQueueSize(itTask->c_str()));
+    }
+    H_LOG(LOGLV_SYS, "%s", strInfo.c_str());
+
     //只有一个线程则不调整
     if (1 == m_usThreadNum)
     {
@@ -124,6 +133,22 @@ CChan *CTaskMgr::getChan(const char *pszTaskName)
     m_objTaskLock.runLock();
 
     return pChan;
+}
+
+size_t CTaskMgr::getQueueSize(const char *pszTaskName)
+{
+    H_ASSERT(NULL != pszTaskName, "got null pointer.");
+    size_t iSize(H_INIT_NUMBER);
+
+    m_objTaskLock.rLock();
+    taskit itTask = m_mapTask.find(std::string(pszTaskName));
+    if (m_mapTask.end() != itTask)
+    {
+        iSize = itTask->second->getChan()->getSize();
+    }
+    m_objTaskLock.runLock();
+
+    return iSize;
 }
 
 void CTaskMgr::taskRPCCall(unsigned int &uiId, const char *pszRPCName, const char *pszToTask, const char *pszSrcTask,

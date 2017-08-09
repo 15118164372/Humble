@@ -20,6 +20,7 @@ public:
     void runTask(unsigned int *);
     
     CChan *getChan(const char *pszTaskName);
+    size_t getQueueSize(const char *pszTaskName);
     void taskRPCCall(unsigned int &uiId, const char *pszRPCName, const char *pszToTask, const char *pszSrcTask,
         const char *pMsg, const size_t &iLens);
 

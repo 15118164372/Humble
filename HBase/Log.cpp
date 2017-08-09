@@ -48,6 +48,8 @@ const char * CLog::getLV(LOG_LEVEL emInLogLv) const
 {
     switch(emInLogLv)
     {
+        case LOGLV_SYS:
+            return "SYSTEM";
         case LOGLV_WARN:
             return "WARNING";
         case LOGLV_ERROR:
