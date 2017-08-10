@@ -16,7 +16,6 @@ struct TaskQueue
     unsigned int uiTime;
     unsigned int uiTaskNum;
     CCirQueue objQueue;
-    CAtomic objQuLock;
     CClock objClock;
     pthread_mutex_t objMutex;
     pthread_cond_t objCond;

@@ -48,13 +48,11 @@ void CTaskRunner::adjustInGloble(struct TaskQueue *pTaskQueue, class CTaskWorker
 {
     if (H_INIT_NUMBER != pTask->getChan()->getSize())
     {
-        pTaskQueue->objQuLock.Lock();
+        CLckThis objLock(&pTaskQueue->objMutex);
         if (!pTaskQueue->objQueue.Push(pTask))
         {
             pTask->setInGloble(false);
-            H_LOG(LOGLV_ERROR, "add task %s in globle queue error.", pTask->getName()->c_str());
         }
-        pTaskQueue->objQuLock.unLock();
 
         return;
     }
@@ -100,18 +98,18 @@ void CTaskRunner::Run(void)
 
     while (H_INIT_NUMBER == H_AtomicGet(&m_lExit))
     {
-        //获取一任务
-        pTaskQueue->objQuLock.Lock();
-        pTask = (CTaskWorker *)pTaskQueue->objQueue.Pop();
-        pTaskQueue->objQuLock.unLock();
-        if (NULL == pTask)
+        //获取一任务        
         {
             CLckThis objLock(&pTaskQueue->objMutex);
-            ++pTaskQueue->uiWait;
-            pthread_cond_wait(&(pTaskQueue->objCond), objLock.getMutex());
-            --pTaskQueue->uiWait;
+            pTask = (CTaskWorker *)pTaskQueue->objQueue.Pop();
+            if (NULL == pTask)
+            {
+                ++pTaskQueue->uiWait;
+                pthread_cond_wait(&(pTaskQueue->objCond), objLock.getMutex());
+                --pTaskQueue->uiWait;
 
-            continue;
+                continue;
+            }
         }
 
         //执行
@@ -159,12 +157,13 @@ void CTaskRunner::runSurplus(void)
 
     while (true)
     {
-        pTaskQueue->objQuLock.Lock();
-        pTask = (CTaskWorker *)pTaskQueue->objQueue.Pop();
-        pTaskQueue->objQuLock.unLock();
-        if (NULL == pTask)
         {
-            break;
+            CLckThis objLock(&pTaskQueue->objMutex);
+            pTask = (CTaskWorker *)pTaskQueue->objQueue.Pop();
+            if (NULL == pTask)
+            {
+                break;
+            }
         }
 
         while (true)

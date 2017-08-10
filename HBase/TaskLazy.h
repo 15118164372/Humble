@@ -72,7 +72,7 @@ void CTaskLazy<T>::Free(T *pMsg)
 template <typename T>
 void CTaskLazy<T>::Run(void)
 {
-    T *pMsg = NULL;
+    T *pMsg(NULL);
     H_AtomicAdd(&m_lCount, 1);
 
     while (H_INIT_NUMBER == H_AtomicGet(&m_lExit))

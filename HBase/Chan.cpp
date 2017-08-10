@@ -30,16 +30,11 @@ bool CChan::Send(void *pszVal)
     TaskQueue *pTaskQueue(CTaskGlobleQu::getSingletonPtr()->getQueue(m_pTask->getIndex()));
     if (!m_pTask->getInGloble())
     {
-        pTaskQueue->objQuLock.Lock();
+        CLckThis objLock(&pTaskQueue->objMutex);
         if (pTaskQueue->objQueue.Push(m_pTask))
         {
             m_pTask->setInGloble(true);
         }
-        else
-        {
-            H_LOG(LOGLV_ERROR, "add task %s in globle queue error.", m_pTask->getName()->c_str());
-        }
-        pTaskQueue->objQuLock.unLock();
     }
     m_pTask->getLock()->unLock();
 
