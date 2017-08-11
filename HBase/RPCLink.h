@@ -9,11 +9,6 @@ H_BNAMSP
 
 class CRPCLink : public CSingleton<CRPCLink>
 {
-    struct SVLink
-    {
-        int iSVId;
-        H_SOCK sock;
-    };
 public:
     CRPCLink(void);
     ~CRPCLink(void);
