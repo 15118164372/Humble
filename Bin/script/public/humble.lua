@@ -110,9 +110,9 @@ function humble.getSVType()
 	return getSVType()
 end
 
---获取服务器连接的socket
+--获取服务器连接的sockets  {sock...}
 function humble.getLinkById(svId)
-	return getLinkById(svId)
+	return getLinkById(thisState, svId)
 end
 function humble.getLinkByType(svType)
 	return getLinkByType(thisState, svType)

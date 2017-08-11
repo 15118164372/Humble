@@ -207,19 +207,28 @@ void rpcLinkRegister(const int iSVId, const int iSVType, H_SOCK sock)
 {
     CRPCLink::getSingletonPtr()->Register(iSVId, iSVType, sock);
 }
-void rpcLinkUnregister(const int iSVId, const int iSVType)
+void rpcLinkUnregister(const int iSVId, const int iSVType, H_SOCK sock)
 {
-    CRPCLink::getSingletonPtr()->Unregister(iSVId, iSVType);
+    CRPCLink::getSingletonPtr()->Unregister(iSVId, iSVType, sock);
 }
-H_SOCK getLinkById(const int iSVId)
+luabridge::LuaRef getLinkById(H_LSTATE *pState, const int iSVId)
 {
-    return CRPCLink::getSingletonPtr()->getLinkById(iSVId);
+    std::list<H_SOCK> lstSock;
+    CRPCLink::getSingletonPtr()->getLinkById(iSVId, lstSock);
+    luabridge::LuaRef luaTable = luabridge::newTable((struct lua_State*)pState->pLState);
+    for (std::list<H_SOCK>::iterator itSock = lstSock.begin(); lstSock.end() != itSock; ++itSock)
+    {
+        luaTable.append(*itSock);
+    }
+
+    return luaTable;
 }
 luabridge::LuaRef getLinkByType(H_LSTATE *pState, const int iSVType)
-{
+{ 
+    std::list<H_SOCK> lstSock;
+    CRPCLink::getSingletonPtr()->getLinkByType(iSVType, lstSock);
     luabridge::LuaRef luaTable = luabridge::newTable((struct lua_State*)pState->pLState);
-    std::vector<H_SOCK> vcSock(CRPCLink::getSingletonPtr()->getLinkByType(iSVType));
-    for (std::vector<H_SOCK>::iterator itSock = vcSock.begin(); vcSock.end() != itSock; ++itSock)
+    for (std::list<H_SOCK>::iterator itSock = lstSock.begin(); lstSock.end() != itSock; ++itSock)
     {
         luaTable.append(*itSock);
     }

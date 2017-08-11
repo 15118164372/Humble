@@ -63,7 +63,7 @@ local function rpcClosed(sock, sockType)
 	end
 	
 	humble.Infof("unregister server %d, type %d, sock %d", m_RPCReg[sock].svId, m_RPCReg[sock].svType, sock)
-	rpcLinkUnregister(m_RPCReg[sock].svId, m_RPCReg[sock].svType)
+	rpcLinkUnregister(m_RPCReg[sock].svId, m_RPCReg[sock].svType, sock)
 	m_RPCReg[sock] = nil
 end
 regClosedEv(SockType.RPC, rpcClosed)

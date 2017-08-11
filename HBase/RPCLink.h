@@ -19,29 +19,32 @@ public:
     ~CRPCLink(void);
 
     void Register(const int &iSVId, const int &iSVType, H_SOCK &sock);
-    void Unregister(const int &iSVId, const int &iSVType);
-    H_SOCK getLinkById(const int &iSVId);
-    std::vector<H_SOCK> getLinkByType(const int &iSVType);
+    void Unregister(const int &iSVId, const int &iSVType, H_SOCK &sock);
+    void getLinkById(const int &iSVId, std::list<H_SOCK> &lstSock);
+    void getLinkByType(const int &iSVType, std::list<H_SOCK> &lstSock);
 
 private:
 #ifdef H_OS_WIN
-    #define rpcsvidit std::unordered_map<int , H_SOCK>::iterator
-    #define rpcsvid_map std::unordered_map<int , H_SOCK>
+    #define idit std::unordered_map<int , std::list<H_SOCK> >::iterator
+    #define id_map std::unordered_map<int , std::list<H_SOCK> >
 
-    #define rpcsvtypeit std::unordered_map<int , std::list<SVLink> >::iterator
-    #define rpcsvtype_map std::unordered_map<int , std::list<SVLink> >
+    #define typeit std::unordered_map<int , std::list<H_SOCK> >::iterator
+    #define type_map std::unordered_map<int , std::list<H_SOCK> >
 #else
-    #define rpcsvidit std::tr1::unordered_map<int , H_SOCK>::iterator
-    #define rpcsvid_map std::tr1::unordered_map<int , H_SOCK>
+    #define idit std::tr1::unordered_map<int , std::list<H_SOCK> >::iterator
+    #define id_map std::tr1::unordered_map<int , std::list<H_SOCK> >
 
-    #define rpcsvtypeit std::tr1::unordered_map<int , std::list<SVLink> >::iterator
-    #define rpcsvtype_map std::tr1::unordered_map<int , std::list<SVLink> >
+    #define typeit std::tr1::unordered_map<int , std::list<H_SOCK> >::iterator
+    #define type_map std::tr1::unordered_map<int , std::list<H_SOCK> >
 #endif
 
+    void removeSock(std::list<H_SOCK> *lstSock, H_SOCK &sock);
+
 private:
-    rpcsvid_map m_mapSVId;
-    rpcsvtype_map m_mapSVType;
-    CRWLock m_objLock;
+    id_map m_mapId;
+    type_map m_mapType;
+    CRWLock m_objLockId;
+    CRWLock m_objLockType;
 };
 
 H_ENAMSP
