@@ -68,6 +68,27 @@ T H_ToNumber(const char *pszNumber)
 
 long H_HashStr(const char *pszStr);
 
+template<typename T>
+size_t H_HashNumber(T iVal)
+{
+#if defined(H_X64)
+    #define OFFSET_BASIS 14695981039346656037ULL
+    #define PRIME 1099511628211ULL
+#else
+    #define OFFSET_BASIS 2166136261U
+    #define PRIME 16777619U
+#endif
+    size_t iHash(OFFSET_BASIS);
+    unsigned char *pAddr((unsigned char *)&iVal);
+    for (size_t i = 0; i < sizeof(iVal); ++i)
+    {
+        iHash ^= (size_t)pAddr[i];
+        iHash *= PRIME;
+    }
+
+    return iHash;
+};
+
 H_ENAMSP
 
 #endif//H_FUNCS_H_

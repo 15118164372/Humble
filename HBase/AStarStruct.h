@@ -2,7 +2,7 @@
 #ifndef H_ASTARSTRUCT_H_
 #define H_ASTARSTRUCT_H_
 
-#include "Macros.h"
+#include "Funcs.h"
 
 H_BNAMSP
 
@@ -23,28 +23,7 @@ struct PointI
     }
     std::size_t Hash() const
     {
-        return (hashInt(iX) ^ (hashInt(iY) << 1)) >> 1;
-    };
-
-private:
-    inline std::size_t hashInt(const int &iVal) const
-    {
-#if defined(_WIN64)
-        #define OFFSET_BASIS 14695981039346656037ULL
-        #define PRIME 1099511628211ULL
-#else
-        #define OFFSET_BASIS 2166136261U
-        #define PRIME 16777619U
-#endif
-        size_t iHash(OFFSET_BASIS);
-        unsigned char *pAddr((unsigned char *)&iVal);
-        for (size_t i = 0; i < sizeof(iVal); ++i)
-        {
-            iHash ^= (size_t)pAddr[i];
-            iHash *= PRIME;
-        }
-
-        return iHash;
+        return (H_HashNumber(iX) ^ (H_HashNumber(iY) << 1)) >> 1;
     };
 };
 struct PointIEq
