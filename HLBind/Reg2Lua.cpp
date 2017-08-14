@@ -305,10 +305,10 @@ void H_RegAOI(struct lua_State *pLState)
             .addConstructor<void(*)(int, int, int)>()
             .addFunction("Enter", &CAOI::Enter)
             .addFunction("Leave", &CAOI::Leave)
-            .addFunction("Move", &CAOI::Move)
         .endClass()
         .deriveClass<CLAOI, CAOI>("CLAOI")
             .addConstructor<void(*)(H_LSTATE *, int, int, int)>()
+            .addFunction("Move", &CLAOI::LMove)
             .addFunction("getArea", &CLAOI::getLArea)
         .endClass();
 }

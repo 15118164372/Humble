@@ -15,72 +15,27 @@ function AOI:new(maxX, maxY, maxZ)
     return self
 end
 
-function AOI:getLeaveArea(oldArea, inArea)
-    local outArea = {}
-    local bInArea = false
-    for _, oldVal in pairs(oldArea) do
-        bInArea = false
-        for _, inVal in pairs(inArea) do
-            if oldVal == inVal then
-                bInArea = true
-                break
-            end
-        end
-        
-        if not bInArea then
-            table.insert(outArea, oldVal)
-        end
-    end
-    
-    return outArea
-end
-function AOI:getEnterArea(oldArea, inArea)
-    local newArea = {}
-    local bInArea = false
-    for _, inVal in pairs(inArea) do
-        bInArea = false
-        for _, oldVal in pairs(oldArea) do
-            if inVal == oldVal then
-                bInArea = true
-                break
-            end
-        end
-        
-        if not bInArea then
-            table.insert(newArea, inVal)
-        end
-    end
-    
-    return newArea
-end
-
 --获取所在视野区域 xDist, yDist, zDist 区域
 function AOI:getArea(id, xDist, yDist, zDist)    
     return self.CAOI:getArea(id, xDist, yDist, zDist)
 end
 
---进入 返回所在视野区域ids
-function AOI:Enter(id, x, y, z, xDist, yDist, zDist)
+--进入
+function AOI:Enter(id, x, y, z)
 	self.CAOI:Enter(id, x, y, z)
-    return self:getArea(id, xDist, yDist, zDist)
 end
 
 --离开 返回所在视野区域ids
-function AOI:Leave(id, xDist, yDist, zDist)
-    local inArea = self:getArea(id, xDist, yDist, zDist)
+function AOI:Leave(id)
     self.CAOI:Leave(id)
-    return inArea
 end
 
---移动 返回所在视野区域ids 离开区域的  新进区域的
+--移动 返回 离开的区域  新进的区域
 function AOI:Move(id, x, y, z, xDist, yDist, zDist)
-    local oldArea = self:getArea(id, xDist, yDist, zDist)
-    self.CAOI:Move(id, x, y, z)
-    local inArea = self:getArea(id, xDist, yDist, zDist)
-    local outArea = self:getLeaveArea(oldArea, inArea)
-    local newArea = self:getEnterArea(oldArea, inArea)
+	local newArea = {}
+    local outArea = self.CAOI:Move(id, x, y, z, xDist, yDist, zDist, newArea)
     
-    return inArea, outArea, newArea
+    return outArea, newArea
 end
 
 return AOI

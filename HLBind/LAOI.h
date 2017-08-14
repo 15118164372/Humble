@@ -16,7 +16,27 @@ public:
     {};
     ~CLAOI(void)
     {};
+    luabridge::LuaRef LMove(const int64_t iId, const int iX, const int iY, const int iZ,
+        const int iXDist, const int iYDist, const int iZDist,
+        luabridge::LuaRef newArea) 
+    {
+        std::vector<int64_t>::iterator itId;
+        std::vector<int64_t> vcOutArea, vcNewArea;
+        luabridge::LuaRef outArea = luabridge::newTable((struct lua_State *)m_pLState->pLState);
 
+        Move(iId, iX, iY, iZ, iXDist, iYDist, iZDist, vcOutArea, vcNewArea);
+
+        for (itId = vcOutArea.begin(); vcOutArea.end() != itId; ++itId)
+        {
+            outArea.append(*itId);
+        }
+        for (itId = vcNewArea.begin(); vcNewArea.end() != itId; ++itId)
+        {
+            newArea.append(*itId);
+        }
+
+        return outArea;
+    };
     luabridge::LuaRef getLArea(const int64_t iId, const int iXDist, const int iYDist, const int iZDist) 
     {
         std::vector<int64_t> vcIds = getArea(iId, iXDist, iYDist, iZDist);

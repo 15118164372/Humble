@@ -5,14 +5,25 @@ H_BNAMSP
 
 CAOI::CAOI(int iMaxX, int iMaxY, int iMaxZ) : m_iMaxX(iMaxX), m_iMaxY(iMaxY), m_iMaxZ(iMaxZ)
 {
+    int i(H_INIT_NUMBER);
     m_iMaxX = (0 == iMaxX ? 1 : iMaxX);
     m_iMaxY = (0 == iMaxY ? 1 : iMaxY);
     m_iMaxZ = (0 == iMaxZ ? 1 : iMaxZ);
 
-    for (int i = 0; i < m_iMaxX; i++)
+    for (i = H_INIT_NUMBER; i < m_iMaxX; ++i)
     {
         position_map mapTmp;
         m_vcXList.push_back(mapTmp);
+    }
+    for (i = H_INIT_NUMBER; i < m_iMaxY; ++i)
+    {
+        position_map mapTmp;
+        m_vcYList.push_back(mapTmp);
+    }
+    for (i = H_INIT_NUMBER; i < m_iMaxZ; ++i)
+    {
+        position_map mapTmp;
+        m_vcZList.push_back(mapTmp);
     }
 }
 
@@ -91,6 +102,8 @@ void CAOI::Enter(const int64_t iId, const int iX, const int iY, const int iZ)
     m_mapPos[iId] = pPos;
 
     m_vcXList[iX][iId] = pPos;
+    m_vcYList[iY][iId] = pPos;
+    m_vcZList[iZ][iId] = pPos;
 }
 
 void CAOI::Leave(const int64_t iId)
@@ -103,14 +116,39 @@ void CAOI::Leave(const int64_t iId)
 
     Position *pPos(it->second);
     m_vcXList[pPos->X].erase(m_vcXList[pPos->X].find(iId));
+    m_vcYList[pPos->Y].erase(m_vcYList[pPos->Y].find(iId));
+    m_vcZList[pPos->Z].erase(m_vcZList[pPos->Z].find(iId));
     m_mapPos.erase(it);
     H_SafeDelete(pPos);
 }
 
-void CAOI::Move(const int64_t iId, const int iX, const int iY, const int iZ)
+void CAOI::moveData(const int64_t &iId, Position *pPos, const int &iX, const int &iY, const int &iZ)
+{
+    if (pPos->X != iX)
+    {
+        m_vcXList[pPos->X].erase(m_vcXList[pPos->X].find(iId));
+        pPos->X = iX;
+        m_vcXList[iX][iId] = pPos;
+    }
+    if (pPos->Y != iY)
+    {
+        m_vcYList[pPos->Y].erase(m_vcYList[pPos->Y].find(iId));
+        pPos->Y = iY;
+        m_vcYList[iY][iId] = pPos;
+    }
+    if (pPos->Z != iZ)
+    {
+        m_vcZList[pPos->Z].erase(m_vcZList[pPos->Z].find(iId));
+        pPos->Z = iZ;
+        m_vcZList[iZ][iId] = pPos;
+    }
+}
+
+void CAOI::Move(const int64_t &iId, const int &iX, const int &iY, const int &iZ,
+    const int &iXDist, const int &iYDist, const int &iZDist,
+    std::vector<int64_t> &outArea, std::vector<int64_t> &newArea)
 {
     H_ASSERT(checkPos(iX, iY, iZ), "param error.");
-
     positionit it = m_mapPos.find(iId);
     if (m_mapPos.end() == it)
     {
@@ -118,14 +156,264 @@ void CAOI::Move(const int64_t iId, const int iX, const int iY, const int iZ)
     }
 
     Position *pPos(it->second);
-    if (pPos->X != iX)
+    //处理移动距离大于视野距离的
+    if (abs(pPos->X - iX) > iXDist * 2 
+        || abs(pPos->Y - iY) > iYDist * 2
+        || abs(pPos->Z - iZ) > iZDist * 2)
     {
-        m_vcXList[pPos->X].erase(m_vcXList[pPos->X].find(iId));
-        pPos->X = iX;
-        m_vcXList[iX][iId] = pPos;
+        outArea = getArea(iId, iXDist, iYDist, iZDist);
+        moveData(iId, pPos, iX, iY, iZ);
+        newArea = getArea(iId, iXDist, iYDist, iZDist);
+
+        return;
     }
-    pPos->Y = iY;
-    pPos->Z = iZ;
+
+    //移动前区域
+    Position stOldStart;
+    Position stOldEnd;
+    calPosArea(stOldStart, stOldEnd, pPos, iXDist, iYDist, iZDist);
+
+    moveData(iId, pPos, iX, iY, iZ);
+
+    //移动后区域
+    Position stStart;
+    Position stEnd;
+    calPosArea(stStart, stEnd, pPos, iXDist, iYDist, iZDist);
+    
+    calOutInArea(stOldStart, stOldEnd, stStart, stEnd, iId, outArea, newArea);
+}
+
+void CAOI::calPosArea(Position &stStart, Position &stEnd, Position *pPos, 
+    const int &iXDist, const int &iYDist, const int &iZDist)
+{
+    int iSub(pPos->X - iXDist);
+    stStart.X = iSub >= 0 ? iSub : 0;
+    int iAdd(pPos->X + iXDist);
+    stEnd.X = iAdd >= m_iMaxX ? m_iMaxX - 1 : iAdd;
+    iSub = pPos->Y - iYDist;
+    stStart.Y = iSub >= 0 ? iSub : 0;
+    iAdd = pPos->Y + iYDist;
+    stEnd.Y = iAdd >= m_iMaxY ? m_iMaxY - 1 : iAdd;
+    iSub = pPos->Z - iZDist;
+    stStart.Z = iSub >= 0 ? iSub : 0;
+    iAdd = pPos->Z + iZDist;
+    stEnd.Z = iAdd >= m_iMaxZ ? m_iMaxZ - 1 : iAdd;
+}
+
+void CAOI::addVector(std::vector<int64_t> &vcArea, const int64_t &iId)
+{
+    if (vcArea.end() == std::find(vcArea.begin(), vcArea.end(), iId))
+    {
+        vcArea.push_back(iId);
+    }
+}
+
+void CAOI::calXOutArea(Position &stOldStart, Position &stOldEnd, position_map &mapPos, const int64_t &iId, std::vector<int64_t> &vcArea)
+{
+    for (positionit itPos = mapPos.begin(); mapPos.end() != itPos; ++itPos)
+    {
+        if (itPos->first == iId)
+        {
+            continue;
+        }
+        if (itPos->second->Y >= stOldStart.Y && itPos->second->Y <= stOldEnd.Y
+            && itPos->second->Z >= stOldStart.Z && itPos->second->Z <= stOldEnd.Z)
+        {
+            addVector(vcArea, itPos->first);
+        }
+    }
+}
+
+void CAOI::calXInArea(Position &stStart, Position &stEnd, 
+    position_map &mapPos, const int64_t &iId, std::vector<int64_t> &vcArea)
+{
+    for (positionit itPos = mapPos.begin(); mapPos.end() != itPos; ++itPos)
+    {
+        if (itPos->first == iId)
+        {
+            continue;
+        }
+        if (itPos->second->Y >= stStart.Y && itPos->second->Y <= stEnd.Y
+            && itPos->second->Z >= stStart.Z && itPos->second->Z <= stEnd.Z)
+        {
+            addVector(vcArea, itPos->first);
+        }
+    }
+}
+
+void CAOI::calXOutInArea(Position &stOldStart, Position &stOldEnd, 
+    Position &stStart, Position &stEnd,
+    const int64_t &iId, std::vector<int64_t> &outArea, std::vector<int64_t> &newArea)
+{
+    int x;
+    if (stStart.X > stOldStart.X)
+    {
+        //离开区域
+        for (x = stOldStart.X; x < stStart.X; ++x)
+        {
+            calXOutArea(stOldStart, stOldEnd, m_vcXList[x], iId, outArea);
+        }
+        //进入区域
+        for (x = stOldEnd.X + 1; x <= stEnd.X; ++x)
+        {
+            calXInArea(stStart, stEnd, m_vcXList[x], iId, newArea);
+        }
+    }
+
+    if (stStart.X < stOldStart.X)
+    {
+        //离开区域
+        for (x = stEnd.X + 1; x <= stOldEnd.X; ++x)
+        {
+            calXOutArea(stOldStart, stOldEnd, m_vcXList[x], iId, outArea);
+        }
+        //进入区域
+        for (x = stStart.X; x < stOldStart.X; ++x)
+        {
+            calXInArea(stStart, stEnd, m_vcXList[x], iId, newArea);
+        }
+    }
+}
+
+void CAOI::calYOutArea(Position &stOldStart, Position &stOldEnd, 
+    position_map &mapPos, const int64_t &iId, std::vector<int64_t> &vcArea)
+{
+    for (positionit itPos = mapPos.begin(); mapPos.end() != itPos; ++itPos)
+    {
+        if (itPos->first == iId)
+        {
+            continue;
+        }
+        if (itPos->second->X >= stOldStart.X && itPos->second->X <= stOldEnd.X
+            && itPos->second->Z >= stOldStart.Z && itPos->second->Z <= stOldEnd.Z)
+        {
+            addVector(vcArea, itPos->first);
+        }
+    }
+}
+
+void CAOI::calYInArea(Position &stStart, Position &stEnd, 
+    position_map &mapPos, const int64_t &iId, std::vector<int64_t> &vcArea)
+{
+    for (positionit itPos = mapPos.begin(); mapPos.end() != itPos; ++itPos)
+    {
+        if (itPos->first == iId)
+        {
+            continue;
+        }
+        if (itPos->second->X >= stStart.X && itPos->second->X <= stEnd.X
+            && itPos->second->Z >= stStart.Z && itPos->second->Z <= stEnd.Z)
+        {
+            addVector(vcArea, itPos->first);
+        }
+    }
+}
+
+void CAOI::calYOutInArea(Position &stOldStart, Position &stOldEnd, Position &stStart, Position &stEnd,
+    const int64_t &iId, std::vector<int64_t> &outArea, std::vector<int64_t> &newArea)
+{
+    int y;
+    if (stStart.Y > stOldStart.Y)
+    {
+        //离开区域
+        for (y = stOldStart.Y; y < stStart.Y; ++y)
+        {
+            calYOutArea(stOldStart, stOldEnd, m_vcYList[y], iId, outArea);
+        }
+        //进入区域
+        for (y = stOldEnd.Y + 1; y <= stEnd.Y; ++y)
+        {
+            calYInArea(stStart, stEnd, m_vcYList[y], iId, outArea);
+        }
+    }
+
+    if (stStart.Y < stOldStart.Y)
+    {
+        //离开区域
+        for (y = stEnd.Y + 1; y <= stOldEnd.Y; ++y)
+        {
+            calYOutArea(stOldStart, stOldEnd, m_vcYList[y], iId, outArea);
+        }
+        //进入区域
+        for (y = stStart.Y; y < stOldStart.Y; ++y)
+        {
+            calYInArea(stStart, stEnd, m_vcYList[y], iId, outArea);
+        }
+    }
+}
+
+void CAOI::calZOutArea(Position &stOldStart, Position &stOldEnd, 
+    position_map &mapPos, const int64_t &iId, std::vector<int64_t> &vcArea)
+{
+    for (positionit itPos = mapPos.begin(); mapPos.end() != itPos; ++itPos)
+    {
+        if (itPos->first == iId)
+        {
+            continue;
+        }
+        if (itPos->second->X >= stOldStart.X && itPos->second->X <= stOldEnd.X
+            && itPos->second->Y >= stOldStart.Y && itPos->second->Y <= stOldEnd.Y)
+        {
+            addVector(vcArea, itPos->first);
+        }
+    }
+}
+
+void CAOI::calZInArea(Position &stStart, Position &stEnd, 
+    position_map &mapPos, const int64_t &iId, std::vector<int64_t> &vcArea)
+{
+    for (positionit itPos = mapPos.begin(); mapPos.end() != itPos; ++itPos)
+    {
+        if (itPos->first == iId)
+        {
+            continue;
+        }
+        if (itPos->second->X >= stStart.X && itPos->second->X <= stEnd.X
+            && itPos->second->Y >= stStart.Y && itPos->second->Y <= stEnd.Y)
+        {
+            addVector(vcArea, itPos->first);
+        }
+    }
+}
+
+void CAOI::calZOutInArea(Position &stOldStart, Position &stOldEnd, Position &stStart, Position &stEnd,
+    const int64_t &iId, std::vector<int64_t> &outArea, std::vector<int64_t> &newArea)
+{
+    int z;
+    if (stStart.Z > stOldStart.Z)
+    {
+        //离开区域
+        for (z = stOldStart.Z; z < stStart.Z; ++z)
+        {
+            calZOutArea(stOldStart, stOldEnd, m_vcZList[z], iId, outArea);
+        }
+        //进入区域
+        for (z = stOldEnd.Z + 1; z <= stEnd.Z; ++z)
+        {
+            calZOutArea(stStart, stEnd, m_vcZList[z], iId, newArea);
+        }
+    }
+    if (stStart.Z < stOldStart.Z)
+    {
+        //离开区域
+        for (z = stEnd.Z + 1; z <= stOldEnd.Z; ++z)
+        {
+            calZOutArea(stOldStart, stOldEnd, m_vcZList[z], iId, outArea);
+        }
+        //进入区域
+        for (z = stStart.Z; z < stOldStart.Z; ++z)
+        {
+            calZOutArea(stStart, stEnd, m_vcZList[z], iId, newArea);
+        }
+    }
+}
+
+void CAOI::calOutInArea(Position &stOldStart, Position &stOldEnd, Position &stStart, Position &stEnd,
+    const int64_t &iId, std::vector<int64_t> &outArea, std::vector<int64_t> &newArea)
+{
+    calXOutInArea(stOldStart, stOldEnd, stStart, stEnd, iId, outArea, newArea);
+    calYOutInArea(stOldStart, stOldEnd, stStart, stEnd, iId, outArea, newArea);
+    calZOutInArea(stOldStart, stOldEnd, stStart, stEnd, iId, outArea, newArea);
 }
 
 std::vector<int64_t> CAOI::getArea(const int64_t &iId, const int &iXDist, const int &iYDist, const int &iZDist)
