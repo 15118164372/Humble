@@ -790,8 +790,8 @@ H_SOCK H_ClientSock(const char *pszHost, const unsigned short &usPort)
 
 long H_HashStr(const char *pszStr)
 {
-    unsigned int uiSeed = 131;
-    unsigned int uiHash = 0;
+    unsigned int uiSeed(131);
+    unsigned int uiHash(H_INIT_NUMBER);
     while (*pszStr)
     {
         uiHash = uiHash * uiSeed + (*pszStr++);
