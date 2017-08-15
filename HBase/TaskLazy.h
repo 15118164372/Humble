@@ -18,6 +18,7 @@ public:
     void Run(void);
 
     virtual void runTask(T *pMsg) = 0;
+    virtual void runSurplus(T *pMsg);
 
     void Join(void);
     void waitStart(void);
@@ -70,6 +71,12 @@ void CTaskLazy<T>::Free(T *pMsg)
 }
 
 template <typename T>
+void CTaskLazy<T>::runSurplus(T *pMsg)
+{
+    runTask(pMsg);
+}
+
+template <typename T>
 void CTaskLazy<T>::Run(void)
 {
     T *pMsg(NULL);
@@ -98,7 +105,7 @@ void CTaskLazy<T>::Run(void)
     {
         if (NULL != pMsg)
         {
-            runTask(pMsg);
+            runSurplus(pMsg);
             Free(pMsg);
         }
 

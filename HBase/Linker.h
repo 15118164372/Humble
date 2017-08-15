@@ -26,6 +26,8 @@ public:
     ~CLinker(void);
 
     void runTask(H_LinkCMD *pMsg);
+    void runSurplus(H_LinkCMD *)
+    {};
 
     void addLink(const char *pszParser, const unsigned short &usType, const char *pszHost, const unsigned short &usPort);
     void reLink(void);
