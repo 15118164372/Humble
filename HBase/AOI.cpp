@@ -338,7 +338,7 @@ void CAOI::calYOutInArea(Position &stOldStart, Position &stOldEnd, Position &stS
         //进入区域
         for (y = stOldEnd.Y + 1; y <= stEnd.Y; ++y)
         {
-            calYInArea(stStart, stEnd, m_vcYList[y], iId, outArea);
+            calYInArea(stStart, stEnd, m_vcYList[y], iId, newArea);
         }
     }
 
@@ -352,7 +352,7 @@ void CAOI::calYOutInArea(Position &stOldStart, Position &stOldEnd, Position &stS
         //进入区域
         for (y = stStart.Y; y < stOldStart.Y; ++y)
         {
-            calYInArea(stStart, stEnd, m_vcYList[y], iId, outArea);
+            calYInArea(stStart, stEnd, m_vcYList[y], iId, newArea);
         }
     }
 }
