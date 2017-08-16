@@ -51,23 +51,17 @@ private:
 
     void calXOutInArea(Position &stOldStart, Position &stOldEnd, Position &stStart, Position &stEnd,
         const int64_t &iId, std::vector<int64_t> &outArea, std::vector<int64_t> &newArea);
-    void calXOutArea(Position &stOldStart, Position &stOldEnd, 
-        position_map &mapPos, const int64_t &iId,std::vector<int64_t> &vcArea);
-    void calXInArea(Position &stStart, Position &stEnd, 
+    void addXArea(Position &stStart, Position &stEnd, 
         position_map &mapPos, const int64_t &iId, std::vector<int64_t> &vcArea);
 
     void calYOutInArea(Position &stOldStart, Position &stOldEnd, Position &stStart, Position &stEnd,
         const int64_t &iId, std::vector<int64_t> &outArea, std::vector<int64_t> &newArea);
-    void calYOutArea(Position &stOldStart, Position &stOldEnd, 
-        position_map &mapPos, const int64_t &iId, std::vector<int64_t> &vcArea);
-    void calYInArea(Position &stStart, Position &stEnd, 
+    void addYArea(Position &stStart, Position &stEnd, 
         position_map &mapPos, const int64_t &iId, std::vector<int64_t> &vcArea);
 
     void calZOutInArea(Position &stOldStart, Position &stOldEnd, Position &stStart, Position &stEnd,
         const int64_t &iId, std::vector<int64_t> &outArea, std::vector<int64_t> &newArea);
-    void calZOutArea(Position &stOldStart, Position &stOldEnd, 
-        position_map &mapPos, const int64_t &iId, std::vector<int64_t> &vcArea);
-    void calZInArea(Position &stStart, Position &stEnd, 
+    void addZArea(Position &stStart, Position &stEnd, 
         position_map &mapPos, const int64_t &iId, std::vector<int64_t> &vcArea);
 
 private:
