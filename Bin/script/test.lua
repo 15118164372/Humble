@@ -132,6 +132,9 @@ local function TestAOI()
 	aoi:Leave(8)
 	assert(checkAOI(inArea, {3, 4, 6, 8}))
 	
+	inArea = aoi:getArea(15, 1, 1, 1)
+	assert(not inArea)
+	
 	local outArea, newArea  = aoi:Move(1, 2, 0, 0, 1, 1, 1)
 	assert(checkAOI(outArea, {2}))
 	assert(checkAOI(newArea, {6}))

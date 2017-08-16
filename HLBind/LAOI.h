@@ -20,26 +20,36 @@ public:
         const int iXDist, const int iYDist, const int iZDist,
         luabridge::LuaRef newArea) 
     {
-        std::vector<int64_t>::iterator itId;
         std::vector<int64_t> vcOutArea, vcNewArea;
+        if (!Move(iId, iX, iY, iZ, iXDist, iYDist, iZDist, vcOutArea, vcNewArea))
+        {
+            return luabridge::LuaRef((struct lua_State *)m_pLState->pLState, luabridge::Nil());
+        }
+
         luabridge::LuaRef outArea = luabridge::newTable((struct lua_State *)m_pLState->pLState);
-
-        Move(iId, iX, iY, iZ, iXDist, iYDist, iZDist, vcOutArea, vcNewArea);
-
+        std::vector<int64_t>::iterator itId;
         for (itId = vcOutArea.begin(); vcOutArea.end() != itId; ++itId)
         {
             outArea.append(*itId);
         }
-        for (itId = vcNewArea.begin(); vcNewArea.end() != itId; ++itId)
+        if (newArea.isTable())
         {
-            newArea.append(*itId);
+            for (itId = vcNewArea.begin(); vcNewArea.end() != itId; ++itId)
+            {
+                newArea.append(*itId);
+            }
         }
 
         return outArea;
     };
     luabridge::LuaRef getLArea(const int64_t iId, const int iXDist, const int iYDist, const int iZDist) 
     {
-        std::vector<int64_t> vcIds = getArea(iId, iXDist, iYDist, iZDist);
+        std::vector<int64_t> vcIds;
+        if (!getArea(iId, iXDist, iYDist, iZDist, vcIds))
+        {
+            return luabridge::LuaRef((struct lua_State *)m_pLState->pLState, luabridge::Nil());
+        }
+
         return vector2Table(vcIds);
     };
 

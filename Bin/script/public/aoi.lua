@@ -15,14 +15,14 @@ function AOI:new(maxX, maxY, maxZ)
     return self
 end
 
---获取所在视野区域 xDist, yDist, zDist 区域
+--获取所在视野区域 xDist, yDist, zDist 区域  nil失败
 function AOI:getArea(id, xDist, yDist, zDist)    
     return self.CAOI:getArea(id, xDist, yDist, zDist)
 end
 
---进入
+--进入 false 失败
 function AOI:Enter(id, x, y, z)
-	self.CAOI:Enter(id, x, y, z)
+	return self.CAOI:Enter(id, x, y, z)
 end
 
 --离开 返回所在视野区域ids
@@ -30,7 +30,12 @@ function AOI:Leave(id)
     self.CAOI:Leave(id)
 end
 
---移动 返回 离开的区域  新进的区域
+--移动 false 失败
+function AOI:onlyMove(id, x, y, z)
+	return self.CAOI:onlyMove(id, x, y, z)
+end
+
+--移动 返回 离开的区域(nil 失败)  新进的区域
 function AOI:Move(id, x, y, z, xDist, yDist, zDist)
 	local newArea = {}
     local outArea = self.CAOI:Move(id, x, y, z, xDist, yDist, zDist, newArea)

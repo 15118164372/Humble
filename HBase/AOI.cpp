@@ -48,7 +48,7 @@ bool CAOI::checkPos(const int &iX, const int &iY, const int &iZ)
     return true;
 }
 
-std::vector<int64_t> CAOI::calArea(Position *pPos, const int &iXDist, const int &iYDist, const int &iZDist)
+void CAOI::calArea(Position *pPos, const int &iXDist, const int &iYDist, const int &iZDist, std::vector<int64_t> &vcArea)
 {
     int iSub(pPos->X - iXDist);
     int xStart((iSub >= 0 ? iSub : 0));
@@ -67,7 +67,6 @@ std::vector<int64_t> CAOI::calArea(Position *pPos, const int &iXDist, const int 
 
     positionit itMap;
     position_map *pMap;
-    std::vector<int64_t> vcArea;
     for (int x = xStart; x <= xEnd; ++x)
     {
         pMap = &m_vcXList[x];
@@ -80,18 +79,16 @@ std::vector<int64_t> CAOI::calArea(Position *pPos, const int &iXDist, const int 
             }
         }
     }
-
-    return vcArea;
 }
 
-void CAOI::Enter(const int64_t iId, const int iX, const int iY, const int iZ)
+bool CAOI::Enter(const int64_t iId, const int iX, const int iY, const int iZ)
 {
     H_ASSERT(checkPos(iX, iY, iZ), "param error.");
 
     positionit it = m_mapPos.find(iId);
     if (m_mapPos.end() != it)
     {
-        return;
+        return false;
     }
 
     Position *pPos = new(std::nothrow) Position;
@@ -104,6 +101,8 @@ void CAOI::Enter(const int64_t iId, const int iX, const int iY, const int iZ)
     m_vcXList[iX][iId] = pPos;
     m_vcYList[iY][iId] = pPos;
     m_vcZList[iZ][iId] = pPos;
+
+    return true;
 }
 
 void CAOI::Leave(const int64_t iId)
@@ -144,7 +143,21 @@ void CAOI::moveData(const int64_t &iId, Position *pPos, const int &iX, const int
     }
 }
 
-void CAOI::Move(const int64_t &iId, const int &iX, const int &iY, const int &iZ,
+bool CAOI::onlyMove(const int64_t iId, const int iX, const int iY, const int iZ)
+{
+    H_ASSERT(checkPos(iX, iY, iZ), "param error.");
+    positionit it = m_mapPos.find(iId);
+    if (m_mapPos.end() == it)
+    {
+        return false;
+    }
+
+    moveData(iId, it->second, iX, iY, iZ);
+
+    return true;
+}
+
+bool CAOI::Move(const int64_t &iId, const int &iX, const int &iY, const int &iZ,
     const int &iXDist, const int &iYDist, const int &iZDist,
     std::vector<int64_t> &outArea, std::vector<int64_t> &newArea)
 {
@@ -152,7 +165,7 @@ void CAOI::Move(const int64_t &iId, const int &iX, const int &iY, const int &iZ,
     positionit it = m_mapPos.find(iId);
     if (m_mapPos.end() == it)
     {
-        return;
+        return false;
     }
 
     Position *pPos(it->second);
@@ -161,11 +174,11 @@ void CAOI::Move(const int64_t &iId, const int &iX, const int &iY, const int &iZ,
         || abs(pPos->Y - iY) > iYDist * 2
         || abs(pPos->Z - iZ) > iZDist * 2)
     {
-        outArea = getArea(iId, iXDist, iYDist, iZDist);
+        calArea(pPos, iXDist, iYDist, iZDist, outArea);
         moveData(iId, pPos, iX, iY, iZ);
-        newArea = getArea(iId, iXDist, iYDist, iZDist);
+        calArea(pPos, iXDist, iYDist, iZDist, newArea);
 
-        return;
+        return true;
     }
 
     //ÒÆ¶¯Ç°ÇøÓò
@@ -181,6 +194,8 @@ void CAOI::Move(const int64_t &iId, const int &iX, const int &iY, const int &iZ,
     calPosArea(stStart, stEnd, pPos, iXDist, iYDist, iZDist);
     
     calOutInArea(stOldStart, stOldEnd, stStart, stEnd, iId, outArea, newArea);
+
+    return true;
 }
 
 void CAOI::calPosArea(Position &stStart, Position &stEnd, Position *pPos, 
@@ -416,16 +431,17 @@ void CAOI::calOutInArea(Position &stOldStart, Position &stOldEnd, Position &stSt
     calZOutInArea(stOldStart, stOldEnd, stStart, stEnd, iId, outArea, newArea);
 }
 
-std::vector<int64_t> CAOI::getArea(const int64_t &iId, const int &iXDist, const int &iYDist, const int &iZDist)
+bool CAOI::getArea(const int64_t &iId, const int &iXDist, const int &iYDist, const int &iZDist, std::vector<int64_t> &vcArea)
 {
     positionit it = m_mapPos.find(iId);
     if (m_mapPos.end() == it)
     {
-        std::vector<int64_t> vcArea;
-        return vcArea;
+        return false;
     }
 
-    return calArea(it->second, iXDist, iYDist, iZDist);
+    calArea(it->second, iXDist, iYDist, iZDist, vcArea);
+
+    return true;
 }
 
 H_ENAMSP

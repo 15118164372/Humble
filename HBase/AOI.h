@@ -13,12 +13,13 @@ public:
     CAOI(int iMaxX, int iMaxY, int iMaxZ);
     virtual ~CAOI(void);
 
-    void Enter(const int64_t iId, const int iX, const int iY, const int iZ);
+    bool Enter(const int64_t iId, const int iX, const int iY, const int iZ);
     void Leave(const int64_t iId);
-    void Move(const int64_t &iId, const int &iX, const int &iY, const int &iZ, 
+    bool Move(const int64_t &iId, const int &iX, const int &iY, const int &iZ,
         const int &iXDist, const int &iYDist, const int &iZDist,
         std::vector<int64_t> &outArea, std::vector<int64_t> &newArea);
-    std::vector<int64_t> getArea(const int64_t &iId, const int &iXDist, const int &iYDist, const int &iZDist);
+    bool onlyMove(const int64_t iId, const int iX, const int iY, const int iZ);
+    bool getArea(const int64_t &iId, const int &iXDist, const int &iYDist, const int &iZDist, std::vector<int64_t> &vcArea);
 
 private:
     CAOI(void);
@@ -39,7 +40,7 @@ private:
         {};
     };
 
-    std::vector<int64_t> calArea(Position *pPos, const int &iXDist, const int &iYDist, const int &iZDist);
+    void calArea(Position *pPos, const int &iXDist, const int &iYDist, const int &iZDist, std::vector<int64_t> &vcArea);
     bool checkPos(const int &iX, const int &iY, const int &iZ);
     void moveData(const int64_t &iId, Position *pPos, const int &iX, const int &iY, const int &iZ);
     void calOutInArea(Position &stOldStart, Position &stOldEnd, Position &stStart, Position &stEnd, 
