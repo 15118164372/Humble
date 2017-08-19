@@ -34,10 +34,6 @@ void CMSGDispatch::regEvent(unsigned short usEvent, class CTaskWorker *pTask, co
     H_EVENTDISP *pDisp(&m_acEvent[usEvent]);
 
     pDisp->objLock.wLock();
-    if (usEvent >= MSG_MQTT_CONNECT && usEvent <= MSG_MQTT_DISCONNECT)
-    {
-        H_ASSERT(pDisp->lstTask.empty(), "mqtt event repeat register.");
-    }
     for (itTask = pDisp->lstTask.begin(); pDisp->lstTask.end() != itTask; ++itTask)
     {
         if (*(pTask->getName()) ==  *((*itTask)->getName()))
@@ -49,7 +45,11 @@ void CMSGDispatch::regEvent(unsigned short usEvent, class CTaskWorker *pTask, co
     if (!bHave)
     {
         pDisp->lstTask.push_back(pTask);
-    }    
+    }
+    if (usEvent >= MSG_MQTT_CONNECT && usEvent <= MSG_MQTT_DISCONNECT)
+    {
+        H_ASSERT(1 >= pDisp->lstTask.size(), "mqtt event repeat register.");
+    }
     pDisp->objLock.wunLock();
 
     H_LOG(LOGLV_INFO, "%s register event %d", pTask->getName()->c_str(), usEvent);
