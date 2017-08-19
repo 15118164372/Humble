@@ -57,6 +57,7 @@ SockType = {
 	"CMD",
 	"RPC",
 	"HTTP",
+	"WS",
 	"MQTT",
 	--以上与C++对应 保留的连接类型
 	

@@ -50,6 +50,7 @@ enum
     SOCKTYPE_CMD = 0,
     SOCKTYPE_RPC,
     SOCKTYPE_HTTP,
+    SOCKTYPE_WS,
     SOCKTYPE_MQTT,
 };
 

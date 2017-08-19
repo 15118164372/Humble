@@ -24,5 +24,5 @@ humble.httpServer("0.0.0.0", 80)
 
 --TODO Äã×Ô¼ºµÄ
 humble.addListener("tcp2", 11, "0.0.0.0", 16000)
-humble.addListener("websocket", 12, "0.0.0.0", 16100)
+humble.wsServer("0.0.0.0", 16100)
 humble.mqttServer("0.0.0.0", 1883)
