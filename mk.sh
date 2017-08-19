@@ -32,7 +32,7 @@ then
 fi
 
 #附加包含库
-INCLUDELIB="-lrt -ldl -lpthread"
+INCLUDELIB="-lrt -ldl -luuid -lpthread"
 INCLUDELIB=$INCLUDELIB" -levent_core -levent_extra -levent_pthreads -lmysqlclient"
 
 #中间库文件名
