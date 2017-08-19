@@ -87,7 +87,7 @@ private:
         pSession->bReLink = !(pCMD->bAccept);
         pSession->bHandShake = false;
         pSession->bMQTTConn = false;
-        if (0 == strcmp(H_PARSER_WS, pCMD->pParser->getName()))
+        if (SOCKTYPE_WS == pCMD->stLink.usType)
         {
             pSession->bHandShake = true;
         }
