@@ -147,6 +147,12 @@ bool CMQTT::parseCONNECT(H_Binary *pBinary, MQTT_FixedHead &stFixedHead, MQTT_CO
         H_LOG(LOGLV_ERROR, "%s", "will flag eq zero, so will qos must eq zero.");
         return false;
     }
+    if (0 == stCONNECTInfo.UserNameFlag && 0 != stCONNECTInfo.PswFlag)
+    {
+        //如果用户名标志被设置为 0，密码标志也必须设置为 0
+        H_LOG(LOGLV_ERROR, "%s", "user name flag eq zero, so will passord flag must eq zero.");
+        return false;
+    }
     ++iParsed;
     CHECK(iParsed, pBinary->iLens);
 
@@ -225,6 +231,13 @@ bool CMQTT::parsePUBLISH(H_Binary *pBinary, MQTT_FixedHead &stFixedHead, MQTT_PU
 {
     parseHead(pBinary, stFixedHead);
     CHECKQOS(stFixedHead.QoS);
+    //对于 QoS 0 的消息，DUP 标志必须设置为 0
+    if (QOS0 == stFixedHead.QoS && 0 != stFixedHead.DUP)
+    {
+        H_LOG(LOGLV_ERROR, "%s", "QoS 0, DUP must eq 0.");
+        return false;
+    }
+
     size_t iHeadLens = parseHeadLens(pBinary);
 
     size_t iParsed(iHeadLens);
@@ -236,10 +249,12 @@ bool CMQTT::parsePUBLISH(H_Binary *pBinary, MQTT_FixedHead &stFixedHead, MQTT_PU
     CHECK(iParsed, pBinary->iLens);
     stPUBLISHInfo.Topic.append(pBinary->pBufer + iParsed, usLens);
     //不能包含通配符
+    //$ 服务端应该阻止客户端使用这种主题名与其它客户端交换消息
     if (std::string::npos != stPUBLISHInfo.Topic.find("+") 
-        || std::string::npos != stPUBLISHInfo.Topic.find("#"))
+        || std::string::npos != stPUBLISHInfo.Topic.find("#")
+        || std::string::npos != stPUBLISHInfo.Topic.find("$"))
     {
-        H_LOG(LOGLV_ERROR, "%s", "cannot include wildcards");
+        H_LOG(LOGLV_ERROR, "%s", "cannot include wildcards or $");
         return false;
     }
     iParsed += usLens;
