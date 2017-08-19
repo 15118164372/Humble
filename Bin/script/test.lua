@@ -13,6 +13,11 @@ function destroyTask()
 	
 end
 
+local function onFram(uiTick, ulCount)
+	--print(uiTick, ulCount)
+end
+regFrameEv(onFram)
+
 local function TestEncrypt()
 	local msg = "≤‚ ‘Encrypt*&*^^1"
 	local enMsg = humble.zlibEncode(msg)

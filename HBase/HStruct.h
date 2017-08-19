@@ -24,10 +24,13 @@ struct H_Session
 {
     bool bReLink;
     bool bHandShake;
+    bool bMQTTConn;
     struct bufferevent *pEv;
     class CNetWorker *pNetWorker;
     class CParser *pParser;
     H_LINK stLink;
+    unsigned int m_uiPackCount;
+    time_t m_uiTime;
 };
 
 struct H_TICK

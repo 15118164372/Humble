@@ -343,6 +343,9 @@
     <ClInclude Include="WebSocket.h">
       <Filter>Service\Parser</Filter>
     </ClInclude>
+    <ClInclude Include="MQTT.h">
+      <Filter>Service\Parser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zlib\adler32.c">
@@ -602,6 +605,9 @@
       <Filter>Algorithm</Filter>
     </ClCompile>
     <ClCompile Include="WebSocket.cpp">
+      <Filter>Service\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="MQTT.cpp">
       <Filter>Service\Parser</Filter>
     </ClCompile>
   </ItemGroup>

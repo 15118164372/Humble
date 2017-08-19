@@ -2,7 +2,6 @@
 #include "MSGDispatch.h"
 #include "TaskWorker.h"
 #include "Funcs.h"
-#include "HStruct.h"
 #include "Log.h"
 
 H_BNAMSP
@@ -35,6 +34,10 @@ void CMSGDispatch::regEvent(unsigned short usEvent, class CTaskWorker *pTask, co
     H_EVENTDISP *pDisp(&m_acEvent[usEvent]);
 
     pDisp->objLock.wLock();
+    if (usEvent >= MSG_MQTT_CONNECT && usEvent <= MSG_MQTT_DISCONNECT)
+    {
+        H_ASSERT(pDisp->lstTask.empty(), "mqtt event repeat register.");
+    }
     for (itTask = pDisp->lstTask.begin(); pDisp->lstTask.end() != itTask; ++itTask)
     {
         if (*(pTask->getName()) ==  *((*itTask)->getName()))
@@ -72,6 +75,46 @@ void CMSGDispatch::unRegTime(unsigned short &usEvent, class CTaskWorker *pTask)
     pDisp->objLock.wunLock();
 }
 
+void CMSGDispatch::sendMQTTEvent(unsigned short &usEvent, H_LINK &stLink, H_Binary &stBinary)
+{
+    H_ASSERT(usEvent >= MSG_MQTT_CONNECT && usEvent <= MSG_MQTT_DISCONNECT, "subscript out of range");
+    
+    H_EVENTDISP *pDisp(&m_acEvent[usEvent]);
+
+    pDisp->objLock.rLock();
+    if (pDisp->lstTask.empty())
+    {
+        pDisp->objLock.runLock();
+        return;
+    }
+
+    std::list<class CTaskWorker *>::iterator itTask = pDisp->lstTask.begin();
+    pDisp->objLock.runLock();
+
+    H_Binary tmpBinary;
+    tmpBinary.iLens = stBinary.iLens;
+    tmpBinary.pBufer = new(std::nothrow) char[stBinary.iLens];
+    H_ASSERT(NULL != tmpBinary.pBufer, "malloc memory error.");
+    memcpy(tmpBinary.pBufer, stBinary.pBufer, stBinary.iLens);
+
+    H_MSG * pEv = new(std::nothrow) H_MSG;
+    H_ASSERT(NULL != pEv, "malloc memory error.");
+    pEv->pEvent = new(std::nothrow) char[sizeof(stLink) + sizeof(tmpBinary)];
+    H_ASSERT(NULL != pEv->pEvent, "malloc memory error.");
+
+    pEv->usEnevt = usEvent;
+    memcpy(pEv->pEvent, &stLink, sizeof(stLink));
+    memcpy(pEv->pEvent + sizeof(stLink), &tmpBinary, sizeof(tmpBinary));
+
+    if (!(*itTask)->getChan()->Send((void*)pEv))
+    {
+        H_SafeDelArray(tmpBinary.pBufer);
+        H_SafeDelArray(pEv->pEvent);
+        H_SafeDelete(pEv);
+        H_LOG(LOGLV_ERROR, "%s", "add message to CirQueue error.");
+    }
+}
+
 void CMSGDispatch::sendEvent(unsigned short usEvent, void *pMsg, const size_t &iLens)
 {
     H_ASSERT(usEvent >= 0 && usEvent < MSG_COUNT, "subscript out of range");
@@ -94,7 +137,7 @@ void CMSGDispatch::sendEvent(unsigned short usEvent, void *pMsg, const size_t &i
         }
 
         pEv = new(std::nothrow) H_MSG;
-        H_ASSERT(NULL != pMsg, "malloc memory error.");
+        H_ASSERT(NULL != pEv, "malloc memory error.");
         pEv->pEvent = new(std::nothrow) char[iLens];
         H_ASSERT(NULL != pEv->pEvent, "malloc memory error.");
 

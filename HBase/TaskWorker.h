@@ -53,7 +53,20 @@ public:
     {
         return NULL;
     };
-    virtual void onTaskRPCRtn(const unsigned int &uiId, H_Binary *pBinary) {};
+    virtual void onTaskRPCRtn(const unsigned int &uiId, H_Binary *pBinary) {};    
+
+    //mqtt
+    //CONNECT
+    virtual void onMQTTCONNECT(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_CONNECT_Info *pCONNECTInfo) {};
+    virtual void onMQTTPUBLISH(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_PUBLISH_Info *pPUBLISHInfo) {};
+    virtual void onMQTTPUBACK(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_PUBACK_Info *pPUBACKInfo) {};
+    virtual void onMQTTPUBREC(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_PUBREC_Info *pPUBRECInfo) {};
+    virtual void onMQTTPUBREL(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_PUBREL_Info *pPUBRELInfo) {};
+    virtual void onMQTTPUBCOMP(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_PUBCOMP_Info *pPUBCOMPInfo) {};
+    virtual void onMQTTSUBSCRIBE(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_SUBSCRIBE_Info *pSUBSCRIBEInfo) {};
+    virtual void onMQTTUNSUBSCRIBE(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_UNSUBSCRIBE_Info *pUNSUBSCRIBEInfo) {};
+    virtual void onMQTTPINGREQ(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead) {};
+    virtual void onMQTTDISCONNECT(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead) {};
 
     std::string *getName(void)
     {

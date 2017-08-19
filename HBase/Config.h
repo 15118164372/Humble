@@ -54,7 +54,7 @@
     #endif
 #endif
 
-//#define H_UUID
+#define H_UUID
 #define H_MYSQL
 
 #ifdef H_OS_WIN

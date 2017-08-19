@@ -102,6 +102,7 @@ int setParam(void)
     CParserMgr::getSingletonPtr()->addParser(CTcp1::getSingletonPtr());
     CParserMgr::getSingletonPtr()->addParser(CTcp2::getSingletonPtr());
     CParserMgr::getSingletonPtr()->addParser(CWebSocket::getSingletonPtr());
+    CParserMgr::getSingletonPtr()->addParser(CMQTT::getSingletonPtr());
 
     std::string strConfFile = H_FormatStr("%s%s%s%s", g_strProPath.c_str(), "config", H_PATH_SEPARATOR, "config.ini");
     CIniFile objIni(strConfFile.c_str());

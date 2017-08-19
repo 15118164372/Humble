@@ -66,6 +66,17 @@ void CLTask::initTask(void)
     *(m_pLFunc[LFUNC_RPCCALL]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onRPCCall");
     *(m_pLFunc[LFUNC_RPCRTN]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onRPCRtn");
 
+    *(m_pLFunc[LFUNC_MQTT_CONNECT]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onMQTTCONNECT");
+    *(m_pLFunc[LFUNC_MQTT_PUBLISH]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onMQTTPUBLISH");
+    *(m_pLFunc[LFUNC_MQTT_PUBACK]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onMQTTPUBACK");
+    *(m_pLFunc[LFUNC_MQTT_PUBREC]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onMQTTPUBREC");
+    *(m_pLFunc[LFUNC_MQTT_PUBREL]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onMQTTPUBREL");
+    *(m_pLFunc[LFUNC_MQTT_PUBCOMP]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onMQTTPUBCOMP");
+    *(m_pLFunc[LFUNC_MQTT_SUBSCRIBE]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onMQTTSUBSCRIBE");
+    *(m_pLFunc[LFUNC_MQTT_UNSUBSCRIBE]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onMQTTUNSUBSCRIBE");
+    *(m_pLFunc[LFUNC_MQTT_PINGREQ]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onMQTTPINGREQ");
+    *(m_pLFunc[LFUNC_MQTT_DISCONNECT]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onMQTTDISCONNECT");
+
     try
     {
         (*(m_pLFunc[LFUNC_INITTASK]))();
@@ -235,6 +246,252 @@ void CLTask::onTaskRPCRtn(const unsigned int &uiId, H_Binary *pBinary)
     try
     {
         (*(m_pLFunc[LFUNC_RPCRTN]))(uiId, *pBinary);
+    }
+    catch (luabridge::LuaException &e)
+    {
+        H_LOG(LOGLV_ERROR, "%s", e.what());
+    }
+}
+
+luabridge::LuaRef CLTask::createMQTTHead(struct MQTT_FixedHead *pFixedHead)
+{
+    luabridge::LuaRef lFixedHead = luabridge::newTable((struct lua_State *)m_stState.pLState);
+
+    lFixedHead["MsgType"] = int(pFixedHead->MsgType);
+    lFixedHead["DUP"] = int(pFixedHead->DUP);
+    lFixedHead["QoS"] = int(pFixedHead->QoS);
+    lFixedHead["RETAIN"] = int(pFixedHead->RETAIN);
+
+    return lFixedHead;
+}
+
+luabridge::LuaRef CLTask::createCONNECTInfo(struct MQTT_CONNECT_Info *pCONNECTInfo)
+{
+    luabridge::LuaRef lInfo = luabridge::newTable((struct lua_State *)m_stState.pLState);
+
+    lInfo["UserNameFlag"] = int(pCONNECTInfo->UserNameFlag);
+    lInfo["PswFlag"] = int(pCONNECTInfo->PswFlag);
+    lInfo["WillRetain"] = int(pCONNECTInfo->WillRetain);
+    lInfo["WillQoS"] = int(pCONNECTInfo->WillQoS);
+    lInfo["WillFlag"] = int(pCONNECTInfo->WillFlag);
+    lInfo["CleanSession"] = int(pCONNECTInfo->CleanSession);
+    lInfo["Reserved"] = int(pCONNECTInfo->Reserved);
+    lInfo["ProtoLevel"] = int(pCONNECTInfo->ProtoLevel);
+    lInfo["KeepAlive"] = pCONNECTInfo->KeepAlive;
+
+    lInfo["ProtoName"] = pCONNECTInfo->ProtoName;
+    lInfo["UserName"] = pCONNECTInfo->UserName;
+    lInfo["Psw"] = pCONNECTInfo->Psw;
+    lInfo["WillTopic"] = pCONNECTInfo->WillTopic;
+    lInfo["WillMessage"] = pCONNECTInfo->WillMessage;
+    lInfo["ClientId"] = pCONNECTInfo->ClientId;
+
+    return lInfo;
+}
+
+luabridge::LuaRef CLTask::createPUBLISHInfo(struct MQTT_PUBLISH_Info *pPUBLISHInfo)
+{
+    luabridge::LuaRef lInfo = luabridge::newTable((struct lua_State *)m_stState.pLState);
+
+    lInfo["MsgId"] = pPUBLISHInfo->MsgId;
+
+    lInfo["Topic"] = pPUBLISHInfo->Topic;
+    lInfo["Payload"] = pPUBLISHInfo->Payload;
+
+    return lInfo;
+}
+
+luabridge::LuaRef CLTask::createPUBACKInfo(struct MQTT_PUBACK_Info *pPUBACKInfo)
+{
+    luabridge::LuaRef lInfo = luabridge::newTable((struct lua_State *)m_stState.pLState);
+
+    lInfo["MsgId"] = pPUBACKInfo->MsgId;
+
+    return lInfo;
+}
+
+luabridge::LuaRef CLTask::createPUBRECInfo(struct MQTT_PUBREC_Info *pPUBRECInfo)
+{
+    luabridge::LuaRef lInfo = luabridge::newTable((struct lua_State *)m_stState.pLState);
+
+    lInfo["MsgId"] = pPUBRECInfo->MsgId;
+
+    return lInfo;
+}
+
+luabridge::LuaRef CLTask::createPUBRELInfo(struct MQTT_PUBREL_Info *pPUBRELInfo)
+{
+    luabridge::LuaRef lInfo = luabridge::newTable((struct lua_State *)m_stState.pLState);
+
+    lInfo["MsgId"] = pPUBRELInfo->MsgId;
+
+    return lInfo;
+}
+
+luabridge::LuaRef CLTask::createPUBCOMPInfo(struct MQTT_PUBCOMP_Info *pPUBCOMPInfo)
+{
+    luabridge::LuaRef lInfo = luabridge::newTable((struct lua_State *)m_stState.pLState);
+
+    lInfo["MsgId"] = pPUBCOMPInfo->MsgId;
+
+    return lInfo;
+}
+
+luabridge::LuaRef CLTask::createSUBSCRIBEInfo(struct MQTT_SUBSCRIBE_Info *pSUBSCRIBEInfo)
+{
+    luabridge::LuaRef lInfo = luabridge::newTable((struct lua_State *)m_stState.pLState);
+
+    lInfo["MsgId"] = pSUBSCRIBEInfo->MsgId;
+
+    std::vector<SUBSCRIBETopic>::iterator itTopic;
+    luabridge::LuaRef lTopics = luabridge::newTable((struct lua_State *)m_stState.pLState);
+    for (itTopic = pSUBSCRIBEInfo->vcTopic.begin(); pSUBSCRIBEInfo->vcTopic.end() != itTopic; ++itTopic)
+    {
+        lTopics[itTopic->Topic] = int(itTopic->QoS);
+    }
+    lInfo["Topics"] = lTopics;
+
+    return lInfo;
+}
+
+luabridge::LuaRef CLTask::createUNSUBSCRIBEInfo(struct MQTT_UNSUBSCRIBE_Info *pUNSUBSCRIBEInfo)
+{
+    luabridge::LuaRef lInfo = luabridge::newTable((struct lua_State *)m_stState.pLState);
+
+    lInfo["MsgId"] = pUNSUBSCRIBEInfo->MsgId;
+
+    std::vector<std::string>::iterator itTopic;
+    luabridge::LuaRef lTopics = luabridge::newTable((struct lua_State *)m_stState.pLState);
+    for (itTopic = pUNSUBSCRIBEInfo->vcTopic.begin(); pUNSUBSCRIBEInfo->vcTopic.end() != itTopic; ++itTopic)
+    {
+        lTopics.append(*itTopic);
+    }
+    lInfo["Topics"] = lTopics;
+
+    return lInfo;
+}
+
+void CLTask::onMQTTCONNECT(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_CONNECT_Info *pCONNECTInfo)
+{
+    try
+    {
+        (*(m_pLFunc[LFUNC_MQTT_CONNECT]))(pLink->sock, pLink->usType, 
+            createMQTTHead(pFixedHead), createCONNECTInfo(pCONNECTInfo));
+    }
+    catch (luabridge::LuaException &e)
+    {
+        H_LOG(LOGLV_ERROR, "%s", e.what());
+    }
+}
+
+void CLTask::onMQTTPUBLISH(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_PUBLISH_Info *pPUBLISHInfo)
+{
+    try
+    {
+        (*(m_pLFunc[LFUNC_MQTT_PUBLISH]))(pLink->sock, pLink->usType, 
+            createMQTTHead(pFixedHead), createPUBLISHInfo(pPUBLISHInfo));
+    }
+    catch (luabridge::LuaException &e)
+    {
+        H_LOG(LOGLV_ERROR, "%s", e.what());
+    }
+}
+
+void CLTask::onMQTTPUBACK(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_PUBACK_Info *pPUBACKInfo)
+{
+    try
+    {
+        (*(m_pLFunc[LFUNC_MQTT_PUBACK]))(pLink->sock, pLink->usType, 
+            createMQTTHead(pFixedHead), createPUBACKInfo(pPUBACKInfo));
+    }
+    catch (luabridge::LuaException &e)
+    {
+        H_LOG(LOGLV_ERROR, "%s", e.what());
+    }
+}
+
+void CLTask::onMQTTPUBREC(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_PUBREC_Info *pPUBRECInfo)
+{
+    try
+    {
+        (*(m_pLFunc[LFUNC_MQTT_PUBREC]))(pLink->sock, pLink->usType, 
+            createMQTTHead(pFixedHead), createPUBRECInfo(pPUBRECInfo));
+    }
+    catch (luabridge::LuaException &e)
+    {
+        H_LOG(LOGLV_ERROR, "%s", e.what());
+    }
+}
+
+void CLTask::onMQTTPUBREL(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_PUBREL_Info *pPUBRELInfo)
+{
+    try
+    {
+        (*(m_pLFunc[LFUNC_MQTT_PUBREL]))(pLink->sock, pLink->usType, 
+            createMQTTHead(pFixedHead), createPUBRELInfo(pPUBRELInfo));
+    }
+    catch (luabridge::LuaException &e)
+    {
+        H_LOG(LOGLV_ERROR, "%s", e.what());
+    }
+}
+
+void CLTask::onMQTTPUBCOMP(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_PUBCOMP_Info *pPUBCOMPInfo)
+{
+    try
+    {
+        (*(m_pLFunc[LFUNC_MQTT_PUBCOMP]))(pLink->sock, pLink->usType, 
+            createMQTTHead(pFixedHead), createPUBCOMPInfo(pPUBCOMPInfo));
+    }
+    catch (luabridge::LuaException &e)
+    {
+        H_LOG(LOGLV_ERROR, "%s", e.what());
+    }
+}
+
+void CLTask::onMQTTSUBSCRIBE(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_SUBSCRIBE_Info *pSUBSCRIBEInfo)
+{
+    try
+    {
+        (*(m_pLFunc[LFUNC_MQTT_SUBSCRIBE]))(pLink->sock, pLink->usType, 
+            createMQTTHead(pFixedHead), createSUBSCRIBEInfo(pSUBSCRIBEInfo));
+    }
+    catch (luabridge::LuaException &e)
+    {
+        H_LOG(LOGLV_ERROR, "%s", e.what());
+    }
+}
+
+void CLTask::onMQTTUNSUBSCRIBE(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead, struct MQTT_UNSUBSCRIBE_Info *pUNSUBSCRIBEInfo)
+{
+    try
+    {
+        (*(m_pLFunc[LFUNC_MQTT_UNSUBSCRIBE]))(pLink->sock, pLink->usType, 
+            createMQTTHead(pFixedHead), createUNSUBSCRIBEInfo(pUNSUBSCRIBEInfo));
+    }
+    catch (luabridge::LuaException &e)
+    {
+        H_LOG(LOGLV_ERROR, "%s", e.what());
+    }
+}
+
+void CLTask::onMQTTPINGREQ(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead)
+{
+    try
+    {
+        (*(m_pLFunc[LFUNC_MQTT_PINGREQ]))(pLink->sock, pLink->usType, createMQTTHead(pFixedHead));
+    }
+    catch (luabridge::LuaException &e)
+    {
+        H_LOG(LOGLV_ERROR, "%s", e.what());
+    }
+}
+
+void CLTask::onMQTTDISCONNECT(H_LINK *pLink, struct MQTT_FixedHead *pFixedHead)
+{
+    try
+    {
+        (*(m_pLFunc[LFUNC_MQTT_DISCONNECT]))(pLink->sock, pLink->usType, createMQTTHead(pFixedHead));
     }
     catch (luabridge::LuaException &e)
     {

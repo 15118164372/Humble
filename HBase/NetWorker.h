@@ -78,12 +78,15 @@ private:
             return;
         }
 
+        pSession->m_uiPackCount = H_INIT_NUMBER;
+        pSession->m_uiTime = time(NULL);
         pSession->pNetWorker = this;
         pSession->pParser = pCMD->pParser;
         pSession->stLink.usType = pCMD->stLink.usType;
         pSession->stLink.sock = pCMD->stLink.sock;
         pSession->bReLink = !(pCMD->bAccept);
         pSession->bHandShake = false;
+        pSession->bMQTTConn = false;
         if (0 == strcmp(H_PARSER_WS, pCMD->pParser->getName()))
         {
             pSession->bHandShake = true;
@@ -102,7 +105,7 @@ private:
         }
     };
 
-    void dispProto(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &stBinary);
+    void dispProto(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &stBinary, bool &bClose);
 
     void dispHttp(H_TCPBUF &stTcpBuf, H_Binary &stBinary);
     void dispNomal(H_PROTOTYPE &iProto, H_TCPBUF &stTcpBuf, H_Binary &stBinary);
@@ -112,6 +115,8 @@ private:
 
     void dispCMD(H_TCPBUF &stTcpBuf, H_Binary &stBinary);
     void sendCMD(const char *pszTaskName, H_LINK *pLink, H_CMD *pCmd, H_TCPBUF &stTcpBuf);
+
+    void dispMQTT(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &stBinary, bool &bClose);
 
 private:
     int m_iSockFlag;

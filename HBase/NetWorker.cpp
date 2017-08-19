@@ -115,6 +115,25 @@ void CNetWorker::onClose(H_Session *pSession)
 
 void CNetWorker::onRead(H_Session *pSession)
 {
+    //最大发包数判断
+    if (H_MAXPACK_RATE > H_INIT_NUMBER
+        && H_PACKRATE_TIME > H_INIT_NUMBER)
+    {
+        time_t tNow(time(NULL));
+        time_t tDiff(tNow - pSession->m_uiTime);
+        if (tDiff >= H_PACKRATE_TIME)
+        {
+            if (pSession->m_uiPackCount / tDiff >= H_MAXPACK_RATE)
+            {
+                onClose(pSession);
+                return;
+            }
+
+            pSession->m_uiPackCount = H_INIT_NUMBER;
+            pSession->m_uiTime = tNow;
+        }
+    }
+
     CEvBuffer objEvBuf;
     objEvBuf.setEvBuf(pSession->pEv);
     size_t iBufLens(objEvBuf.getTotalLens());
@@ -124,7 +143,7 @@ void CNetWorker::onRead(H_Session *pSession)
         return;
     }
 
-    bool bClose;
+    bool bClose(false);
     H_TCPBUF stTcpBuf;
     H_Binary stBinary;
     size_t iParsed(H_INIT_NUMBER);
@@ -141,10 +160,9 @@ void CNetWorker::onRead(H_Session *pSession)
             break;
         }
 
-        //需要握手的
+        //需要握手的(websocket)
         if (pSession->bHandShake)
         {
-            bClose = false;
             iCurParsed = H_INIT_NUMBER;
             iSurplus = iBufLens - iParsed;
             bool bOk(pSession->pParser->handShake(pSession, pBuf + iParsed, iSurplus, iCurParsed, bClose));
@@ -160,10 +178,11 @@ void CNetWorker::onRead(H_Session *pSession)
 
             pSession->bHandShake = false;
             iParsed += iCurParsed;
+            ++pSession->m_uiPackCount;
+
             continue;
         }
-
-        bClose = false;
+        
         iCurParsed = H_INIT_NUMBER;
         iSurplus = iBufLens - iParsed;
         stBinary = pSession->pParser->parsePack(pSession, pBuf + iParsed, iSurplus, iCurParsed, bClose);
@@ -174,7 +193,8 @@ void CNetWorker::onRead(H_Session *pSession)
         }
         if (H_INIT_NUMBER == iCurParsed)
         {
-            if (iSurplus > H_MAXPACK_LENS)
+            if (H_INIT_NUMBER != H_MAXPACK_LENS 
+                && iSurplus > H_MAXPACK_LENS)
             {
                 H_LOG(LOGLV_ERROR, "%s", "pack too large.");
                 onClose(pSession);
@@ -185,17 +205,26 @@ void CNetWorker::onRead(H_Session *pSession)
         if (NULL == stBinary.pBufer)
         {
             iParsed += iCurParsed;
+            ++pSession->m_uiPackCount;
+
             continue;
         }
 
         iParsed += iCurParsed;
-        dispProto(pSession, stTcpBuf, stBinary);
+        dispProto(pSession, stTcpBuf, stBinary, bClose);
+        if (bClose)
+        {
+            onClose(pSession);
+            return;
+        }
+
+        ++pSession->m_uiPackCount;
     }
 
     objEvBuf.delBuffer(iParsed);
 }
 
-void CNetWorker::dispProto(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &stBinary)
+void CNetWorker::dispProto(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &stBinary, bool &bClose)
 {
     switch (pSession->stLink.usType)
     {
@@ -233,6 +262,12 @@ void CNetWorker::dispProto(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &st
                 default:
                     break;
             }
+        }
+        break;
+
+        case SOCKTYPE_MQTT:
+        {
+            dispMQTT(pSession, stTcpBuf, stBinary, bClose);
         }
         break;
 
@@ -423,6 +458,85 @@ void CNetWorker::dispCMD(H_TCPBUF &stTcpBuf, H_Binary &stBinary)
 
     stLink.sock = stTcpBuf.stLink.sock;
     sendCMD(pCmd->acTask, &stLink, pCmd, stTcpBuf);
+}
+
+void CNetWorker::dispMQTT(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &stBinary, bool &bClose)
+{
+    unsigned short usEvent(H_INIT_NUMBER);
+    unsigned char ucMsgType((stBinary.pBufer[0] & 0xF0) >> 4);
+    //第一个报文必须为CONNECT
+    if (MQTT_CONNECT != ucMsgType && !pSession->bMQTTConn)
+    {
+        bClose = true;
+        return;
+    }
+    //CONNECT报文只能发送一次
+    if (MQTT_CONNECT == ucMsgType && pSession->bMQTTConn)
+    {
+        bClose = true;
+        return;
+    }
+
+    switch (ucMsgType)
+    {
+        case MQTT_CONNECT:
+        {
+            usEvent = MSG_MQTT_CONNECT;
+            pSession->bMQTTConn = true;
+        }
+        break;
+        case MQTT_PUBLISH:
+        {
+            usEvent = MSG_MQTT_PUBLISH;
+        }
+        break;
+        case MQTT_PUBACK:
+        {
+            usEvent = MSG_MQTT_PUBACK;
+        }
+        break;
+        case MQTT_PUBREC:
+        {
+            usEvent = MSG_MQTT_PUBREC;
+        }
+        break;
+        case MQTT_PUBREL:
+        {
+            usEvent = MSG_MQTT_PUBREL;
+        }
+        break;
+        case MQTT_PUBCOMP:
+        {
+            usEvent = MSG_MQTT_PUBCOMP;
+        }
+        break;
+        case MQTT_SUBSCRIBE:
+        {
+            usEvent = MSG_MQTT_SUBSCRIBE;
+        }
+        break;
+        case MQTT_UNSUBSCRIBE:
+        {
+            usEvent = MSG_MQTT_UNSUBSCRIBE;
+        }
+        break;
+        case MQTT_PINGREQ:
+        {
+            usEvent = MSG_MQTT_PINGREQ;
+        }
+        break;
+        case MQTT_DISCONNECT:
+        {
+            usEvent = MSG_MQTT_DISCONNECT;
+        }
+        break;
+
+        default:
+            bClose = true;
+            return;
+    }
+
+    CMSGDispatch::getSingletonPtr()->sendMQTTEvent(usEvent, stTcpBuf.stLink, stBinary);
 }
 
 H_ENAMSP

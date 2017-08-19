@@ -5,6 +5,7 @@
 #include "Singleton.h"
 #include "RWLock.h"
 #include "HEnum.h"
+#include "HStruct.h"
 
 H_BNAMSP
 
@@ -20,11 +21,13 @@ public:
     CMSGDispatch(void);
     ~CMSGDispatch(void);
 
-    //usType 网络事件使用
+    //usType 网络事件使用  mqtt相同事件只能一个任务注册
     void regEvent(unsigned short usEvent, class CTaskWorker *pTask, const short sType = -1);
     //usEvent MSG_TIME_FRAME or MSG_TIME_SEC
     void unRegTime(unsigned short &usEvent, class CTaskWorker *pTask);
     void sendEvent(unsigned short usEvent, void *pMsg, const size_t &iLens);
+    //usEvent usEvent >= MSG_MQTT_CONNECT && usEvent <= MSG_MQTT_DISCONNECT
+    void sendMQTTEvent(unsigned short &usEvent, H_LINK &stLink, H_Binary &stBinary);
     void removeEvent(const char *pszName);
 
     void regNetProto(H_PROTOTYPE &iProto, class CChan *pChan);

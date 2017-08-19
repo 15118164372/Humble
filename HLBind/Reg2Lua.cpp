@@ -129,6 +129,11 @@ void removeLink(H_SOCK sock)
     (void)CNetWorkerMgr::getSingletonPtr()->removeLink(sock);
 }
 
+void sockSend(H_SOCK sock, const char *pszBuf, const size_t iLens)
+{
+    CSender::getSingletonPtr()->Send(sock, pszBuf, iLens);
+}
+
 void httpResponse(H_SOCK sock, const char *pszBuf, const size_t iLens)
 {
     H_PROTOTYPE iProto(H_INIT_NUMBER);
@@ -273,6 +278,7 @@ void H_RegFuncs(struct lua_State *pLState)
         .addFunction("linkTo", linkTo)
         .addFunction("closeLink", closeLink)
         .addFunction("removeLink", removeLink)
+        .addFunction("sockSend", sockSend)
         .addFunction("httpResponse", httpResponse)
         .addFunction("tcp1Response", tcp1Response)
         .addFunction("tcp1BroadCast", tcp1BroadCast)

@@ -1,6 +1,5 @@
 --rpc¡¨Ω”
 require("init")
-require("proto")
 local humble = require("humble")
 local cjson = require("cjson")
 local rpcLinkRegister = rpcLinkRegister

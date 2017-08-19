@@ -60,6 +60,7 @@
     <ClInclude Include="Macros.h" />
     <ClInclude Include="md5\md5.h" />
     <ClInclude Include="MMap.h" />
+    <ClInclude Include="MQTT.h" />
     <ClInclude Include="MSGDispatch.h" />
     <ClInclude Include="NETAddr.h" />
     <ClInclude Include="NetBase.h" />
@@ -148,6 +149,7 @@
     <ClCompile Include="Linker.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="md5\md5.c" />
+    <ClCompile Include="MQTT.cpp" />
     <ClCompile Include="MSGDispatch.cpp" />
     <ClCompile Include="NETAddr.cpp" />
     <ClCompile Include="NetBase.cpp" />

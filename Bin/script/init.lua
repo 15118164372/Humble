@@ -1,6 +1,5 @@
 --任务初始化 每个任务都要require
 require("macros")
-require("proto")
 require("timewheel")
 local humble = require("humble")
 local utile = require("utile")
@@ -37,7 +36,8 @@ function onCMD(cmd ,info)
 	return cjson.encode({"fail"})
 end
 
---网络事件 Accept  Linked Closed
+
+--网络事件 NET_ACCEPT  NET_LINKED NET_CLOSE
 if not g_NetEvent then
 	g_NetEvent = {}
 end
@@ -65,14 +65,15 @@ end
 --注册
 --func  func(sock, sockType)
 function regAcceptEv(sockType, func)
-	regNetEvent(Event.Accept, sockType, func)
+	regNetEvent(Event.NET_ACCEPT, sockType, func)
 end
 function regLinkedEv(sockType, func)
-	regNetEvent(Event.Linked, sockType, func)
+	regNetEvent(Event.NET_LINKED, sockType, func)
 end
 function regClosedEv(sockType, func)
-	regNetEvent(Event.Closed, sockType, func)
+	regNetEvent(Event.NET_CLOSE, sockType, func)
 end
+
 
 --时间事件
 if not g_TimeEvent then
@@ -99,12 +100,12 @@ end
 local function regSecEvent()
 	if not g_WheelMgr then
 		g_WheelMgr = WheelMgr:new()
-		regTimeEvent(Event.Sec, onSec)
+		regTimeEvent(Event.TIME_SEC, onSec)
 	end
 end
 --注册func(uiTick, ulCount)
 function regFrameEv(func)
-	regTimeEvent(Event.Frame, func)
+	regTimeEvent(Event.TIME_FRAME, func)
 end
 function regDelayEv(iTime, Func, ...)
 	regSecEvent()
@@ -123,6 +124,7 @@ end
 function unRegDelay()
 	humble.unRegSec(m_strTaskName)
 end
+
 
 --rpc server端
 if not g_RPCSV then
@@ -150,6 +152,7 @@ function regRPC(rpcName, func)
 		m_RPCSV[rpcName] = func
 	end
 end
+
 
 --rpc client端
 if not g_RPCId then
@@ -222,6 +225,7 @@ function callTaskRPC(toTask, rpcName, rpcParam, func, ...)
 	end
 end
 
+
 --网络消息
 if not g_NetMsg then
 	g_NetMsg = {}
@@ -258,4 +262,130 @@ function regProto(Proto, func)
 	else
 		humble.regIProto(Proto, m_strTaskName)
 	end		
+end
+
+--mqtt
+if not g_MQTTEvent then
+	g_MQTTEvent = {}
+end
+local m_MQTTEvent = g_MQTTEvent
+
+--客户端请求连接服务端 
+function onMQTTCONNECT(sock, sockType, fixedHead, info)
+	local func = m_MQTTEvent[Event.MQTT_CONNECT]
+	if func then
+		utile.callFunc(func, sock, sockType, fixedHead, info)
+	end
+end
+function regMQTTCONNECT(func)
+	m_MQTTEvent[Event.MQTT_CONNECT] = func
+	humble.regEvent(Event.MQTT_CONNECT, m_strTaskName, -1)
+end
+
+--发布消息
+function onMQTTPUBLISH(sock, sockType, fixedHead, info)
+	local func = m_MQTTEvent[Event.MQTT_PUBLISH]
+	if func then
+		utile.callFunc(func, sock, sockType, fixedHead, info)
+	end
+end
+function regMQTTPUBLISH(func)
+	m_MQTTEvent[Event.MQTT_PUBLISH] = func
+	humble.regEvent(Event.MQTT_PUBLISH, m_strTaskName, -1)
+end
+
+--oS 1 消息发布收到确认 
+function onMQTTPUBACK(sock, sockType, fixedHead, info)
+	local func = m_MQTTEvent[Event.MQTT_PUBACK]
+	if func then
+		utile.callFunc(func, sock, sockType, fixedHead, info)
+	end
+end
+function regMQTTPUBACK(func)
+	m_MQTTEvent[Event.MQTT_PUBACK] = func
+	humble.regEvent(Event.MQTT_PUBACK, m_strTaskName, -1)
+end
+
+--发布收到（保证交付第一步） 
+function onMQTTPUBREC(sock, sockType, fixedHead, info)
+	local func = m_MQTTEvent[Event.MQTT_PUBREC]
+	if func then
+		utile.callFunc(func, sock, sockType, fixedHead, info)
+	end
+end
+function regMQTTPUBREC(func)
+	m_MQTTEvent[Event.MQTT_PUBREC] = func
+	humble.regEvent(Event.MQTT_PUBREC, m_strTaskName, -1)
+end
+
+--发布释放（保证交付第二步）  
+function onMQTTPUBREL(sock, sockType, fixedHead, info)
+	local func = m_MQTTEvent[Event.MQTT_PUBREL]
+	if func then
+		utile.callFunc(func, sock, sockType, fixedHead, info)
+	end
+end
+function regMQTTPUBREL(func)
+	m_MQTTEvent[Event.MQTT_PUBREL] = func
+	humble.regEvent(Event.MQTT_PUBREL, m_strTaskName, -1)
+end
+
+--QoS 2 消息发布完成（保证交互第三步） 
+function onMQTTPUBCOMP(sock, sockType, fixedHead, info)
+	local func = m_MQTTEvent[Event.MQTT_PUBCOMP]
+	if func then
+		utile.callFunc(func, sock, sockType, fixedHead, info)
+	end
+end
+function regMQTTPUBCOMP(func)
+	m_MQTTEvent[Event.MQTT_PUBCOMP] = func
+	humble.regEvent(Event.MQTT_PUBCOMP, m_strTaskName, -1)
+end
+
+--客户端订阅请求 
+function onMQTTSUBSCRIBE(sock, sockType, fixedHead, info)
+	local func = m_MQTTEvent[Event.MQTT_SUBSCRIBE]
+	if func then
+		utile.callFunc(func, sock, sockType, fixedHead, info)
+	end
+end
+function regMQTTSUBSCRIBE(func)
+	m_MQTTEvent[Event.MQTT_SUBSCRIBE] = func
+	humble.regEvent(Event.MQTT_SUBSCRIBE, m_strTaskName, -1)
+end
+
+--客户端取消订阅请求 
+function onMQTTUNSUBSCRIBE(sock, sockType, fixedHead, info)
+	local func = m_MQTTEvent[Event.MQTT_UNSUBSCRIBE]
+	if func then
+		utile.callFunc(func, sock, sockType, fixedHead, info)
+	end
+end
+function regMQTTUNSUBSCRIBE(func)
+	m_MQTTEvent[Event.MQTT_UNSUBSCRIBE] = func
+	humble.regEvent(Event.MQTT_UNSUBSCRIBE, m_strTaskName, -1)
+end
+
+--心跳请求 
+function onMQTTPINGREQ(sock, sockType, fixedHead)
+	local func = m_MQTTEvent[Event.MQTT_PINGREQ]
+	if func then
+		utile.callFunc(func, sock, sockType, fixedHead)
+	end
+end
+function regMQTTPINGREQ(func)
+	m_MQTTEvent[Event.MQTT_PINGREQ] = func
+	humble.regEvent(Event.MQTT_PINGREQ, m_strTaskName, -1)
+end
+
+--客户端断开连接
+function onMQTTDISCONNECT(sock, sockType, fixedHead)
+	local func = m_MQTTEvent[Event.MQTT_DISCONNECT]
+	if func then
+		utile.callFunc(func, sock, sockType, fixedHead)
+	end
+end
+function regMQTTDISCONNECT(func)
+	m_MQTTEvent[Event.MQTT_DISCONNECT] = func
+	humble.regEvent(Event.MQTT_DISCONNECT, m_strTaskName, -1)
 end

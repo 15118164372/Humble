@@ -14,7 +14,11 @@
 #define H_IPLENS                     32
 #define H_TASKNAMELENS               32
 #define H_RPCNAMELENS                32
-#define H_MAXPACK_LENS               H_ONEK * 10  //接收包最大长度
+
+#define H_MAXPACK_LENS               0  //接收包最大长度  0不限制
+
+#define H_PACKRATE_TIME              60 //检测间隔(秒)
+#define H_MAXPACK_RATE               0  //最大发包频率(总数/间隔)
 
 typedef unsigned short H_PROTOTYPE;
 #define H_NTOH         ntohs
@@ -29,6 +33,7 @@ typedef unsigned short H_PROTOTYPE;
 #define H_PARSER_TCP1                "tcp1"
 #define H_PARSER_TCP2                "tcp2"
 #define H_PARSER_WS                  "websocket"
+#define H_H_PARSER_MQTT              "mqtt"
 
 #define H_INVALID_SOCK               -1
 #define H_INVALID_ID                 -1

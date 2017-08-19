@@ -1,6 +1,6 @@
 --系统初始化  程序启动完成执行一次
 
-require("proto")
+require("macros")
 local humble = require("humble")
 local SockType = SockType
 
@@ -10,7 +10,8 @@ humble.regTask("rpclink.lua", "rpclink", 1024)
 --TODO 你自己的
 humble.regTask("echo2.lua", "echo2", 1024 * 10)
 humble.regTask("echo1.lua", "echo1", 1024 * 10)
-humble.regTask("test.lua", "test", 10)
+humble.regTask("test.lua", "test", 1024 * 10)
+humble.regTask("testmqtt.lua", "testmqtt", 1024 * 10)
 --humble.unregTask("echo1")
 
 --监听添加
@@ -23,3 +24,5 @@ humble.httpServer("0.0.0.0", 80)
 
 --TODO 你自己的
 humble.addListener("tcp2", 11, "0.0.0.0", 16000)
+humble.addListener("websocket", 12, "0.0.0.0", 16100)
+humble.mqttServer("0.0.0.0", 1883)

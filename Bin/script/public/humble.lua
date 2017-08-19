@@ -1,6 +1,5 @@
 --c++导出函数
 require("macros")
-require("proto")
 local string = string
 local debug = debug
 local getSVId = getSVId
@@ -156,17 +155,17 @@ function humble.md5Str(strval)
     return md5Str(strval, #strval)
 end
 
---事件注册 Accept, Linked, Closed, Frame, Sec 
+--事件注册 NET_ACCEPT, NET_LINKED, NET_CLOSE, TIME_FRAME, TIME_SEC 
 function humble.regEvent(usEvent, strTask, sockType)
 	regEvent(usEvent, strTask, sockType)
 end
 --帧事件移除
 function humble.unRegFrame(strTask)
-	unRegTime(Event.Frame, strTask)
+	unRegTime(Event.TIME_FRAME, strTask)
 end
 --秒事件移除
 function humble.unRegSec(strTask)
-	unRegTime(Event.Sec, strTask)
+	unRegTime(Event.TIME_SEC, strTask)
 end
 --网络协议注册
 function humble.regIProto(iProto, strTask)
@@ -200,6 +199,10 @@ end
 --rpc客户端
 function humble.rpcClient(strHost, usPort)
     linkTo("tcp2", SockType.RPC, strHost, usPort)
+end
+--mqtt服务端
+function humble.mqttServer(strHost, usPort)
+    addListener("mqtt", SockType.MQTT, strHost, usPort)
 end
 
 --连接关闭
