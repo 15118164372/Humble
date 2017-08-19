@@ -174,8 +174,10 @@ bool CMQTT::parseCONNECT(H_Binary *pBinary, MQTT_FixedHead &stFixedHead, MQTT_CO
     }
     else
     {
+#ifdef H_UUID
         //∑÷≈‰“ªID
         stCONNECTInfo.ClientId = m_objUUID.getUUID();
+#endif
     }
 
     //“≈÷ˆ

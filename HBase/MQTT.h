@@ -106,7 +106,9 @@ private:
     void parseHead(H_Binary *pBinary, MQTT_FixedHead &stFixedHead);
 
 private:
+#ifdef H_UUID
     CUUID m_objUUID;
+#endif
 };
 
 H_ENAMSP

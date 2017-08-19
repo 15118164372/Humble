@@ -31,8 +31,8 @@ then
     RSTPATH="BinX64"
 fi
 
-#附加包含库
-INCLUDELIB="-lrt -ldl -luuid -lpthread"
+#附加包含库  -luuid
+INCLUDELIB="-lrt -ldl -lpthread"
 INCLUDELIB=$INCLUDELIB" -levent_core -levent_extra -levent_pthreads -lmysqlclient"
 
 #中间库文件名
