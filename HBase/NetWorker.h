@@ -86,7 +86,8 @@ private:
         pSession->stLink.sock = pCMD->stLink.sock;
         pSession->bReLink = !(pCMD->bAccept);
         pSession->bHandShake = false;
-        pSession->bMQTTConn = false;
+        pSession->bMQTTConnected = false;
+        pSession->bWSWithMQTT = false;
         if (SOCKTYPE_WS == pCMD->stLink.usType)
         {
             pSession->bHandShake = true;

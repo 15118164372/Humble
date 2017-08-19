@@ -24,7 +24,8 @@ struct H_Session
 {
     bool bReLink;
     bool bHandShake;
-    bool bMQTTConn;
+    bool bMQTTConnected;
+    bool bWSWithMQTT;
     struct bufferevent *pEv;
     class CNetWorker *pNetWorker;
     class CParser *pParser;

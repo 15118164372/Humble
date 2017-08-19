@@ -271,6 +271,20 @@ void CNetWorker::dispProto(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &st
         }
         break;
 
+        case SOCKTYPE_WS:
+        {
+            if (pSession->bWSWithMQTT)
+            {
+                dispMQTT(pSession, stTcpBuf, stBinary, bClose);
+            }
+            else
+            {
+                H_PROTOTYPE iProto(H_NTOH(*((H_PROTOTYPE*)stBinary.pBufer)));
+                dispNomal(iProto, stTcpBuf, stBinary);
+            }
+        }
+        break;
+
         default:
         {
             H_PROTOTYPE iProto(H_NTOH(*((H_PROTOTYPE*)stBinary.pBufer)));
@@ -465,13 +479,13 @@ void CNetWorker::dispMQTT(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &stB
     unsigned short usEvent(H_INIT_NUMBER);
     unsigned char ucMsgType((stBinary.pBufer[0] & 0xF0) >> 4);
     //第一个报文必须为CONNECT
-    if (MQTT_CONNECT != ucMsgType && !pSession->bMQTTConn)
+    if (MQTT_CONNECT != ucMsgType && !pSession->bMQTTConnected)
     {
         bClose = true;
         return;
     }
     //CONNECT报文只能发送一次
-    if (MQTT_CONNECT == ucMsgType && pSession->bMQTTConn)
+    if (MQTT_CONNECT == ucMsgType && pSession->bMQTTConnected)
     {
         bClose = true;
         return;
@@ -482,7 +496,7 @@ void CNetWorker::dispMQTT(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &stB
         case MQTT_CONNECT:
         {
             usEvent = MSG_MQTT_CONNECT;
-            pSession->bMQTTConn = true;
+            pSession->bMQTTConnected = true;
         }
         break;
         case MQTT_PUBLISH:

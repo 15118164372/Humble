@@ -21,6 +21,7 @@ public:
     H_Binary parsePack(H_Session *pSession, char *pAllBuf, const size_t &iLens, size_t &iParsed, bool &bCLose);
     H_Binary createPack(H_PROTOTYPE &iProto, const char *pszMsg, const size_t &iLens);
     void Response(H_SOCK &sock, H_PROTOTYPE &iProto, const char *pszMsg, const size_t &iLens);
+    void resWithOutProto(H_SOCK &sock, const char *pszMsg, const size_t &iLens);
 
 private:
     #define FRAME_HEAD_BASE_LEN 6
@@ -31,7 +32,7 @@ private:
     //’“key
     std::string parseKey(char *pMsg, const size_t &iLens);
     std::string createChallengeKey(std::string &strKey);
-    std::string createHandshakeResponse(std::string &strKey);
+    std::string createHandshakeResponse(const bool &bWithMQTT, std::string &strKey);
     bool parseHead(char *pAllBuf, const size_t &iLens, struct WebSockFram *pFram, size_t &iParsed, bool &bCLose);
     void createHead(const unsigned short usCode, const size_t &iDataLens,
         char acHead[FRAME_HEAD_EXT64_LEN], size_t &iOutLens);

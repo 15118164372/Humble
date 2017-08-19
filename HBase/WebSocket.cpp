@@ -125,8 +125,20 @@ std::string CWebSocket::createChallengeKey(std::string &strKey)
     return H_B64Encode((const char*)acShaKey, sizeof(acShaKey));
 }
 
-std::string CWebSocket::createHandshakeResponse(std::string &strKey)
+std::string CWebSocket::createHandshakeResponse(const bool &bWithMQTT, std::string &strKey)
 {
+    if (!bWithMQTT)
+    {
+        return
+            "HTTP/1.1 101 Switching Protocols\r\n"
+            "Upgrade: websocket\r\n"
+            "Connection: Upgrade\r\n"
+            "Server: QServer version:" + m_strVersion + "\r\n"
+            "Sec-WebSocket-Accept: " + strKey + "\r\n"
+            "Sec-WebSocket-Origin: null\r\n"
+            "\r\n";
+    }
+    
     return
         "HTTP/1.1 101 Switching Protocols\r\n"
         "Upgrade: websocket\r\n"
@@ -134,6 +146,7 @@ std::string CWebSocket::createHandshakeResponse(std::string &strKey)
         "Server: QServer version:" + m_strVersion + "\r\n"
         "Sec-WebSocket-Accept: " + strKey + "\r\n"
         "Sec-WebSocket-Origin: null\r\n"
+        "Sec-WebSocket-Protocol: mqtt\r\n"
         "\r\n";
 }
 
@@ -160,7 +173,8 @@ bool CWebSocket::handShake(H_Session *pSession, char *pAllBuf, const size_t &iLe
         return false;
     }
 
-    strVal = createHandshakeResponse(strVal);
+    pSession->bWSWithMQTT = (NULL == strstr(pAllBuf, "mqtt") ? false : true);
+    strVal = createHandshakeResponse(pSession->bWSWithMQTT, strVal);
     CSender::getSingletonPtr()->Send(pSession->stLink.sock, strVal.c_str(), strVal.size());
 
     return true;
@@ -270,6 +284,13 @@ H_Binary CWebSocket::parsePack(H_Session *pSession, char *pAllBuf, const size_t 
         return stBinary;
     }
 
+    //mqtt必须使用WSOCK_BINARYFRAME
+    if (pSession->bWSWithMQTT && WSOCK_BINARYFRAME != stFram.emOpCode)
+    {
+        bCLose = true;
+        return stBinary;
+    }
+
     //控制帧处理
     switch (stFram.emOpCode)
     {
@@ -358,6 +379,31 @@ void CWebSocket::Response(H_SOCK &sock, H_PROTOTYPE &iProto, const char *pszMsg,
 
     H_Binary stBinary(createPack(iProto, pszMsg, iLens));
     CSender::getSingletonPtr()->Send(sock, stBinary.pBufer, stBinary.iLens, false);
+}
+
+void CWebSocket::resWithOutProto(H_SOCK &sock, const char *pszMsg, const size_t &iLens)
+{
+    if (H_INVALID_SOCK == sock)
+    {
+        return;
+    }
+
+    size_t iHeadLens(H_INIT_NUMBER);
+    char acHead[FRAME_HEAD_EXT64_LEN];
+
+    createHead(WSOCK_BINARYFRAME, iLens, acHead, iHeadLens);
+
+    size_t iTotalLens(iHeadLens + iLens);
+    char *pBuf = new(std::nothrow) char[iTotalLens];
+    H_ASSERT(NULL != pBuf, "malloc memory error.");
+
+    memcpy(pBuf, acHead, iHeadLens);
+    if (NULL != pszMsg)
+    {
+        memcpy(pBuf + iHeadLens, pszMsg, iLens);
+    }
+
+    CSender::getSingletonPtr()->Send(sock, pBuf, iTotalLens, false);
 }
 
 H_ENAMSP

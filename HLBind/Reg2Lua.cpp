@@ -173,6 +173,10 @@ void tcp2BroadCast(luabridge::LuaRef lTable, H_PROTOTYPE iProto, const char *psz
     CSender::getSingletonPtr()->broadCast(vcSock, stBinary);
 }
 
+void wsResWithOutProto(H_SOCK sock, const char *pszBuf, const size_t iLens)
+{
+    CWebSocket::getSingletonPtr()->resWithOutProto(sock, pszBuf, iLens);
+}
 void wsResponse(H_SOCK sock, H_PROTOTYPE iProto, const char *pszBuf, const size_t iLens)
 {
     CWebSocket::getSingletonPtr()->Response(sock, iProto, pszBuf, iLens);
@@ -284,6 +288,7 @@ void H_RegFuncs(struct lua_State *pLState)
         .addFunction("tcp1BroadCast", tcp1BroadCast)
         .addFunction("tcp2Response", tcp2Response)
         .addFunction("tcp2BroadCast", tcp2BroadCast)
+        .addFunction("wsResWithOutProto", wsResWithOutProto)
         .addFunction("wsResponse", wsResponse)
         .addFunction("wsBroadCast", wsBroadCast)
         .addFunction("rpcCall", rpcCall)
