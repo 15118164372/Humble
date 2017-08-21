@@ -52,6 +52,7 @@ enum
     SOCKTYPE_HTTP,
     SOCKTYPE_WS,
     SOCKTYPE_MQTT,
+    SOCKTYPE_WSMQTT,
 };
 
 //MQTT 控制报文的类型

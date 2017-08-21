@@ -266,24 +266,11 @@ void CNetWorker::dispProto(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &st
         break;
 
         case SOCKTYPE_MQTT:
+        case SOCKTYPE_WSMQTT:
         {
             dispMQTT(pSession, stTcpBuf, stBinary, bClose);
         }
-        break;
-
-        case SOCKTYPE_WS:
-        {
-            if (pSession->bWSWithMQTT)
-            {
-                dispMQTT(pSession, stTcpBuf, stBinary, bClose);
-            }
-            else
-            {
-                H_PROTOTYPE iProto(H_NTOH(*((H_PROTOTYPE*)stBinary.pBufer)));
-                dispNomal(iProto, stTcpBuf, stBinary);
-            }
-        }
-        break;
+        break;     
 
         default:
         {

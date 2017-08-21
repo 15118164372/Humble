@@ -1,5 +1,6 @@
 
 #include "WebSocket.h"
+#include "HEnum.h"
 #include "Funcs.h"
 #include "SHA1.h"
 #include "Base64.h"
@@ -125,9 +126,9 @@ std::string CWebSocket::createChallengeKey(std::string &strKey)
     return H_B64Encode((const char*)acShaKey, sizeof(acShaKey));
 }
 
-std::string CWebSocket::createHandshakeResponse(const bool &bWithMQTT, std::string &strKey)
+std::string CWebSocket::createHandshakeResponse(H_Session *pSession, std::string &strKey)
 {
-    if (!bWithMQTT)
+    if (SOCKTYPE_WS == pSession->stLink.usType)
     {
         return
             "HTTP/1.1 101 Switching Protocols\r\n"
@@ -158,6 +159,13 @@ bool CWebSocket::handShake(H_Session *pSession, char *pAllBuf, const size_t &iLe
         return false;
     }
 
+    if (SOCKTYPE_WSMQTT == pSession->stLink.usType 
+        && NULL == strstr(pAllBuf, "mqtt"))
+    {
+        bCLose = true;
+        return false;
+    }
+
     iParsed = (size_t)(pPos - pAllBuf) + m_iShakeHandsEndFlagLens;
     std::string strVal(parseKey(pAllBuf, iParsed));
     if (strVal.empty())
@@ -173,8 +181,7 @@ bool CWebSocket::handShake(H_Session *pSession, char *pAllBuf, const size_t &iLe
         return false;
     }
 
-    pSession->bWSWithMQTT = (NULL == strstr(pAllBuf, "mqtt") ? false : true);
-    strVal = createHandshakeResponse(pSession->bWSWithMQTT, strVal);
+    strVal = createHandshakeResponse(pSession, strVal);
     CSender::getSingletonPtr()->Send(pSession->stLink.sock, strVal.c_str(), strVal.size());
 
     return true;
@@ -285,7 +292,8 @@ H_Binary CWebSocket::parsePack(H_Session *pSession, char *pAllBuf, const size_t 
     }
 
     //mqtt±ØÐëÊ¹ÓÃWSOCK_BINARYFRAME
-    if (pSession->bWSWithMQTT && WSOCK_BINARYFRAME != stFram.emOpCode)
+    if (SOCKTYPE_WSMQTT == pSession->stLink.usType 
+        && WSOCK_BINARYFRAME != stFram.emOpCode)
     {
         bCLose = true;
         return stBinary;

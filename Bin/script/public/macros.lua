@@ -59,6 +59,7 @@ SockType = {
 	"HTTP",
 	"WS",
 	"MQTT",
+	"WSMQTT",
 	--以上与C++对应 保留的连接类型
 	
 	

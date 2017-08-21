@@ -75,7 +75,7 @@ function mqtt.CONNACK(sock, sockType, sessPresent, rtnCode)
     local fHead = createHead(MsgType.CONNACK, 0, 0, 0, #vHead)
 	
     local sendMsg = fHead .. vHead
-	if SockType.WS == sockType then
+	if SockType.WSMQTT == sockType then
 		ws.resWithOutProto(sock, sendMsg)
 	else
 		sockSend(sock, sendMsg, #sendMsg)
@@ -106,7 +106,7 @@ function mqtt.PUBLISH(sock, sockType, topic, msg, msgid, dup, qos, retain)
     local fHead = createHead(MsgType.PUBLISH, dup, qos, retain, #vHead)
 	
     local sendMsg = fHead .. vHead	
-    if SockType.WS == sockType then
+    if SockType.WSMQTT == sockType then
 		ws.resWithOutProto(sock, sendMsg)
 	else
 		sockSend(sock, sendMsg, #sendMsg)
@@ -124,7 +124,7 @@ function mqtt.PUBACK(sock, sockType, msgid)
     local fHead = createHead(MsgType.PUBACK, 0, 0, 0, #vHead)
 	
 	local sendMsg = fHead .. vHead	
-    if SockType.WS == sockType then
+    if SockType.WSMQTT == sockType then
 		ws.resWithOutProto(sock, sendMsg)
 	else
 		sockSend(sock, sendMsg, #sendMsg)
@@ -142,7 +142,7 @@ function mqtt.PUBREC(sock, sockType, msgid)
     local fHead = createHead(MsgType.PUBREC, 0, 0, 0, #vHead)
 	
 	local sendMsg = fHead .. vHead	
-    if SockType.WS == sockType then
+    if SockType.WSMQTT == sockType then
 		ws.resWithOutProto(sock, sendMsg)
 	else
 		sockSend(sock, sendMsg, #sendMsg)
@@ -160,7 +160,7 @@ function mqtt.PUBREL(sock, sockType, msgid)
     local fHead = createHead(MsgType.PUBREL, 0, 1, 0, #vHead)
 	
 	local sendMsg = fHead .. vHead
-    if SockType.WS == sockType then
+    if SockType.WSMQTT == sockType then
 		ws.resWithOutProto(sock, sendMsg)
 	else
 		sockSend(sock, sendMsg, #sendMsg)
@@ -178,7 +178,7 @@ function mqtt.PUBCOMP(sock, sockType, msgid)
     local fHead = createHead(MsgType.PUBCOMP, 0, 0, 0, #vHead)
 	
 	local sendMsg = fHead .. vHead
-    if SockType.WS == sockType then
+    if SockType.WSMQTT == sockType then
 		ws.resWithOutProto(sock, sendMsg)
 	else
 		sockSend(sock, sendMsg, #sendMsg)
@@ -207,7 +207,7 @@ function mqtt.SUBACK(sock, sockType, msgid, tRtn)
 	local fHead = createHead(MsgType.SUBACK, 0, 0, 0, #vHead)
 	
 	local sendMsg = fHead .. vHead
-    if SockType.WS == sockType then
+    if SockType.WSMQTT == sockType then
 		ws.resWithOutProto(sock, sendMsg)
 	else
 		sockSend(sock, sendMsg, #sendMsg)
@@ -225,7 +225,7 @@ function mqtt.UNSUBACK(sock, sockType, msgid)
     local fHead = createHead(MsgType.UNSUBACK, 0, 0, 0, #vHead)
 	
 	local sendMsg = fHead .. vHead
-    if SockType.WS == sockType then
+    if SockType.WSMQTT == sockType then
 		ws.resWithOutProto(sock, sendMsg)
 	else
 		sockSend(sock, sendMsg, #sendMsg)
@@ -239,7 +239,7 @@ function mqtt.PINGRESP(sock, sockType)
 	--¹Ì¶¨Í·
 	local fHead = createHead(MsgType.PINGRESP, 0, 0, 0, 0)
 	
-	if SockType.WS == sockType then
+	if SockType.WSMQTT == sockType then
 		ws.resWithOutProto(sock, fHead)
 	else
 		sockSend(sock, fHead, #fHead)

@@ -208,6 +208,10 @@ end
 function humble.wsServer(strHost, usPort)
     addListener("websocket", SockType.WS, strHost, usPort)
 end
+--websocket mqtt服务端
+function humble.wsMQTTServer(strHost, usPort)
+    addListener("websocket", SockType.WSMQTT, strHost, usPort)
+end
 
 --连接关闭
 function humble.closeLink(sock)

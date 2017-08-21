@@ -32,7 +32,7 @@ private:
     //’“key
     std::string parseKey(char *pMsg, const size_t &iLens);
     std::string createChallengeKey(std::string &strKey);
-    std::string createHandshakeResponse(const bool &bWithMQTT, std::string &strKey);
+    std::string createHandshakeResponse(H_Session *pSession, std::string &strKey);
     bool parseHead(char *pAllBuf, const size_t &iLens, struct WebSockFram *pFram, size_t &iParsed, bool &bCLose);
     void createHead(const unsigned short usCode, const size_t &iDataLens,
         char acHead[FRAME_HEAD_EXT64_LEN], size_t &iOutLens);
