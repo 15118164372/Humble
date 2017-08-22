@@ -21,7 +21,7 @@ private:
     struct H_WorkerCMD
     {
         char cCmd;
-        bool bAccept;       
+        bool bAccept;
         class CParser *pParser;
         H_LINK stLink;
     };
