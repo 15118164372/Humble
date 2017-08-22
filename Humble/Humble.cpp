@@ -4,7 +4,6 @@
 using namespace Humble;
 
 #ifdef H_OS_WIN
-//#include "../vld/vld.h"
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "libevent.lib")
 #pragma comment(lib, "libevent_core.lib")
