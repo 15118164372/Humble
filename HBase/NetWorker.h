@@ -106,6 +106,8 @@ private:
         }
     };
 
+    bool checkRate(H_Session *pSession);
+
     void dispProto(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &stBinary, bool &bClose);
 
     void dispHttp(H_TCPBUF &stTcpBuf, H_Binary &stBinary);

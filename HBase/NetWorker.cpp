@@ -113,7 +113,7 @@ void CNetWorker::onClose(H_Session *pSession)
     H_SafeDelete(pSession);
 }
 
-void CNetWorker::onRead(H_Session *pSession)
+bool CNetWorker::checkRate(H_Session *pSession)
 {
     //最大发包数判断
     if (H_MAXPACK_RATE > H_INIT_NUMBER
@@ -126,12 +126,22 @@ void CNetWorker::onRead(H_Session *pSession)
             if (pSession->m_uiPackCount / tDiff >= H_MAXPACK_RATE)
             {
                 onClose(pSession);
-                return;
+                return false;
             }
 
             pSession->m_uiPackCount = H_INIT_NUMBER;
             pSession->m_uiTime = tNow;
         }
+    }
+
+    return true;
+}
+
+void CNetWorker::onRead(H_Session *pSession)
+{
+    if (!checkRate(pSession))
+    {
+        return;
     }
 
     CEvBuffer objEvBuf;
@@ -144,45 +154,37 @@ void CNetWorker::onRead(H_Session *pSession)
     }
 
     bool bClose(false);
-    H_TCPBUF stTcpBuf;
-    H_Binary stBinary;
     size_t iParsed(H_INIT_NUMBER);
     size_t iCurParsed(H_INIT_NUMBER);
-    size_t iSurplus(H_INIT_NUMBER);
+    if (pSession->bHandShake)
+    {
+        //需要握手的(websocket)
+        bool bOk(pSession->pParser->handShake(pSession, pBuf, iBufLens, iCurParsed, bClose));
+        if (bClose)
+        {
+            onClose(pSession);
+            return;
+        }
+        if (!bOk)
+        {
+            return;
+        }
+
+        pSession->bHandShake = false;
+        ++pSession->m_uiPackCount;
+        iParsed += iCurParsed;
+    }
     
+    H_TCPBUF stTcpBuf;
+    H_Binary stBinary;
+    size_t iSurplus(H_INIT_NUMBER);
+
     stTcpBuf.stLink.sock = pSession->stLink.sock;
     stTcpBuf.stLink.usType = pSession->stLink.usType;
 
-    while (true)
+    while (iParsed < iBufLens)
     {
-        if (iParsed >= iBufLens)
-        {
-            break;
-        }
-
-        //需要握手的(websocket)
-        if (pSession->bHandShake)
-        {
-            iCurParsed = H_INIT_NUMBER;
-            iSurplus = iBufLens - iParsed;
-            bool bOk(pSession->pParser->handShake(pSession, pBuf + iParsed, iSurplus, iCurParsed, bClose));
-            if (bClose)
-            {
-                onClose(pSession);
-                return;
-            }
-            if (!bOk)
-            {
-                break;
-            }
-
-            pSession->bHandShake = false;
-            iParsed += iCurParsed;
-            ++pSession->m_uiPackCount;
-
-            continue;
-        }
-        
+        //解包
         iCurParsed = H_INIT_NUMBER;
         iSurplus = iBufLens - iParsed;
         stBinary = pSession->pParser->parsePack(pSession, pBuf + iParsed, iSurplus, iCurParsed, bClose);
@@ -202,23 +204,21 @@ void CNetWorker::onRead(H_Session *pSession)
             }
             break;
         }
+
+        //消息派发
+        iParsed += iCurParsed;
+        ++pSession->m_uiPackCount;
         if (NULL == stBinary.pBufer)
         {
-            iParsed += iCurParsed;
-            ++pSession->m_uiPackCount;
-
             continue;
         }
 
-        iParsed += iCurParsed;
         dispProto(pSession, stTcpBuf, stBinary, bClose);
         if (bClose)
         {
             onClose(pSession);
             return;
         }
-
-        ++pSession->m_uiPackCount;
     }
 
     objEvBuf.delBuffer(iParsed);
