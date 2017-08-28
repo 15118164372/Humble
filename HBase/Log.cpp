@@ -67,7 +67,7 @@ const char * CLog::getLV(LOG_LEVEL emInLogLv) const
 
 void CLog::renameLog(void)
 {
-    std::string strDate = H_Date();
+    std::string strDate(H_Date());
     if (strDate == m_strCurDate)
     {
         return;
@@ -82,8 +82,8 @@ void CLog::renameLog(void)
     std::string strPath;
     (void)H_DirName(m_strLogFile.c_str(), strPath);
 
-    std::string strNewName = strPath + H_PATH_SEPARATOR + m_strCurDate + ".txt";
-    int iCount = H_INIT_NUMBER;
+    std::string strNewName(strPath + H_PATH_SEPARATOR + m_strCurDate + ".txt");
+    int iCount(H_INIT_NUMBER);
     while (true)
     {
         if (H_RTN_OK != H_FileExist(strNewName.c_str()))
@@ -105,7 +105,7 @@ void CLog::runTask(std::string *pMsg)
 {
     renameLog();
 
-    std::string strMsg = "[" + H_Now() + "]" + *pMsg;
+    std::string strMsg("[" + H_Now() + "]" + *pMsg);
     if (NULL != m_pFile)
     {
         fwrite(strMsg.c_str(), 1, strMsg.size(), m_pFile);
@@ -125,7 +125,7 @@ void CLog::writeLog(const LOG_LEVEL emInLogLv, const char *pFormat, ...)
         return;
     }
 
-    std::string *pstrVa = newT();
+    std::string *pstrVa(newT());
     H_ASSERT(NULL != pstrVa, "malloc memory error.");
 
     pstrVa->append("[");

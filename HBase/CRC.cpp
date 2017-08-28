@@ -41,10 +41,11 @@ static const unsigned short ausCRC16[256] = {
 unsigned short H_CRC16(const char *pszKey, const size_t iLens)
 {
     unsigned short usCRC(0);
+    const unsigned char *pVal((const unsigned char *)pszKey);
 
     for (size_t i = 0; i < iLens; ++i) 
     {
-        usCRC = (usCRC << 8) ^ ausCRC16[((usCRC >> 8) ^ *pszKey++) & 0x00ff];
+        usCRC = (usCRC << 8) ^ ausCRC16[((usCRC >> 8) ^ *pVal++) & 0x00ff];
     }
 
     return usCRC;
@@ -119,9 +120,9 @@ static const unsigned int auiCRC32[256] = {
 
 unsigned int H_CRC32(const char *pszKey, const size_t iLens)
 {
-    const unsigned char *pVal = (const unsigned char *)pszKey;
     unsigned int uiCRC(~0U);
     size_t iKeyLens(iLens);
+    const unsigned char *pVal((const unsigned char *)pszKey);
 
     while (iKeyLens--) 
     {

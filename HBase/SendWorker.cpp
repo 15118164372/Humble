@@ -31,7 +31,7 @@ void CSendWorker::runTask(H_NetSendMsg *pMsg)
 
 bool CSendWorker::broadCast(H_SOCK &sock, unsigned int *pRef, const char *pszBuf, const size_t &iLens)
 {
-    H_NetSendMsg *pMsg = newT();
+    H_NetSendMsg *pMsg(newT());
     H_ASSERT(NULL != pMsg, "malloc memory error.");
 
     pMsg->sock = sock;
@@ -51,7 +51,7 @@ bool CSendWorker::broadCast(H_SOCK &sock, unsigned int *pRef, const char *pszBuf
 
 void CSendWorker::addSend(H_SOCK &sock, const char *pszBuf, const size_t &iLens, const bool &bCopy)
 {
-    H_NetSendMsg *pMsg = newT();
+    H_NetSendMsg *pMsg(newT());
     H_ASSERT(NULL != pMsg, "malloc memory error.");
 
     pMsg->pRef = NULL;

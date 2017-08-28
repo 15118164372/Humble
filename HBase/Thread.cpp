@@ -48,7 +48,7 @@ void CThread::Join(pthread_t pThread)
     (void)WaitForSingleObject(pThread, INFINITE);
 #else
     (void)pthread_join(pThread, NULL);
-#endif    
+#endif
 }
 
 H_ENAMSP

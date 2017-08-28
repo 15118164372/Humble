@@ -48,7 +48,7 @@ void CTick::initTimeEv(const unsigned int uiMS, event_callback_fn func, TickEven
 
 void CTick::timeCB(H_SOCK, short, void *arg)
 {
-    TickEvent *pTickEvent = (TickEvent *)arg;
+    TickEvent *pTickEvent((TickEvent *)arg);
     pTickEvent->stTick.uiCount++;
 
     if (MSG_TIME_SEC == pTickEvent->usType)

@@ -31,7 +31,7 @@ bool CConHash::addNode(const char *pszNode, size_t iReplica)
 {
     H_ASSERT(strlen(pszNode) < 64, "node name is too long.");
 
-    struct node_s *pNode = (struct node_s *)malloc(sizeof(struct node_s));
+    struct node_s *pNode((struct node_s *)malloc(sizeof(struct node_s)));
     H_ASSERT(NULL != pNode, "malloc memory error.");
 
     conhash_set_node(pNode, pszNode, (u_int)iReplica);
@@ -48,7 +48,7 @@ bool CConHash::addNode(const char *pszNode, size_t iReplica)
 
 void CConHash::delNode(const char *pszNode)
 {
-    nodeit itNode = m_mapNode.find(pszNode);
+    nodeit itNode(m_mapNode.find(pszNode));
     if (m_mapNode.end() == itNode)
     {
         return;
@@ -63,7 +63,7 @@ void CConHash::delNode(const char *pszNode)
 
 const char *CConHash::findNode(const char *pszObject)
 {
-    struct node_s *pNode = conhash_lookup((struct conhash_s *)m_pConHash, pszObject);
+    struct node_s *pNode(conhash_lookup((struct conhash_s *)m_pConHash, pszObject));
     if (NULL == pNode)
     {
         return NULL;

@@ -17,7 +17,7 @@ CRPCLink::~CRPCLink(void)
 void CRPCLink::Register(const int &iSVId, const int &iSVType, H_SOCK &sock)
 {
     m_objLockId.wLock();
-    idit itId = m_mapId.find(iSVId);
+    idit itId(m_mapId.find(iSVId));
     if (m_mapId.end() != itId)
     {
         itId->second.push_back(sock);
@@ -31,7 +31,7 @@ void CRPCLink::Register(const int &iSVId, const int &iSVType, H_SOCK &sock)
     m_objLockId.wunLock();
 
     m_objLockType.wLock();
-    typeit itType = m_mapType.find(iSVType);
+    typeit itType(m_mapType.find(iSVType));
     if (m_mapType.end() != itType)
     {
         itType->second.push_back(sock);
@@ -61,7 +61,7 @@ void CRPCLink::removeSock(std::list<H_SOCK> *lstSock, H_SOCK &sock)
 void CRPCLink::Unregister(const int &iSVId, const int &iSVType, H_SOCK &sock)
 {
     m_objLockId.wLock();
-    idit itId = m_mapId.find(iSVId);
+    idit itId(m_mapId.find(iSVId));
     if (m_mapId.end() != itId)
     {
         removeSock(&(itId->second), sock);
@@ -73,7 +73,7 @@ void CRPCLink::Unregister(const int &iSVId, const int &iSVType, H_SOCK &sock)
     m_objLockId.wunLock();
 
     m_objLockType.wLock();
-    typeit itType = m_mapType.find(iSVType);
+    typeit itType(m_mapType.find(iSVType));
     if (m_mapType.end() != itType)
     {
         removeSock(&(itType->second), sock);
@@ -88,7 +88,7 @@ void CRPCLink::Unregister(const int &iSVId, const int &iSVType, H_SOCK &sock)
 void CRPCLink::getLinkById(const int &iSVId, std::list<H_SOCK> &lstSock)
 {
     m_objLockId.rLock();
-    idit itId = m_mapId.find(iSVId);
+    idit itId(m_mapId.find(iSVId));
     if (m_mapId.end() != itId)
     {
         lstSock = itId->second;
@@ -99,7 +99,7 @@ void CRPCLink::getLinkById(const int &iSVId, std::list<H_SOCK> &lstSock)
 void CRPCLink::getLinkByType(const int &iSVType, std::list<H_SOCK> &lstSock)
 {
     m_objLockType.rLock();
-    typeit itType = m_mapType.find(iSVType);
+    typeit itType(m_mapType.find(iSVType));
     if (m_mapType.end() != itType)
     {
         lstSock = itType->second;

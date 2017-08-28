@@ -27,7 +27,7 @@ CLinker::~CLinker(void)
 
 void CLinker::addLink(H_LinkCMD *pMsg)
 {
-    H_LinkCMD *pLink = newT();
+    H_LinkCMD *pLink(newT());
     H_ASSERT(NULL != pLink, "malloc memory error.");
 
     pLink->bLinked = false;
@@ -173,7 +173,7 @@ void CLinker::addLink(const char *pszParser, const unsigned short &usType, const
 
 void CLinker::reLink(void)
 {
-    H_LinkCMD *pLinker = newT();
+    H_LinkCMD *pLinker(newT());
     H_ASSERT(NULL != pLinker, "malloc memory error.");
 
     pLinker->cCmd = CMD_RELINK;
@@ -187,7 +187,7 @@ void CLinker::reLink(void)
 
 void CLinker::linkClosed(H_SOCK &sock)
 {
-    H_LinkCMD *pLinker = newT();
+    H_LinkCMD *pLinker(newT());
     H_ASSERT(NULL != pLinker, "malloc memory error.");
 
     pLinker->cCmd = CMD_CLOSED;
@@ -202,7 +202,7 @@ void CLinker::linkClosed(H_SOCK &sock)
 
 void CLinker::removeLink(H_SOCK &sock)
 {
-    H_LinkCMD *pLinker = newT();
+    H_LinkCMD *pLinker(newT());
     H_ASSERT(NULL != pLinker, "malloc memory error.");
 
     pLinker->cCmd = CMD_REMOVE;

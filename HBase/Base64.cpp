@@ -64,7 +64,7 @@ std::string H_B64Decode(const char *pszData, const size_t iLens)
 {
     size_t t, x, y, z;
     unsigned char c;
-    size_t g = 3;
+    size_t g(3);
     std::string strOut;
     unsigned char *pIn = (unsigned char *)pszData;
 

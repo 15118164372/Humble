@@ -32,7 +32,6 @@ int CNETAddr::setAddr(const char *pszHostName, unsigned short usPort, bool bIpv6
 {
     struct addrinfo stAddrInfo = {0};
     struct addrinfo *pAddrInfo = NULL;
-    int  iRtn = H_RTN_OK;
 
     Clear();
 
@@ -49,7 +48,7 @@ int CNETAddr::setAddr(const char *pszHostName, unsigned short usPort, bool bIpv6
         stAddrInfo.ai_family = AF_INET6;
     }
 
-    iRtn = getaddrinfo(pszHostName, NULL, &stAddrInfo, &pAddrInfo);
+    int iRtn(getaddrinfo(pszHostName, NULL, &stAddrInfo, &pAddrInfo));
     if (H_RTN_OK != iRtn)
     {
         H_Printf("getaddrinfo error host %s. return code %d, message %s.", 
@@ -115,7 +114,7 @@ int CNETAddr::setRemoteAddr(const H_SOCK &fd)
 
     Clear();
 
-    int iRtn = getpeername(fd, (sockaddr*)&stSockAddrStor, (socklen_t*) &iSockStorLens);
+    int iRtn(getpeername(fd, (sockaddr*)&stSockAddrStor, (socklen_t*) &iSockStorLens));
     if (H_RTN_OK != iRtn)
     {
         iRtn = H_SockError();
@@ -135,7 +134,7 @@ int CNETAddr::setLocalAddr(const H_SOCK &fd)
 
     Clear();
 
-    int iRtn  = getsockname(fd, (sockaddr*)&stSockAddrStor, (socklen_t*)&iSockAddrStorLen);
+    int iRtn(getsockname(fd, (sockaddr*)&stSockAddrStor, (socklen_t*)&iSockAddrStorLen));
     if (H_RTN_OK != iRtn)
     {
         iRtn = H_SockError();
@@ -173,9 +172,9 @@ size_t CNETAddr::getAddrSize(void) const
 
 std::string CNETAddr::getIp(void) const
 {
-    int iRtn = H_RTN_OK;
+    int iRtn(H_RTN_OK);
     char acTmp[200] = {0};
-    int iLen = sizeof(acTmp);
+    int iLen(sizeof(acTmp));
 
     if (IPV4 == m_Addr_Type)
     {        
@@ -226,7 +225,7 @@ unsigned int CNETAddr::ipToNum(const char *pszIp)
 std::string CNETAddr::numToIp(const unsigned int &uiIp)
 {
     char acIp[H_IPLENS] = {0};
-    const unsigned char *pIp = (unsigned char *)&uiIp;
+    const unsigned char *pIp((unsigned char *)&uiIp);
 
     H_Snprintf(acIp, sizeof(acIp) - 1, 
         "%u.%u.%u.%u", pIp[0], pIp[1], pIp[2], pIp[3]);

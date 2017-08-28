@@ -129,7 +129,7 @@ void CNetBase::Join(void)
         return;
     }
 
-    int iStop = 1;
+    int iStop(1);
     m_objStopLock.Lock();
     (void)H_SockWrite(m_sockStopOrder[1], (const char*)&iStop, sizeof(iStop));
     m_objStopLock.unLock();

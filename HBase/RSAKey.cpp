@@ -62,27 +62,26 @@ int CRSAKey::fileWrite(const char *pszFile, const void *pVal, const size_t iLens
 
 int CRSAKey::saveRandom(const char *pszFile)
 {   
-    std::string strVal = H_B64Encode((const char*)m_pRandom, sizeof(R_RANDOM_STRUCT));
+    std::string strVal(H_B64Encode((const char*)m_pRandom, sizeof(R_RANDOM_STRUCT)));
     return fileWrite(pszFile, strVal.c_str(), strVal.size());
 }
 
 int CRSAKey::savePubKey(const char *pszFile)
 {
-    std::string strVal = H_B64Encode((const char*)m_pPublicKey, sizeof(R_RSA_PUBLIC_KEY));
+    std::string strVal(H_B64Encode((const char*)m_pPublicKey, sizeof(R_RSA_PUBLIC_KEY)));
     return fileWrite(pszFile, strVal.c_str(), strVal.size());
 }
 
 int CRSAKey::savePriKey(const char *pszFile)
 {
-    std::string strVal = H_B64Encode((const char*)m_pPrivateKey, sizeof(R_RSA_PRIVATE_KEY));
+    std::string strVal(H_B64Encode((const char*)m_pPrivateKey, sizeof(R_RSA_PRIVATE_KEY)));
     return fileWrite(pszFile, strVal.c_str(), strVal.size());
 }
 
 char *CRSAKey::fileRead(const char *pszFile)
 {
-    int iRtn(H_RTN_OK);
     unsigned long ulFileSize(H_INIT_NUMBER);
-    iRtn = H_FileSize(pszFile, ulFileSize);
+    int iRtn(H_FileSize(pszFile, ulFileSize));
     if (H_RTN_OK != iRtn)
     {
         H_Printf("get file %s size error.", pszFile);
@@ -105,13 +104,13 @@ char *CRSAKey::fileRead(const char *pszFile)
 
 int CRSAKey::loadPubKey(const char *pszFile)
 {
-    char *pBuf = fileRead(pszFile);
+    char *pBuf(fileRead(pszFile));
     if (NULL == pBuf)
     {
         return H_RTN_FAILE;
     }
 
-    std::string strVal = H_B64Decode(pBuf, strlen(pBuf));
+    std::string strVal(H_B64Decode(pBuf, strlen(pBuf)));
     if (strVal.empty())
     {
         H_SafeDelete(pBuf);
@@ -125,13 +124,13 @@ int CRSAKey::loadPubKey(const char *pszFile)
 
 int CRSAKey::loadPriKey(const char *pszFile)
 {
-    char *pBuf = fileRead(pszFile);
+    char *pBuf(fileRead(pszFile));
     if (NULL == pBuf)
     {
         return H_RTN_FAILE;
     }
 
-    std::string strVal = H_B64Decode(pBuf, strlen(pBuf));
+    std::string strVal(H_B64Decode(pBuf, strlen(pBuf)));
     if (strVal.empty())
     {
         H_SafeDelete(pBuf);
@@ -145,13 +144,13 @@ int CRSAKey::loadPriKey(const char *pszFile)
 
 int CRSAKey::loadRandom(const char *pszFile)
 {
-    char *pBuf = fileRead(pszFile);
+    char *pBuf(fileRead(pszFile));
     if (NULL == pBuf)
     {
         return H_RTN_FAILE;
     }
 
-    std::string strVal = H_B64Decode(pBuf, strlen(pBuf));
+    std::string strVal(H_B64Decode(pBuf, strlen(pBuf)));
     if (strVal.empty())
     {
         H_SafeDelete(pBuf);

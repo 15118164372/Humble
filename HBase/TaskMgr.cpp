@@ -44,7 +44,7 @@ void CTaskMgr::recordTaskQuSize(void)
     size_t iSize;
     size_t iCount(H_INIT_NUMBER);
     std::string strInfo("task queue size:\ntask name\tsize\n");
-    std::vector<std::string> vcAllTask = getAllName();
+    std::vector<std::string> vcAllTask(getAllName());
 
     for (std::vector<std::string>::iterator itTask = vcAllTask.begin(); vcAllTask.end() != itTask; ++itTask)
     {
@@ -142,7 +142,7 @@ CChan *CTaskMgr::getChan(const char *pszTaskName)
     CChan *pChan(NULL);
 
     m_objTaskLock.rLock();
-    taskit itTask = m_mapTask.find(std::string(pszTaskName));
+    taskit itTask(m_mapTask.find(std::string(pszTaskName)));
     if (m_mapTask.end() != itTask)
     {
         pChan = itTask->second->getChan();
@@ -158,7 +158,7 @@ size_t CTaskMgr::getQueueSize(const char *pszTaskName)
     size_t iSize(H_INIT_NUMBER);
 
     m_objTaskLock.rLock();
-    taskit itTask = m_mapTask.find(std::string(pszTaskName));
+    taskit itTask(m_mapTask.find(std::string(pszTaskName)));
     if (m_mapTask.end() != itTask)
     {
         iSize = itTask->second->getChan()->getSize();
@@ -217,7 +217,7 @@ void CTaskMgr::regTask(CTaskWorker *pTask)
     H_AtomicAdd(&(pTaskQueue->uiTaskNum), 1);
 
     m_objTaskLock.wLock();
-    taskit itTask = m_mapTask.find(*pTask->getName());
+    taskit itTask(m_mapTask.find(*pTask->getName()));
     H_ASSERT(m_mapTask.end() == itTask, "task repeat register.");
     m_mapTask.insert(std::make_pair(*pTask->getName(), pTask));
     m_objTaskLock.wunLock();
@@ -236,7 +236,7 @@ void CTaskMgr::unregTask(const char *pszName)
     std::string strName(pszName);
 
     m_objTaskLock.wLock();
-    taskit itTask = m_mapTask.find(strName);
+    taskit itTask(m_mapTask.find(strName));
     if (m_mapTask.end() != itTask)
     {
         pTask = itTask->second;

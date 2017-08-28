@@ -54,15 +54,13 @@ CMMap<T>::CMMap(const char *pszFileName, const char *pszMapName, const size_t iN
     m_strMapName = pszMapName;
 
 #ifdef H_OS_WIN
-    HANDLE hFile = NULL;
-
-    hFile = CreateFile(pszFileName,  
+    HANDLE hFile(CreateFile(pszFileName,
         GENERIC_READ | GENERIC_WRITE, 
         FILE_SHARE_READ|FILE_SHARE_WRITE, 
         NULL,
         OPEN_ALWAYS, 
         FILE_ATTRIBUTE_NORMAL, 
-        NULL);
+        NULL));
     if (INVALID_HANDLE_VALUE == hFile)  
     {
         H_Printf("CreateFile error, %s.", H_Error2Str(H_Error()));
@@ -96,7 +94,7 @@ CMMap<T>::CMMap(const char *pszFileName, const char *pszMapName, const size_t iN
         return;
     }
 #else
-    int iFd = -1;
+    int iFd(-1);
 
     iFd = open(pszFileName, O_RDWR|O_CREAT, S_IRUSR|S_IWUSR);  
     if(-1 == iFd)

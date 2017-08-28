@@ -68,7 +68,7 @@ int CTableFile::Parse(void)
         return H_RTN_FAILE;
     }
     
-    bool bHaveHead = false;
+    bool bHaveHead(false);
     std::string strTmp;
     char pBuffer[H_ONEK * 2] = {0};    
 
@@ -138,8 +138,8 @@ int CTableFile::Parse(void)
 
 void CTableFile::getValue(const std::string &strValue, std::map<int, std::string> &mapTableHead)
 {
-    bool bAllEmpty = true;
-    int iIndex = H_INIT_NUMBER;
+    bool bAllEmpty(true);
+    int iIndex(H_INIT_NUMBER);
     std::list<std::string> lstValue;
     std::list<std::string>::iterator itValue;
     std::map<std::string, std::string> mapVal;
@@ -160,7 +160,7 @@ void CTableFile::getValue(const std::string &strValue, std::map<int, std::string
         return;
     }
 
-    size_t iCount = H_INIT_NUMBER;
+    size_t iCount(H_INIT_NUMBER);
     for (itValue = lstValue.begin(); (lstValue.end() != itValue) && ((size_t)iIndex < mapTableHead.size()); 
         itValue++)
     {
@@ -212,12 +212,12 @@ bool CTableFile::getHead(const std::string &strHead, std::map<int, std::string> 
 
 bool CTableFile::parseHead(std::list<std::string> &lstTableHead, std::map<int, std::string> &mapTableHead) const
 {
-    int iIndex = H_INIT_NUMBER;
+    int iIndex(H_INIT_NUMBER);
+    size_t iCount(H_INIT_NUMBER);
     std::string strTmp;
     std::list<std::string>::iterator itHead;    
     std::map<int, std::string>::iterator itMapHead;
-
-    size_t iCount = H_INIT_NUMBER;
+    
     for (itHead = lstTableHead.begin(); lstTableHead.end() != itHead; itHead++)
     {
         if (iCount >= (lstTableHead.size() - (size_t)m_iRemoveCount))
@@ -253,7 +253,7 @@ bool CTableFile::checkHead(std::list<std::string> &lstTableHead) const
         return false;
     }
 
-    size_t iCount = H_INIT_NUMBER;
+    size_t iCount(H_INIT_NUMBER);
     std::list<std::string>::iterator itHead;
     for (itHead = lstTableHead.begin(); lstTableHead.end() != itHead; itHead++)
     {
@@ -311,9 +311,7 @@ const char *CTableFile::getStringValue(const char *pszName, const char *pszDefau
         return pszDefault;
     }
 
-    std::map<std::string, std::string>::iterator itVal;
-
-    itVal = m_itNowRow->find(std::string(pszName));
+    std::map<std::string, std::string>::iterator itVal(m_itNowRow->find(std::string(pszName)));
     if (m_itNowRow->end() == itVal)
     {
         H_Printf("in file %s line %s not find.", m_strFile.c_str(), pszName);
@@ -325,7 +323,7 @@ const char *CTableFile::getStringValue(const char *pszName, const char *pszDefau
 
 int CTableFile::getIntValue(const char *pszName, const int iDefault)
 {
-    const char *pszVal = getStringValue(pszName);
+    const char *pszVal(getStringValue(pszName));
     if (0 == strlen(pszVal))
     {
         return iDefault;
@@ -336,7 +334,7 @@ int CTableFile::getIntValue(const char *pszName, const int iDefault)
 
 double CTableFile::getFloatValue(const char *pszName, const double dDefault)
 {
-    const char *pszVal = getStringValue(pszName);
+    const char *pszVal(getStringValue(pszName));
     if (0 == strlen(pszVal))
     {
         return dDefault;

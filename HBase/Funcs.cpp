@@ -81,7 +81,7 @@ std::string H_FormatVa(const char *pcFormat, va_list args)
     }
     int iNum(H_INIT_NUMBER);
     unsigned int uiSize(H_ONEK / 2);
-    char *pcBuff = NULL;
+    char *pcBuff(NULL);
     std::string strRtn;
 
     pcBuff = new(std::nothrow) char[uiSize];
@@ -370,8 +370,7 @@ void H_Split(const std::string &strSource, const char *pszFlag,
     }
 
     size_t iFlagLens(strlen(pszFlag));
-    std::string::size_type loc;
-    loc = strSource.find(pszFlag, 0);
+    std::string::size_type loc(strSource.find(pszFlag, 0));
     if(std::string::npos == loc)
     {
         lstRst.push_back(strSource);
@@ -434,10 +433,9 @@ std::string H_TrimRight(std::string strSource)
     }
 
     size_t iFlag(H_INIT_NUMBER);
-    size_t iSize(H_INIT_NUMBER);
     std::string::reverse_iterator reitSrc;
 
-    iSize = strSource.size();
+    size_t iSize(strSource.size());
 
     for (reitSrc = strSource.rbegin(); strSource.rend() != reitSrc; reitSrc++, iFlag++)
     {
@@ -461,8 +459,7 @@ std::string H_TrimRight(std::string strSource)
         return strSource;
     }
 
-    std::string::iterator itSrc;
-    itSrc = (strSource.begin() + (iSize - iFlag));
+    std::string::iterator itSrc((strSource.begin() + (iSize - iFlag)));
     while(strSource.end() != itSrc)
     {
         itSrc = strSource.erase(itSrc);
@@ -478,8 +475,7 @@ std::string H_Trim(std::string strSource)
 
 std::string H_GetFrontOfFlag(const std::string &strSource, const char *pszFlag)
 {
-    std::string::size_type iPos = H_INIT_NUMBER;
-    iPos = strSource.find_first_of(pszFlag);
+    std::string::size_type iPos(strSource.find_first_of(pszFlag));
     if (std::string::npos == iPos)
     {
         return strSource;
@@ -490,8 +486,7 @@ std::string H_GetFrontOfFlag(const std::string &strSource, const char *pszFlag)
 
 std::string H_GetLastOfFlag(const std::string &strSource, const char *pszFlag)
 {
-    std::string::size_type iPos = H_INIT_NUMBER;
-    iPos = strSource.find_last_of(pszFlag);
+    std::string::size_type iPos(strSource.find_last_of(pszFlag));
     if (std::string::npos == iPos)
     {
         return strSource;
@@ -508,14 +503,14 @@ void H_GetTimeOfDay(struct timeval &stTime)
 
 void H_KeepAlive(H_SOCK &fd, const unsigned int iKeepIdle, const unsigned int iKeepInterval)
 {
-    int iKeepAlive = 1;
+    int iKeepAlive(1);
     if (setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, (char *)&iKeepAlive, (int)sizeof(iKeepAlive)) < 0)
     {
         H_Printf("%s", "setsockopt SO_KEEPALIVE error!");
     }
 
 #ifdef H_OS_WIN
-    unsigned long ulBytesReturn = H_INIT_NUMBER;
+    unsigned long ulBytesReturn(H_INIT_NUMBER);
     tcp_keepalive stAliveIn = { 0 };
     tcp_keepalive stAliveOut = { 0 };
 
@@ -528,7 +523,7 @@ void H_KeepAlive(H_SOCK &fd, const unsigned int iKeepIdle, const unsigned int iK
         H_Printf("%s", "WSAIoctl set error!");
     }
 #else 
-    int ikeepCount = H_TCPKEEPCOUNT;//判定断开前的KeepAlive探测次数
+    int ikeepCount(H_TCPKEEPCOUNT);//判定断开前的KeepAlive探测次数
 
     if (setsockopt(fd, SOL_TCP, TCP_KEEPIDLE, (void *)&iKeepIdle, sizeof(iKeepIdle)) < 0)
     {
@@ -548,9 +543,7 @@ void H_KeepAlive(H_SOCK &fd, const unsigned int iKeepIdle, const unsigned int iK
 static int creatListener(H_SOCK &fdListener)
 {
     CNETAddr objListen_addr;
-    int iRtn = H_RTN_OK;
-
-    iRtn = objListen_addr.setAddr("127.0.0.1", 0);
+    int iRtn(objListen_addr.setAddr("127.0.0.1", 0));
     if (H_RTN_OK != iRtn)
     {
         H_Printf("set socket addr error. error code %d.", iRtn);
@@ -591,14 +584,14 @@ static int creatListener(H_SOCK &fdListener)
 }
 int H_SockPair(H_SOCK acSock[2])
 {
-    H_SOCK fdListener = H_INVALID_SOCK;
-    H_SOCK fdConnector = H_INVALID_SOCK;
-    H_SOCK fdAcceptor = H_INVALID_SOCK;
-    ev_socklen_t iSize = H_INIT_NUMBER;
+    H_SOCK fdListener(H_INVALID_SOCK);
+    H_SOCK fdConnector(H_INVALID_SOCK);
+    H_SOCK fdAcceptor(H_INVALID_SOCK);
+    ev_socklen_t iSize(H_INIT_NUMBER);
     struct sockaddr_in connect_addr;
     struct sockaddr_in listen_addr;
-    int iKeepAlive = 1;
-    int iRtn = H_RTN_OK;
+    int iKeepAlive(1);
+    int iRtn(H_RTN_OK);
 
     if (H_RTN_OK != creatListener(fdListener))
     {
@@ -687,7 +680,7 @@ int H_SockPair(H_SOCK acSock[2])
         return H_RTN_FAILE;
     }
 
-    int iFlag = 1;
+    int iFlag(1);
     if (setsockopt(fdConnector, IPPROTO_TCP, TCP_NODELAY, (char *)&iFlag, sizeof(iFlag)) < 0)
     {
         H_Printf("%s", "setsockopt TCP_NODELAY error!");

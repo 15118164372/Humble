@@ -64,7 +64,7 @@ bool CIniFile::isNode(const std::string &str) const
 
 std::string CIniFile::getNode(const std::string &str) const
 {
-    std::string strTmp = str.substr(1, str.size() - 2);
+    std::string strTmp(str.substr(1, str.size() - 2));
 
     return H_Trim(strTmp);
 }
@@ -81,22 +81,20 @@ bool CIniFile::isKey(const std::string &str) const
 
 std::string CIniFile::getKey(const std::string &str) const
 {   
-    std::string strTmp = H_GetFrontOfFlag(str, "=");
+    std::string strTmp(H_GetFrontOfFlag(str, "="));
 
     return H_Trim(strTmp);
 }
 
 std::string CIniFile::getVal(const std::string &str) const
 {
-    std::string::size_type iPos = H_INIT_NUMBER;
-
-    iPos = str.find_first_of("=");
+    std::string::size_type iPos(str.find_first_of("="));
     if (std::string::npos == iPos)
     {
         return "";
     }
 
-    std::string strTmp = str.substr(iPos + 1, str.size() - 1);
+    std::string strTmp(str.substr(iPos + 1, str.size() - 1));
 
     return H_Trim(strTmp);
 }
@@ -188,7 +186,7 @@ const char *CIniFile::getStringValue(const char *pszNode, const char *pszKey, co
 
 int CIniFile::getIntValue(const char *pszNode, const char *pszKey, int iDefault)
 {
-    const char *pszVal = getStringValue(pszNode, pszKey, NULL);
+    const char *pszVal(getStringValue(pszNode, pszKey, NULL));
     if (NULL == pszVal)
     {
         return iDefault;
@@ -204,7 +202,7 @@ int CIniFile::getIntValue(const char *pszNode, const char *pszKey, int iDefault)
 
 double CIniFile::getFloatValue(const char *pszNode, const char *pszKey, double dDefault)
 {
-    const char *pszVal = getStringValue(pszNode, pszKey, NULL);
+    const char *pszVal(getStringValue(pszNode, pszKey, NULL));
     if (NULL == pszVal)
     {
         return dDefault;

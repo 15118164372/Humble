@@ -29,14 +29,14 @@ CNetListener::~CNetListener(void)
 
 size_t CNetListener::onOrder(CEvBuffer *pEvBuffer)
 {
-    size_t iCount = pEvBuffer->getTotalLens() / sizeof(H_ListenAt);
+    size_t iCount(pEvBuffer->getTotalLens() / sizeof(H_ListenAt));
     if (H_INIT_NUMBER == iCount)
     {
         return H_INIT_NUMBER;
     }
 
-    size_t iReadLens = iCount * sizeof(H_ListenAt);
-    char *pBinary = pEvBuffer->readBuffer(iReadLens);
+    size_t iReadLens(iCount * sizeof(H_ListenAt));
+    char *pBinary(pEvBuffer->readBuffer(iReadLens));
     if (NULL == pBinary)
     {
         return H_INIT_NUMBER;

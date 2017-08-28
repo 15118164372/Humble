@@ -85,7 +85,7 @@ bool CAOI::Enter(const int64_t iId, const int iX, const int iY, const int iZ)
 {
     H_ASSERT(checkPos(iX, iY, iZ), "param error.");
 
-    positionit it = m_mapPos.find(iId);
+    positionit it(m_mapPos.find(iId));
     if (m_mapPos.end() != it)
     {
         return false;
@@ -107,7 +107,7 @@ bool CAOI::Enter(const int64_t iId, const int iX, const int iY, const int iZ)
 
 void CAOI::Leave(const int64_t iId)
 {
-    positionit it = m_mapPos.find(iId);
+    positionit it(m_mapPos.find(iId));
     if (m_mapPos.end() == it)
     {
         return;
@@ -146,7 +146,7 @@ void CAOI::moveData(const int64_t &iId, Position *pPos, const int &iX, const int
 bool CAOI::onlyMove(const int64_t iId, const int iX, const int iY, const int iZ)
 {
     H_ASSERT(checkPos(iX, iY, iZ), "param error.");
-    positionit it = m_mapPos.find(iId);
+    positionit it(m_mapPos.find(iId));
     if (m_mapPos.end() == it)
     {
         return false;
@@ -162,7 +162,7 @@ bool CAOI::Move(const int64_t &iId, const int &iX, const int &iY, const int &iZ,
     std::vector<int64_t> &outArea, std::vector<int64_t> &newArea)
 {
     H_ASSERT(checkPos(iX, iY, iZ), "param error.");
-    positionit it = m_mapPos.find(iId);
+    positionit it(m_mapPos.find(iId));
     if (m_mapPos.end() == it)
     {
         return false;
@@ -383,7 +383,7 @@ void CAOI::calOutInArea(Position &stOldStart, Position &stOldEnd, Position &stSt
 
 bool CAOI::getArea(const int64_t &iId, const int &iXDist, const int &iYDist, const int &iZDist, std::vector<int64_t> &vcArea)
 {
-    positionit it = m_mapPos.find(iId);
+    positionit it(m_mapPos.find(iId));
     if (m_mapPos.end() == it)
     {
         return false;

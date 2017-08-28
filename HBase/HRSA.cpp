@@ -45,7 +45,7 @@ std::string CRSA::RSAEncrypt(RSAEnType emEnType, const char* pszData,
     unsigned int iStep(H_INIT_NUMBER);
     unsigned int iBufLens(H_INIT_NUMBER);
     unsigned int iTmpSize(H_INIT_NUMBER);
-    unsigned char *pTmp = NULL;
+    unsigned char *pTmp(NULL);
     unsigned char acOutBuf[MAX_RSA_MODULUS_LEN];
     std::string strRtn;
 
@@ -93,7 +93,7 @@ std::string CRSA::RSADecrypt(RSADeType emEnType, const char* pszData,
     unsigned int iStep(H_INIT_NUMBER);
     unsigned int iBufLens(H_INIT_NUMBER);
     unsigned int iTmpSize(H_INIT_NUMBER);
-    unsigned char *pTmp = NULL;
+    unsigned char *pTmp(NULL);
     unsigned char acOutBuf[MAX_RSA_MODULUS_LEN];
     std::string strRtn;
 

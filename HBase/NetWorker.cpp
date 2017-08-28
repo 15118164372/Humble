@@ -20,14 +20,14 @@ CNetWorker::~CNetWorker(void)
 
 size_t CNetWorker::onOrder(CEvBuffer *pEvBuffer)
 {    
-    size_t iCount = pEvBuffer->getTotalLens() / sizeof(H_WorkerCMD);
+    size_t iCount(pEvBuffer->getTotalLens() / sizeof(H_WorkerCMD));
     if (H_INIT_NUMBER == iCount)
     {
         return H_INIT_NUMBER;
     }
 
-    size_t iReadLens = iCount * sizeof(H_WorkerCMD);
-    char *pBinary = pEvBuffer->readBuffer(iReadLens);
+    size_t iReadLens(iCount * sizeof(H_WorkerCMD));
+    char *pBinary(pEvBuffer->readBuffer(iReadLens));
     if (NULL == pBinary)
     {
         return H_INIT_NUMBER;
@@ -63,13 +63,13 @@ size_t CNetWorker::onOrder(CEvBuffer *pEvBuffer)
 
 void CNetWorker::tcpReadCB(struct bufferevent *bev, void *arg)
 {
-    H_Session *pSession = (H_Session *)arg;
+    H_Session *pSession((H_Session *)arg);
     pSession->pNetWorker->onRead(pSession);
 }
 
 void CNetWorker::tcpEventCB(struct bufferevent *bev, short, void *arg)
 {
-    H_Session *pSession = (H_Session *)arg;
+    H_Session *pSession((H_Session *)arg);
     pSession->pNetWorker->onClose(pSession);
 }
 
@@ -284,7 +284,7 @@ void CNetWorker::dispProto(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &st
 void CNetWorker::dispHttp(H_TCPBUF &stTcpBuf, H_Binary &stBinary)
 {
     //GET / HTTP/1.1
-    char *pPos = strstr(stBinary.pBufer, " HTTP/");
+    char *pPos(strstr(stBinary.pBufer, " HTTP/"));
     if (NULL == pPos)
     {
         return;
