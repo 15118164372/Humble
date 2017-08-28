@@ -57,6 +57,8 @@ private:
             return;
         }
     };
+
+    void recordTaskQuSize(void);
     
 private:
     H_DISALLOWCOPY(CTaskMgr);
