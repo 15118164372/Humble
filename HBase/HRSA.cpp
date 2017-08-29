@@ -45,11 +45,10 @@ std::string CRSA::RSAEncrypt(RSAEnType emEnType, const char* pszData,
     unsigned int iStep(H_INIT_NUMBER);
     unsigned int iBufLens(H_INIT_NUMBER);
     unsigned int iTmpSize(H_INIT_NUMBER);
-    unsigned char *pTmp(NULL);
+    unsigned char *pTmp((unsigned char*)(pszData));
     unsigned char acOutBuf[MAX_RSA_MODULUS_LEN];
     std::string strRtn;
 
-    pTmp = (unsigned char*)(pszData);
     if (EnType_Pub == emEnType)
     {
         iStep = (((R_RSA_PUBLIC_KEY*)m_pPubKey)->bits + 7) / 8 - 11;
@@ -93,11 +92,10 @@ std::string CRSA::RSADecrypt(RSADeType emEnType, const char* pszData,
     unsigned int iStep(H_INIT_NUMBER);
     unsigned int iBufLens(H_INIT_NUMBER);
     unsigned int iTmpSize(H_INIT_NUMBER);
-    unsigned char *pTmp(NULL);
+    unsigned char *pTmp((unsigned char*)(pszData));
     unsigned char acOutBuf[MAX_RSA_MODULUS_LEN];
     std::string strRtn;
 
-    pTmp = (unsigned char*)(pszData);
     if (DeType_Pub == emEnType)
     {
         iStep = (((R_RSA_PUBLIC_KEY*)m_pPubKey)->bits + 7) / 8;
