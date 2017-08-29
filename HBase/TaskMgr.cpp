@@ -65,7 +65,7 @@ void CTaskMgr::recordTaskQuSize(void)
 void CTaskMgr::runTask(unsigned int *)
 {
     //打印任务队列任务数
-    recordTaskQuSize();
+    //recordTaskQuSize();
 
     //只有一个线程则不调整
     if (1 == m_usThreadNum)
