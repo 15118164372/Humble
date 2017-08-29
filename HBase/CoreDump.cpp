@@ -61,8 +61,7 @@ LONG CCoreDump::unhandledExceptionHandler(_EXCEPTION_POINTERS *pExceptionInfo)
 
 void CCoreDump::setMiniDumpFileName(void)
 {
-    time_t currentTime;
-    currentTime = time(NULL);
+    time_t currentTime(time(NULL));
 
     H_Snprintf(m_szMiniDumpPath, sizeof(m_szMiniDumpPath) - 1, "%s%s.%lld.dmp",
         m_szAppPath, m_szAppBaseName, currentTime);
@@ -99,17 +98,15 @@ bool CCoreDump::getImpersonationToken(HANDLE* phToken) const
 
 BOOL CCoreDump::enablePrivilege(LPCTSTR pszPriv, HANDLE hToken, TOKEN_PRIVILEGES* ptpOld) const
 {
-    BOOL bOk = false;
-
     TOKEN_PRIVILEGES tp;
     tp.PrivilegeCount = 1;
     tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-    bOk = LookupPrivilegeValue(0, pszPriv, &tp.Privileges[0].Luid);
+    BOOL bOk(LookupPrivilegeValue(0, pszPriv, &tp.Privileges[0].Luid));
 
     if(bOk)
     {
-        DWORD cbOld = sizeof(*ptpOld);
-        bOk = AdjustTokenPrivileges( hToken, false, &tp, cbOld, ptpOld, &cbOld );
+        DWORD cbOld(sizeof(*ptpOld));
+        bOk = AdjustTokenPrivileges(hToken, false, &tp, cbOld, ptpOld, &cbOld);
     }
 
     return (bOk && (ERROR_NOT_ALL_ASSIGNED != GetLastError()));
@@ -117,7 +114,7 @@ BOOL CCoreDump::enablePrivilege(LPCTSTR pszPriv, HANDLE hToken, TOKEN_PRIVILEGES
 
 BOOL CCoreDump::restorePrivilege(HANDLE hToken, TOKEN_PRIVILEGES* ptpOld) const
 {
-    BOOL bOk = AdjustTokenPrivileges(hToken, false, ptpOld, 0, NULL, NULL);
+    BOOL bOk(AdjustTokenPrivileges(hToken, false, ptpOld, 0, NULL, NULL));
 
     return (bOk && (ERROR_NOT_ALL_ASSIGNED != GetLastError()));
 }
@@ -125,21 +122,21 @@ BOOL CCoreDump::restorePrivilege(HANDLE hToken, TOKEN_PRIVILEGES* ptpOld) const
 
 LONG CCoreDump::writeMiniDump( _EXCEPTION_POINTERS *pExceptionInfo )
 {
-    bool bRetval = false;
+    bool bRetval(false);
     m_pExceptionInfo = pExceptionInfo;
-    HANDLE hImpersonationToken = NULL;
+    HANDLE hImpersonationToken(NULL);
 
     if(!getImpersonationToken( &hImpersonationToken ))
     {
         return false;
     }
 
-    HMODULE hDll = NULL;
+    HMODULE hDll(NULL);
     TCHAR szDbgHelpPath[H_FILEPATH_LENS];
 
     if(GetModuleFileName( NULL, m_szAppPath, H_FILEPATH_LENS))
     {
-        TCHAR *pSlash = strchr(m_szAppPath, H_FILEPATH_LENS);
+        TCHAR *pSlash(strchr(m_szAppPath, H_FILEPATH_LENS));
         if(pSlash)
         {
             _tcscpy( m_szAppBaseName, pSlash + 1);
@@ -159,21 +156,17 @@ LONG CCoreDump::writeMiniDump( _EXCEPTION_POINTERS *pExceptionInfo )
 
     if(NULL != hDll)
     {
-        MINIDUMPWRITEDUMP MiniDumpWriteDump = 
-            (MINIDUMPWRITEDUMP)::GetProcAddress( hDll, "MiniDumpWriteDump" );
-
+        MINIDUMPWRITEDUMP MiniDumpWriteDump((MINIDUMPWRITEDUMP)::GetProcAddress( hDll, "MiniDumpWriteDump" ));
         if(NULL != MiniDumpWriteDump)
         {
             setMiniDumpFileName();
-
-            HANDLE hFile = ::CreateFile(m_szMiniDumpPath, 
+            HANDLE hFile(::CreateFile(m_szMiniDumpPath, 
                 GENERIC_WRITE, 
                 FILE_SHARE_WRITE, 
                 NULL, 
                 CREATE_ALWAYS, 
                 FILE_ATTRIBUTE_NORMAL, 
-                NULL);
-
+                NULL));
             if(INVALID_HANDLE_VALUE != hFile)
             {
                 BOOL bOk;
@@ -184,7 +177,7 @@ LONG CCoreDump::writeMiniDump( _EXCEPTION_POINTERS *pExceptionInfo )
                 ExInfo.ExceptionPointers = pExceptionInfo;
                 ExInfo.ClientPointers    = NULL;
                 
-                BOOL bPrivilegeEnabled = enablePrivilege(SE_DEBUG_NAME, hImpersonationToken, &tp);
+                BOOL bPrivilegeEnabled(enablePrivilege(SE_DEBUG_NAME, hImpersonationToken, &tp));
 
                 EnterCriticalSection(s_pCriticalSection);
                 {

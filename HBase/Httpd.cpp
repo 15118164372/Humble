@@ -27,7 +27,7 @@ CHttp::~CHttp(void)
 
 size_t CHttp::getHeadLens(const char *pBuffer)
 {
-    const char *pFind = strstr(pBuffer, Http_HeadEndFlag);
+    const char *pFind(strstr(pBuffer, Http_HeadEndFlag));
     if (NULL == pFind)
     {
         return H_INIT_NUMBER;
@@ -38,7 +38,7 @@ size_t CHttp::getHeadLens(const char *pBuffer)
 
 bool CHttp::getContentLens(const char *pszHead, const size_t &iHeadLens, size_t &iContentLens)
 {
-    const char *pBegin = strstr(pszHead, Http_ContentLensStr);
+    const char *pBegin(strstr(pszHead, Http_ContentLensStr));
     if (NULL == pBegin)
     {
         return false;
@@ -61,7 +61,7 @@ bool CHttp::checkChunk(const char *pszHead, const size_t &iHeadLens)
 
 bool CHttp::getChunkLens(const char *pBuffer, size_t &iChunkLens)
 {
-    const char *pChunck = strstr(pBuffer, Http_ChunkEndFlag);
+    const char *pChunck(strstr(pBuffer, Http_ChunkEndFlag));
     if (NULL == pChunck)
     {
         return false;
@@ -75,13 +75,13 @@ bool CHttp::getChunkLens(const char *pBuffer, size_t &iChunkLens)
 H_Binary CHttp::parsePack(H_Session *, char *pAllBuf, const size_t &iLens, size_t &iParsed, bool &)
 {
     H_Binary stBinary;
-    size_t iHeadLens = getHeadLens(pAllBuf);
+    size_t iHeadLens(getHeadLens(pAllBuf));
     if (H_INIT_NUMBER == iHeadLens)
     {
         return stBinary;
     }
 
-    size_t iContentLens = H_INIT_NUMBER;
+    size_t iContentLens(H_INIT_NUMBER);
     if (!getContentLens(pAllBuf, iHeadLens, iContentLens))
     {
         if (checkChunk(pAllBuf, iHeadLens))

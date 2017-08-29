@@ -24,7 +24,7 @@ CTcp1::~CTcp1(void)
 
 bool CTcp1::readHead(char *pBuffer, const size_t &iLens, size_t &iBufLens, size_t &iHeadLens)
 {
-    char cFlag = pBuffer[0];
+    char cFlag(pBuffer[0]);
     if (cFlag <= TCPBUFLENS_125)
     {
         iHeadLens = sizeof(cFlag);
@@ -32,7 +32,7 @@ bool CTcp1::readHead(char *pBuffer, const size_t &iLens, size_t &iBufLens, size_
     }
     else if (TCPBUFLENS_126 == cFlag)
     {
-        size_t iNeedReadLens = sizeof(cFlag) + sizeof(unsigned short);
+        size_t iNeedReadLens(sizeof(cFlag) + sizeof(unsigned short));
         if (iLens < iNeedReadLens)
         {
             return false;
@@ -43,7 +43,7 @@ bool CTcp1::readHead(char *pBuffer, const size_t &iLens, size_t &iBufLens, size_
     }
     else if (TCPBUFLENS_127 == cFlag)
     {
-        size_t iNeedReadLens = sizeof(cFlag) + sizeof(unsigned int);
+        size_t iNeedReadLens(sizeof(cFlag) + sizeof(unsigned int));
         if (iLens < iNeedReadLens)
         {
             return false;

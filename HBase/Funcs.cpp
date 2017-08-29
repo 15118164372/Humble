@@ -5,7 +5,7 @@
 #ifdef H_OS_WIN
 std::string H_StrError(DWORD error)
 {
-    char *pError = NULL;
+    char *pError(NULL);
     if (!FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
         NULL,
         error,
@@ -267,11 +267,9 @@ void H_GetSubDirName(const char *pszParentPathName, std::list<std::string> &lstD
 {
 #ifdef H_OS_WIN
     WIN32_FIND_DATA fd = { 0 };
-    HANDLE hSearch;
-    std::string strFilePathName;
-    strFilePathName = pszParentPathName + std::string("\\*");
+    std::string strFilePathName(pszParentPathName + std::string("\\*"));
 
-    hSearch = FindFirstFile(strFilePathName.c_str(), &fd);
+    HANDLE hSearch(FindFirstFile(strFilePathName.c_str(), &fd));
     if (INVALID_HANDLE_VALUE == hSearch)
     {
         return;

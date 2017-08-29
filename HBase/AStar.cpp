@@ -22,7 +22,7 @@ void CAMap::Filled(int iX, int iY, int iWeight)
 
 int CAMap::filledTiles(PointI &stPoint)
 {
-    filledit it = m_mapFilled.find(stPoint);
+    filledit it(m_mapFilled.find(stPoint));
     if (m_mapFilled.end() == it)
     {
         return 0;
@@ -42,7 +42,7 @@ bool CAMap::canMove(int iX, int iY)
 
 bool CAMap::canMove(PointI &stPoint)
 {
-    filledit it = m_mapFilled.find(stPoint);
+    filledit it(m_mapFilled.find(stPoint));
     if (m_mapFilled.end() == it)
     {
         return true;
@@ -76,7 +76,7 @@ void CAStar::Free(path_map &mapOpenList, path_map &mapCloseList)
 void CAStar::calSurrounding(PointI &stPoint, APath *pCurrent, PointI &stSource,
     path_map &mapOpenList, path_map &mapCloseList, path_queue &quOpen, CAMap *pAMap)
 {
-    pathit itPath = mapCloseList.find(&stPoint);
+    pathit itPath(mapCloseList.find(&stPoint));
     if (mapCloseList.end() != itPath || !pAMap->canMove(stPoint))
     {
         return;

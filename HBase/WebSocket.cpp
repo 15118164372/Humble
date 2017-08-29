@@ -64,8 +64,6 @@ CWebSocket::~CWebSocket(void)
 
 std::string CWebSocket::parseKey(char *pMsg, const size_t &iLens)
 {
-    std::string strKey;
-
     char *pPos(strstr(pMsg, WebSocket_Key));
     if (NULL == pPos)
     {
@@ -86,7 +84,7 @@ std::string CWebSocket::parseKey(char *pMsg, const size_t &iLens)
         return "";
     }
 
-    strKey.append(pTmp, (size_t)(pPos - pTmp));
+    std::string strKey(pTmp, (size_t)(pPos - pTmp));
     strKey = H_Trim(strKey);
 
     pPos = strstr(pMsg, WebSocket_VersionKey);
@@ -153,7 +151,7 @@ std::string CWebSocket::createHandshakeResponse(H_Session *pSession, std::string
 
 bool CWebSocket::handShake(H_Session *pSession, char *pAllBuf, const size_t &iLens, size_t &iParsed, bool &bCLose)
 {
-    char *pPos = strstr(pAllBuf, WebSock_ShakeHands_EndFlag);
+    char *pPos(strstr(pAllBuf, WebSock_ShakeHands_EndFlag));
     if (NULL == pPos)
     {
         return false;

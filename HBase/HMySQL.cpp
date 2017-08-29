@@ -557,7 +557,7 @@ int CMySQLStatement::execDML(void)
         return H_RTN_FAILE;
     }
 
-    int iChangeVal = (int)mysql_stmt_affected_rows(m_pStmt);
+    int iChangeVal((int)mysql_stmt_affected_rows(m_pStmt));
     (void)mysql_stmt_store_result(m_pStmt);
     (void)mysql_stmt_free_result(m_pStmt);
 
@@ -568,8 +568,8 @@ CDBQuery *CMySQLStatement::execQuery(void)
 {
     checkVM();
 
-    MYSQL_BIND *pRstBinder = NULL;
-    BindInfo *pStBindInfo = NULL;
+    MYSQL_BIND *pRstBinder(NULL);
+    BindInfo *pStBindInfo(NULL);
 
     reSet();
     BindParam();
@@ -689,7 +689,7 @@ void CMySQLStatement::bindString(const int iField, const char* pszValue)
     checkVM();
     CheckParam(iField);
 
-    size_t iLens = strlen(pszValue);
+    size_t iLens(strlen(pszValue));
     BindMemInfo &stBindInfo = m_pBindMemInfo[iField];
 
     setBindInfo(iLens + 1, stBindInfo);
@@ -705,7 +705,7 @@ void CMySQLStatement::bindInt(const int iField, const int iValue)
     checkVM();
     CheckParam(iField);
 
-    size_t iLens = sizeof(iValue);
+    size_t iLens(sizeof(iValue));
     BindMemInfo &stBindInfo = m_pBindMemInfo[iField];
 
     setBindInfo(iLens, stBindInfo);
@@ -721,7 +721,7 @@ void CMySQLStatement::bindInt64(const int iField, const int64_t iValue)
     checkVM();
     CheckParam(iField);
 
-    size_t iLens = sizeof(iValue);
+    size_t iLens(sizeof(iValue));
     BindMemInfo &stBindInfo = m_pBindMemInfo[iField];
 
     setBindInfo(iLens, stBindInfo);
@@ -737,7 +737,7 @@ void CMySQLStatement::bindFloat(const int iField, const double dValue)
     checkVM();
     CheckParam(iField);
 
-    size_t iLens = sizeof(dValue);
+    size_t iLens(sizeof(dValue));
     BindMemInfo &stBindInfo = m_pBindMemInfo[iField];
 
     setBindInfo(iLens, stBindInfo);
@@ -855,7 +855,7 @@ CDBQuery* CMySQLLink::execQuery(const char* szSQL)
 
     if (H_RTN_OK == mysql_real_query(m_pDb_Ptr, szSQL, (unsigned long)strlen(szSQL)))
     {
-        MYSQL_RES *Mysql_Res = mysql_store_result(m_pDb_Ptr);
+        MYSQL_RES *Mysql_Res(mysql_store_result(m_pDb_Ptr));
         if (NULL == Mysql_Res)
         {
             H_Printf("%s", mysql_error(m_pDb_Ptr));
@@ -877,7 +877,7 @@ CMySQLStatement *CMySQLLink::compileStatement(const char* pszSQL)
 {
     checkDB();
 
-    MYSQL_STMT *pStmt = mysql_stmt_init(m_pDb_Ptr);
+    MYSQL_STMT *pStmt(mysql_stmt_init(m_pDb_Ptr));
     if (NULL == pStmt)
     {
         H_Printf("%s", mysql_error(m_pDb_Ptr));
@@ -893,7 +893,7 @@ CMySQLStatement *CMySQLLink::compileStatement(const char* pszSQL)
     }
 
     H_Printf("%s", mysql_stmt_error(pStmt));
-    mysql_stmt_close(pStmt);    
+    mysql_stmt_close(pStmt);
 
     return NULL;
 }
@@ -902,12 +902,12 @@ int CMySQLLink::execDML(const char* szSQL)
 {
     checkDB();
 
-    int iRtn = mysql_real_query(m_pDb_Ptr, szSQL, (unsigned long)strlen(szSQL));    
+    int iRtn(mysql_real_query(m_pDb_Ptr, szSQL, (unsigned long)strlen(szSQL)));    
     if (H_RTN_OK == iRtn)
     {
         //得到受影响的行数
         iRtn = (int)mysql_affected_rows(m_pDb_Ptr);
-        MYSQL_RES *Mysql_Res = mysql_store_result(m_pDb_Ptr);
+        MYSQL_RES *Mysql_Res(mysql_store_result(m_pDb_Ptr));
         if(NULL != Mysql_Res)
         {
             mysql_free_result(Mysql_Res);
