@@ -246,7 +246,7 @@ void CTaskMgr::unregTask(const char *pszName)
 
     if (NULL == pTask)
     {
-        H_LOG(LOGLV_WARN, "not find task by name %s", pszName);
+        H_LOG(LOGLV_ERROR, "not find task by name %s", pszName);
         return;
     }
 

@@ -52,7 +52,7 @@ void CMSGDispatch::regEvent(unsigned short usEvent, class CTaskWorker *pTask, co
     }
     pDisp->objLock.wunLock();
 
-    H_LOG(LOGLV_INFO, "%s register event %d", pTask->getName()->c_str(), usEvent);
+    H_LOG(LOGLV_SYS, "%s register event %d", pTask->getName()->c_str(), usEvent);
 }
 
 void CMSGDispatch::unRegTime(unsigned short &usEvent, class CTaskWorker *pTask)
@@ -68,7 +68,7 @@ void CMSGDispatch::unRegTime(unsigned short &usEvent, class CTaskWorker *pTask)
         if (*(pTask->getName()) == *((*itTask)->getName()))
         {
             pDisp->lstTask.erase(itTask);
-            H_LOG(LOGLV_INFO, "%s unregister event %d", pTask->getName()->c_str(), usEvent);
+            H_LOG(LOGLV_SYS, "%s unregister event %d", pTask->getName()->c_str(), usEvent);
             break;
         }
     }
@@ -167,7 +167,7 @@ void CMSGDispatch::removeEvent(const char *pszName)
             if (0 == strcmp((*itTask)->getName()->c_str(), pszName))
             {
                 pDisp->lstTask.erase(itTask);
-                H_LOG(LOGLV_INFO, "%s unregister event %d", pszName, i);
+                H_LOG(LOGLV_SYS, "%s unregister event %d", pszName, i);
                 break;
             }
         }
@@ -185,7 +185,7 @@ void CMSGDispatch::regNetProto(H_PROTOTYPE &iProto, class CChan *pChan)
     m_mapNetProto[iProto] = pChan;
     m_objNetLock.wunLock();
 
-    H_LOG(LOGLV_INFO, "%s register proto %d", pChan->getTask()->getName()->c_str(), iProto);
+    H_LOG(LOGLV_SYS, "%s register proto %d", pChan->getTask()->getName()->c_str(), iProto);
 }
 
 class CChan *CMSGDispatch::getNetProto(H_PROTOTYPE &iProto)
@@ -214,7 +214,7 @@ void CMSGDispatch::regStrProto(const char *pszUrl, class CChan *pChan)
     m_mapStrProto[pszUrl] = pChan;
     m_objStrLock.wunLock();
 
-    H_LOG(LOGLV_INFO, "%s register proto %s", pChan->getTask()->getName()->c_str(), pszUrl);
+    H_LOG(LOGLV_SYS, "%s register proto %s", pChan->getTask()->getName()->c_str(), pszUrl);
 }
 
 class CChan *CMSGDispatch::getStrProto(const char *pszUrl)

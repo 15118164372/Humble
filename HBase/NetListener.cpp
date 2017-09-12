@@ -53,7 +53,7 @@ size_t CNetListener::onOrder(CEvBuffer *pEvBuffer)
         pParser = pParserMgr->getParser(pListen->acParser);
         if (NULL == pParser)
         {
-            H_LOG(LOGLV_WARN, "get net parser %s error.", pListen->acParser);
+            H_LOG(LOGLV_ERROR, "get net parser %s error.", pListen->acParser);
             continue;
         }        
 

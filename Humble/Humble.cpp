@@ -65,7 +65,7 @@ BOOL WINAPI consoleHandler(DWORD msgType)
 
     if (bRtn)
     {
-        H_LOG(LOGLV_INFO, "catch console signal %d.", msgType);
+        H_LOG(LOGLV_SYS, "catch console signal %d.", msgType);
         pthread_cond_broadcast(&g_ExitCond);
     }
 
@@ -74,7 +74,7 @@ BOOL WINAPI consoleHandler(DWORD msgType)
 #else
 void sigHandEntry(int iSigNum)
 {
-    H_LOG(LOGLV_INFO, "catch signal %d.", iSigNum);
+    H_LOG(LOGLV_SYS, "catch signal %d.", iSigNum);
 
     CLckThis objLckThis(&g_objExitMu);
     pthread_cond_broadcast(&g_ExitCond);
@@ -193,10 +193,10 @@ void runSV(void)
     
     if (H_RTN_OK == initData())
     {
-        H_LOG(LOGLV_INFO, "%s", "start service successfully.");
+        H_LOG(LOGLV_SYS, "%s", "start service successfully.");
         CLckThis objLckThis(&g_objExitMu);
         pthread_cond_wait(&g_ExitCond, objLckThis.getMutex());
-        H_LOG(LOGLV_INFO, "%s", "begin stop service.");
+        H_LOG(LOGLV_SYS, "%s", "begin stop service.");
     }
 
     CTick::getSingletonPtr()->Join();

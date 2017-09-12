@@ -25,7 +25,6 @@ CNetBase::CNetBase(void) : m_uiCount(H_INIT_NUMBER), m_pStopOrderBev(NULL), m_pO
     m_pBase = event_base_new();
 #endif
     H_ASSERT(NULL != m_pBase, "event_base_new error.");
-    H_Printf("kernel event notification mechanism %s", event_base_get_method(m_pBase));
 
     memset(m_sockStopOrder, H_INVALID_SOCK, sizeof(m_sockStopOrder));
     memset(m_sockOrder, H_INVALID_SOCK, sizeof(m_sockOrder));

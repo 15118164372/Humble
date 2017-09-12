@@ -43,7 +43,7 @@ private:
 };
 
 #define H_LOG(emLogLV, acFormat, ...) \
-    CLog::getSingletonPtr()->writeLog(emLogLV, H_CONCAT2("[%s %d]", acFormat), __FUNCTION__, __LINE__, ##__VA_ARGS__)
+    CLog::getSingletonPtr()->writeLog(emLogLV, H_CONCAT2("[%s %d] ", acFormat), __FUNCTION__, __LINE__, ##__VA_ARGS__)
 
 H_ENAMSP
 

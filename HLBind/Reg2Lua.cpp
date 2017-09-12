@@ -63,7 +63,7 @@ void regEvent(unsigned short usEvent, const char *pszTask, const short sType)
     CChan *pChan(CTaskMgr::getSingletonPtr()->getChan(pszTask));
     if (NULL == pChan)
     {
-        H_LOG(LOGLV_WARN, "get task %s error", pszTask);
+        H_LOG(LOGLV_ERROR, "get task %s error", pszTask);
         return;
     }
 
@@ -76,7 +76,7 @@ void unRegTime(unsigned short usEvent, const char *pszTask)
     CChan *pChan(CTaskMgr::getSingletonPtr()->getChan(pszTask));
     if (NULL == pChan)
     {
-        H_LOG(LOGLV_WARN, "get task %s error", pszTask);
+        H_LOG(LOGLV_ERROR, "get task %s error", pszTask);
         return;
     }
 
@@ -89,7 +89,7 @@ void regIProto(H_PROTOTYPE iProto, const char *pszTask)
     CChan *pChan(CTaskMgr::getSingletonPtr()->getChan(pszTask));
     if (NULL == pChan)
     {
-        H_LOG(LOGLV_WARN, "get task %s error", pszTask);
+        H_LOG(LOGLV_ERROR, "get task %s error", pszTask);
         return;
     }
 
@@ -101,7 +101,7 @@ void regStrProto(const char *pszProto, const char *pszTask)
     CChan *pChan(CTaskMgr::getSingletonPtr()->getChan(pszTask));
     if (NULL == pChan)
     {
-        H_LOG(LOGLV_WARN, "get task %s error", pszTask);
+        H_LOG(LOGLV_ERROR, "get task %s error", pszTask);
         return;
     }
 

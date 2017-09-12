@@ -79,7 +79,7 @@ void CMailer::runTask(CMail *pMail)
 
     pMailer->send();
 
-    H_LOG(LOGLV_INFO, "send mail(%s) return: %s", pMail->m_strSubject.c_str(), pMailer->response().c_str());
+    H_LOG(LOGLV_SYS, "send mail(%s) return: %s", pMail->m_strSubject.c_str(), pMailer->response().c_str());
 }
 
 H_ENAMSP

@@ -84,7 +84,7 @@ void CTaskRunner::adjustLoad(class CTaskWorker *pTask, const unsigned short &usI
         pthread_cond_signal(&pTaskQueue->objCond);
     }
 
-    H_LOG(LOGLV_INFO, "adjust task %s work thread:source thread %d, target thread %d.",
+    H_LOG(LOGLV_SYS, "adjust task %s work thread:source thread %d, target thread %d.",
         pTask->getName()->c_str(), m_usIndex, usIndex);
 }
 

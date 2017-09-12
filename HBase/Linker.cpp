@@ -97,7 +97,7 @@ void CLinker::linkClosed(H_LinkCMD *pMsg)
         {
             pLink->bLinked = false;
             pLink->stLink.sock = H_INVALID_SOCK;
-            H_LOG(LOGLV_WARN, "link to host %s on port %d closed.", pLink->acHost, pLink->usPort);
+            H_LOG(LOGLV_ERROR, "link to host %s on port %d closed.", pLink->acHost, pLink->usPort);
             break;
         }
     }
@@ -112,7 +112,7 @@ void CLinker::removeLink(H_LinkCMD *pMsg)
         pLink = *itLink;
         if (pLink->stLink.sock == pMsg->stLink.sock)
         {
-            H_LOG(LOGLV_INFO, "remove link to host %s on port %d.", pLink->acHost, pLink->usPort);
+            H_LOG(LOGLV_SYS, "remove link to host %s on port %d.", pLink->acHost, pLink->usPort);
             H_SafeDelete(pLink);
             m_vcLink.erase(itLink);            
             break;
