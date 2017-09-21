@@ -4,11 +4,11 @@ local httpd = require("httpd")
 local tcp1 = require("tcp1")
 
 function initTask()
-	print("echo1 initTask")
+	
 end
 
 function destroyTask()
-	print("echo1 destroyTask")
+	
 end
 
 local function echo(sock, sockType, httpInfo)

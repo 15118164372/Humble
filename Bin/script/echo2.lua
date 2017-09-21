@@ -4,11 +4,11 @@ local httpd = require("httpd")
 local cjson = require("cjson")
 
 function initTask()
-	print("echo2 initTask")
+	
 end
 
 function destroyTask()
-	print("echo2 destroyTask")
+	
 end
 
 local function echo(sock, sockType, httpInfo)
