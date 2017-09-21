@@ -87,6 +87,7 @@ void writePid(int pId)
     if (NULL == pFile)
     {
         H_Printf("%s", "write pid file error.");
+        return;
     }
 
     fwrite(strPid.c_str(), 1, strPid.size(), pFile);
