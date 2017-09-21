@@ -19,9 +19,10 @@ var g_bQuit = false
 var g_ProtoCount = uint16(40)
 
 type Server struct {
-	PackCount    int32
+	PackCount    int64
 	Excption     int32
 	RunningCount int32
+	SendPackLens int64
 	cli          *cli.Context
 	tcpAddr      *net.TCPAddr
 	msg          []string
@@ -56,7 +57,7 @@ func (s *Server) ReadMsg(conn *net.TCPConn, nextChan chan bool) {
 	}
 }
 
-func (s *Server) SendMsg(conn *net.TCPConn) {
+func (s *Server) SendMsg(conn *net.TCPConn) int64 {
 	proto := utils.RandAB(1, uint32(g_ProtoCount))
 	sendMsg := s.msg[utils.RandAB(0, uint32(len(s.msg)-1))]
 
@@ -67,6 +68,8 @@ func (s *Server) SendMsg(conn *net.TCPConn) {
 	writer.WriteU16(uint16(proto))
 	writer.WriteRawBytes([]byte(sendMsg))
 	conn.Write(writer.Data())
+
+	return int64(iLens) + 4
 }
 
 func (s *Server) worker() {
@@ -78,23 +81,25 @@ func (s *Server) worker() {
 		return
 	}
 
-	packCount := int32(0)
+	packLens := int64(0)
+	packCount := int64(0)
 	defer func() {
 		conn.Close()
-		atomic.AddInt32(&s.PackCount, packCount)
+		atomic.AddInt64(&s.PackCount, packCount)
+		atomic.AddInt64(&s.SendPackLens, packLens)
 		atomic.AddInt32(&s.RunningCount, -1)
 	}()
 
 	sendChan := make(chan bool, 10)
 
 	go s.ReadMsg(conn, sendChan)
-	s.SendMsg(conn)
+	packLens += s.SendMsg(conn)
 	packCount++
 
 	for !g_bQuit {
 		select {
 		case _ = <-sendChan:
-			s.SendMsg(conn)
+			packLens += s.SendMsg(conn)
 			packCount++
 		}
 	}
@@ -142,7 +147,9 @@ func (s *Server) Service() {
 	fmt.Println("excption link:", s.Excption)
 	fmt.Println("pack count:", s.PackCount)
 	fmt.Println("run time(sec):", s.cli.Int("runtime"))
-	fmt.Println("per second:", s.PackCount/int32(s.cli.Int("runtime")))
+	fmt.Println("per second count:", s.PackCount/int64(s.cli.Int("runtime")))
+	fmt.Println("send pack lens(B):", s.SendPackLens)
+	fmt.Println("per second send(B):", s.SendPackLens/int64(s.cli.Int("runtime")))
 
 	time.Sleep(3 * time.Second)
 }
