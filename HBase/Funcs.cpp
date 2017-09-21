@@ -489,8 +489,8 @@ std::string H_GetLastOfFlag(const std::string &strSource, const char *pszFlag)
     {
         return strSource;
     }
-
-    return strSource.substr(iPos + strlen(pszFlag), strSource.size());
+    
+    return strSource.substr(iPos + 1, strSource.size());
 }
 
 void H_GetTimeOfDay(struct timeval &stTime)

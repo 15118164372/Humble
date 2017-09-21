@@ -227,6 +227,8 @@ void CTaskMgr::regTask(CTaskWorker *pTask)
     m_objAllNamLock.wLock();
     m_lstAllName.push_back(*pTask->getName());
     m_objAllNamLock.wunLock();
+
+    H_LOG(LOGLV_SYS, "register task %s.", pTask->getName()->c_str());
 }
 
 void CTaskMgr::unregTask(const char *pszName)
@@ -250,6 +252,7 @@ void CTaskMgr::unregTask(const char *pszName)
         return;
     }
 
+    H_LOG(LOGLV_SYS, "unregister task %s.", pTask->getName()->c_str());
     notifyDestroy(pTask);
 
     m_objAllNamLock.wLock();
