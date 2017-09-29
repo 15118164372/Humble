@@ -6,6 +6,7 @@
 #include "Atomic.h"
 #include "EvBuffer.h"
 #include "Funcs.h"
+#include "Log.h"
 
 H_BNAMSP
 
@@ -34,10 +35,15 @@ protected:
     H_INLINE bool sendOrder(const void *pBuf, const size_t &iLens)
     {
         m_objOrderLock.Lock();
-        bool bOk(H_SockWrite(m_sockOrder[1], (const char*)pBuf, iLens));
+        int iRtn(H_SockWrite(m_sockOrder[1], (const char*)pBuf, iLens));
         m_objOrderLock.unLock();
+        if (H_RTN_OK != iRtn)
+        {
+            H_LOG(LOGLV_ERROR, "%s", H_SockError2Str(iRtn));
+            return false;
+        }
 
-        return bOk;
+        return true;
     };
     H_INLINE struct event_base *getBase(void)
     {

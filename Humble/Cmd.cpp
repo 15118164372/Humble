@@ -47,8 +47,10 @@ bool sendCmd(H_SOCK sock, const char *pszCommand, const char *pszTask, const cha
     memcpy(acBuf + sizeof(uiLens), &iProto, sizeof(H_PROTOTYPE));
     memcpy(acBuf + sizeof(uiLens) + sizeof(H_PROTOTYPE), &stCMD, sizeof(stCMD));
 
-    if (!H_SockWrite(sock, acBuf, sizeof(acBuf)))
+    int iRtn(H_SockWrite(sock, acBuf, sizeof(acBuf)));
+    if (H_RTN_OK != iRtn)
     {
+        H_Printf("%s", H_SockError2Str(iRtn));
         return false;
     }
     

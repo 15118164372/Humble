@@ -704,8 +704,9 @@ int H_SockPair(H_SOCK acSock[2])
     return H_RTN_OK;
 }
 
-bool H_SockWrite(H_SOCK &fd, const char *pBuf, const size_t &iLens)
+int H_SockWrite(H_SOCK &fd, const char *pBuf, const size_t &iLens)
 {
+    int iRtn(H_RTN_OK);
     int iSendSize(H_INIT_NUMBER);
     int iSendTotalSize(H_INIT_NUMBER);
 
@@ -714,20 +715,20 @@ bool H_SockWrite(H_SOCK &fd, const char *pBuf, const size_t &iLens)
         iSendSize = send(fd, pBuf + iSendTotalSize, (int)iLens - iSendTotalSize, 0);
         if (iSendSize <= 0)
         {
-            int iRtn = H_SockError();
+            iRtn = H_SockError();
             if (IS_EAGAIN(iRtn))
             {
                 continue;
             }
 
-            return false;
+            return iRtn;
         }
 
         iSendTotalSize += iSendSize;
 
     } while ((int)iLens > iSendTotalSize);
 
-    return true;
+    return H_RTN_OK;
 }
 
 int H_GetSockDataLens(H_SOCK &fd)

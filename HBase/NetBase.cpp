@@ -16,7 +16,7 @@ CNetBase::CNetBase(void) : m_uiCount(H_INIT_NUMBER), m_pStopOrderBev(NULL), m_pO
     H_ASSERT(NULL != pEvCfg, "event_config_new error.");
     if (H_RTN_OK != event_config_set_flag(pEvCfg, EVENT_BASE_FLAG_STARTUP_IOCP))
     {
-        H_Printf("%s", "event_config_set_flag set EVENT_BASE_FLAG_STARTUP_IOCP error.");
+        H_LOG(LOGLV_ERROR, "%s", "event_config_set_flag set EVENT_BASE_FLAG_STARTUP_IOCP error.");
     }
 
     m_pBase = event_base_new_with_config(pEvCfg);
@@ -130,8 +130,13 @@ void CNetBase::Join(void)
 
     int iStop(1);
     m_objStopLock.Lock();
-    (void)H_SockWrite(m_sockStopOrder[1], (const char*)&iStop, sizeof(iStop));
+    int iRtn(H_SockWrite(m_sockStopOrder[1], (const char*)&iStop, sizeof(iStop)));    
     m_objStopLock.unLock();
+    if (H_RTN_OK != iRtn)
+    {
+        H_LOG(LOGLV_ERROR, "%s", H_SockError2Str(iRtn));
+        return;
+    }
 
     while (true)
     {

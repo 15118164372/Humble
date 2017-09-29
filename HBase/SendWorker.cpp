@@ -15,7 +15,11 @@ CSendWorker::~CSendWorker(void)
 
 void CSendWorker::runTask(H_NetSendMsg *pMsg)
 {
-    (void)H_SockWrite(pMsg->sock, pMsg->stBuf.pBufer, pMsg->stBuf.iLens);
+    int iRtn(H_SockWrite(pMsg->sock, pMsg->stBuf.pBufer, pMsg->stBuf.iLens));
+    if (H_RTN_OK != iRtn)
+    {
+        H_LOG(LOGLV_ERROR, "%s", H_SockError2Str(iRtn));
+    }
     if (NULL == pMsg->pRef)
     {
         H_SafeDelArray(pMsg->stBuf.pBufer);
