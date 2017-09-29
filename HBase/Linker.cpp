@@ -11,7 +11,7 @@ H_BNAMSP
 SINGLETON_INIT(CLinker)
 CLinker objLinker;
 
-CLinker::CLinker(void) : CTaskLazy<H_LinkCMD>(H_QULENS_LINKER)
+CLinker::CLinker(void) : CTaskLazy<H_LinkCMD>(H_QULENS_LINKER), m_uiReLinking(RLStatus_None)
 {
 }
 
@@ -58,6 +58,8 @@ void CLinker::addLink(H_LinkCMD *pMsg)
 
 void CLinker::reLink(H_LinkCMD *)
 {
+    H_AtomicSet(&m_uiReLinking, RLStatus_Linking);
+
     H_LinkCMD *pLink;
     std::vector<H_LinkCMD *>::iterator itLink;
     for (itLink = m_vcLink.begin(); m_vcLink.end() != itLink; ++itLink)
@@ -77,13 +79,15 @@ void CLinker::reLink(H_LinkCMD *)
                 pLink->bLinked = false;
                 evutil_closesocket(pLink->stLink.sock);
                 pLink->stLink.sock = H_INVALID_SOCK;
-            }            
+            }
         }
         else
         {
             H_LOG(LOGLV_ERROR, "link to host %s on port %d error.", pLink->acHost, pLink->usPort);
         }
     }
+
+    H_AtomicSet(&m_uiReLinking, RLStatus_None);
 }
 
 void CLinker::linkClosed(H_LinkCMD *pMsg)
@@ -173,6 +177,11 @@ void CLinker::addLink(const char *pszParser, const unsigned short &usType, const
 
 void CLinker::reLink(void)
 {
+    if (RLStatus_None != H_AtomicGet(&m_uiReLinking))
+    {
+        return;
+    }
+
     H_LinkCMD *pLinker(newT());
     H_ASSERT(NULL != pLinker, "malloc memory error.");
 

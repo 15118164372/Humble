@@ -48,11 +48,16 @@ private:
         CMD_CLOSED,
         CMD_REMOVE,
     };
-
+    enum
+    {
+        RLStatus_None = 0,
+        RLStatus_Linking,
+    };
 private:
     H_DISALLOWCOPY(CLinker);
 
 private:
+    unsigned int m_uiReLinking;
     std::vector<H_LinkCMD *> m_vcLink;
 };
 
