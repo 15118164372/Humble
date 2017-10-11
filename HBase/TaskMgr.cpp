@@ -12,7 +12,7 @@ SINGLETON_INIT(CTaskMgr)
 CTaskMgr objTaskMgr;
 
 CTaskMgr::CTaskMgr(void) : CTaskLazy<unsigned int>(H_ONEK/16), 
-    m_usThreadNum(H_INIT_NUMBER), m_uiDiffer(H_INIT_NUMBER), m_pRunner(NULL)
+    m_usThreadNum(H_INIT_NUMBER), m_uiDiffer(H_INIT_NUMBER), m_dAlarmTime(H_INIT_NUMBER), m_pRunner(NULL)
 {
     setDel(false);
 }
@@ -131,6 +131,7 @@ void CTaskMgr::setThreadNum(const unsigned short usNum)
     for (unsigned short usI = H_INIT_NUMBER; usI < m_usThreadNum; ++usI)
     {
         m_pRunner[usI].setIndex(usI);
+        m_pRunner[usI].setAlarmTime(m_dAlarmTime);
         CThread::Creat(&m_pRunner[usI]);
         m_pRunner[usI].waitStart();
     }

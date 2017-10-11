@@ -6,7 +6,7 @@
 H_BNAMSP
 
 CTaskRunner::CTaskRunner(void) : m_usIndex(H_INIT_NUMBER), m_usToIndex(H_INIT_NUMBER), m_uiAdjustLoad(H_INIT_NUMBER),
-    m_lExit(H_INIT_NUMBER), m_lCount(H_INIT_NUMBER)
+    m_dAlarmTime(H_INIT_NUMBER), m_lExit(H_INIT_NUMBER), m_lCount(H_INIT_NUMBER)
 {
 }
 
@@ -14,9 +14,13 @@ CTaskRunner::~CTaskRunner(void)
 {
 }
 
-bool CTaskRunner::runTask(class CTaskWorker *pTask)
+bool CTaskRunner::runTask(class CTaskWorker *pTask, class CClock *pClock, double *pRunTime)
 {
     H_MSG *pMsg;
+    double dTime(H_INIT_NUMBER);
+    H_PROTOTYPE iProto(H_INIT_NUMBER);
+    *pRunTime = H_INIT_NUMBER;
+
     for (int iCount = H_INIT_NUMBER; iCount < H_MAXRUNNUM; ++iCount)
     {
         pMsg = (H_MSG*)pTask->getChan()->Recv();
@@ -25,11 +29,31 @@ bool CTaskRunner::runTask(class CTaskWorker *pTask)
             break;
         }
 
-        pTask->Run(pMsg);
+        pClock->reStart();
+        iProto = pTask->Run(pMsg);
+        dTime = pClock->Elapsed(); 
+        *pRunTime += dTime;
+
         if (MSG_TASK_DEL == pMsg->usEnevt)
         {
             H_SafeDelete(pMsg);
             return true;
+        }
+        
+        if (m_dAlarmTime > H_INIT_NUMBER
+            && dTime > m_dAlarmTime
+            && MSG_TASK_INIT != pMsg->usEnevt)
+        {
+            if (MSG_NET_READ == pMsg->usEnevt)
+            {
+                H_LOG(LOGLV_SYS, "task %s, event %d, protocol %d run time %f ms.",
+                    pTask->getName()->c_str(), pMsg->usEnevt, iProto, dTime);
+            }
+            else
+            {
+                H_LOG(LOGLV_SYS, "task %s, event %d run time %f ms.",
+                    pTask->getName()->c_str(), pMsg->usEnevt, dTime);
+            }
         }
         H_SafeDelete(pMsg);
     }
@@ -91,6 +115,7 @@ void CTaskRunner::adjustLoad(class CTaskWorker *pTask, const unsigned short &usI
 void CTaskRunner::Run(void)
 {
     bool bDel(false);
+    double dRunTime(H_INIT_NUMBER);
     CTaskWorker *pTask(NULL);
     TaskQueue *pTaskQueue(CTaskGlobleQu::getSingletonPtr()->getQueue(m_usIndex));
 
@@ -113,9 +138,8 @@ void CTaskRunner::Run(void)
         }
 
         //Ö´ÐÐ
-        pTaskQueue->objClock.reStart();
-        bDel = runTask(pTask);
-        H_AtomicAdd(&(pTaskQueue->uiTime), (unsigned int)(pTaskQueue->objClock.Elapsed() * 1000));
+        bDel = runTask(pTask, &pTaskQueue->objClock, &dRunTime);
+        H_AtomicAdd(&(pTaskQueue->uiTime), (unsigned int)(dRunTime * 1000));
         if (bDel)
         {
             continue;

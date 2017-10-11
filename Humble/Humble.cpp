@@ -142,6 +142,9 @@ int setParam(void)
     CNetWorkerMgr::getSingletonPtr()->startWorker(usNetNum);
     CSender::getSingletonPtr()->startSender(usNetNum);
 
+    //告警时间
+    CTaskMgr::getSingletonPtr()->setAlarmTime(objIni.getFloatValue("Main", "alarmtime"));
+
     //任务线程数
     unsigned short usWorkerNum((unsigned short)objIni.getIntValue("Main", "workernum"));
     usWorkerNum = ((H_INIT_NUMBER == usWorkerNum) ? usCoreCount * 2 : usWorkerNum);

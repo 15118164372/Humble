@@ -28,7 +28,7 @@ public:
     virtual ~CTaskWorker()
     {};
     
-    void Run(H_MSG *pMsg);
+    H_PROTOTYPE Run(H_MSG *pMsg);
 
     virtual void initTask(void) {};
     virtual void destroyTask(void) {};

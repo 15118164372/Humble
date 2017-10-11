@@ -23,11 +23,16 @@ public:
         m_usIndex = usIndex;
     };
 
+    void setAlarmTime(const double &dMs)
+    {
+        m_dAlarmTime = dMs;
+    };
+
     void setAdjustLoad(unsigned short &usToIndex);
 
 private:
     void runSurplus(void);
-    bool runTask(class CTaskWorker *pTask);
+    bool runTask(class CTaskWorker *pTask, class CClock *pClock, double *pRunTime);
     void adjustInGloble(struct TaskQueue *pTaskQueue, class CTaskWorker *pTask);
     void adjustLoad(class CTaskWorker *pTask, const unsigned short &usIndex);
 
@@ -37,7 +42,8 @@ private:
 private:
     unsigned short m_usIndex;
     unsigned short m_usToIndex;
-    unsigned int m_uiAdjustLoad;    
+    unsigned int m_uiAdjustLoad;
+    double m_dAlarmTime;
     long m_lExit;
     long m_lCount;
 };

@@ -9,8 +9,10 @@
 
 H_BNAMSP
 
-void CTaskWorker::Run(H_MSG *pMsg)
+H_PROTOTYPE CTaskWorker::Run(H_MSG *pMsg)
 {
+    H_PROTOTYPE iProto(H_INIT_NUMBER);
+
     switch (pMsg->usEnevt)
     {
         //任务初始化 删除
@@ -78,6 +80,7 @@ void CTaskWorker::Run(H_MSG *pMsg)
         case MSG_NET_READ:
         {
             H_TCPBUF *pTcpBuf((H_TCPBUF *)pMsg->pEvent);
+            iProto = pTcpBuf->iProto;
             onNetRead(pTcpBuf);
             H_SafeDelArray(pTcpBuf->stBinary.pBufer);
             H_SafeDelArray(pMsg->pEvent);
@@ -352,6 +355,8 @@ void CTaskWorker::Run(H_MSG *pMsg)
         default:
             break;
     }
+
+    return iProto;
 }
 
 H_ENAMSP

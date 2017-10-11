@@ -30,6 +30,11 @@ public:
         return m_usThreadNum;
     };
 
+    void setAlarmTime(const double dMs)
+    {
+        m_dAlarmTime = dMs;
+    };
+
     void regTask(CTaskWorker *pTask);
     void unregTask(const char *pszName);
     void stopWorker(void);
@@ -73,6 +78,7 @@ private:
 private:
     unsigned short m_usThreadNum;
     unsigned int m_uiDiffer;
+    double m_dAlarmTime;
     CTaskRunner *m_pRunner;
     task_map m_mapTask;
     CRWLock m_objTaskLock;
