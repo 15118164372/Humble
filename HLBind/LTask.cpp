@@ -61,7 +61,7 @@ void CLTask::initTask(void)
     *(m_pLFunc[LFUNC_DELTASK]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "destroyTask");
     *(m_pLFunc[LFUNC_ONNETEVENT]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onNetEvent");
     *(m_pLFunc[LFUNC_ONNETREAD]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onNetRead");
-    *(m_pLFunc[LFUNC_ONTIME]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onTimeEvent");
+    *(m_pLFunc[LFUNC_ONFRAME]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onFrame");
     *(m_pLFunc[LFUNC_ONCMD]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onCMD");
     *(m_pLFunc[LFUNC_RPCCALL]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onRPCCall");
     *(m_pLFunc[LFUNC_RPCRTN]) = luabridge::getGlobal((struct lua_State *)m_stState.pLState, "onRPCRtn");
@@ -151,19 +151,7 @@ void CLTask::onFrame(H_TICK *pTick)
 {
     try
     {
-        (*(m_pLFunc[LFUNC_ONTIME]))((unsigned short)MSG_TIME_FRAME, pTick->uiMS, pTick->uiCount);
-    }
-    catch (luabridge::LuaException &e)
-    {
-        H_LOG(LOGLV_ERROR, "%s", e.what());
-    }
-}
-
-void CLTask::onSec(H_TICK *pTick)
-{
-    try
-    {
-        (*(m_pLFunc[LFUNC_ONTIME]))((unsigned short)MSG_TIME_SEC, pTick->uiMS, pTick->uiCount);
+        (*(m_pLFunc[LFUNC_ONFRAME]))(pTick->uiMS, pTick->uiCount);
     }
     catch (luabridge::LuaException &e)
     {

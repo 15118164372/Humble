@@ -499,6 +499,19 @@ void H_GetTimeOfDay(struct timeval &stTime)
     (void)evutil_gettimeofday(&stTime, NULL);
 }
 
+uint64_t H_MilSecond(void)
+{
+    uint64_t ulMS(H_INIT_NUMBER);
+    struct timeval stTimeVal;
+
+    H_GetTimeOfDay(stTimeVal);
+
+    ulMS = static_cast<uint64_t>(stTimeVal.tv_usec) / 1000;//»°∫¡√Î
+    ulMS += static_cast<uint64_t>(stTimeVal.tv_sec) * 1000;
+
+    return ulMS;
+}
+
 void H_KeepAlive(H_SOCK &fd, const unsigned int iKeepIdle, const unsigned int iKeepInterval)
 {
     int iKeepAlive(1);

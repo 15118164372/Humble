@@ -37,7 +37,6 @@ public:
     virtual void onClosed(H_LINK *pLink) {};
     virtual void onNetRead(H_TCPBUF *pTcpBuf) {};
     virtual void onFrame(H_TICK *pTick) {};
-    virtual void onSec(H_TICK *pTick) {};
     virtual const char *onCMD(const char *pszCmd, const char *pszInfo, size_t &iOutLens)
     { 
         return NULL;

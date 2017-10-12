@@ -19,7 +19,6 @@ public:
     void onClosed(H_LINK *pLink);
     void onNetRead(H_TCPBUF *pTcpBuf);
     void onFrame(H_TICK *pTick);
-    void onSec(H_TICK *pTick);
     const char *onCMD(const char *pszCmd, const char *pszInfo, size_t &iOutLens);
     const char *onRPCCall(H_LINK *pLink, const char *pszName, char *pszInfo,
         const size_t &uiLens, size_t &iOutLens);
@@ -60,7 +59,7 @@ private:
         LFUNC_DELTASK,
         LFUNC_ONNETEVENT,
         LFUNC_ONNETREAD,
-        LFUNC_ONTIME,
+        LFUNC_ONFRAME,
         LFUNC_ONCMD,
         LFUNC_RPCCALL,
         LFUNC_RPCRTN,

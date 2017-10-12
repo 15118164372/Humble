@@ -346,6 +346,9 @@
     <ClInclude Include="MQTT.h">
       <Filter>Service\Parser</Filter>
     </ClInclude>
+    <ClInclude Include="OrderedQu.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zlib\adler32.c">

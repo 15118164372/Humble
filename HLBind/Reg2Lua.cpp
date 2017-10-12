@@ -3,6 +3,7 @@
 #include "LTask.h"
 #include "LAOI.h"
 #include "LAStar.h"
+#include "LOrderedQu.h"
 
 H_BNAMSP
 
@@ -257,6 +258,7 @@ CMail *newMail(void)
 void H_RegFuncs(struct lua_State *pLState)
 {
     luabridge::getGlobalNamespace(pLState)
+        .addFunction("milSecond", H_MilSecond)
         .addFunction("getSVId", getSVId)
         .addFunction("getSVType", getSVType)
         .addFunction("getLogPriority", getLogPriority)
@@ -343,6 +345,19 @@ void H_RegAStar(struct lua_State *pLState)
             .addConstructor<void(*)(H_LSTATE *)>()
             .addFunction("findPath", &CLAStar::astarPath)
             .addFunction("Print", &CLAStar::printMap)
+        .endClass();
+}
+
+void H_RegOrderedQu(struct lua_State *pLState)
+{
+    luabridge::getGlobalNamespace(pLState)
+        .beginClass<COrderedQu>("COrderedQu")
+            .addConstructor<void(*)()>()
+            .addFunction("pushNode", &COrderedQu::pushNode)
+        .endClass()
+        .deriveClass<CLOrderedQu, COrderedQu>("CLOrderedQu")
+            .addConstructor<void(*)(H_LSTATE *)>()
+            .addFunction("popNode", &CLOrderedQu::popLNode)
         .endClass();
 }
 
@@ -518,6 +533,7 @@ void H_RegAll(struct lua_State *pLState)
     H_RegLState(pLState);
     H_RegAOI(pLState);
     H_RegAStar(pLState);
+    H_RegOrderedQu(pLState);
     H_RegConHash(pLState);
     H_RegMail(pLState);
     H_RegCurLink(pLState);

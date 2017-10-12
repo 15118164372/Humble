@@ -25,7 +25,6 @@ enum
     MSG_TASK_RPCRTN,   //任务间rpc返回
 
     MSG_TIME_FRAME,    //帧事件
-    MSG_TIME_SEC,      //秒事件
 
     MSG_TASK_INIT,     //任务初始化
     MSG_TASK_DEL,      //任务删除

@@ -23,6 +23,7 @@ std::string H_GetLastOfFlag(const std::string &strSource, const char *pszFlag);
 std::string H_Now(void);
 std::string H_Date(void);
 void H_GetTimeOfDay(struct timeval &stTime);
+uint64_t H_MilSecond(void);
 
 //文件相关
 int H_FileExist(const char *pszFileName);

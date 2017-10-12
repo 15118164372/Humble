@@ -19,7 +19,6 @@ public:
 
 private:
     H_DISALLOWCOPY(CSnowFlake);
-    uint64_t getCurMS(void);
     uint64_t tilNextMillis(void); 
 
 private:

@@ -240,7 +240,7 @@ local function Test()
 	
 	print("---------------------test end-------------------------")
 	
-	unRegDelay()
+	unRegFrame()
 	humble.unregTask(m_strTaskName)
 end
-regDelayEv(1, Test)
+regDelayEv(5000, Test)

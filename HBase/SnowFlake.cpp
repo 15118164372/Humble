@@ -25,7 +25,7 @@ H_BNAMSP
 
 CSnowFlake::CSnowFlake(void) : m_uiWorkid(H_INIT_NUMBER), m_lSequence(H_INIT_NUMBER)
 {
-    m_ulLastTime = getCurMS();
+    m_ulLastTime = H_MilSecond();
 }
 
 CSnowFlake::~CSnowFlake(void)
@@ -46,26 +46,13 @@ void CSnowFlake::setCenterid(const int uiID)
     m_uiCenterid = uiID;
 }
 
-uint64_t CSnowFlake::getCurMS(void)
-{
-    uint64_t ulMS(H_INIT_NUMBER);
-    struct timeval stTimeVal;
-
-    H_GetTimeOfDay(stTimeVal);
-
-    ulMS = static_cast<uint64_t>(stTimeVal.tv_usec) / 1000;//»°∫¡√Î
-    ulMS += static_cast<uint64_t>(stTimeVal.tv_sec) * 1000;
-
-    return ulMS;
-}
-
 uint64_t CSnowFlake::tilNextMillis(void)
 {
-    uint64_t ulCur(getCurMS());
+    uint64_t ulCur(H_MilSecond());
 
     while (ulCur <= m_ulLastTime) 
     {
-        ulCur = getCurMS();
+        ulCur = H_MilSecond();
     }
 
     return ulCur;
@@ -73,7 +60,7 @@ uint64_t CSnowFlake::tilNextMillis(void)
 
 uint64_t CSnowFlake::getID(void)
 {
-    uint64_t uiCurTime(getCurMS());
+    uint64_t uiCurTime(H_MilSecond());
     H_ASSERT(uiCurTime >= m_ulLastTime, "time error.");
 
     if (uiCurTime == m_ulLastTime)

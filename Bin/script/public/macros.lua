@@ -83,7 +83,6 @@ Event = {
 	"TASK_RPCRTN",--任务间rpc返回
 	
 	"TIME_FRAME",--帧事件
-	"TIME_SEC",--秒事件
 	
 	"TASK_INIT",--任务初始化
 	"TASK_DEL",--任务删除

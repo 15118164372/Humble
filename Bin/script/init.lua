@@ -1,6 +1,5 @@
 --任务初始化 每个任务都要require
 require("macros")
-require("timewheel")
 local humble = require("humble")
 local utile = require("utile")
 local hotfix = require("hotfix")
@@ -10,7 +9,7 @@ local table = table
 local Event = Event
 local SockType = SockType
 local m_strTaskName = g_taskName
-local m_RPCTimeOut = 5
+local m_RPCTimeOut = 5000 --毫秒
 
 --命令执行c++调用函数
 function onCMD(cmd ,info)
@@ -78,51 +77,73 @@ end
 --时间事件
 if not g_TimeEvent then
 	g_TimeEvent = {}
+	g_TimeEvent.Reg = false
+	g_TimeEvent.Frame = nil
+	g_TimeEvent.Delay = {}
+end
+if not g_TimeEvId then
+	g_TimeEvId = 0
+end
+if not g_OrderedQu then
+	g_OrderedQu = CLOrderedQu(thisState)
 end
 local m_TimeEvent = g_TimeEvent
+local m_OrderedQu = g_OrderedQu
 
---时间事件c++调用函数
-function onTimeEvent(usEvent, uiTick, ulCount)
-	local func = m_TimeEvent[usEvent]
-	if func then
-		utile.callFunc(func, uiTick, ulCount)
+--帧事件c++调用函数
+function onFrame(uiTick, ulCount)
+	local timeOut = m_OrderedQu:popNode(humble.milSecond())
+	if #timeOut > 0 then
+		local funcInfo
+		local delay = m_TimeEvent.Delay
+		for _, val in pairs(timeOut) do
+			funcInfo = delay[val]
+			if funcInfo then
+				utile.callFunc(funcInfo.Func, table.unpack(funcInfo.Param))
+				delay[val] = nil
+			end
+		end
+	end
+	
+	local frame = m_TimeEvent.Frame
+	if frame then
+		utile.callFunc(frame, uiTick, ulCount)
 	end
 end
-local function regTimeEvent(usEvent, func)	
-	if not m_TimeEvent[usEvent] then
-		m_TimeEvent[usEvent] = func
-		humble.regEvent(usEvent, m_strTaskName, -1)
+
+local function regTimeEvent()
+	if not m_TimeEvent.Reg then
+		m_TimeEvent.Reg = true
+		humble.regEvent(Event.TIME_FRAME, m_strTaskName, -1)
 	end
 end
-local function onSec(uiTick, ulCount)
-	DEV_OnTime(g_WheelMgr)
-end
-local function regSecEvent()
-	if not g_WheelMgr then
-		g_WheelMgr = WheelMgr:new()
-		regTimeEvent(Event.TIME_SEC, onSec)
-	end
-end
+
 --注册func(uiTick, ulCount)
 function regFrameEv(func)
-	regTimeEvent(Event.TIME_FRAME, func)
+	regTimeEvent()
+	m_TimeEvent.Frame = func
 end
+--iTime毫秒
 function regDelayEv(iTime, Func, ...)
-	regSecEvent()
-	DEV_Reg(g_WheelMgr, iTime, Func, table.unpack({...}))
-end
---strTime 格式(24小时制)：12:36:28
-function regDelayAtEv(strTime, Func, ...)
-	regSecEvent()
-	DEV_AtTime(g_WheelMgr, strTime, Func, table.unpack({...}))
+	regTimeEvent()
+	g_TimeEvId = g_TimeEvId + 1
+	
+	local tParam = {}
+	tParam.Func = Func
+	tParam.Param = {...}
+	
+	m_TimeEvent.Delay[g_TimeEvId] = tParam
+	m_OrderedQu:pushNode(humble.milSecond() + iTime, g_TimeEvId)
 end
 --移除帧事件
 function unRegFrame()
+	if table.len(m_TimeEvent.Delay) > 0 then
+		humble.Errorf("%s", "some task not run.")
+		return
+	end
+	
+	m_TimeEvent.Reg = false
 	humble.unRegFrame(m_strTaskName)
-end
---移除秒事件
-function unRegDelay()
-	humble.unRegSec(m_strTaskName)
 end
 
 

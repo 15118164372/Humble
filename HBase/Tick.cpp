@@ -50,18 +50,17 @@ void CTick::timeCB(H_SOCK, short, void *arg)
 {
     TickEvent *pTickEvent((TickEvent *)arg);
     pTickEvent->stTick.uiCount++;
-
-    if (MSG_TIME_SEC == pTickEvent->usType)
+    if (MSG_TIME_FRAME == pTickEvent->usType)
     {
-        CLinker::getSingletonPtr()->reLink();
-
-        if (H_INIT_NUMBER == pTickEvent->stTick.uiCount % pTickEvent->uiLoad)
-        {
-            CTaskMgr::getSingletonPtr()->adjustLoad(pTickEvent->uiLoad);
-        }
+        CMSGDispatch::getSingletonPtr()->sendEvent(pTickEvent->usType, (void*)&pTickEvent->stTick, sizeof(pTickEvent->stTick));
+        return;
     }
 
-    CMSGDispatch::getSingletonPtr()->sendEvent(pTickEvent->usType, (void*)&pTickEvent->stTick, sizeof(pTickEvent->stTick));
+    CLinker::getSingletonPtr()->reLink();
+    if (H_INIT_NUMBER == pTickEvent->stTick.uiCount % pTickEvent->uiLoad)
+    {
+        CTaskMgr::getSingletonPtr()->adjustLoad(pTickEvent->uiLoad);
+    }
 }
 
 void CTick::onStart(void)
@@ -79,10 +78,10 @@ void CTick::onStart(void)
 
     TickEvent *pTickSec = new(std::nothrow) TickEvent;
     H_ASSERT(NULL != pTickSec, "malloc memory error.");
-    pTickSec->usType = MSG_TIME_SEC;
+    pTickSec->usType = H_INIT_NUMBER;
     pTickSec->uiLoad = m_uiLoad;
     pTickSec->stTick.uiCount = H_INIT_NUMBER;
-    pTickSec->stTick.uiMS = 1000;
+    pTickSec->stTick.uiMS = H_SECOND;
     initTimeEv(pTickSec->stTick.uiMS, timeCB, pTickSec);
     m_vcTickEvent.push_back(pTickSec);
 }

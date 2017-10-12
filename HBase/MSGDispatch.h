@@ -23,7 +23,7 @@ public:
 
     //usType 网络事件使用  mqtt相同事件只能一个任务注册
     void regEvent(unsigned short usEvent, class CTaskWorker *pTask, const short sType = -1);
-    //usEvent MSG_TIME_FRAME or MSG_TIME_SEC
+    //usEvent MSG_TIME_FRAME
     void unRegTime(unsigned short &usEvent, class CTaskWorker *pTask);
     void sendEvent(unsigned short usEvent, void *pMsg, const size_t &iLens);
     //usEvent usEvent >= MSG_MQTT_CONNECT && usEvent <= MSG_MQTT_DISCONNECT

@@ -2,6 +2,7 @@
 require("macros")
 local string = string
 local debug = debug
+local milSecond = milSecond
 local getSVId = getSVId
 local getSVType = getSVType
 local getLinkById = getLinkById
@@ -100,6 +101,10 @@ function humble.newMail()
 	return newMail()
 end
 
+function humble.milSecond()
+	return milSecond()
+end
+
 --服务器id
 function humble.getSVId()
 	return getSVId()
@@ -155,7 +160,7 @@ function humble.md5Str(strval)
     return md5Str(strval, #strval)
 end
 
---事件注册 NET_ACCEPT, NET_LINKED, NET_CLOSE, TIME_FRAME, TIME_SEC 
+--事件注册 NET_ACCEPT, NET_LINKED, NET_CLOSE, TIME_FRAME 
 function humble.regEvent(usEvent, strTask, sockType)
 	regEvent(usEvent, strTask, sockType)
 end
@@ -163,10 +168,7 @@ end
 function humble.unRegFrame(strTask)
 	unRegTime(Event.TIME_FRAME, strTask)
 end
---秒事件移除
-function humble.unRegSec(strTask)
-	unRegTime(Event.TIME_SEC, strTask)
-end
+
 --网络协议注册
 function humble.regIProto(iProto, strTask)
 	regIProto(iProto, strTask)

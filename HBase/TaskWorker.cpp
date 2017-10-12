@@ -68,13 +68,6 @@ H_PROTOTYPE CTaskWorker::Run(H_MSG *pMsg)
             H_SafeDelArray(pMsg->pEvent);
         }
         break;
-        case MSG_TIME_SEC:
-        {
-            H_TICK *pTick((H_TICK *)pMsg->pEvent);
-            onSec(pTick);
-            H_SafeDelArray(pMsg->pEvent);
-        }
-        break;
 
         //ÍøÂç¿É¶Á
         case MSG_NET_READ:

@@ -20,6 +20,8 @@
 #define H_PACKRATE_TIME              60 //检测间隔(秒)
 #define H_MAXPACK_RATE               0  //最大发包频率(总数/间隔)
 
+#define H_SECOND                     1000
+
 typedef unsigned short H_PROTOTYPE;
 #define H_NTOH         ntohs
 

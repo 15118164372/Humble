@@ -100,6 +100,7 @@
   <ItemGroup>
     <ClInclude Include="LAOI.h" />
     <ClInclude Include="LAStar.h" />
+    <ClInclude Include="LOrderedQu.h" />
     <ClInclude Include="lpeg\lpcap.h" />
     <ClInclude Include="lpeg\lpcode.h" />
     <ClInclude Include="lpeg\lpprint.h" />

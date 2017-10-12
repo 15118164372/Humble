@@ -6,6 +6,7 @@
 #include "RWLock.h"
 #include "LockThis.h"
 #include "Thread.h"
+#include "OrderedQu.h"
 
 #include "AOI.h"
 #include "AStar.h"

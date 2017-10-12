@@ -68,6 +68,7 @@
     <ClInclude Include="NetParser.h" />
     <ClInclude Include="NetWorker.h" />
     <ClInclude Include="NetWorkerMgr.h" />
+    <ClInclude Include="OrderedQu.h" />
     <ClInclude Include="redisrand\redisrand.h" />
     <ClInclude Include="rijndael\rijndael.h" />
     <ClInclude Include="RPCLink.h" />

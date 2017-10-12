@@ -57,7 +57,7 @@ void CMSGDispatch::regEvent(unsigned short usEvent, class CTaskWorker *pTask, co
 
 void CMSGDispatch::unRegTime(unsigned short &usEvent, class CTaskWorker *pTask)
 {
-    H_ASSERT(usEvent == MSG_TIME_FRAME || usEvent == MSG_TIME_SEC, "only support frame and second event.");
+    H_ASSERT(usEvent == MSG_TIME_FRAME, "only support frame and second event.");
 
     std::list<class CTaskWorker *>::iterator itTask;
     H_EVENTDISP *pDisp(&m_acEvent[usEvent]);
