@@ -135,6 +135,23 @@ function regDelayEv(iTime, Func, ...)
 	m_TimeEvent.Delay[g_TimeEvId] = tParam
 	m_OrderedQu:pushNode(humble.milSecond() + iTime, g_TimeEvId)
 end
+--strTime 格式(24小时制)：12:36:28
+function regDelayAtEv(strTime, Func, ...)
+	local strHour, strMin, strSec = string.match(strTime, "(%d+):(%d+):(%d+)")
+    local iTime = (tonumber(strHour) * 60 * 60) + (tonumber(strMin) * 60) + tonumber(strSec)
+    local tNow = os.date("*t", time)
+    local iNowTime = (tonumber(tNow.hour) * 60 * 60) + (tonumber(tNow.min) * 60) + tonumber(tNow.sec)
+    
+    local iDelayTime = 0
+    
+    if iTime > iNowTime then
+        iDelayTime = iTime - iNowTime
+    else
+        iDelayTime = (24 * 60 * 60) - (iNowTime - iTime)
+    end
+	
+	regDelayEv(iDelayTime * 1000, Func, table.unpack({...}))
+end
 --移除帧事件
 function unRegFrame()
 	if table.len(m_TimeEvent.Delay) > 0 then
