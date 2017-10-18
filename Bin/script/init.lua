@@ -77,22 +77,23 @@ end
 --时间事件
 if not g_TimeEvent then
 	g_TimeEvent = {}
-	g_TimeEvent.Reg = false
-	g_TimeEvent.Frame = nil
-	g_TimeEvent.Delay = {}
-end
-if not g_TimeEvId then
-	g_TimeEvId = 0
-end
-if not g_OrderedQu then
-	g_OrderedQu = CLOrderedQu(thisState)
+	g_TimeEvent.Reg = false--事件是否注册
+	g_TimeEvent.Frame = nil--帧函数
+	g_TimeEvent.Delay = {}--延迟
+	g_TimeEvent.TimeEvId = 0--id
+	g_TimeEvent.MilSecond = humble.milSecond()--当前帧时间 毫秒
+	g_TimeEvent.OrderedQu = CLOrderedQu(thisState)--超时队列
 end
 local m_TimeEvent = g_TimeEvent
-local m_OrderedQu = g_OrderedQu
+
+function cacheMilSecond()
+	return m_TimeEvent.MilSecond
+end
 
 --帧事件c++调用函数
 function onFrame(uiTick, ulCount)
-	local timeOut = m_OrderedQu:popNode(humble.milSecond())
+	m_TimeEvent.MilSecond = humble.milSecond()
+	local timeOut = m_TimeEvent.OrderedQu:popNode(cacheMilSecond())
 	if #timeOut > 0 then
 		local funcInfo
 		local delay = m_TimeEvent.Delay
@@ -105,9 +106,8 @@ function onFrame(uiTick, ulCount)
 		end
 	end
 	
-	local frame = m_TimeEvent.Frame
-	if frame then
-		utile.callFunc(frame, uiTick, ulCount)
+	if m_TimeEvent.Frame then
+		utile.callFunc(m_TimeEvent.Frame, uiTick, ulCount)
 	end
 end
 
@@ -126,14 +126,14 @@ end
 --iTime毫秒
 function regDelayEv(iTime, Func, ...)
 	regTimeEvent()
-	g_TimeEvId = g_TimeEvId + 1
+	m_TimeEvent.TimeEvId = m_TimeEvent.TimeEvId + 1
 	
 	local tParam = {}
 	tParam.Func = Func
 	tParam.Param = {...}
 	
-	m_TimeEvent.Delay[g_TimeEvId] = tParam
-	m_OrderedQu:pushNode(humble.milSecond() + iTime, g_TimeEvId)
+	m_TimeEvent.Delay[m_TimeEvent.TimeEvId] = tParam
+	m_TimeEvent.OrderedQu:pushNode(cacheMilSecond() + iTime, m_TimeEvent.TimeEvId)
 end
 --strTime 格式(24小时制)：12:36:28
 function regDelayAtEv(strTime, Func, ...)
@@ -154,8 +154,7 @@ function regDelayAtEv(strTime, Func, ...)
 end
 --移除帧事件
 function unRegFrame()
-	if table.len(m_TimeEvent.Delay) > 0 then
-		humble.Errorf("%s", "some task not run.")
+	if not m_TimeEvent.Reg then
 		return
 	end
 	
