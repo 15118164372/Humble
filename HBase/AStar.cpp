@@ -524,11 +524,9 @@ void CAStar::toFPoint(float &fX1, float &fY1, float &fX2, float &fY2,
 std::vector<PointF> CAStar::removePointsOnSameLine(std::vector<PointF> &vcPath, CAMap *pAMap)
 {
     size_t iPathLen(vcPath.size());
-    std::vector<PointF> vcNewPath(vcPath);
-    std::vector<PointF>::iterator itPath;
+    std::vector<bool> vcRemove(iPathLen, false);
     float fSubX, fSubY, fA1, fB1, fC1, fAngle;
     float fA1X, fA1Y, fA2X, fA2Y;
-    float fDiffX, fDiffY;
     PointI stP1, stP2;
     for (size_t i = 0; i < iPathLen - 2; )
     {
@@ -557,20 +555,11 @@ std::vector<PointF> CAStar::removePointsOnSameLine(std::vector<PointF> &vcPath, 
                 //¼ì²âÊÇ·ñÓÐÒÆ¶¯×èµ²
                 stP1.iX = (int)vcPath[i].fX;
                 stP1.iY = (int)vcPath[i].fY;
-                stP2.iX = (int)vcPath[j].fX;
-                stP2.iY = (int)vcPath[j].fY;
+                stP2.iX = (int)vcPath[j+1].fX;
+                stP2.iY = (int)vcPath[j+1].fY;
                 if (!detectMoveCollisionBetween(stP1, stP2, pAMap))
                 {
-                    for (itPath = vcNewPath.begin(); vcNewPath.end() != itPath; ++itPath)
-                    {
-                        fDiffX = itPath->fX - vcPath[j].fX;
-                        fDiffY = itPath->fY - vcPath[j].fY;
-                        if (fDiffX > -0.0001 && fDiffX < 0.0001 && fDiffY > -0.0001 && fDiffY < 0.0001)
-                        {
-                            vcNewPath.erase(itPath);
-                            break;
-                        }
-                    }
+                    vcRemove[j] = true;
                 }
                 else
                 {
@@ -591,7 +580,17 @@ std::vector<PointF> CAStar::removePointsOnSameLine(std::vector<PointF> &vcPath, 
         }
     }
 
-    return vcNewPath;
+    for (size_t i = iPathLen - 1; i > 0; i--)
+    {
+        if (!vcRemove[i])
+        {
+            continue;
+        }
+
+        vcPath.erase(vcPath.begin() + i);
+    }
+
+    return vcPath;
 }
 
 std::vector<PointF> CAStar::Smooth(std::vector<PointF> &vcPath, CAMap *pAMap)
