@@ -94,7 +94,7 @@ end
 function onFrame(uiTick, ulCount)
 	m_TimeEvent.MilSecond = humble.milSecond()
 	local timeOut = m_TimeEvent.OrderedQu:popNode(cacheMilSecond())
-	if #timeOut > 0 then
+	if #timeOut > 0 and not table.empty(m_TimeEvent.Delay) then
 		local funcInfo
 		local delay = m_TimeEvent.Delay
 		for _, val in pairs(timeOut) do
