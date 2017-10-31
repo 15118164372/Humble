@@ -7,6 +7,10 @@ local rpcLinkUnregister = rpcLinkUnregister
 local SockType = SockType
 local m_curRPCLink = g_curRPCLink
 local m_strTaskName = g_taskName
+local regRPC = regRPC
+local regClosedEv = regClosedEv
+local callNetRPC = callNetRPC
+local regLinkedEv = regLinkedEv
 
 if not g_RPCReg then
 	g_RPCReg = {}
