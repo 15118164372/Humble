@@ -5,7 +5,12 @@ local utile = require("utile")
 local hotfix = require("hotfix")
 local cjson = require("cjson")
 local httpd = require("httpd")
+local os = os
+local pairs = pairs
+local string = string
 local table = table
+local type = type
+local tonumber = tonumber
 local Event = Event
 local SockType = SockType
 local m_strTaskName = g_taskName
@@ -89,25 +94,28 @@ local m_TimeEvent = g_TimeEvent
 function cacheMilSecond()
 	return m_TimeEvent.MilSecond
 end
+local curMilSecond = cacheMilSecond
+local objOrderedQu = m_TimeEvent.OrderedQu
 
 --帧事件c++调用函数
 function onFrame(uiTick, ulCount)
 	m_TimeEvent.MilSecond = humble.milSecond()
-	local timeOut = m_TimeEvent.OrderedQu:popNode(cacheMilSecond())
+	local timeOut = objOrderedQu:popNode(curMilSecond())
 	if #timeOut > 0 and not table.empty(m_TimeEvent.Delay) then
-		local funcInfo
+		local delayFunc
 		local delay = m_TimeEvent.Delay
 		for _, val in pairs(timeOut) do
-			funcInfo = delay[val]
-			if funcInfo then
-				utile.callFunc(funcInfo.Func, table.unpack(funcInfo.Param))
+			delayFunc = delay[val]
+			if delayFunc then
+				utile.callFunc(delayFunc.Func, table.unpack(delayFunc.Param))
 				delay[val] = nil
 			end
 		end
 	end
 	
-	if m_TimeEvent.Frame then
-		utile.callFunc(m_TimeEvent.Frame, uiTick, ulCount)
+	local frameFunc = m_TimeEvent.Frame
+	if frameFunc then
+		utile.callFunc(frameFunc, uiTick, ulCount)
 	end
 end
 
@@ -133,7 +141,7 @@ function regDelayEv(iTime, Func, ...)
 	tParam.Param = {...}
 	
 	m_TimeEvent.Delay[m_TimeEvent.TimeEvId] = tParam
-	m_TimeEvent.OrderedQu:pushNode(cacheMilSecond() + iTime, m_TimeEvent.TimeEvId)
+	objOrderedQu:pushNode(curMilSecond() + iTime, m_TimeEvent.TimeEvId)
 end
 --strTime 格式(24小时制)：12:36:28
 function regDelayAtEv(strTime, Func, ...)
