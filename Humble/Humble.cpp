@@ -157,7 +157,7 @@ int setParam(void)
     H_LOG(LOGLV_SYS, "service id %d, type %d", g_iSVId, g_iSVType);
     H_LOG(LOGLV_SYS, "frame %d ms", uiFrame);
     H_LOG(LOGLV_SYS, "load regulation tick %d sec, load differ %d ms", uiLoadTick, uiLoadDiffer);
-    H_LOG(LOGLV_SYS, "alarm time %f ms", dAlarmTime);
+    H_LOG(LOGLV_SYS, "alarm time %.2f ms", dAlarmTime);
     H_LOG(LOGLV_SYS, "net worker thread %d", usNetNum);
     H_LOG(LOGLV_SYS, "task worker thread %d", usWorkerNum);
 
