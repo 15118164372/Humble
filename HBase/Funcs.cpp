@@ -66,11 +66,9 @@ uint64_t ntohl64(uint64_t host)
         uiRet |= ulHigh;
 
         return uiRet;
-    }
-    else
-    {
-        return host;
-    }
+    }    
+    
+    return host;
 }
 
 std::string H_FormatVa(const char *pcFormat, va_list args)
