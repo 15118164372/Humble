@@ -63,5 +63,6 @@ extern pthread_mutex_t g_objExitMu;
 
 extern int g_iSVId;
 extern int g_iSVType;
+extern std::string g_strRPCKey;
 
 #endif//H_BASE_H_

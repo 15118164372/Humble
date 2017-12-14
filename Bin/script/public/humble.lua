@@ -5,6 +5,7 @@ local debug = debug
 local milSecond = milSecond
 local getSVId = getSVId
 local getSVType = getSVType
+local getRPCKey = getRPCKey
 local getLinkById = getLinkById
 local thisState = thisState
 local getLinkByType = getLinkByType
@@ -112,6 +113,10 @@ end
 --服务器类型
 function humble.getSVType()
 	return getSVType()
+end
+--服务器间连接key
+function humble.getRPCKey()
+	return getRPCKey()
 end
 
 --获取服务器连接的sockets  {sock...}

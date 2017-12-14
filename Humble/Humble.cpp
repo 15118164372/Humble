@@ -128,6 +128,7 @@ int setParam(void)
     //一些全局变量
     g_iSVId = objIni.getIntValue("Main", "id");
     g_iSVType = objIni.getIntValue("Main", "type");
+    g_strRPCKey = objIni.getStringValue("Main", "rpckey");
 
     //定时器
     unsigned int uiFrame((unsigned int)objIni.getIntValue("Main", "tick"));
