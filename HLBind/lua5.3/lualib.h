@@ -59,9 +59,6 @@ LUALIB_API int (luaopen_lpeg) (lua_State *L);
 #define LUA_PROTOBUFC "protobuf.c"  
 LUALIB_API int (luaopen_protobuf_c) (lua_State *L);
 
-#define LUA_SPROTO "sproto.core"
-LUALIB_API int (luaopen_sproto_core)(lua_State *L);
-
 #define LUA_LUASOCKET "socket.core"
 LUALIB_API int (luaopen_socket_core)(lua_State *L);
 

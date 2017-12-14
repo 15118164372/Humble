@@ -25,9 +25,6 @@
     <Filter Include="3rd\pbc">
       <UniqueIdentifier>{4f4f767c-cd78-4c12-b04f-593914ec6878}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3rd\sproto">
-      <UniqueIdentifier>{f0ebfebb-538e-457f-a9e2-00397eee6807}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3rd\luasocket">
       <UniqueIdentifier>{e5686864-668d-437b-abfa-03d51f7cb794}</UniqueIdentifier>
     </Filter>
@@ -170,12 +167,6 @@
     </ClCompile>
     <ClCompile Include="luasql\luasql.c">
       <Filter>3rd\luasql</Filter>
-    </ClCompile>
-    <ClCompile Include="sproto\lsproto.c">
-      <Filter>3rd\sproto</Filter>
-    </ClCompile>
-    <ClCompile Include="sproto\sproto.c">
-      <Filter>3rd\sproto</Filter>
     </ClCompile>
     <ClCompile Include="pbc\alloc.cpp">
       <Filter>3rd\pbc</Filter>
@@ -426,12 +417,6 @@
     </ClInclude>
     <ClInclude Include="luasql\luasql.h">
       <Filter>3rd\luasql</Filter>
-    </ClInclude>
-    <ClInclude Include="sproto\msvcint.h">
-      <Filter>3rd\sproto</Filter>
-    </ClInclude>
-    <ClInclude Include="sproto\sproto.h">
-      <Filter>3rd\sproto</Filter>
     </ClInclude>
     <ClInclude Include="pbc\alloc.h">
       <Filter>3rd\pbc</Filter>
