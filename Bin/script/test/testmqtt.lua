@@ -1,5 +1,5 @@
 --mqtt–≠“È≤‚ ‘
-require("init")
+require("public.init")
 local mqtt = require("mqtt")
 local ws = require("ws")
 

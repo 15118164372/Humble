@@ -1,4 +1,4 @@
-require("init")
+require("public.init")
 local humble = require("humble")
 local httpd = require("httpd")
 local cjson = require("cjson")

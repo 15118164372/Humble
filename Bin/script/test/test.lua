@@ -1,5 +1,5 @@
 --≤‚ ‘
-require("init")
+require("public.init")
 local humble = require("humble")
 local aoi = require("aoi")
 local astar = require("astar")
