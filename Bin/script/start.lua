@@ -2,7 +2,6 @@
 
 require("macros")
 local humble = require("humble")
-local SockType = SockType
 
 --ÈÎÎñ×¢²á
 humble.regTask("rpclink.lua", "rpclink", 1024)

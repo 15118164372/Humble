@@ -11,6 +11,7 @@ local regRPC = regRPC
 local regClosedEv = regClosedEv
 local callNetRPC = callNetRPC
 local regLinkedEv = regLinkedEv
+local regAcceptEv = regAcceptEv
 
 if not g_RPCReg then
 	g_RPCReg = {}
