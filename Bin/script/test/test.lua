@@ -3,6 +3,8 @@ require("init")
 local humble = require("humble")
 local aoi = require("aoi")
 local astar = require("astar")
+local parser = require("parser")
+local protobuf = require("protobuf")
 local m_strTaskName = g_taskName
 
 function initTask()
@@ -218,6 +220,14 @@ local function TestConHash()
 	end
 end
 
+local function TestPBC()
+	local testpb = protobuf.encode("SearchRequest", {query="1333"; page_number=10; result_per_page=15;})
+	testpb = protobuf.decode("SearchRequest", testpb, #testpb)
+	assert(testpb.query == "1333")
+	assert(testpb.page_number == 10)
+	assert(testpb.result_per_page == 15)
+end
+
 local function Test()
 	print("---------------------test bagin-------------------------")
 	local objClock = CClock()
@@ -237,6 +247,11 @@ local function Test()
 	objClock:reStart()
 	TestConHash()
 	print("TestConHash use time:"..objClock:Elapsed())
+	
+	parser.register({"testpb.proto"}, humble.getProPath())
+	objClock:reStart()
+	TestPBC()
+	print("TestPBC use time:"..objClock:Elapsed())
 	
 	print("---------------------test end-------------------------")
 	

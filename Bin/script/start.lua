@@ -4,13 +4,13 @@ require("macros")
 local humble = require("humble")
 
 --任务注册
-humble.regTask("rpclink.lua", "rpclink", 1024)
+humble.regTask("humble/rpclink.lua", "rpclink", 1024)
 
 --TODO 你自己的
-humble.regTask("echo2.lua", "echo2", 1024 * 10)
-humble.regTask("echo1.lua", "echo1", 1024 * 10)
-humble.regTask("test.lua", "test", 1024 * 10)
-humble.regTask("testmqtt.lua", "testmqtt", 1024 * 10)
+humble.regTask("test/echo2.lua", "echo2", 1024 * 10)
+humble.regTask("test/echo1.lua", "echo1", 1024 * 10)
+humble.regTask("test/test.lua", "test", 1024 * 10)
+humble.regTask("test/testmqtt.lua", "testmqtt", 1024 * 10)
 --humble.unregTask("echo1")
 
 --监听添加
