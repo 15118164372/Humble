@@ -253,7 +253,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/conhash;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/md5;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/conhash;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/md5;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>
       </SDLCheck>
     </ClCompile>
@@ -268,7 +268,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/conhash;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/md5;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/conhash;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/md5;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>
       </SDLCheck>
     </ClCompile>
@@ -285,7 +285,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/conhash;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/md5;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/conhash;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/md5;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>
       </SDLCheck>
     </ClCompile>
@@ -304,7 +304,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/conhash;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/md5;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/conhash;../HBase/d3des;../HBase/event2;../HBase/jwsmtp;../HBase/md5;../HBase/mysql;../HBase/redisrand;../HBase/rijndael;../HBase/RSAEuro;../HBase/zlib;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>
       </SDLCheck>
     </ClCompile>
