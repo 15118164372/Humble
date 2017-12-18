@@ -19,11 +19,7 @@ typedef struct _GUID
 #endif
 
 /*UUID
-yum install uuid uuid-devel
-mkdir /usr/include/uuid
-cp /usr/include/uuid.h  /usr/include/uuid/
-yum install e2fsprogs-devel
-yum install libuuid libuuid-devel
+yum install libuuid-devel
 */
 class CUUID
 {

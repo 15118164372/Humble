@@ -7,7 +7,7 @@
 H_BNAMSP
 
 #ifdef H_MYSQL
-#include <mysql/mysql.h>
+#include "mysql.h"
 
 class CDBQuery
 {

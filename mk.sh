@@ -31,7 +31,7 @@ then
     RSTPATH="BinX64"
 fi
 
-#附加包含库  -luuid
+#附加包含库  -luuid yum install libuuid-devel
 INCLUDELIB="-lrt -ldl -lpthread"
 INCLUDELIB=$INCLUDELIB" -levent_core -levent_extra -levent_pthreads"
 
