@@ -63,9 +63,13 @@ private:
     H_DISALLOWCOPY(CNetWorker);
     H_INLINE void addEvent(H_WorkerCMD *pCMD) 
     {
-        (void)setsockopt(pCMD->stLink.sock, IPPROTO_TCP, TCP_NODELAY, (char *)&m_iSockFlag, sizeof(m_iSockFlag));
         (void)evutil_make_socket_nonblocking(pCMD->stLink.sock);
-        H_KeepAlive(pCMD->stLink.sock, H_SOCKKEEPALIVE_IDLE, H_SOCKKEEPALIVE_INTERVAL);
+
+        if (SOCKTYPE_HTTP != pCMD->stLink.usType)
+        {
+            (void)setsockopt(pCMD->stLink.sock, IPPROTO_TCP, TCP_NODELAY, (char *)&m_iSockFlag, sizeof(m_iSockFlag));
+            H_KeepAlive(pCMD->stLink.sock, H_SOCKKEEPALIVE_IDLE, H_SOCKKEEPALIVE_INTERVAL);
+        }        
 
         H_Session *pSession = new(std::nothrow) H_Session;
         H_ASSERT(NULL != pSession, "malloc memory error.");
