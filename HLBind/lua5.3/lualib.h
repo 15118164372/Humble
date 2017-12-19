@@ -50,7 +50,7 @@ LUAMOD_API int (luaopen_package) (lua_State *L);
 #define LUA_CJSONLIBNAME "cjson"  
 LUALIB_API int (luaopen_cjson) (lua_State *L);
 
-#define LUA_MYSQLLIBNAME "mysql"  
+#define LUA_LUASQLNAME "luasql"  
 LUALIB_API int (luaopen_luasql_mysql) (lua_State *L);
 
 #define LUA_LPEG "lpeg"  

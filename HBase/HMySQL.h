@@ -132,6 +132,7 @@ public:
     CDBQuery *execQuery(void);
 
     void bindString(const int iField, const char* pszValue);
+    void bindJson(const int iField, const char* pszValue);
     void bindInt(const int iField, const int iValue);
     void bindInt64(const int iField, const int64_t iValue);
     void bindFloat(const int iField, const double dValue);

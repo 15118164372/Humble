@@ -143,7 +143,7 @@ static void pushvalue (lua_State *L, void *row, long int len) {
 static char *getcolumntype (enum enum_field_types type) {
 
 	switch (type) {
-		case MYSQL_TYPE_VAR_STRING: case MYSQL_TYPE_STRING:
+        case MYSQL_TYPE_VAR_STRING: case MYSQL_TYPE_STRING: case MYSQL_TYPE_JSON:
 			return "string";
 		case MYSQL_TYPE_DECIMAL: case MYSQL_TYPE_SHORT: case MYSQL_TYPE_LONG:
 		case MYSQL_TYPE_FLOAT: case MYSQL_TYPE_DOUBLE: case MYSQL_TYPE_LONGLONG:

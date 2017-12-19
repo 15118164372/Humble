@@ -370,6 +370,7 @@ const char* CMySQLStmtQuery::getStringField(const int &iField, const char* pszNu
     {
     case MYSQL_TYPE_VAR_STRING:
     case MYSQL_TYPE_STRING:
+    case MYSQL_TYPE_JSON:
         {
             return (const char*)(stData.buffer);
         }
@@ -697,6 +698,22 @@ void CMySQLStatement::bindString(const int iField, const char* pszValue)
 
     m_pBinder_Param[iField].buffer = (void*)stBindInfo.pMem;
     m_pBinder_Param[iField].buffer_type = MYSQL_TYPE_STRING;
+    m_pBinder_Param[iField].buffer_length = (unsigned long)iLens;
+}
+
+void CMySQLStatement::bindJson(const int iField, const char* pszValue)
+{
+    checkVM();
+    CheckParam(iField);
+
+    size_t iLens(strlen(pszValue));
+    BindMemInfo &stBindInfo = m_pBindMemInfo[iField];
+
+    setBindInfo(iLens + 1, stBindInfo);
+    memcpy(stBindInfo.pMem, pszValue, iLens);
+
+    m_pBinder_Param[iField].buffer = (void*)stBindInfo.pMem;
+    m_pBinder_Param[iField].buffer_type = MYSQL_TYPE_JSON;
     m_pBinder_Param[iField].buffer_length = (unsigned long)iLens;
 }
 

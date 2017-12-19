@@ -5,14 +5,19 @@ local aoi = require("aoi")
 local astar = require("astar")
 local parser = require("parser")
 local protobuf = require("protobuf")
+require "luasql"
 local m_strTaskName = g_taskName
+g_Env = nil
+g_Conn = nil
 
 function initTask()
-	
+	--g_Env = assert(luasql.mysql())
+	--g_Conn = assert(g_Env:connect("testjson","root","123456","127.0.0.1",3306))
 end
 
 function destroyTask()
-	
+	--g_Conn:close()
+	--g_Env:close()
 end
 
 local function onFram(uiTick, ulCount)
@@ -228,6 +233,20 @@ local function TestPBC()
 	assert(testpb.result_per_page == 15)
 end
 
+function rows (connection, sql_statement)
+    local cursor = assert (connection:execute (sql_statement))
+    return function ()
+       return cursor:fetch()
+    end
+end
+
+local function TestMysql()
+	g_Conn:execute("INSERT INTO t1 VALUES('[3, 4]')")
+	for a in rows(g_Conn ,"SELECT JSON_EXTRACT('{\"key1\": \"value1\"}', '$.key1')") do
+		print(string.format("%s", a))
+	end
+end
+
 local function Test()
 	print("---------------------test bagin-------------------------")
 	local objClock = CClock()
@@ -252,6 +271,10 @@ local function Test()
 	objClock:reStart()
 	TestPBC()
 	print("TestPBC use time:"..objClock:Elapsed())
+	
+	--objClock:reStart()
+	--TestMysql()
+	--print("TestMysql use time:"..objClock:Elapsed())
 	
 	print("---------------------test end-------------------------")
 	
