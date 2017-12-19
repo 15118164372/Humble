@@ -28,7 +28,7 @@ std::string H_StrError(DWORD error)
 
 H_BNAMSP
 
-#define H_TCPKEEPCOUNT    5
+#define H_TCPKEEPCOUNT    3
 
 #ifdef H_OS_WIN
     #define IS_EAGAIN(e) (WSAEWOULDBLOCK == (e) || EAGAIN == (e))

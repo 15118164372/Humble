@@ -9,8 +9,8 @@
 #define H_ONEK                       1024       //1K
 #define H_SERVICE_NAME_LEN           256        //windows 服务名称最大长度
 #define H_UUIDLENS                   64         //UUID长度
-#define H_SOCKKEEPALIVE_IDLE         60         //开始首次KeepAlive探测前的TCP空闭时间（秒）
-#define H_SOCKKEEPALIVE_INTERVAL     3          //两次KeepAlive探测的时间间隔（秒）
+#define H_SOCKKEEPALIVE_IDLE         10         //开始首次KeepAlive探测前的TCP空闭时间（秒）
+#define H_SOCKKEEPALIVE_INTERVAL     1          //两次KeepAlive探测的时间间隔（秒）
 #define H_IPLENS                     32
 #define H_TASKNAMELENS               32
 #define H_RPCNAMELENS                32
