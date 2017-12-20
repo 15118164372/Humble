@@ -64,10 +64,10 @@ private:
     H_INLINE void addEvent(H_WorkerCMD *pCMD) 
     {
         (void)evutil_make_socket_nonblocking(pCMD->stLink.sock);
+        (void)setsockopt(pCMD->stLink.sock, IPPROTO_TCP, TCP_NODELAY, (char *)&m_iNoDelay, sizeof(m_iNoDelay));
 
         if (SOCKTYPE_HTTP != pCMD->stLink.usType)
         {
-            (void)setsockopt(pCMD->stLink.sock, IPPROTO_TCP, TCP_NODELAY, (char *)&m_iSockFlag, sizeof(m_iSockFlag));
             H_KeepAlive(pCMD->stLink.sock, H_SOCKKEEPALIVE_IDLE, H_SOCKKEEPALIVE_INTERVAL);
         }        
 
@@ -127,7 +127,7 @@ private:
     void dispMQTT(H_Session *pSession, H_TCPBUF &stTcpBuf, H_Binary &stBinary, bool &bClose);
 
 private:
-    int m_iSockFlag;
+    int m_iNoDelay;
 };
 
 H_ENAMSP

@@ -16,9 +16,15 @@ enum LOG_LEVEL
     LOGLV_DEBUG,
 };
 
-//文本日志
-class CLog : public CTaskLazy<std::string>, public CSingleton<CLog>
+struct STLog
 {
+    LOG_LEVEL emInLogLv;
+    std::string strMsg;
+};
+
+//文本日志
+class CLog : public CTaskLazy<STLog>, public CSingleton<CLog>
+{    
 public:
     CLog(void);
     ~CLog(void);
@@ -27,7 +33,7 @@ public:
     unsigned short getPriority(void);
     void setLogFile(const char *pLogFile);
     void Open(void);
-    void runTask(std::string *pMsg);
+    void runTask(STLog *pMsg);
     void writeLog(const LOG_LEVEL emInLogLv, const char *pFormat, ...);
 
 private:

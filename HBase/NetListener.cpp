@@ -77,6 +77,8 @@ size_t CNetListener::onOrder(CEvBuffer *pEvBuffer)
             continue;
         }
 
+        H_LOG(LOGLV_SYS, "listen at host %s, port %d.", pListen->acHost, pListen->usPort);
+
         m_objLock.Lock();
         m_vcListener.push_back(pListener);
         m_objLock.unLock();

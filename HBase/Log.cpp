@@ -7,7 +7,7 @@ H_BNAMSP
 SINGLETON_INIT(CLog)
 CLog objLog;
 
-CLog::CLog(void) : CTaskLazy<std::string>(H_QULENS_LOG),
+CLog::CLog(void) : CTaskLazy<STLog>(H_QULENS_LOG),
     m_emLV(LOGLV_DEBUG), m_pFile(NULL)
 {
     m_strCurDate = H_Date();
@@ -101,20 +101,61 @@ void CLog::renameLog(void)
     m_strCurDate = strDate;
 }
 
-void CLog::runTask(std::string *pMsg)
+void CLog::runTask(STLog *pMsg)
 {
     renameLog();
 
-    std::string strMsg("[" + H_Now() + "]" + *pMsg);
+    std::string strMsg("[" + H_Now() + "]" + pMsg->strMsg);
     if (NULL != m_pFile)
     {
         fwrite(strMsg.c_str(), 1, strMsg.size(), m_pFile);
     }
 
-    if (LOGLV_DEBUG == m_emLV)
+    if (LOGLV_DEBUG != m_emLV)
+    {
+        return;
+    }
+
+    if (LOGLV_ERROR != pMsg->emInLogLv 
+        && LOGLV_WARN != pMsg->emInLogLv)
     {
         printf("%s", strMsg.c_str());
+        return;
     }
+
+#ifdef H_OS_WIN
+    CONSOLE_SCREEN_BUFFER_INFO stCsbi;
+    HANDLE hOut(GetStdHandle(STD_OUTPUT_HANDLE));
+    GetConsoleScreenBufferInfo(hOut, &stCsbi);
+
+    switch (pMsg->emInLogLv)
+    {
+    case LOGLV_ERROR:
+        SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
+        break;
+    case LOGLV_WARN:
+        SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+        break;
+    default:
+        break;
+    }
+
+    printf("%s", strMsg.c_str());
+
+    SetConsoleTextAttribute(hOut, stCsbi.wAttributes);
+#else
+    switch (pMsg->emInLogLv)
+    {
+    case LOGLV_ERROR:
+        printf("\033[1;31m[%s]\033[0m", strMsg.c_str());
+        break;
+    case LOGLV_WARN:
+        printf("\033[1;33m[%s]\033[0m", strMsg.c_str());
+        break;
+    default:
+        break;
+    }
+#endif
 }
 
 void CLog::writeLog(const LOG_LEVEL emInLogLv, const char *pFormat, ...)
@@ -125,22 +166,23 @@ void CLog::writeLog(const LOG_LEVEL emInLogLv, const char *pFormat, ...)
         return;
     }
 
-    std::string *pstrVa(newT());
-    H_ASSERT(NULL != pstrVa, "malloc memory error.");
+    STLog *pMsg(newT());
+    H_ASSERT(NULL != pMsg, "malloc memory error.");
 
-    pstrVa->append("[");
-    pstrVa->append(getLV(emInLogLv));
-    pstrVa->append("]");
+    pMsg->emInLogLv = emInLogLv;
+    pMsg->strMsg.append("[");
+    pMsg->strMsg.append(getLV(emInLogLv));
+    pMsg->strMsg.append("]");
 
     va_list va;
     va_start(va, pFormat);
-    pstrVa->append(H_FormatVa(pFormat, va));
+    pMsg->strMsg.append(H_FormatVa(pFormat, va));
     va_end(va);
-    pstrVa->append("\n");
+    pMsg->strMsg.append("\n");
 
-    if (!addTask(pstrVa))
+    if (!addTask(pMsg))
     {
-        H_SafeDelete(pstrVa);
+        H_SafeDelete(pMsg);
         H_Printf("%s", "add message to CirQueue error.");
     }
 }

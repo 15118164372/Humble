@@ -526,6 +526,7 @@ void H_KeepAlive(H_SOCK &fd, const unsigned int iKeepIdle, const unsigned int iK
     stAliveIn.onoff = 1;
     stAliveIn.keepalivetime = iKeepIdle * 1000;
     stAliveIn.keepaliveinterval = iKeepInterval * 1000;
+
     if (SOCKET_ERROR == WSAIoctl(fd, SIO_KEEPALIVE_VALS, &stAliveIn, sizeof(stAliveIn),
         &stAliveOut, sizeof(stAliveOut), &ulBytesReturn, NULL, NULL))
     {

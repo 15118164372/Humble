@@ -10,7 +10,7 @@
 
 H_BNAMSP
 
-CNetWorker::CNetWorker(void) : m_iSockFlag(1)
+CNetWorker::CNetWorker(void) : m_iNoDelay(1)
 {
 }
 
