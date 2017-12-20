@@ -138,12 +138,11 @@ int setParam(void)
     //线程负载参数
     CTaskMgr::getSingletonPtr()->setDiffer(uiLoadDiffer);
 
-    //网络线程数
-    unsigned short usCoreCount(H_GetCoreCount());
-    unsigned short usNetNum((unsigned short)objIni.getIntValue("Main", "netnum"));    
-    usNetNum = ((H_INIT_NUMBER == usNetNum) ? usCoreCount : usNetNum);
-    CNetWorkerMgr::getSingletonPtr()->startWorker(usNetNum);
-    CSender::getSingletonPtr()->startSender(usNetNum);
+    //网络线程数    
+    unsigned short usRecvNum((unsigned short)objIni.getIntValue("Main", "recvnum"));
+    unsigned short usSendNum((unsigned short)objIni.getIntValue("Main", "sendnum"));
+    CNetWorkerMgr::getSingletonPtr()->startWorker(usRecvNum);
+    CSender::getSingletonPtr()->startSender(usSendNum);
 
     //告警时间
     double dAlarmTime(objIni.getFloatValue("Main", "alarmtime"));
@@ -151,6 +150,7 @@ int setParam(void)
 
     //任务线程数
     unsigned short usWorkerNum((unsigned short)objIni.getIntValue("Main", "workernum"));
+    unsigned short usCoreCount(H_GetCoreCount());
     usWorkerNum = ((H_INIT_NUMBER == usWorkerNum) ? usCoreCount * 2 : usWorkerNum);
     CTaskGlobleQu::getSingletonPtr()->setThreadNum(usWorkerNum);
     CTaskMgr::getSingletonPtr()->setThreadNum(usWorkerNum);
@@ -159,7 +159,8 @@ int setParam(void)
     H_LOG(LOGLV_SYS, "frame %d ms", uiFrame);
     H_LOG(LOGLV_SYS, "load regulation tick %d sec, load differ %d ms", uiLoadTick, uiLoadDiffer);
     H_LOG(LOGLV_SYS, "alarm time %.2f ms", dAlarmTime);
-    H_LOG(LOGLV_SYS, "net worker thread %d", usNetNum);
+    H_LOG(LOGLV_SYS, "net recv thread %d", usRecvNum);
+    H_LOG(LOGLV_SYS, "net send thread %d", usSendNum);
     H_LOG(LOGLV_SYS, "task worker thread %d", usWorkerNum);
 
     return H_RTN_OK;
