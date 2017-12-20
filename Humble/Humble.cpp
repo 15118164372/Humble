@@ -141,6 +141,8 @@ int setParam(void)
     //ÍøÂçÏß³ÌÊı    
     unsigned short usRecvNum((unsigned short)objIni.getIntValue("Main", "recvnum"));
     unsigned short usSendNum((unsigned short)objIni.getIntValue("Main", "sendnum"));
+    usRecvNum = ((H_INIT_NUMBER == usRecvNum) ? 1 : usRecvNum);
+    usSendNum = ((H_INIT_NUMBER == usSendNum) ? 1 : usSendNum);
     CNetWorkerMgr::getSingletonPtr()->startWorker(usRecvNum);
     CSender::getSingletonPtr()->startSender(usSendNum);
 
