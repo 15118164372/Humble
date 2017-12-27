@@ -28,6 +28,7 @@
     <ClInclude Include="Chan.h" />
     <ClInclude Include="CirQueue.h" />
     <ClInclude Include="Clock.h" />
+    <ClInclude Include="Coelongate.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="conhash\configure.h" />
     <ClInclude Include="conhash\conhash.h" />
@@ -127,6 +128,7 @@
     <ClCompile Include="Base64.cpp" />
     <ClCompile Include="Chan.cpp" />
     <ClCompile Include="Clock.cpp" />
+    <ClCompile Include="Coelongate.cpp" />
     <ClCompile Include="conhash\conhash.c" />
     <ClCompile Include="conhash\conhash_inter.c" />
     <ClCompile Include="conhash\conhash_util.c" />

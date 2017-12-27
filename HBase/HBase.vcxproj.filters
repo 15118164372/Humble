@@ -349,6 +349,9 @@
     <ClInclude Include="OrderedQu.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Coelongate.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zlib\adler32.c">
@@ -612,6 +615,9 @@
     </ClCompile>
     <ClCompile Include="MQTT.cpp">
       <Filter>Service\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="Coelongate.cpp">
+      <Filter>Encrypt</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
