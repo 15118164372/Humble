@@ -35,6 +35,10 @@ local function TestEncrypt()
 	deMsg = humble.b64Decode(enMsg)
 	assert(msg == deMsg)
 	
+	enMsg = humble.xorEncrypt("ab*c", 3, msg)
+	deMsg = humble.xorDecrypt("ab*c", 3, enMsg)
+	assert(msg == deMsg)
+	
 	enMsg = humble.md5Str("admin")
 	assert("21232f297a57a5a743894a0e4a801fc3" == enMsg)
 	

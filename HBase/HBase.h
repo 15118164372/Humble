@@ -22,6 +22,7 @@
 #include "ZEncrypt.h"
 #include "UEncrypt.h"
 #include "SHA1.h"
+#include "Coelongate.h"
 
 #include "Ini.h"
 #include "TableFile.h"

@@ -22,6 +22,8 @@ local zlibDecode = zlibDecode
 local b64Encode = b64Encode
 local b64Decode = b64Decode
 local md5Str = md5Str
+local xorEncrypt = xorEncrypt
+local xorDecrypt = xorDecrypt
 local regEvent = regEvent
 local unRegTime = unRegTime
 local regIProto = regIProto
@@ -163,6 +165,14 @@ end
 
 function humble.md5Str(strval)
     return md5Str(strval, #strval)
+end
+
+function humble.xorEncrypt(strKey, iCount, strVal)
+	return xorEncrypt(strKey, iCount, strVal, #strVal)
+end
+
+function humble.xorDecrypt(strKey, iCount, strVal)
+	return xorDecrypt(strKey, iCount, strVal, #strVal)
 end
 
 --ÊÂ¼þ×¢²á NET_ACCEPT, NET_LINKED, NET_CLOSE, TIME_FRAME 
