@@ -43,6 +43,10 @@ int H_SockWrite(H_SOCK &fd, const char *pBuf, const size_t &iLens);
 int H_GetSockDataLens(H_SOCK &fd);
 H_SOCK H_ClientSock(const char *pszHost, const unsigned short &usPort);
 
+//设置iVal二进制第N位为1 或 0
+int H_SetNTo1(int iVal, int iN);
+int H_SetNTo0(int iVal, int iN);
+
 /*转字符串*/
 template<typename T>
 std::string H_ToString(T number)

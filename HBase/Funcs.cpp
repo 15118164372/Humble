@@ -792,6 +792,18 @@ H_SOCK H_ClientSock(const char *pszHost, const unsigned short &usPort)
     return sock;
 }
 
+#define IBS(n) (0x01<<(n-1))
+
+int H_SetNTo1(int iVal, int iN)
+{
+    return iVal |= IBS(iN);
+}
+
+int H_SetNTo0(int iVal, int iN)
+{
+    return iVal &= ~IBS(iN);
+}
+
 long H_HashStr(const char *pszStr)
 {
     unsigned int uiSeed(131);
