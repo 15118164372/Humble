@@ -6,8 +6,16 @@
 # Date Time  :2011/06/15 
 #***********************************************
 
-UsAge="UsAge:\"./mk.sh\" or \"./mk.sh x64\" or \"./mk.sh clean\""
-X64=$1
+UsAge="UsAge:\"./mk.sh\" or \"./mk.sh clean\""
+
+X64=""
+OS_Version=`uname -m`
+if [ "$OS_Version" = "x86_64" ]
+then
+	X64="x64"
+	echo "x86_64"
+fi
+
 OSNAME=`uname`
 #生成程序的名称
 PROGRAMNAME="Humble"
@@ -48,7 +56,7 @@ GCC="g++"
 ARCH="ar -rv"
 INCLUDEPATH=""
 OBJFILE=""
-CFLAGS="-Os -Wall -Wno-strict-aliasing"
+CFLAGS="-Os -Wall"
 if [ "$X64" = "x64" ]
 then
     CFLAGS=$CFLAGS" -m64"
@@ -93,6 +101,12 @@ Make()
         then
             exit 1
         fi
+		
+		ExtFlags=""		
+		if [ "$EachSub" = "HLBind/pbc" ]
+		then
+			ExtFlags="-Wno-strict-aliasing"
+		fi
 
         SourceFile=`ls *.cpp 2>/dev/null`
         for EachFile in $SourceFile
@@ -100,8 +114,8 @@ Make()
             IsExcePTL $EachFile
             if [ "$?" = "0" ]
             then
-                echo "$GCC $CFLAGS -c $EachFile"
-                $GCC $CFLAGS -c $EachFile $INCLUDEPATH
+                echo "$GCC $CFLAGS $ExtFlags -c $EachFile"
+                $GCC $CFLAGS $ExtFlags -c $EachFile $INCLUDEPATH
                 if [ "$?" != "0" ]
                 then
                     echo "---------------------Error---------------------"
@@ -116,8 +130,8 @@ Make()
             IsExcePTL $EachFile
             if [ "$?" = "0" ]
             then
-                echo "$CC $CFLAGS -c $EachFile"
-                $CC $CFLAGS -c $EachFile $INCLUDEPATH
+                echo "$CC $CFLAGS $ExtFlags -c $EachFile"
+                $CC $CFLAGS $ExtFlags -c $EachFile $INCLUDEPATH
                 if [ "$?" != "0" ]
                 then
                     echo "---------------------Error---------------------"

@@ -6,9 +6,16 @@
 # Date Time  :2011/06/15 
 #***********************************************
 
-UsAge="UsAge:\"./mklib.sh\" or \"./mklib.sh x64\""
+UsAge="UsAge:\"./mklib.sh\""
 
-X64=$1
+X64=""
+OS_Version=`uname -m`
+if [ "$OS_Version" = "x86_64" ]
+then
+	X64="x64"
+	echo "x86_64"
+fi
+
 OSName=`uname`
 LibPath=`pwd`
 LibPath=$LibPath/
