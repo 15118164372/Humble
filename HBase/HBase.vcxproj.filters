@@ -34,9 +34,6 @@
     <Filter Include="3rd\redisrand">
       <UniqueIdentifier>{fca34056-1fe9-4590-8e12-4df5bb28ce93}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Common\DB">
-      <UniqueIdentifier>{5af6a64a-68b4-4ce8-8e89-abf0f5519d60}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3rd\jwsmtp">
       <UniqueIdentifier>{8d06a497-505b-413b-9fa4-adde362dc097}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,9 @@
     </Filter>
     <Filter Include="3rd\conhash">
       <UniqueIdentifier>{86c31d63-2865-46a1-934c-939c0df125db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\mysql">
+      <UniqueIdentifier>{5af6a64a-68b4-4ce8-8e89-abf0f5519d60}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -287,7 +287,7 @@
       <Filter>Encrypt</Filter>
     </ClInclude>
     <ClInclude Include="HMySQL.h">
-      <Filter>Common\DB</Filter>
+      <Filter>Common\mysql</Filter>
     </ClInclude>
     <ClInclude Include="MMap.h">
       <Filter>Common</Filter>
@@ -566,7 +566,7 @@
       <Filter>Encrypt</Filter>
     </ClCompile>
     <ClCompile Include="HMySQL.cpp">
-      <Filter>Common\DB</Filter>
+      <Filter>Common\mysql</Filter>
     </ClCompile>
     <ClCompile Include="HMailer.cpp">
       <Filter>Service</Filter>
