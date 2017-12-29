@@ -49,9 +49,6 @@
     <Filter Include="3rd\conhash">
       <UniqueIdentifier>{86c31d63-2865-46a1-934c-939c0df125db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3rd\md5">
-      <UniqueIdentifier>{eb538389-d61e-40c3-b927-a95c4d89556a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -334,9 +331,6 @@
     <ClInclude Include="conhash\util_rbtree.h">
       <Filter>3rd\conhash</Filter>
     </ClInclude>
-    <ClInclude Include="md5\md5.h">
-      <Filter>3rd\md5</Filter>
-    </ClInclude>
     <ClInclude Include="ConsistentHash.h">
       <Filter>Algorithm</Filter>
     </ClInclude>
@@ -350,6 +344,9 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Coelongate.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="md5\md5.h">
       <Filter>Encrypt</Filter>
     </ClInclude>
   </ItemGroup>
@@ -604,9 +601,6 @@
     <ClCompile Include="conhash\util_rbtree.c">
       <Filter>3rd\conhash</Filter>
     </ClCompile>
-    <ClCompile Include="md5\md5.c">
-      <Filter>3rd\md5</Filter>
-    </ClCompile>
     <ClCompile Include="ConsistentHash.cpp">
       <Filter>Algorithm</Filter>
     </ClCompile>
@@ -617,6 +611,9 @@
       <Filter>Service\Parser</Filter>
     </ClCompile>
     <ClCompile Include="Coelongate.cpp">
+      <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="md5\md5.c">
       <Filter>Encrypt</Filter>
     </ClCompile>
   </ItemGroup>
