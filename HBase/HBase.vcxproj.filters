@@ -7,9 +7,6 @@
     <Filter Include="Encrypt">
       <UniqueIdentifier>{82931982-39be-4e52-bc49-a429231f323b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Common">
-      <UniqueIdentifier>{6952c344-2d7c-4f41-94d5-25326ae1d508}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3rd">
       <UniqueIdentifier>{2f626edb-2f75-42b7-af2c-24269601e15d}</UniqueIdentifier>
     </Filter>
@@ -22,14 +19,8 @@
     <Filter Include="3rd\zlib">
       <UniqueIdentifier>{10e9c114-8074-462a-ab5a-d2c9ed14f976}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Thread">
-      <UniqueIdentifier>{359db40d-e689-402b-ba89-f3687d5d506b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Service">
       <UniqueIdentifier>{a2bca4ae-0ca9-44b1-a789-025d71a9068e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Service\Parser">
-      <UniqueIdentifier>{840ddfaa-185f-4e4a-b0d7-7f4019ad06bc}</UniqueIdentifier>
     </Filter>
     <Filter Include="3rd\redisrand">
       <UniqueIdentifier>{fca34056-1fe9-4590-8e12-4df5bb28ce93}</UniqueIdentifier>
@@ -46,8 +37,17 @@
     <Filter Include="3rd\conhash">
       <UniqueIdentifier>{86c31d63-2865-46a1-934c-939c0df125db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Common\mysql">
+    <Filter Include="Base">
+      <UniqueIdentifier>{6952c344-2d7c-4f41-94d5-25326ae1d508}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base\mysql">
       <UniqueIdentifier>{5af6a64a-68b4-4ce8-8e89-abf0f5519d60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base\thread">
+      <UniqueIdentifier>{359db40d-e689-402b-ba89-f3687d5d506b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parser">
+      <UniqueIdentifier>{840ddfaa-185f-4e4a-b0d7-7f4019ad06bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -157,62 +157,62 @@
       <Filter>Encrypt</Filter>
     </ClInclude>
     <ClInclude Include="Clock.h">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="CoreDump.h">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="Funcs.h">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="Ini.h">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="Library.h">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="SnowFlake.h">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="TableFile.h">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="UUID.h">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="Thread.h">
-      <Filter>Thread</Filter>
+      <Filter>Base\thread</Filter>
     </ClInclude>
     <ClInclude Include="Task.h">
-      <Filter>Thread</Filter>
+      <Filter>Base\thread</Filter>
     </ClInclude>
     <ClInclude Include="Atomic.h">
-      <Filter>Thread</Filter>
+      <Filter>Base\thread</Filter>
     </ClInclude>
     <ClInclude Include="HBase.h" />
     <ClInclude Include="LockThis.h">
-      <Filter>Thread</Filter>
+      <Filter>Base\thread</Filter>
     </ClInclude>
     <ClInclude Include="RWLock.h">
-      <Filter>Thread</Filter>
+      <Filter>Base\thread</Filter>
     </ClInclude>
     <ClInclude Include="NETAddr.h">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="SHA1.h">
       <Filter>Encrypt</Filter>
     </ClInclude>
     <ClInclude Include="CirQueue.h">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="EvBuffer.h">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="HStruct.h">
       <Filter>Config</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="Tick.h">
       <Filter>Service</Filter>
@@ -230,7 +230,7 @@
       <Filter>Service</Filter>
     </ClInclude>
     <ClInclude Include="NetParser.h">
-      <Filter>Service\Parser</Filter>
+      <Filter>Parser</Filter>
     </ClInclude>
     <ClInclude Include="redisrand\redisrand.h">
       <Filter>3rd\redisrand</Filter>
@@ -263,13 +263,13 @@
       <Filter>Service</Filter>
     </ClInclude>
     <ClInclude Include="Tcp1.h">
-      <Filter>Service\Parser</Filter>
+      <Filter>Parser</Filter>
     </ClInclude>
     <ClInclude Include="Tcp2.h">
-      <Filter>Service\Parser</Filter>
+      <Filter>Parser</Filter>
     </ClInclude>
     <ClInclude Include="Httpd.h">
-      <Filter>Service\Parser</Filter>
+      <Filter>Parser</Filter>
     </ClInclude>
     <ClInclude Include="SendWorker.h">
       <Filter>Service</Filter>
@@ -287,10 +287,10 @@
       <Filter>Encrypt</Filter>
     </ClInclude>
     <ClInclude Include="HMySQL.h">
-      <Filter>Common\mysql</Filter>
+      <Filter>Base\mysql</Filter>
     </ClInclude>
     <ClInclude Include="MMap.h">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="HMailer.h">
       <Filter>Service</Filter>
@@ -335,13 +335,13 @@
       <Filter>Algorithm</Filter>
     </ClInclude>
     <ClInclude Include="WebSocket.h">
-      <Filter>Service\Parser</Filter>
+      <Filter>Parser</Filter>
     </ClInclude>
     <ClInclude Include="MQTT.h">
-      <Filter>Service\Parser</Filter>
+      <Filter>Parser</Filter>
     </ClInclude>
     <ClInclude Include="OrderedQu.h">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="Coelongate.h">
       <Filter>Encrypt</Filter>
@@ -460,40 +460,40 @@
       <Filter>Encrypt</Filter>
     </ClCompile>
     <ClCompile Include="Clock.cpp">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="CoreDump.cpp">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="Funcs.cpp">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="Ini.cpp">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="Library.cpp">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="SnowFlake.cpp">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="TableFile.cpp">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="UUID.cpp">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="Thread.cpp">
-      <Filter>Thread</Filter>
+      <Filter>Base\thread</Filter>
     </ClCompile>
     <ClCompile Include="Atomic.cpp">
-      <Filter>Thread</Filter>
+      <Filter>Base\thread</Filter>
     </ClCompile>
     <ClCompile Include="RWLock.cpp">
-      <Filter>Thread</Filter>
+      <Filter>Base\thread</Filter>
     </ClCompile>
     <ClCompile Include="NETAddr.cpp">
-      <Filter>Common</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="SHA1.cpp">
       <Filter>Encrypt</Filter>
@@ -515,7 +515,7 @@
       <Filter>Service</Filter>
     </ClCompile>
     <ClCompile Include="NetParser.cpp">
-      <Filter>Service\Parser</Filter>
+      <Filter>Parser</Filter>
     </ClCompile>
     <ClCompile Include="redisrand\redisrand.c">
       <Filter>3rd\redisrand</Filter>
@@ -539,13 +539,13 @@
       <Filter>Service</Filter>
     </ClCompile>
     <ClCompile Include="Tcp1.cpp">
-      <Filter>Service\Parser</Filter>
+      <Filter>Parser</Filter>
     </ClCompile>
     <ClCompile Include="Tcp2.cpp">
-      <Filter>Service\Parser</Filter>
+      <Filter>Parser</Filter>
     </ClCompile>
     <ClCompile Include="Httpd.cpp">
-      <Filter>Service\Parser</Filter>
+      <Filter>Parser</Filter>
     </ClCompile>
     <ClCompile Include="SendWorker.cpp">
       <Filter>Service</Filter>
@@ -566,7 +566,7 @@
       <Filter>Encrypt</Filter>
     </ClCompile>
     <ClCompile Include="HMySQL.cpp">
-      <Filter>Common\mysql</Filter>
+      <Filter>Base\mysql</Filter>
     </ClCompile>
     <ClCompile Include="HMailer.cpp">
       <Filter>Service</Filter>
@@ -605,10 +605,10 @@
       <Filter>Algorithm</Filter>
     </ClCompile>
     <ClCompile Include="WebSocket.cpp">
-      <Filter>Service\Parser</Filter>
+      <Filter>Parser</Filter>
     </ClCompile>
     <ClCompile Include="MQTT.cpp">
-      <Filter>Service\Parser</Filter>
+      <Filter>Parser</Filter>
     </ClCompile>
     <ClCompile Include="Coelongate.cpp">
       <Filter>Encrypt</Filter>

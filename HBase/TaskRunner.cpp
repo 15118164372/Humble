@@ -123,7 +123,7 @@ void CTaskRunner::Run(void)
 
     while (H_INIT_NUMBER == H_AtomicGet(&m_lExit))
     {
-        //获取一任务        
+        //获取一任务
         {
             CLckThis objLock(&pTaskQueue->objMutex);
             pTask = (CTaskWorker *)pTaskQueue->objQueue.Pop();
