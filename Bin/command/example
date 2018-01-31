@@ -1,4 +1,0 @@
-local tcp1 = require("tcp1")
-
-
-tcp1.Response(getLinkSock(), 10, "example req.")
