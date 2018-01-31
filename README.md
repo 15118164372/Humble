@@ -10,18 +10,18 @@ Humble是c++开发的多线程服务器框架,网络底层使用libevent. 业务
 * config.ini 文件配置服务器启动参数.   
 
 ## 数据解析器    
-* 数据解析器继承于CParser,主要负责socket数据的解包、组包. 目前实现了一些常用协议如websocket、http、mqtt(3.1.1)等.     
+* 数据解析器继承于CParser,主要负责socket数据的解包、组包. 目前实现了一些常用协议如websocket、http等.     
 
 ## 简单使用(http回显为例)   
 * 1、新建echo.lua文件并增加如下函数:      
 ......       
 function initTask()--服务初始化      
 end       
-    function destroyTask()--服务释放   
+function destroyTask()--服务释放   
 end     
 --注册echo事件      
-local function echo(sock, sockType, httpInfo)      
-    httpd.Response(sock, 200, "echo return.")      
+local function echo(sock, sockType, strMethod, tUrl, tHead, pszBody)      
+    httpd.Response(sock, 200, "echo server return")      
 end      
 regProto("/echo", echo)      
 
@@ -32,7 +32,7 @@ humble.regTask("echo.lua", "echo", 1024 * 10)--注册echo服务      
 * 3、浏览器中输入访问地址 (http://localhost/echo) 查看结果         
 
 ## 命令使用    
-* 1、进入命令模式 Humble -d 15000    
+* 1、进入命令模式 Humble --d --h=127.0.0.1 --p=15000    
    
 * 2、执行lua代码   
 格式:       
@@ -41,7 +41,7 @@ do + 任务名  --回车后进入lua代码输入模式
 ...    
 done   
 如:  	
-do echo1    
+do echo1,echo2    
 return collectgarbage("collect")    
 done     
 
@@ -50,14 +50,11 @@ exit
 
 * 4、热更新  
 格式：      
-hotfix + 任务名(all 所有任务都执行) + lua文件名(无扩展名)   
+hotfix + 任务名(all 所有任务都执行) + 模块名   
 如：  
-hotfix echo1 global     
+hotfix echo1,echo2 macros     
 
 * 5、退出命令模式       
 quit
 
-更多功能请参考代码...    
-
-## QQ群    
-486602190    
+更多功能请参考代码...        
