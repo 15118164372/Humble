@@ -1,0 +1,1167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="3rd">
+      <UniqueIdentifier>{7ce2fe53-61dc-4b7a-9ae8-52af5f489a75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\conhash">
+      <UniqueIdentifier>{0bdf68bb-4509-4f0e-8857-ea8dd8bee783}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\d3des">
+      <UniqueIdentifier>{fc77a1c9-276f-4392-b4d0-a4794005cda4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\jwsmtp">
+      <UniqueIdentifier>{42f8f428-ee12-43bb-8b3a-13fd2233c69d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\mysql">
+      <UniqueIdentifier>{b6ddd2e9-d638-4a60-9e13-5d2d52b4d8fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\mysql\mysql">
+      <UniqueIdentifier>{b1d70252-9ff1-465f-a248-929b7c38a8ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\mysql\mysql\psi">
+      <UniqueIdentifier>{f6e8c160-e799-4807-a9ec-ccd967651d50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\rijndael">
+      <UniqueIdentifier>{1dcadb9b-3222-4d65-8328-45fe4230e7ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\RSAEuro">
+      <UniqueIdentifier>{4dca395b-ffd2-4655-95bb-adb8348f6f60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\zlib">
+      <UniqueIdentifier>{f11d685d-0f6f-44d2-846f-e1117dc22d6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\md5">
+      <UniqueIdentifier>{2860505c-fce4-4812-9198-3f2a3d8ff75b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\sha1">
+      <UniqueIdentifier>{818c3dbb-580a-4915-a8d7-b37437beae3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{99c297eb-5572-46fb-85af-ee46a71a10fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base\thread">
+      <UniqueIdentifier>{7ff689be-d0cd-4552-9ab2-8a8cc410b7e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Service">
+      <UniqueIdentifier>{94d175f2-e146-4053-b659-9abe3753c50a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parser">
+      <UniqueIdentifier>{1fc16ef3-4990-4f2d-a660-533acf7d2fe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Algorithm">
+      <UniqueIdentifier>{43e51285-c7cd-442b-abf4-53fe0955229d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Encrypt">
+      <UniqueIdentifier>{e03e49d5-5936-459b-a314-6a637fa18895}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Adjure">
+      <UniqueIdentifier>{03008d81-c3ea-46d7-8a8e-ae55bc6df2ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\event2">
+      <UniqueIdentifier>{0b9dcc7a-789a-43df-98c9-66b0aaf9637d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Service\Net">
+      <UniqueIdentifier>{bc722236-562e-4ae1-9580-68a66d1dbfa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>{a2f58637-1224-4267-87a9-07b9b832bffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DB">
+      <UniqueIdentifier>{971c689d-be78-4b08-a781-7cb7227fb7a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FParser">
+      <UniqueIdentifier>{2ed3fa7d-6e8e-4051-8fe4-8f696ba44dc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\rapidjson">
+      <UniqueIdentifier>{451ab5cb-cb2e-49dd-8d4a-915fec1f7a2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\rapidjson\error">
+      <UniqueIdentifier>{46ebae22-99ef-416a-bcbe-9137750daa5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\rapidjson\internal">
+      <UniqueIdentifier>{447cd1ef-c9ea-47ce-a710-885e04a9a071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\rapidjson\msinttypes">
+      <UniqueIdentifier>{9ca402d7-a100-47a0-9da1-388507dbb31c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\http-parser">
+      <UniqueIdentifier>{73482fd4-6ecb-4164-b9d8-6770da8597e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Service\Debug">
+      <UniqueIdentifier>{9dbc83db-d688-4958-8ed8-a2a9a95f87fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Service\Worker">
+      <UniqueIdentifier>{367171a3-106b-4f57-a270-e0e206a3a633}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Service\AUX">
+      <UniqueIdentifier>{a71f4195-895f-4d75-8653-c6df75bcb96a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HBase.h" />
+    <ClInclude Include="3rd\conhash\configure.h">
+      <Filter>3rd\conhash</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\conhash\conhash.h">
+      <Filter>3rd\conhash</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\conhash\conhash_inter.h">
+      <Filter>3rd\conhash</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\conhash\util_rbtree.h">
+      <Filter>3rd\conhash</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\d3des\d3des.h">
+      <Filter>3rd\d3des</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\jwsmtp\jwsmtp.h">
+      <Filter>3rd\jwsmtp</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\jwsmtp\jwsmtp_base64.h">
+      <Filter>3rd\jwsmtp</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\jwsmtp\jwsmtp_compat.h">
+      <Filter>3rd\jwsmtp</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\jwsmtp\jwsmtp_mailer.h">
+      <Filter>3rd\jwsmtp</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\big_endian.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\binary_log_types.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\byte_order_generic.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\byte_order_generic_x86.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\decimal.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\errmsg.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\keycache.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\little_endian.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\m_ctype.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\m_string.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_alloc.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_byteorder.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_command.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_compiler.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_config.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_config_linuxx64.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_config_linuxx86.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_config_win32.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_config_winx64.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_dbug.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_dir.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_getopt.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_global.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_list.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_sys.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_thread.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_thread_local.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\my_xml.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql_com.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql_com_server.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql_embed.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql_time.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql_version.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysqld_ername.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysqld_error.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\plugin.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\plugin_audit.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\plugin_ftparser.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\plugin_group_replication.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\plugin_keyring.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\plugin_validate_password.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\sql_common.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\sql_state.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\sslopt-case.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\sslopt-longopts.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\sslopt-vars.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\thr_cond.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\thr_mutex.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\thr_rwlock.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\typelib.h">
+      <Filter>3rd\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\client_authentication.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\client_plugin.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\com_data.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\get_password.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\group_replication_priv.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\innodb_priv.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\mysql_lex_string.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\plugin.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\plugin_audit.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\plugin_auth.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\plugin_auth_common.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\plugin_ftparser.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\plugin_group_replication.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\plugin_keyring.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\plugin_trace.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\plugin_validate_password.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_command.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_locking.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_my_plugin_log.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_my_snprintf.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_mysql_alloc.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_mysql_keyring.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_mysql_password_policy.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_mysql_string.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_parser.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_rpl_transaction_ctx.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_rpl_transaction_write_set.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_rules_table.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_security_context.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_srv_session.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_srv_session_info.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_ssl_wrapper.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_thd_alloc.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_thd_engine_lock.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_thd_wait.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\service_thread_scheduler.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\services.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\thread_pool_priv.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\thread_type.h">
+      <Filter>3rd\mysql\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_file.h">
+      <Filter>3rd\mysql\mysql\psi</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_idle.h">
+      <Filter>3rd\mysql\mysql\psi</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_mdl.h">
+      <Filter>3rd\mysql\mysql\psi</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_memory.h">
+      <Filter>3rd\mysql\mysql\psi</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_ps.h">
+      <Filter>3rd\mysql\mysql\psi</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_socket.h">
+      <Filter>3rd\mysql\mysql\psi</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_sp.h">
+      <Filter>3rd\mysql\mysql\psi</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_stage.h">
+      <Filter>3rd\mysql\mysql\psi</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_statement.h">
+      <Filter>3rd\mysql\mysql\psi</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_table.h">
+      <Filter>3rd\mysql\mysql\psi</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_thread.h">
+      <Filter>3rd\mysql\mysql\psi</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_transaction.h">
+      <Filter>3rd\mysql\mysql\psi</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\psi\psi.h">
+      <Filter>3rd\mysql\mysql\psi</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\psi\psi_base.h">
+      <Filter>3rd\mysql\mysql\psi</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\mysql\mysql\psi\psi_memory.h">
+      <Filter>3rd\mysql\mysql\psi</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rijndael\rijndael.h">
+      <Filter>3rd\rijndael</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\RSAEuro\des.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\RSAEuro\global.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\RSAEuro\md2.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\RSAEuro\md4.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\RSAEuro\nn.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\RSAEuro\prime.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\RSAEuro\r_random.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\RSAEuro\rsa.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\RSAEuro\rsaeuro.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\RSAEuro\rsaref.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\RSAEuro\shs.h">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\zlib\crc32.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\zlib\deflate.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\zlib\gzguts.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\zlib\inffast.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\zlib\inffixed.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\zlib\inflate.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\zlib\inftrees.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\zlib\trees.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\zlib\zconf.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\zlib\zconf_linux.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\zlib\zconf_win.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\zlib\zlib.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\zlib\zutil.h">
+      <Filter>3rd\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\md5\md5.h">
+      <Filter>3rd\md5</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\sha1\SHA1.h">
+      <Filter>3rd\sha1</Filter>
+    </ClInclude>
+    <ClInclude Include="base\HObject.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\CirQueue.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\HThread.h">
+      <Filter>Base\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Task.h">
+      <Filter>Base\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="base\HMutex.h">
+      <Filter>Base\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="base\HCond.h">
+      <Filter>Base\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Sem.h">
+      <Filter>Base\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="base\RWLock.h">
+      <Filter>Base\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Utils.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\Parser.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Clock.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\ConsistentHash.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="encrypt\EncryptUtils.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="adjure\Adjure.h">
+      <Filter>Adjure</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Buffer.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="adjure\Adjure_Mail.h">
+      <Filter>Adjure</Filter>
+    </ClInclude>
+    <ClInclude Include="adjure\Adjure_Task.h">
+      <Filter>Adjure</Filter>
+    </ClInclude>
+    <ClInclude Include="adjure\Adjure_Log.h">
+      <Filter>Adjure</Filter>
+    </ClInclude>
+    <ClInclude Include="adjure\Adjure_NetWorker.h">
+      <Filter>Adjure</Filter>
+    </ClInclude>
+    <ClInclude Include="base\NETAddr.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\LockThis.h">
+      <Filter>Base\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="base\TimeElapsed.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\buffer.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\buffer_compat.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\bufferevent.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\bufferevent_compat.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\bufferevent_ssl.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\bufferevent_struct.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\dns.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\dns_compat.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\dns_struct.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\event.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\event_compat.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\event_config_linux_x64.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\event_config_linux_x86.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\event_struct.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\event-config.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\event-config-win.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\http.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\http_compat.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\http_struct.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\keyvalq_struct.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\listener.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\rpc.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\rpc_compat.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\rpc_struct.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\tag.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\tag_compat.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\thread.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\util.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\event2\visibility.h">
+      <Filter>3rd\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="base\PriorityQu.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="service\Humble.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="adjure\Adjure_Runner.h">
+      <Filter>Adjure</Filter>
+    </ClInclude>
+    <ClInclude Include="service\EventService.h">
+      <Filter>Service\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="service\Linker.h">
+      <Filter>Service\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="service\NetListener.h">
+      <Filter>Service\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="service\NetMgr.H">
+      <Filter>Service\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="service\NetWork.h">
+      <Filter>Service\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="service\Sender.h">
+      <Filter>Service\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="service\Session.h">
+      <Filter>Service\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="service\WorkerMgr.h">
+      <Filter>Service\Worker</Filter>
+    </ClInclude>
+    <ClInclude Include="service\Worker.h">
+      <Filter>Service\Worker</Filter>
+    </ClInclude>
+    <ClInclude Include="service\Runner.h">
+      <Filter>Service\Worker</Filter>
+    </ClInclude>
+    <ClInclude Include="Macros.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Include.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="HEnum.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm\SnowFlake.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="base\UUID.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\CoreDump.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Library.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\MMap.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="db\HMySQL.h">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="fparser\Ini.h">
+      <Filter>FParser</Filter>
+    </ClInclude>
+    <ClInclude Include="fparser\TableFile.h">
+      <Filter>FParser</Filter>
+    </ClInclude>
+    <ClInclude Include="encrypt\AES.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="encrypt\HDES.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="encrypt\HRSA.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="encrypt\RSAKey.h">
+      <Filter>Encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="HMemory.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\Parser_Debug.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\Parser_Default.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\allocators.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\document.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\encodedstream.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\encodings.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\filereadstream.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\filewritestream.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\fwd.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\istreamwrapper.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\memorybuffer.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\memorystream.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\ostreamwrapper.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\pointer.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\prettywriter.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\rapidjson.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\reader.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\schema.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\stream.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\stringbuffer.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\writer.h">
+      <Filter>3rd\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\error\en.h">
+      <Filter>3rd\rapidjson\error</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\error\error.h">
+      <Filter>3rd\rapidjson\error</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\internal\biginteger.h">
+      <Filter>3rd\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\internal\diyfp.h">
+      <Filter>3rd\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\internal\dtoa.h">
+      <Filter>3rd\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\internal\ieee754.h">
+      <Filter>3rd\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\internal\itoa.h">
+      <Filter>3rd\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\internal\meta.h">
+      <Filter>3rd\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\internal\pow10.h">
+      <Filter>3rd\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\internal\regex.h">
+      <Filter>3rd\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\internal\stack.h">
+      <Filter>3rd\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\internal\strfunc.h">
+      <Filter>3rd\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\internal\strtod.h">
+      <Filter>3rd\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\internal\swap.h">
+      <Filter>3rd\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\msinttypes\inttypes.h">
+      <Filter>3rd\rapidjson\msinttypes</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\rapidjson\msinttypes\stdint.h">
+      <Filter>3rd\rapidjson\msinttypes</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\Parser_RPC.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\http-parser\http_parser.h">
+      <Filter>3rd\http-parser</Filter>
+    </ClInclude>
+    <ClInclude Include="service\DebugInput.h">
+      <Filter>Service\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="service\DebugShow.h">
+      <Filter>Service\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="service\HMailer.h">
+      <Filter>Service\AUX</Filter>
+    </ClInclude>
+    <ClInclude Include="service\HTimer.h">
+      <Filter>Service\AUX</Filter>
+    </ClInclude>
+    <ClInclude Include="service\Log.h">
+      <Filter>Service\AUX</Filter>
+    </ClInclude>
+    <ClInclude Include="service\MsgTrigger.h">
+      <Filter>Service\AUX</Filter>
+    </ClInclude>
+    <ClInclude Include="service\Service.h">
+      <Filter>Service\Worker</Filter>
+    </ClInclude>
+    <ClInclude Include="service\RPCLink.h">
+      <Filter>Service\Net</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\Parser_Http.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\Parser_WS.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="3rd\conhash\conhash.c">
+      <Filter>3rd\conhash</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\conhash\conhash_inter.c">
+      <Filter>3rd\conhash</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\conhash\conhash_util.c">
+      <Filter>3rd\conhash</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\conhash\util_rbtree.c">
+      <Filter>3rd\conhash</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\d3des\d3des.c">
+      <Filter>3rd\d3des</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\jwsmtp\jwsmtp_base64.cpp">
+      <Filter>3rd\jwsmtp</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\jwsmtp\jwsmtp_compat.cpp">
+      <Filter>3rd\jwsmtp</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\jwsmtp\jwsmtp_mailer.cpp">
+      <Filter>3rd\jwsmtp</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\rijndael\rijndael.cpp">
+      <Filter>3rd\rijndael</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\RSAEuro\desc.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\RSAEuro\md2c.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\RSAEuro\md4c.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\RSAEuro\nn.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\RSAEuro\prime.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\RSAEuro\r_dh.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\RSAEuro\r_encode.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\RSAEuro\r_enhanc.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\RSAEuro\r_keygen.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\RSAEuro\r_random.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\RSAEuro\r_stdlib.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\RSAEuro\rsa.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\RSAEuro\shsc.c">
+      <Filter>3rd\RSAEuro</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\zlib\adler32.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\zlib\compress.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\zlib\crc32.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\zlib\deflate.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\zlib\gzclose.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\zlib\gzlib.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\zlib\gzread.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\zlib\gzwrite.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\zlib\infback.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\zlib\inffast.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\zlib\inflate.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\zlib\inftrees.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\zlib\trees.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\zlib\uncompr.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\zlib\zutil.c">
+      <Filter>3rd\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\md5\md5.c">
+      <Filter>3rd\md5</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\sha1\SHA1.cpp">
+      <Filter>3rd\sha1</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Utils.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="encrypt\EncryptUtils.cpp">
+      <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="base\NETAddr.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="service\EventService.cpp">
+      <Filter>Service\Net</Filter>
+    </ClCompile>
+    <ClCompile Include="service\Linker.cpp">
+      <Filter>Service\Net</Filter>
+    </ClCompile>
+    <ClCompile Include="service\NetListener.cpp">
+      <Filter>Service\Net</Filter>
+    </ClCompile>
+    <ClCompile Include="service\NetWork.cpp">
+      <Filter>Service\Net</Filter>
+    </ClCompile>
+    <ClCompile Include="service\WorkerMgr.cpp">
+      <Filter>Service\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="service\Runner.cpp">
+      <Filter>Service\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="service\Worker.cpp">
+      <Filter>Service\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="algorithm\SnowFlake.cpp">
+      <Filter>Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="base\UUID.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\CoreDump.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Library.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="db\HMySQL.cpp">
+      <Filter>DB</Filter>
+    </ClCompile>
+    <ClCompile Include="fparser\Ini.cpp">
+      <Filter>FParser</Filter>
+    </ClCompile>
+    <ClCompile Include="fparser\TableFile.cpp">
+      <Filter>FParser</Filter>
+    </ClCompile>
+    <ClCompile Include="encrypt\AES.cpp">
+      <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="encrypt\HDES.cpp">
+      <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="encrypt\HRSA.cpp">
+      <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="encrypt\RSAKey.cpp">
+      <Filter>Encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="parser\Parser_Debug.cpp">
+      <Filter>Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parser\Parser_RPC.cpp">
+      <Filter>Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\http-parser\http_parser.c">
+      <Filter>3rd\http-parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parser\Parser_Default.cpp">
+      <Filter>Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="service\DebugInput.cpp">
+      <Filter>Service\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="service\DebugShow.cpp">
+      <Filter>Service\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="service\HTimer.cpp">
+      <Filter>Service\AUX</Filter>
+    </ClCompile>
+    <ClCompile Include="service\Log.cpp">
+      <Filter>Service\AUX</Filter>
+    </ClCompile>
+    <ClCompile Include="service\MsgTrigger.cpp">
+      <Filter>Service\AUX</Filter>
+    </ClCompile>
+    <ClCompile Include="service\RPCLink.cpp">
+      <Filter>Service\Net</Filter>
+    </ClCompile>
+    <ClCompile Include="parser\Parser_Http.cpp">
+      <Filter>Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parser\Parser_WS.cpp">
+      <Filter>Parser</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="3rd\mysql\mysql\client_plugin.h.pp">
+      <Filter>3rd\mysql\mysql</Filter>
+    </None>
+    <None Include="3rd\mysql\mysql\plugin_audit.h.pp">
+      <Filter>3rd\mysql\mysql</Filter>
+    </None>
+    <None Include="3rd\mysql\mysql\plugin_auth.h.pp">
+      <Filter>3rd\mysql\mysql</Filter>
+    </None>
+    <None Include="3rd\mysql\mysql\plugin_ftparser.h.pp">
+      <Filter>3rd\mysql\mysql</Filter>
+    </None>
+    <None Include="3rd\mysql\mysql\plugin_keyring.h.pp">
+      <Filter>3rd\mysql\mysql</Filter>
+    </None>
+    <None Include="3rd\mysql\mysql\services.h.pp">
+      <Filter>3rd\mysql\mysql</Filter>
+    </None>
+    <None Include="3rd\RSAEuro\des386.s">
+      <Filter>3rd\RSAEuro</Filter>
+    </None>
+    <None Include="3rd\RSAEuro\rsa68k.s">
+      <Filter>3rd\RSAEuro</Filter>
+    </None>
+    <None Include="3rd\RSAEuro\rsa386.s">
+      <Filter>3rd\RSAEuro</Filter>
+    </None>
+    <None Include="3rd\RSAEuro\rsasparc.s">
+      <Filter>3rd\RSAEuro</Filter>
+    </None>
+  </ItemGroup>
+</Project>

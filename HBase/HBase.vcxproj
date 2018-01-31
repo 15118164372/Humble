@@ -1,0 +1,507 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="3rd\conhash\configure.h" />
+    <ClInclude Include="3rd\conhash\conhash.h" />
+    <ClInclude Include="3rd\conhash\conhash_inter.h" />
+    <ClInclude Include="3rd\conhash\util_rbtree.h" />
+    <ClInclude Include="3rd\d3des\d3des.h" />
+    <ClInclude Include="3rd\event2\buffer.h" />
+    <ClInclude Include="3rd\event2\bufferevent.h" />
+    <ClInclude Include="3rd\event2\bufferevent_compat.h" />
+    <ClInclude Include="3rd\event2\bufferevent_ssl.h" />
+    <ClInclude Include="3rd\event2\bufferevent_struct.h" />
+    <ClInclude Include="3rd\event2\buffer_compat.h" />
+    <ClInclude Include="3rd\event2\dns.h" />
+    <ClInclude Include="3rd\event2\dns_compat.h" />
+    <ClInclude Include="3rd\event2\dns_struct.h" />
+    <ClInclude Include="3rd\event2\event-config-win.h" />
+    <ClInclude Include="3rd\event2\event-config.h" />
+    <ClInclude Include="3rd\event2\event.h" />
+    <ClInclude Include="3rd\event2\event_compat.h" />
+    <ClInclude Include="3rd\event2\event_config_linux_x64.h" />
+    <ClInclude Include="3rd\event2\event_config_linux_x86.h" />
+    <ClInclude Include="3rd\event2\event_struct.h" />
+    <ClInclude Include="3rd\event2\http.h" />
+    <ClInclude Include="3rd\event2\http_compat.h" />
+    <ClInclude Include="3rd\event2\http_struct.h" />
+    <ClInclude Include="3rd\event2\keyvalq_struct.h" />
+    <ClInclude Include="3rd\event2\listener.h" />
+    <ClInclude Include="3rd\event2\rpc.h" />
+    <ClInclude Include="3rd\event2\rpc_compat.h" />
+    <ClInclude Include="3rd\event2\rpc_struct.h" />
+    <ClInclude Include="3rd\event2\tag.h" />
+    <ClInclude Include="3rd\event2\tag_compat.h" />
+    <ClInclude Include="3rd\event2\thread.h" />
+    <ClInclude Include="3rd\event2\util.h" />
+    <ClInclude Include="3rd\event2\visibility.h" />
+    <ClInclude Include="3rd\http-parser\http_parser.h" />
+    <ClInclude Include="3rd\jwsmtp\jwsmtp.h" />
+    <ClInclude Include="3rd\jwsmtp\jwsmtp_base64.h" />
+    <ClInclude Include="3rd\jwsmtp\jwsmtp_compat.h" />
+    <ClInclude Include="3rd\jwsmtp\jwsmtp_mailer.h" />
+    <ClInclude Include="3rd\md5\md5.h" />
+    <ClInclude Include="3rd\mysql\big_endian.h" />
+    <ClInclude Include="3rd\mysql\binary_log_types.h" />
+    <ClInclude Include="3rd\mysql\byte_order_generic.h" />
+    <ClInclude Include="3rd\mysql\byte_order_generic_x86.h" />
+    <ClInclude Include="3rd\mysql\decimal.h" />
+    <ClInclude Include="3rd\mysql\errmsg.h" />
+    <ClInclude Include="3rd\mysql\keycache.h" />
+    <ClInclude Include="3rd\mysql\little_endian.h" />
+    <ClInclude Include="3rd\mysql\mysql.h" />
+    <ClInclude Include="3rd\mysql\mysqld_ername.h" />
+    <ClInclude Include="3rd\mysql\mysqld_error.h" />
+    <ClInclude Include="3rd\mysql\mysql\client_authentication.h" />
+    <ClInclude Include="3rd\mysql\mysql\client_plugin.h" />
+    <ClInclude Include="3rd\mysql\mysql\com_data.h" />
+    <ClInclude Include="3rd\mysql\mysql\get_password.h" />
+    <ClInclude Include="3rd\mysql\mysql\group_replication_priv.h" />
+    <ClInclude Include="3rd\mysql\mysql\innodb_priv.h" />
+    <ClInclude Include="3rd\mysql\mysql\mysql_lex_string.h" />
+    <ClInclude Include="3rd\mysql\mysql\plugin.h" />
+    <ClInclude Include="3rd\mysql\mysql\plugin_audit.h" />
+    <ClInclude Include="3rd\mysql\mysql\plugin_auth.h" />
+    <ClInclude Include="3rd\mysql\mysql\plugin_auth_common.h" />
+    <ClInclude Include="3rd\mysql\mysql\plugin_ftparser.h" />
+    <ClInclude Include="3rd\mysql\mysql\plugin_group_replication.h" />
+    <ClInclude Include="3rd\mysql\mysql\plugin_keyring.h" />
+    <ClInclude Include="3rd\mysql\mysql\plugin_trace.h" />
+    <ClInclude Include="3rd\mysql\mysql\plugin_validate_password.h" />
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_file.h" />
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_idle.h" />
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_mdl.h" />
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_memory.h" />
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_ps.h" />
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_socket.h" />
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_sp.h" />
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_stage.h" />
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_statement.h" />
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_table.h" />
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_thread.h" />
+    <ClInclude Include="3rd\mysql\mysql\psi\mysql_transaction.h" />
+    <ClInclude Include="3rd\mysql\mysql\psi\psi.h" />
+    <ClInclude Include="3rd\mysql\mysql\psi\psi_base.h" />
+    <ClInclude Include="3rd\mysql\mysql\psi\psi_memory.h" />
+    <ClInclude Include="3rd\mysql\mysql\services.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_command.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_locking.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_mysql_alloc.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_mysql_keyring.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_mysql_password_policy.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_mysql_string.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_my_plugin_log.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_my_snprintf.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_parser.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_rpl_transaction_ctx.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_rpl_transaction_write_set.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_rules_table.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_security_context.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_srv_session.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_srv_session_info.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_ssl_wrapper.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_thd_alloc.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_thd_engine_lock.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_thd_wait.h" />
+    <ClInclude Include="3rd\mysql\mysql\service_thread_scheduler.h" />
+    <ClInclude Include="3rd\mysql\mysql\thread_pool_priv.h" />
+    <ClInclude Include="3rd\mysql\mysql\thread_type.h" />
+    <ClInclude Include="3rd\mysql\mysql_com.h" />
+    <ClInclude Include="3rd\mysql\mysql_com_server.h" />
+    <ClInclude Include="3rd\mysql\mysql_embed.h" />
+    <ClInclude Include="3rd\mysql\mysql_time.h" />
+    <ClInclude Include="3rd\mysql\mysql_version.h" />
+    <ClInclude Include="3rd\mysql\my_alloc.h" />
+    <ClInclude Include="3rd\mysql\my_byteorder.h" />
+    <ClInclude Include="3rd\mysql\my_command.h" />
+    <ClInclude Include="3rd\mysql\my_compiler.h" />
+    <ClInclude Include="3rd\mysql\my_config.h" />
+    <ClInclude Include="3rd\mysql\my_config_linuxx64.h" />
+    <ClInclude Include="3rd\mysql\my_config_linuxx86.h" />
+    <ClInclude Include="3rd\mysql\my_config_win32.h" />
+    <ClInclude Include="3rd\mysql\my_config_winx64.h" />
+    <ClInclude Include="3rd\mysql\my_dbug.h" />
+    <ClInclude Include="3rd\mysql\my_dir.h" />
+    <ClInclude Include="3rd\mysql\my_getopt.h" />
+    <ClInclude Include="3rd\mysql\my_global.h" />
+    <ClInclude Include="3rd\mysql\my_list.h" />
+    <ClInclude Include="3rd\mysql\my_sys.h" />
+    <ClInclude Include="3rd\mysql\my_thread.h" />
+    <ClInclude Include="3rd\mysql\my_thread_local.h" />
+    <ClInclude Include="3rd\mysql\my_xml.h" />
+    <ClInclude Include="3rd\mysql\m_ctype.h" />
+    <ClInclude Include="3rd\mysql\m_string.h" />
+    <ClInclude Include="3rd\mysql\plugin.h" />
+    <ClInclude Include="3rd\mysql\plugin_audit.h" />
+    <ClInclude Include="3rd\mysql\plugin_ftparser.h" />
+    <ClInclude Include="3rd\mysql\plugin_group_replication.h" />
+    <ClInclude Include="3rd\mysql\plugin_keyring.h" />
+    <ClInclude Include="3rd\mysql\plugin_validate_password.h" />
+    <ClInclude Include="3rd\mysql\sql_common.h" />
+    <ClInclude Include="3rd\mysql\sql_state.h" />
+    <ClInclude Include="3rd\mysql\sslopt-case.h" />
+    <ClInclude Include="3rd\mysql\sslopt-longopts.h" />
+    <ClInclude Include="3rd\mysql\sslopt-vars.h" />
+    <ClInclude Include="3rd\mysql\thr_cond.h" />
+    <ClInclude Include="3rd\mysql\thr_mutex.h" />
+    <ClInclude Include="3rd\mysql\thr_rwlock.h" />
+    <ClInclude Include="3rd\mysql\typelib.h" />
+    <ClInclude Include="3rd\rapidjson\allocators.h" />
+    <ClInclude Include="3rd\rapidjson\document.h" />
+    <ClInclude Include="3rd\rapidjson\encodedstream.h" />
+    <ClInclude Include="3rd\rapidjson\encodings.h" />
+    <ClInclude Include="3rd\rapidjson\error\en.h" />
+    <ClInclude Include="3rd\rapidjson\error\error.h" />
+    <ClInclude Include="3rd\rapidjson\filereadstream.h" />
+    <ClInclude Include="3rd\rapidjson\filewritestream.h" />
+    <ClInclude Include="3rd\rapidjson\fwd.h" />
+    <ClInclude Include="3rd\rapidjson\internal\biginteger.h" />
+    <ClInclude Include="3rd\rapidjson\internal\diyfp.h" />
+    <ClInclude Include="3rd\rapidjson\internal\dtoa.h" />
+    <ClInclude Include="3rd\rapidjson\internal\ieee754.h" />
+    <ClInclude Include="3rd\rapidjson\internal\itoa.h" />
+    <ClInclude Include="3rd\rapidjson\internal\meta.h" />
+    <ClInclude Include="3rd\rapidjson\internal\pow10.h" />
+    <ClInclude Include="3rd\rapidjson\internal\regex.h" />
+    <ClInclude Include="3rd\rapidjson\internal\stack.h" />
+    <ClInclude Include="3rd\rapidjson\internal\strfunc.h" />
+    <ClInclude Include="3rd\rapidjson\internal\strtod.h" />
+    <ClInclude Include="3rd\rapidjson\internal\swap.h" />
+    <ClInclude Include="3rd\rapidjson\istreamwrapper.h" />
+    <ClInclude Include="3rd\rapidjson\memorybuffer.h" />
+    <ClInclude Include="3rd\rapidjson\memorystream.h" />
+    <ClInclude Include="3rd\rapidjson\msinttypes\inttypes.h" />
+    <ClInclude Include="3rd\rapidjson\msinttypes\stdint.h" />
+    <ClInclude Include="3rd\rapidjson\ostreamwrapper.h" />
+    <ClInclude Include="3rd\rapidjson\pointer.h" />
+    <ClInclude Include="3rd\rapidjson\prettywriter.h" />
+    <ClInclude Include="3rd\rapidjson\rapidjson.h" />
+    <ClInclude Include="3rd\rapidjson\reader.h" />
+    <ClInclude Include="3rd\rapidjson\schema.h" />
+    <ClInclude Include="3rd\rapidjson\stream.h" />
+    <ClInclude Include="3rd\rapidjson\stringbuffer.h" />
+    <ClInclude Include="3rd\rapidjson\writer.h" />
+    <ClInclude Include="3rd\rijndael\rijndael.h" />
+    <ClInclude Include="3rd\RSAEuro\des.h" />
+    <ClInclude Include="3rd\RSAEuro\global.h" />
+    <ClInclude Include="3rd\RSAEuro\md2.h" />
+    <ClInclude Include="3rd\RSAEuro\md4.h" />
+    <ClInclude Include="3rd\RSAEuro\nn.h" />
+    <ClInclude Include="3rd\RSAEuro\prime.h" />
+    <ClInclude Include="3rd\RSAEuro\rsa.h" />
+    <ClInclude Include="3rd\RSAEuro\rsaeuro.h" />
+    <ClInclude Include="3rd\RSAEuro\rsaref.h" />
+    <ClInclude Include="3rd\RSAEuro\r_random.h" />
+    <ClInclude Include="3rd\RSAEuro\shs.h" />
+    <ClInclude Include="3rd\sha1\SHA1.h" />
+    <ClInclude Include="3rd\zlib\crc32.h" />
+    <ClInclude Include="3rd\zlib\deflate.h" />
+    <ClInclude Include="3rd\zlib\gzguts.h" />
+    <ClInclude Include="3rd\zlib\inffast.h" />
+    <ClInclude Include="3rd\zlib\inffixed.h" />
+    <ClInclude Include="3rd\zlib\inflate.h" />
+    <ClInclude Include="3rd\zlib\inftrees.h" />
+    <ClInclude Include="3rd\zlib\trees.h" />
+    <ClInclude Include="3rd\zlib\zconf.h" />
+    <ClInclude Include="3rd\zlib\zconf_linux.h" />
+    <ClInclude Include="3rd\zlib\zconf_win.h" />
+    <ClInclude Include="3rd\zlib\zlib.h" />
+    <ClInclude Include="3rd\zlib\zutil.h" />
+    <ClInclude Include="adjure\Adjure.h" />
+    <ClInclude Include="adjure\Adjure_Log.h" />
+    <ClInclude Include="adjure\Adjure_Mail.h" />
+    <ClInclude Include="adjure\Adjure_NetWorker.h" />
+    <ClInclude Include="adjure\Adjure_Runner.h" />
+    <ClInclude Include="adjure\Adjure_Task.h" />
+    <ClInclude Include="algorithm\ConsistentHash.h" />
+    <ClInclude Include="algorithm\SnowFlake.h" />
+    <ClInclude Include="base\Buffer.h" />
+    <ClInclude Include="base\CirQueue.h" />
+    <ClInclude Include="base\Clock.h" />
+    <ClInclude Include="base\CoreDump.h" />
+    <ClInclude Include="base\HCond.h" />
+    <ClInclude Include="base\HMutex.h" />
+    <ClInclude Include="base\HObject.h" />
+    <ClInclude Include="base\HThread.h" />
+    <ClInclude Include="base\Library.h" />
+    <ClInclude Include="base\LockThis.h" />
+    <ClInclude Include="base\MMap.h" />
+    <ClInclude Include="base\NETAddr.h" />
+    <ClInclude Include="base\PriorityQu.h" />
+    <ClInclude Include="base\RWLock.h" />
+    <ClInclude Include="base\Sem.h" />
+    <ClInclude Include="base\Task.h" />
+    <ClInclude Include="base\TimeElapsed.h" />
+    <ClInclude Include="base\Utils.h" />
+    <ClInclude Include="base\UUID.h" />
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="db\HMySQL.h" />
+    <ClInclude Include="encrypt\AES.h" />
+    <ClInclude Include="encrypt\EncryptUtils.h" />
+    <ClInclude Include="encrypt\HDES.h" />
+    <ClInclude Include="encrypt\HRSA.h" />
+    <ClInclude Include="encrypt\RSAKey.h" />
+    <ClInclude Include="fparser\Ini.h" />
+    <ClInclude Include="fparser\TableFile.h" />
+    <ClInclude Include="HBase.h" />
+    <ClInclude Include="HEnum.h" />
+    <ClInclude Include="HMemory.h" />
+    <ClInclude Include="Include.h" />
+    <ClInclude Include="Macros.h" />
+    <ClInclude Include="parser\Parser.h" />
+    <ClInclude Include="parser\Parser_Debug.h" />
+    <ClInclude Include="parser\Parser_Default.h" />
+    <ClInclude Include="parser\Parser_Http.h" />
+    <ClInclude Include="parser\Parser_RPC.h" />
+    <ClInclude Include="parser\Parser_WS.h" />
+    <ClInclude Include="service\DebugInput.h" />
+    <ClInclude Include="service\DebugShow.h" />
+    <ClInclude Include="service\EventService.h" />
+    <ClInclude Include="service\HMailer.h" />
+    <ClInclude Include="service\HTimer.h" />
+    <ClInclude Include="service\Humble.h" />
+    <ClInclude Include="service\Linker.h" />
+    <ClInclude Include="service\Log.h" />
+    <ClInclude Include="service\MsgTrigger.h" />
+    <ClInclude Include="service\NetListener.h" />
+    <ClInclude Include="service\NetMgr.H" />
+    <ClInclude Include="service\NetWork.h" />
+    <ClInclude Include="service\RPCLink.h" />
+    <ClInclude Include="service\Runner.h" />
+    <ClInclude Include="service\Sender.h" />
+    <ClInclude Include="service\Service.h" />
+    <ClInclude Include="service\Session.h" />
+    <ClInclude Include="service\Worker.h" />
+    <ClInclude Include="service\WorkerMgr.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="3rd\conhash\conhash.c" />
+    <ClCompile Include="3rd\conhash\conhash_inter.c" />
+    <ClCompile Include="3rd\conhash\conhash_util.c" />
+    <ClCompile Include="3rd\conhash\util_rbtree.c" />
+    <ClCompile Include="3rd\d3des\d3des.c" />
+    <ClCompile Include="3rd\http-parser\http_parser.c" />
+    <ClCompile Include="3rd\jwsmtp\jwsmtp_base64.cpp" />
+    <ClCompile Include="3rd\jwsmtp\jwsmtp_compat.cpp" />
+    <ClCompile Include="3rd\jwsmtp\jwsmtp_mailer.cpp" />
+    <ClCompile Include="3rd\md5\md5.c" />
+    <ClCompile Include="3rd\rijndael\rijndael.cpp" />
+    <ClCompile Include="3rd\RSAEuro\desc.c" />
+    <ClCompile Include="3rd\RSAEuro\md2c.c" />
+    <ClCompile Include="3rd\RSAEuro\md4c.c" />
+    <ClCompile Include="3rd\RSAEuro\nn.c" />
+    <ClCompile Include="3rd\RSAEuro\prime.c" />
+    <ClCompile Include="3rd\RSAEuro\rsa.c" />
+    <ClCompile Include="3rd\RSAEuro\r_dh.c" />
+    <ClCompile Include="3rd\RSAEuro\r_encode.c" />
+    <ClCompile Include="3rd\RSAEuro\r_enhanc.c" />
+    <ClCompile Include="3rd\RSAEuro\r_keygen.c" />
+    <ClCompile Include="3rd\RSAEuro\r_random.c" />
+    <ClCompile Include="3rd\RSAEuro\r_stdlib.c" />
+    <ClCompile Include="3rd\RSAEuro\shsc.c" />
+    <ClCompile Include="3rd\sha1\SHA1.cpp" />
+    <ClCompile Include="3rd\zlib\adler32.c" />
+    <ClCompile Include="3rd\zlib\compress.c" />
+    <ClCompile Include="3rd\zlib\crc32.c" />
+    <ClCompile Include="3rd\zlib\deflate.c" />
+    <ClCompile Include="3rd\zlib\gzclose.c" />
+    <ClCompile Include="3rd\zlib\gzlib.c" />
+    <ClCompile Include="3rd\zlib\gzread.c" />
+    <ClCompile Include="3rd\zlib\gzwrite.c" />
+    <ClCompile Include="3rd\zlib\infback.c" />
+    <ClCompile Include="3rd\zlib\inffast.c" />
+    <ClCompile Include="3rd\zlib\inflate.c" />
+    <ClCompile Include="3rd\zlib\inftrees.c" />
+    <ClCompile Include="3rd\zlib\trees.c" />
+    <ClCompile Include="3rd\zlib\uncompr.c" />
+    <ClCompile Include="3rd\zlib\zutil.c" />
+    <ClCompile Include="algorithm\SnowFlake.cpp" />
+    <ClCompile Include="base\CoreDump.cpp" />
+    <ClCompile Include="base\Library.cpp" />
+    <ClCompile Include="base\NETAddr.cpp" />
+    <ClCompile Include="base\Utils.cpp" />
+    <ClCompile Include="base\UUID.cpp" />
+    <ClCompile Include="db\HMySQL.cpp" />
+    <ClCompile Include="encrypt\AES.cpp" />
+    <ClCompile Include="encrypt\EncryptUtils.cpp" />
+    <ClCompile Include="encrypt\HDES.cpp" />
+    <ClCompile Include="encrypt\HRSA.cpp" />
+    <ClCompile Include="encrypt\RSAKey.cpp" />
+    <ClCompile Include="fparser\Ini.cpp" />
+    <ClCompile Include="fparser\TableFile.cpp" />
+    <ClCompile Include="parser\Parser_Debug.cpp" />
+    <ClCompile Include="parser\Parser_Default.cpp" />
+    <ClCompile Include="parser\Parser_Http.cpp" />
+    <ClCompile Include="parser\Parser_RPC.cpp" />
+    <ClCompile Include="parser\Parser_WS.cpp" />
+    <ClCompile Include="service\DebugInput.cpp" />
+    <ClCompile Include="service\DebugShow.cpp" />
+    <ClCompile Include="service\EventService.cpp" />
+    <ClCompile Include="service\HTimer.cpp" />
+    <ClCompile Include="service\Linker.cpp" />
+    <ClCompile Include="service\Log.cpp" />
+    <ClCompile Include="service\MsgTrigger.cpp" />
+    <ClCompile Include="service\NetListener.cpp" />
+    <ClCompile Include="service\NetWork.cpp" />
+    <ClCompile Include="service\RPCLink.cpp" />
+    <ClCompile Include="service\Runner.cpp" />
+    <ClCompile Include="service\Worker.cpp" />
+    <ClCompile Include="service\WorkerMgr.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="3rd\mysql\mysql\client_plugin.h.pp" />
+    <None Include="3rd\mysql\mysql\plugin_audit.h.pp" />
+    <None Include="3rd\mysql\mysql\plugin_auth.h.pp" />
+    <None Include="3rd\mysql\mysql\plugin_ftparser.h.pp" />
+    <None Include="3rd\mysql\mysql\plugin_keyring.h.pp" />
+    <None Include="3rd\mysql\mysql\services.h.pp" />
+    <None Include="3rd\RSAEuro\des386.s" />
+    <None Include="3rd\RSAEuro\rsa386.s" />
+    <None Include="3rd\RSAEuro\rsa68k.s" />
+    <None Include="3rd\RSAEuro\rsasparc.s" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2F0E4166-C383-497A-96B7-A2968B142F40}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>HBase</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>../Bin</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>../Bin</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>../BinX64</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>../BinX64</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/concurrentqueue;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/concurrentqueue;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/concurrentqueue;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/concurrentqueue;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
