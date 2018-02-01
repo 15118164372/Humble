@@ -42,7 +42,7 @@ public:
     //任务注册
     void regTask(CWorker *pWorker);
     //任务删除
-    void unregTask(const char *pszName);    
+    void unRegTask(const char *pszName);    
     //获取所有任务名
     void getAllName(std::list<std::string> *pvcName);
 

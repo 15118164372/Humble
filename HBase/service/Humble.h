@@ -86,7 +86,7 @@ public:
     {
         H_ASSERT((strlen(pszName) < H_TASKNAMELENS), "task name too long.");
 
-        m_objWorkerMgr.unregTask(pszName);
+        m_objWorkerMgr.unRegTask(pszName);
     };
     CWorker *getTask(const char *pszName)
     {

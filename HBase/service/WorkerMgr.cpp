@@ -75,7 +75,7 @@ void CWorkerMgr::regTask(CWorker *pWorker)
     H_LOG(LOGLV_SYS, "register task %s.", pWorker->getName());
 }
 
-void CWorkerMgr::unregTask(const char *pszName)
+void CWorkerMgr::unRegTask(const char *pszName)
 {
     CWorker *pWorker(NULL);
 
