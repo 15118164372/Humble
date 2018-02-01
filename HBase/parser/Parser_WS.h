@@ -11,7 +11,7 @@ H_BNAMSP
 class CWSParser : public CParser
 {
 public:
-    CWSParser(const char *pszName);
+    explicit CWSParser(const char *pszName);
     ~CWSParser(void);
 
     virtual bool checkOtherParam(std::map<std::string, std::string > *pHead);

@@ -14,7 +14,7 @@ H_BNAMSP
 class CWorker : public CObject
 {
 public:
-    CWorker(const char *pszName, const size_t uiCapacity) : m_bInGloble(false), m_usIndex(H_INIT_NUMBER),
+    CWorker(const char *pszName, const size_t &uiCapacity) : m_bInGloble(false), m_usIndex(H_INIT_NUMBER),
         m_pWorkerMgr(NULL), m_objRunnerAdjure(this), m_strName(pszName), m_objAdjureQu(uiCapacity)
     {};
     ~CWorker(void) 
@@ -50,7 +50,7 @@ public:
     {
         m_usIndex = usIndex;
     };
-    const unsigned short &getIndex(void)
+    H_INLINE const unsigned short &getIndex(void)
     {
         return m_usIndex;
     };
@@ -60,11 +60,11 @@ public:
         return &m_objWorkerLck;
     };
     //是否在执行队列
-    void setInGloble(const bool bInGloble)
+    void setInGloble(const bool &bInGloble)
     {
         m_bInGloble = bInGloble;
     };
-    const bool &getInGloble(void)
+    H_INLINE const bool &getInGloble(void)
     {
         return m_bInGloble;
     };
@@ -91,9 +91,13 @@ public:
         m_objAdjureQu.resetQueue(uiCapacity);
     };
 
-    void setFreeze(const bool bFreeze)
+    void setFreeze(const bool &bFreeze)
     {
         m_bFreeze = bFreeze;
+    };
+    const bool &getFreeze(void)
+    {
+        return m_bFreeze;
     };
 
     void setName(const char *pszName)
@@ -111,6 +115,10 @@ public:
     void setWorkerMgr(class CWorkerMgr *pWorkerMgr)
     {
         m_pWorkerMgr = pWorkerMgr;
+    };
+    class CWorkerMgr *getWorkerMgr(void)
+    {
+        return m_pWorkerMgr;
     };
     std::list<std::string> *storageStr(void)
     {

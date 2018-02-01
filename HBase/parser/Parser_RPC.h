@@ -17,7 +17,7 @@ struct SVIdType : public CObject
 class CRPCParser : public CParser
 {
 public:
-    CRPCParser(const unsigned int &uiRPCTimeDeviation) : CParser(H_PARSER_RPC, true), m_iServiceId(H_INIT_NUMBER),
+    explicit CRPCParser(const unsigned int &uiRPCTimeDeviation) : CParser(H_PARSER_RPC, true), m_iServiceId(H_INIT_NUMBER),
         m_iServiceType(H_INIT_NUMBER), m_uiRPCTimeDeviation(uiRPCTimeDeviation), m_pRPCLink(NULL), 
         m_uiHeadLens(sizeof(unsigned short)), m_uiContentHeadLens(sizeof(RPCContentHead))
     {

@@ -20,7 +20,7 @@ public:
     void onAdjure(CAdjure *pAdjure);
     void afterAdjure(CAdjure *pAdjure);
     //–¥»’÷æ«Î«Û
-    void writeLog(const LOG_LEVEL emInLogLv, const char *pFormat, ...);
+    void writeLog(const LOG_LEVEL &emInLogLv, const char *pFormat, ...);
 
 private:
     const char *getLV(const LOG_LEVEL &emInLogLv) const;

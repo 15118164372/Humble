@@ -15,7 +15,7 @@ public:
         m_pData = new(std::nothrow) void*[m_uiCapacity];
         H_ASSERT(NULL != m_pData, "malloc memory error.");
     };
-    explicit CCirQueue(const size_t uiCapacity) : m_uiSize(H_INIT_NUMBER), m_uiNext(H_INIT_NUMBER),
+    explicit CCirQueue(const size_t &uiCapacity) : m_uiSize(H_INIT_NUMBER), m_uiNext(H_INIT_NUMBER),
         m_uiCapacity(uiCapacity)
     {
         m_pData = new(std::nothrow) void*[m_uiCapacity];
@@ -75,7 +75,7 @@ public:
 
         return pValue;
     };
-    void* Peek(const size_t &uiIndex)
+    H_INLINE void* Peek(const size_t &uiIndex)
     {
         void *pValue(NULL);
 
@@ -87,7 +87,7 @@ public:
 
         return pValue;
     };
-    const size_t &Size(void)
+    H_INLINE const size_t &Size(void)
     {
         return m_uiSize;
     };
@@ -108,7 +108,8 @@ public:
     {};
     ~CSafeQueue(void)
     {};
-    H_INLINE bool Push(void *pValue)
+
+    bool Push(void *pValue)
     {
         m_objLck.Lock();
         bool bOk(m_objQu.Push(pValue));
@@ -116,7 +117,7 @@ public:
 
         return bOk;
     };
-    H_INLINE void *Pop(void)
+    void *Pop(void)
     {
         m_objLck.Lock();
         void *pValue(m_objQu.Pop());

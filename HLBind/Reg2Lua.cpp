@@ -7,7 +7,7 @@ H_BNAMSP
 //×¢²áÈÎÎñ
 void regLWorker(const char *pszFile, const char *pszName, const size_t uiCapacity)
 {
-    H_ASSERT(strlen(pszName) < H_RPCNAMELENS, "task name too long.");
+    H_ASSERT(strlen(pszName) < H_TASKNAMELENS, "task name too long.");    
     CWorker *pWorker(g_pHumble->popPool());
     if (NULL == pWorker)
     {
@@ -105,7 +105,7 @@ void CReg2Lua::regHumble(struct lua_State *pLState)
 {
     luabridge::getGlobalNamespace(pLState)
         .beginClass<CHumble>("CHumble")
-            .addFunction("unregTask", &CHumble::unregTask)
+            .addFunction("unRegTask", &CHumble::unRegTask)
             .addFunction("getTask", &CHumble::getTask)
             .addFunction("getAllName", &CHumble::getAllName)
             .addFunction("netRPC", &CHumble::netRPC)
@@ -270,6 +270,12 @@ void CReg2Lua::regObject(struct lua_State *pLState)
             .addFunction("priDecrypt", &CRSA::priDecrypt)
             .addFunction("priEncrypt", &CRSA::priEncrypt)
             .addFunction("pubDecrypt", &CRSA::pubDecrypt)
+        .endClass()
+
+        .deriveClass<CUtils, CObject>("CUtils")
+            .addConstructor<void(*)(void)>()
+            .addStaticFunction("nowMilSecond", &CUtils::nowMilSecond)
+            .addStaticFunction("nowStrMilSecond", &CUtils::nowStrMilSecond)
         .endClass()
 
         .deriveClass<CEnUtils, CObject>("CEnUtils")

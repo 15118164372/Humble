@@ -14,7 +14,7 @@ H_BNAMSP
 class CService : public CTask
 {
 public:
-    CService(const size_t uiCapacity) : m_bFreeQuAdjure(true), m_bStop(false),
+    explicit CService(const size_t &uiCapacity) : m_bFreeQuAdjure(true), m_bStop(false),
         m_iRunFlage(H_INIT_NUMBER), m_iWait(H_INIT_NUMBER), m_objAdjureQu(uiCapacity)
     {};
     ~CService(void)
@@ -72,7 +72,7 @@ public:
         return m_strServiceName.c_str();
     };
     //是否释放队列里面的命令(CRunner不需要释放)
-    void setFreeQuAdjure(const bool bFree)
+    void setFreeQuAdjure(const bool &bFree)
     {
         m_bFreeQuAdjure = bFree;
     };

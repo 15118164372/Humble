@@ -13,13 +13,13 @@
 #define H_TIME_LENS                  32         //时间长度
 #define H_ONEK                       1024       //1K
 #define H_UUIDLENS                   64         //UUID长度
-#define H_RPCNAMELENS                64
+#define H_TASKNAMELENS               64
 
 #define H_MAXRUNNUM                  10         //每个任务每次最多执行多少个请求
 #define H_SOCKBUFSIZE                H_ONEK * 4
 
-typedef unsigned int H_HEAD_TYPE;
-#define H_HEAD_NTOH         ntohl//ntohs
+typedef unsigned short H_HEAD_TYPE;
+#define H_HEAD_NTOH          ntohs
 
 typedef unsigned short H_PROTO_TYPE;
 #define H_PROTO_NTOH         ntohs

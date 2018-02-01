@@ -25,7 +25,7 @@ std::string H_StrError(DWORD error)
 
 H_BNAMSP
 
-uint64_t CUtils::ntohl64(uint64_t host)
+uint64_t CUtils::ntohl64(const uint64_t &ulVal)
 {
     //´óÐ¡¶Ë
     static union
@@ -40,8 +40,8 @@ uint64_t CUtils::ntohl64(uint64_t host)
         uint64_t uiRet(H_INIT_NUMBER);
         unsigned long ulHigh, ulLow;
 
-        ulLow = host & 0xFFFFFFFF;
-        ulHigh = (host >> 32) & 0xFFFFFFFF;
+        ulLow = ulVal & 0xFFFFFFFF;
+        ulHigh = (ulVal >> 32) & 0xFFFFFFFF;
 
         ulLow = ntohl(ulLow);
         ulHigh = ntohl(ulHigh);
@@ -53,7 +53,7 @@ uint64_t CUtils::ntohl64(uint64_t host)
         return uiRet;
     }
 
-    return host;
+    return ulVal;
 }
 
 unsigned int CUtils::threadId(void)
@@ -173,7 +173,7 @@ void CUtils::Split(const std::string &strSource, const char *pszFlag,
     }
 }
 
-std::string CUtils::trimLeft(std::string strSource)
+std::string &CUtils::trimLeft(std::string &strSource)
 {
     if (strSource.empty())
     {
@@ -197,7 +197,7 @@ std::string CUtils::trimLeft(std::string strSource)
     return strSource;
 }
 
-std::string CUtils::trimRight(std::string strSource)
+std::string &CUtils::trimRight(std::string &strSource)
 {
     if (strSource.empty())
     {
@@ -287,6 +287,7 @@ std::string CUtils::nowDate(void)
 struct timeval CUtils::timeOfDay(void)
 {
     struct timeval tv;
+
 #ifdef H_OS_WIN
     #define U64_LITERAL(n) n##ui64
     #define EPOCH_BIAS U64_LITERAL(116444736000000000)

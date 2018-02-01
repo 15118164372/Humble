@@ -10,7 +10,7 @@ H_BNAMSP
 class CTimeElapsed
 {
 public:
-    CTimeElapsed(const double dAlarmTime, const char *pszFormat, ...) : m_dAlarmTime(dAlarmTime)
+    CTimeElapsed(const double &dAlarmTime, const char *pszFormat, ...) : m_dAlarmTime(dAlarmTime)
     {
         va_list va;
         va_start(va, pszFormat);

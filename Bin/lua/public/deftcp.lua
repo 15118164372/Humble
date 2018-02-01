@@ -3,7 +3,7 @@ deftcp  string.pack参数 lstrlib.c 1221行
 --]]
 local humble = require("humble")
 local string = string
-local headFmt = ">IH"
+local headFmt = ">HH"
 local protoLens = 2
 
 local deftcp = {}

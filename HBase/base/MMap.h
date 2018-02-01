@@ -14,7 +14,7 @@ class CMMap : public CObject
 {
 public:
     /*pszFileName --映射文件名 pszMapName --映射名  iNum --数量*/
-    CMMap(const char *pszFileName, const char *pszMapName, const size_t iNum);
+    CMMap(const char *pszFileName, const char *pszMapName, const size_t &iNum);
     ~CMMap(void);
 
     /*返回T指针*/
@@ -38,7 +38,7 @@ private:
 };
 
 template <typename T>
-CMMap<T>::CMMap(const char *pszFileName, const char *pszMapName, const size_t iNum) 
+CMMap<T>::CMMap(const char *pszFileName, const char *pszMapName, const size_t &iNum)
     : m_iNum(iNum), m_iTotalSize(sizeof(T) * iNum), m_pDate(NULL)
 {
     if (NULL == pszFileName

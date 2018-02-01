@@ -10,7 +10,7 @@ H_BNAMSP
 class CRunWorkerAdjure : public CAdjure
 {
 public:
-    CRunWorkerAdjure(class CWorker *pWorker) : CAdjure(H_INIT_NUMBER), m_pWorker(pWorker)
+    explicit CRunWorkerAdjure(class CWorker *pWorker) : CAdjure(H_INIT_NUMBER), m_pWorker(pWorker)
     {};
     ~CRunWorkerAdjure(void)
     {};
@@ -19,10 +19,9 @@ public:
     {
         return m_pWorker;
     };
-private:
-    CRunWorkerAdjure(void);
 
 private:
+    CRunWorkerAdjure(void);
     class CWorker *m_pWorker;
 };
 

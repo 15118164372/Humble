@@ -14,7 +14,8 @@ public:
     CLogAdjure(const LOG_LEVEL &emLevel, const char *pszMsg) : CAdjure(H_INIT_NUMBER),
         m_emInLogLv(emLevel), m_strMsg(pszMsg)
     {};
-    ~CLogAdjure(void) {};
+    ~CLogAdjure(void) 
+    {};
 
     const LOG_LEVEL &getLevel(void)
     {

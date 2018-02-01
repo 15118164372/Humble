@@ -75,8 +75,8 @@ function humble.regTask(pszFile, pszName, uiCapacity)
 	regTask(pszFile, pszName, uiCapacity)
 end
 --任务反注册
-function humble.unregTask(pszName)
-	m_Humble:unregTask(pszName)
+function humble.unRegTask(pszName)
+	m_Humble:unRegTask(pszName)
 end
 --获取任务对象
 function humble.getTask(pszName)
@@ -86,6 +86,7 @@ end
 function humble.getAllName()
 	return m_Humble:getAllName(m_curWorker)
 end
+
 --网络RPC
 function humble.netRPC(uiSock, pszFrom, pszTo, pszContent)
 	m_Humble:netRPC(uiSock, pszFrom, pszTo, pszContent, #pszContent)
@@ -102,10 +103,12 @@ end
 function humble.taskRPCRtn(pTo, pszRtn, ulId)
 	m_Humble:taskRPCRtn(pTo, pszRtn, #pszRtn, ulId)
 end
+
 --超时注册
 function humble.regTimeOut(uiTime, ulId)
 	m_Humble:regTimeOut(m_curWorker, uiTime, ulId)
 end
+
 --socket accept成功 注册
 function humble.regAcceptEvent(usType)
 	m_Humble:regAcceptEvent(m_curWorker, usType)
@@ -127,47 +130,52 @@ function humble.regHttpdProto(pszProto)
 	m_Humble:regHttpdProto(m_curWorker, pszProto)
 end
 
---新加监听
-function humble.addListener(pszParser, usType, pszHost, usPort)
-	m_Humble:addListener(pszParser, usType, pszHost, usPort)
-end
---debug
-function humble.debugServer(pszHost, usPort)
-	humble.addListener("debug", SockType.Debug, pszHost, usPort)
-end
---rpc
-function humble.rpcServer(pszHost, usPort)
-	humble.addListener("rpc", SockType.RPC, pszHost, usPort)
-end
---http
-function humble.httpServer(pszHost, usPort)
-	humble.addListener("httpd", SockType.Httpd, pszHost, usPort)
-end
-function humble.wsServer(pszHost, usPort)
-	humble.addListener("ws", SockType.WS, pszHost, usPort)
-end
-
---添加主动连接
-function humble.addLinker(pszParser, usType, pszHost, usPort, bKeepAlive)
-	m_Humble:addLinker(nil, pszParser, usType, pszHost, usPort, bKeepAlive)
-end
---绑定到任务的
-function humble.addBindLinker(pszParser, usType, pszHost, usPort, bKeepAlive)
-	m_Humble:addLinker(m_curWorker, pszParser, usType, pszHost, usPort, bKeepAlive)
-end
---rpc客户端
-function humble.rpcClient(pszHost, usPort)
-	m_Humble:addLinker(nil, "rpc", SockType.RPC, pszHost, usPort, true)
-end
-
 --关闭连接
 function humble.closeLink(sock)
 	m_Humble:closeLink(sock)
 end
 
---绑定socket消息到任务
+--新加监听
+function humble.addListener(pszParser, usType, pszHost, usPort)
+	m_Humble:addListener(pszParser, usType, pszHost, usPort)
+end
+--default
+function humble.defServer(pszHost, usPort)
+	m_Humble:addListener("default", SockType.Default, pszHost, usPort)
+end
+--debug
+function humble.debugServer(pszHost, usPort)
+	m_Humble:addListener("debug", SockType.Debug, pszHost, usPort)
+end
+--rpc
+function humble.rpcServer(pszHost, usPort)
+	m_Humble:addListener("rpc", SockType.RPC, pszHost, usPort)
+end
+--http
+function humble.httpServer(pszHost, usPort)
+	m_Humble:addListener("httpd", SockType.Httpd, pszHost, usPort)
+end
+--websocket
+function humble.wsServer(pszHost, usPort)
+	m_Humble:addListener("ws", SockType.WS, pszHost, usPort)
+end
+
+--添加主动连接 bKeepAlive 断开后是否重连
+function humble.addLinker(pszParser, usType, pszHost, usPort, bKeepAlive)
+	m_Humble:addLinker(nil, pszParser, usType, pszHost, usPort, 0, bKeepAlive)
+end
+--绑定到任务的 connet close消息走私有的
+function humble.addBindLinker(pszParser, usType, pszHost, usPort, ulId, bKeepAlive)
+	m_Humble:addLinker(m_curWorker, pszParser, usType, pszHost, usPort, ulId, bKeepAlive)
+end
+--rpc客户端
+function humble.rpcClient(pszHost, usPort)
+	humble.addLinker("rpc", SockType.RPC, pszHost, usPort, true)
+end
+
+--绑定socket消息到任务 close消息走通用的
 function humble.bindWorker(sock)
-	m_Humble:bindWorker(sock, m_curWorker)
+	m_Humble:bindWorker(m_curWorker, sock)
 end
 function humble.unBindWorker(sock)
 	m_Humble:unBindWorker(sock)

@@ -20,8 +20,8 @@ class CHumble : public CObject
 {
 public:
     //uiInterval调整负载时间间隔
-    CHumble(const unsigned short usLogLV, const unsigned short usRunnerNum, const unsigned short usNetNum,
-        const unsigned int uiAlarmTime, const unsigned int uiAdjustTime, const unsigned int uiRPCTimeDeviation) :
+    CHumble(const unsigned short &usLogLV, const unsigned short &usRunnerNum, const unsigned short &usNetNum,
+        const unsigned int &uiAlarmTime, const unsigned int &uiAdjustTime, const unsigned int &uiRPCTimeDeviation) :
         m_usRunnerNum(usRunnerNum), m_uiAdjustTime(uiAdjustTime), m_uiAlarmTime(uiAlarmTime), m_iServiceId(H_INIT_NUMBER), 
         m_iServiceType(H_INIT_NUMBER), m_objHttpdParser(H_PARSER_HTTPD), m_objHttpcParser(H_PARSER_HTTPC),
         m_objRPCParser(uiRPCTimeDeviation), m_objWSParser(H_PARSER_WS), m_objWorkerMgr(&m_objMsgTrigger),
@@ -82,12 +82,16 @@ public:
         m_objWorkerMgr.regTask(pWorker);
     };
     //任务删除
-    void unregTask(const char *pszName)
+    void unRegTask(const char *pszName)
     {
+        H_ASSERT((strlen(pszName) < H_TASKNAMELENS), "task name too long.");
+
         m_objWorkerMgr.unregTask(pszName);
     };
     CWorker *getTask(const char *pszName)
     {
+        H_ASSERT((strlen(pszName) < H_TASKNAMELENS), "task name too long.");
+
         return m_objWorkerMgr.getWorker(pszName);
     };
     //获取所有任务名
@@ -185,9 +189,9 @@ public:
     };
     //添加主动连接
     void addLinker(class CWorker *pWorker, const char *pszParser, const unsigned short usType,
-        const char *pszHost, const unsigned short usPort, const bool bKeepAlive)
+        const char *pszHost, const unsigned short usPort, const uint64_t ulId, const bool bKeepAlive)
     {
-        m_objNetMgr.addLinker(pWorker, pszParser, usType, pszHost, usPort, bKeepAlive);
+        m_objNetMgr.addLinker(pWorker, pszParser, usType, pszHost, usPort, ulId, bKeepAlive);
     };
     //关闭连接
     void closeLink(const H_SOCK uiSock)

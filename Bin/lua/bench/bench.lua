@@ -2,7 +2,7 @@ require("init")
 local humble = require("humble")
 
 function initTask()
-	humble.addListener("default", 1, "0.0.0.0", 16000)
+	humble.defServer("0.0.0.0", 16000)
 	
 	humble.regTask("bench/bench1.lua", "bench1", 1024 * 10)
 	humble.regTask("bench/bench2.lua", "bench2", 1024 * 10)

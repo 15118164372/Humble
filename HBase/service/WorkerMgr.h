@@ -12,11 +12,28 @@ H_BNAMSP
 class CWorkerMgr : public CObject
 {
 public:
-    CWorkerMgr(CMsgTrigger *pMsgTrigger);
+    explicit CWorkerMgr(CMsgTrigger *pMsgTrigger);
     ~CWorkerMgr(void);
 
     //向任务发送消息
-    void addAdjureToTask(CWorker *pWorker, CAdjure *pAdjure);
+    void addAdjureToTask(CWorker *pWorker, CAdjure *pAdjure)
+    {
+        CMutex *pLckWorker(pWorker->getWorkerLck());
+
+        pLckWorker->Lock();
+        if (!pWorker->addAdjure(pAdjure))
+        {
+            pLckWorker->unLock();
+            H_SafeDelete(pAdjure);
+            H_LOG(LOGLV_ERROR, "%s", H_ERR_ADDINQU);
+            return;
+        }
+        if (!pWorker->getInGloble())
+        {
+            m_pAllRunner[pWorker->getIndex()].addWorker(pWorker);
+        }
+        pLckWorker->unLock();
+    };
     //获取任务
     CWorker *getWorker(const char *pszName);
     //WorkerPool

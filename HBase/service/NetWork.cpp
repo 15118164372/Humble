@@ -52,7 +52,7 @@ void CNetWorker::setLinkStatus(class CLinkInfo *pLinkInfo, const LinkState emSta
     }
 }
 
-void CNetWorker::addSock(class CLinkInfo *pLinkInfo, class CParser *pParser, 
+void CNetWorker::addSock(class CLinkInfo *pLinkInfo, class CParser *pParser,
     const H_SOCK &sock, const unsigned short &usType)
 {
     CAddSockInAdjure *pAddInAdjure = new(std::nothrow) CAddSockInAdjure(pLinkInfo, pParser, sock, usType);
@@ -135,10 +135,11 @@ static void onSocketClose(CSession *pSession, evutil_socket_t &sock)
     CLinkInfo *pLinkInfo(pSession->getLinkInfo());
     CNetWorker *pNetWorker(pSession->getNetWorker());
     CWorker *pBindWorker(pNetWorker->getBindWorker(sock));
+    uint64_t uiBindId(NULL != pLinkInfo ? pLinkInfo->getBindId() : H_INIT_NUMBER);
 
     pNetWorker->setLinkStatus(pLinkInfo, LS_CLOSED);
     pNetWorker->removeBind(sock);
-    pNetWorker->getMsgTrigger()->triggerClosed(pBindWorker, sock, pSession->getType());
+    pNetWorker->getMsgTrigger()->triggerClosed(pBindWorker, sock, pSession->getType(), uiBindId);
 
     CUtils::closeSock(sock);
     struct event *pEv((struct event *)pSession->getEvent());
@@ -340,9 +341,11 @@ void CNetWorker::addSock(CAddSockInAdjure *pAdjure)
     CLinkInfo *pLinkInfo(pAdjure->getLinkInfo());
     CParser *pParser(pAdjure->getParser());
     CWorker *pBindWorker(NULL);
+    uint64_t ulBindId(H_INIT_NUMBER);
     if (NULL != pLinkInfo)
     {
-        pBindWorker = pLinkInfo->getBind();
+        pBindWorker = pLinkInfo->getBindWorker();
+        ulBindId = pLinkInfo->getBindId();
     }
 
     CSession *pSession(newSession(pParser, pLinkInfo, sock, pAdjure->getType()));
@@ -383,7 +386,7 @@ void CNetWorker::addSock(CAddSockInAdjure *pAdjure)
 
     if (pSession->Accept())
     {
-        m_pMsgTrigger->triggerAccept(pBindWorker, sock, pSession->getType());
+        m_pMsgTrigger->triggerAccept(pBindWorker, sock, pSession->getType(), H_INIT_NUMBER);
         return;
     }
 
@@ -401,7 +404,7 @@ void CNetWorker::addSock(CAddSockInAdjure *pAdjure)
 
         m_pNetMgr->sendMsg(sock, pBuffer);
     }
-    m_pMsgTrigger->triggerConnect(pBindWorker, sock, pSession->getType());
+    m_pMsgTrigger->triggerConnect(pBindWorker, sock, pSession->getType(), ulBindId);
 }
 void CNetWorker::bindWorker(CBindToTaskAdjure *pAdjure)
 {

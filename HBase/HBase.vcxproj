@@ -333,6 +333,7 @@
     <ClCompile Include="3rd\zlib\trees.c" />
     <ClCompile Include="3rd\zlib\uncompr.c" />
     <ClCompile Include="3rd\zlib\zutil.c" />
+    <ClCompile Include="algorithm\ConsistentHash.cpp" />
     <ClCompile Include="algorithm\SnowFlake.cpp" />
     <ClCompile Include="base\CoreDump.cpp" />
     <ClCompile Include="base\Library.cpp" />

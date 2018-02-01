@@ -22,7 +22,7 @@ CLinker::~CLinker(void)
 }
 
 void CLinker::addLinker(class CWorker *pWorker, const char *pszParser, const unsigned short &usType,
-    const char *pszHost, const unsigned short &usPort, const bool &bKeepAlive)
+    const char *pszHost, const unsigned short &usPort, const uint64_t &ulId, const bool &bKeepAlive)
 {
     CParser *pParser(m_pParserMgr->getParser(pszParser));
     H_ASSERT(NULL != pParser, "get parser error.");
@@ -34,7 +34,7 @@ void CLinker::addLinker(class CWorker *pWorker, const char *pszParser, const uns
         return;
     }
 
-    pLinkInfo->setBind(pWorker);
+    pLinkInfo->setBind(pWorker, ulId);
     pLinkInfo->setKeepAlive(bKeepAlive);
     CAddLinkerAdjure *pAddLinker = new(std::nothrow) CAddLinkerAdjure(pLinkInfo);
     if (NULL == pAddLinker)

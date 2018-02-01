@@ -2,6 +2,7 @@
 #include "Parser_Http.h"
 #include "Session.h"
 #include "Log.h"
+#include "Adjure_NetWorker.h"
 #include "Adjure_Task.h"
 #include "http-parser/http_parser.h"
 
@@ -42,16 +43,20 @@ static int onBeginCB(http_parser *pParser)
     if (HTTP_REQUEST == pExtendData->usType)
     {
         pExtendData->pAdjure = new(std::nothrow) CTaskHttpdAdjure(pExtendData->pSession->getSock(), pExtendData->pSession->getType());
-    }
-    else
-    {
-        pExtendData->pAdjure = new(std::nothrow) CTaskHttcdAdjure(pExtendData->pSession->getSock(), pExtendData->pSession->getType());
+        if (NULL == pExtendData->pAdjure)
+        {
+            return H_RTN_ERROR;
+        }
+
+        return H_RTN_OK;
     }
     
+    pExtendData->pAdjure = new(std::nothrow) CTaskHttcdAdjure(pExtendData->pSession->getSock(), pExtendData->pSession->getType());
     if (NULL == pExtendData->pAdjure)
     {
         return H_RTN_ERROR;
     }
+    pExtendData->pAdjure->setBindId(pExtendData->pSession->getLinkInfo()->getBindId());
 
     return H_RTN_OK;
 }

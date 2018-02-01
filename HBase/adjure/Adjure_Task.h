@@ -7,6 +7,15 @@
 
 H_BNAMSP
 
+#define H_HTTP_PROTOKEY "Path"
+
+struct RPCContentHead
+{
+    unsigned int uiLens;
+    char acFrom[H_TASKNAMELENS];
+    char acTo[H_TASKNAMELENS];
+};
+
 //任务初始化
 class CTaskInitAdjure : public CAdjure
 {
@@ -31,7 +40,7 @@ public:
 class CTaskTimeOutAdjure : public CAdjure
 {
 public:
-    CTaskTimeOutAdjure(const uint64_t &ulId) : CAdjure(MSG_TIME_TIMEOUT), m_ulId(ulId)
+    explicit CTaskTimeOutAdjure(const uint64_t &ulId) : CAdjure(MSG_TIME_TIMEOUT), m_ulId(ulId)
     {};
     ~CTaskTimeOutAdjure(void)
     {};
@@ -40,6 +49,7 @@ public:
     {
         return m_ulId;
     };
+
 private:
     CTaskTimeOutAdjure(void);
     uint64_t m_ulId;
@@ -49,7 +59,7 @@ private:
 class CRtnBufAdjure : public CAdjure
 {
 public:
-    CRtnBufAdjure(CBuffer *pBuffer) : CAdjure(MSG_NET_READ_RTNBUF), m_pBuffer(pBuffer)
+    explicit CRtnBufAdjure(CBuffer *pBuffer) : CAdjure(MSG_NET_READ_RTNBUF), m_pBuffer(pBuffer)
     {};
     ~CRtnBufAdjure(void) 
     {};
@@ -78,8 +88,8 @@ public:
 class CTaskNetEvAdjure : public CAdjure
 {
 public:
-    CTaskNetEvAdjure(const unsigned short usEvent, const H_SOCK &uiSock, const unsigned short &usType) :
-        CAdjure(usEvent), m_usType(usType), m_uiSock(uiSock)
+    CTaskNetEvAdjure(const unsigned short &usEvent, const H_SOCK &uiSock, const unsigned short &usType) :
+        CAdjure(usEvent), m_usType(usType), m_uiSock(uiSock), m_ulId(H_INIT_NUMBER)
     {};
     ~CTaskNetEvAdjure(void)
     {};
@@ -92,10 +102,20 @@ public:
     {
         return m_usType;
     };
+    void setBindId(const uint64_t &ulId)
+    {
+        m_ulId = ulId;
+    };
+    const uint64_t getBindId(void)
+    {
+        return m_ulId;
+    };
+
 private:
     CTaskNetEvAdjure(void);
     unsigned short m_usType;
     H_SOCK m_uiSock;
+    uint64_t m_ulId;
 };
 
 //网络可读(数字请求码)
@@ -162,11 +182,10 @@ private:
     CSkippedBuffer m_objPack;
 };
 
-#define H_HTTP_PROTOKEY "Path"
 class CHttpAdjure : public CTaskNetEvAdjure
 {
 public:
-    CHttpAdjure(const unsigned short usEvent, const H_SOCK &uiSock, const unsigned short &usType) :
+    CHttpAdjure(const unsigned short &usEvent, const H_SOCK &uiSock, const unsigned short &usType) :
         CTaskNetEvAdjure(usEvent, uiSock, usType)
     {};
     ~CHttpAdjure(void)
@@ -202,6 +221,7 @@ public:
     {};
     ~CTaskHttpdAdjure(void)
     {};
+
     void addUrlInfo(const char *pszType, const char *pszAt, const size_t &iLens)
     {
         m_mapUrl[pszType] = std::string(pszAt, iLens);
@@ -237,7 +257,8 @@ private:
 class CTaskHttcdAdjure : public CHttpAdjure
 {
 public:
-    CTaskHttcdAdjure(const H_SOCK &uiSock, const unsigned short &usType) : CHttpAdjure(MSG_NET_READ_HTTPC, uiSock, usType)
+    CTaskHttcdAdjure(const H_SOCK &uiSock, const unsigned short &usType) : 
+        CHttpAdjure(MSG_NET_READ_HTTPC, uiSock, usType)
     {};
     ~CTaskHttcdAdjure(void)
     {};
@@ -250,6 +271,7 @@ public:
     {
         return m_strStatus.c_str();
     };
+
 private:
     std::string m_strStatus;
 };
@@ -282,7 +304,7 @@ private:
 class CRPCData : public CAdjure
 {
 public:
-    CRPCData(const unsigned short usEvent, const char *pszMsg, const size_t &iLens, const uint64_t &ulId) : 
+    CRPCData(const unsigned short &usEvent, const char *pszMsg, const size_t &iLens, const uint64_t &ulId) : 
         CAdjure(usEvent), m_ulId(ulId), m_objBuffer((char*)pszMsg, iLens)
     {};
     ~CRPCData(void)
@@ -338,12 +360,6 @@ public:
     {};
 };
 
-struct RPCContentHead
-{
-    unsigned int uiLens;
-    char acFrom[H_RPCNAMELENS];
-    char acTo[H_RPCNAMELENS];
-};
 //MSG_NET_RPC 网络rpc调用
 class CNetRPCAdjure : public CTaskNetEvAdjure
 {

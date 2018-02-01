@@ -187,7 +187,7 @@ CAdjure *CRPCParser::Parse(class CSession *pSession, const char *pBuf, const siz
 CBuffer *CRPCParser::creatPack(const char *pszFrom, const char *pszTo,
     const char *pszContent, const size_t &uiConLen)
 {
-    H_ASSERT((strlen(pszFrom) < H_RPCNAMELENS) && (strlen(pszTo) < H_RPCNAMELENS), "task name too long.");
+    H_ASSERT((strlen(pszFrom) < H_TASKNAMELENS) && (strlen(pszTo) < H_TASKNAMELENS), "task name too long.");
 
     RPCContentHead stHead;
     H_Zero(&stHead, sizeof(stHead));

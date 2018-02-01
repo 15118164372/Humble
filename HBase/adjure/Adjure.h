@@ -10,7 +10,7 @@ H_BNAMSP
 class CAdjure : public CObject
 {
 public:
-    CAdjure(const unsigned short usAdjure) : m_bNorProc(true), m_usAdjure(usAdjure)
+    explicit CAdjure(const unsigned short &usAdjure) : m_bNorProc(true), m_usAdjure(usAdjure)
     {};
     ~CAdjure(void) 
     {};
@@ -21,7 +21,7 @@ public:
         return m_usAdjure;
     };
     //是否正常流程
-    void setNorProc(const bool bNorProc)
+    void setNorProc(const bool &bNorProc)
     {
         m_bNorProc = bNorProc;
     };

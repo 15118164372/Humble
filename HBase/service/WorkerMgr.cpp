@@ -27,29 +27,6 @@ CWorkerMgr::~CWorkerMgr(void)
     H_SafeDelArray(m_pAllRunner);
 }
 
-void CWorkerMgr::addAdjureToTask(CWorker *pWorker, CAdjure *pAdjure)
-{
-    CMutex *pLckWorker(pWorker->getWorkerLck());
-
-    pLckWorker->Lock();
-    if (!pWorker->addAdjure(pAdjure))
-    {
-        pLckWorker->unLock();
-        H_SafeDelete(pAdjure);
-        H_LOG(LOGLV_ERROR, "%s", H_ERR_ADDINQU);
-        return;
-    }
-
-    if (!pWorker->getInGloble())
-    {
-        if (m_pAllRunner[pWorker->getIndex()].addWorker(pWorker))
-        {
-            pWorker->setInGloble(true);
-        }
-    }
-    pLckWorker->unLock();
-}
-
 CWorker *CWorkerMgr::popPool(void)
 {
     return (CWorker *)m_objWorkerPool.Pop();

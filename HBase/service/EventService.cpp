@@ -40,7 +40,7 @@ static void onAdjureEvent(struct bufferevent *pBev, void *pArg)
     }
 }
 
-CEventService::CEventService(const size_t uiCapacity) : m_bFreeQuAdjure(true),
+CEventService::CEventService(const size_t &uiCapacity) : m_bFreeQuAdjure(true),
     m_iRunFlage(H_INIT_NUMBER), m_objAdjureQu(uiCapacity)
 {
 #ifdef H_OS_WIN
@@ -128,7 +128,7 @@ const char *CEventService::getSVName(void)
 {
     return m_strServiceName.c_str();
 }
-void CEventService::setFreeQuAdjure(const bool bFree)
+void CEventService::setFreeQuAdjure(const bool &bFree)
 {
     m_bFreeQuAdjure = bFree;
 }

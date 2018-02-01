@@ -20,7 +20,10 @@ public:
     //调整负载
     void adjustLoad(const unsigned short &usToIndex);
     //请求执行Worker 锁在调用处
-    bool addWorker(CWorker *pWorker);
+    void addWorker(CWorker *pWorker)
+    {
+        H_ASSERT(Adjure(pWorker->getRunnerAdjure()), "add worker in globle queue error.");
+    };
 
     void setIndex(const unsigned short &usIndex);
     //所有Runner

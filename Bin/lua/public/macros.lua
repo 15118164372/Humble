@@ -54,6 +54,7 @@ DESMode = table.enum(DESMode, 0)
 
 --soekt¿‡–Õ
 SockType = {
+	"Default",
     "Debug",
     "RPC",
 	"Httpd",

@@ -37,7 +37,7 @@ public:
 #endif
     };
     //H_RTN_TIMEDOUT  ³¬Ê±·µ»Ø
-    int timeWait(CLckThis *pLckThis, unsigned int uiTime)
+    int timeWait(CLckThis *pLckThis, const unsigned int &uiTime)
     {
 #ifdef H_OS_WIN 
         auto time(std::chrono::system_clock::now() + std::chrono::milliseconds(uiTime));
@@ -68,7 +68,7 @@ public:
         return H_RTN_OK;
     };
 
-    void Signal(void)
+    H_INLINE void Signal(void)
     {
 #ifdef H_OS_WIN
         m_objCond.notify_one();

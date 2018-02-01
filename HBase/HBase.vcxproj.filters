@@ -1131,6 +1131,9 @@
     <ClCompile Include="parser\Parser_WS.cpp">
       <Filter>Parser</Filter>
     </ClCompile>
+    <ClCompile Include="algorithm\ConsistentHash.cpp">
+      <Filter>Algorithm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="3rd\mysql\mysql\client_plugin.h.pp">

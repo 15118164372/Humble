@@ -11,10 +11,10 @@ class CLckThis : public CObject
 {
 public:
 #ifdef H_OS_WIN
-    CLckThis(CMutex *pMutex) : m_pMutex(pMutex), m_objLck(*(pMutex->getMutex()))
+    explicit CLckThis(CMutex *pMutex) : m_pMutex(pMutex), m_objLck(*(pMutex->getMutex()))
     {};
 #else
-    CLckThis(CMutex *pMutex) : m_pMutex(pMutex)
+    explicit CLckThis(CMutex *pMutex) : m_pMutex(pMutex)
     {
         m_pMutex->Lock();
     };

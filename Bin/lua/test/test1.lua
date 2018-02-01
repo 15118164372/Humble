@@ -83,16 +83,26 @@ end
 regDelayEv(2000, test_NetRPC)
 
 --httpc
-local function onResponse(sock, sockType, strStatus, tHead, pszBody)
+local function onResponse(sock, sockType, strStatus, tHead, pszBody, param)
+	print(CUtils.nowMilSecond())
+	print("--------------httpClient onResponse param--------------")
+	print(param)
+	
+	print("--------------httpClient onResponse--------------")
 	print(strStatus)
 	table.print(tHead)
 	print(pszBody)
 end
-local function httpClient_Conn(sock, sockType)
+local function httpClient_Conn(sock, sockType, param)
+	print("--------------httpClient_Conn param--------------")
+	print(param)
 	httpd.Get(sock, "/echo1?a=1&n=2")
 end
 local function test_Httpc()
 	print("--------------test_Httpc--------------")
-	httpClient("127.0.0.1", "8080", 10, httpClient_Conn, onResponse)
+	print(CUtils.nowMilSecond())
+	--httpClient(pszHost, usPort, sockType, onConnectFunc, tConnParam, onResponse, ...)
+	httpClient("127.0.0.1", "8080", 10, 
+		httpClient_Conn, {"httpClient_Conn param"}, onResponse, "onResponse param")
 end
 regDelayEv(3000, test_Httpc)

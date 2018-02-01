@@ -1,6 +1,7 @@
 
 #include "Runner.h"
 #include "Log.h"
+#include "WorkerMgr.h"
 #include "Utils.h"
 
 H_BNAMSP
@@ -100,7 +101,19 @@ void CRunner::onAdjure(CAdjure *pAdjure)
     }
 
     //调整全局队列
+    pLckWorker->Lock();
     adjustInGloble(pWorker, pRunner);
+    pLckWorker->unLock();
+}
+void CRunner::adjustInGloble(CWorker *pWorker, CRunner *pRunner)
+{
+    if (H_INIT_NUMBER == pWorker->getAdjureNum())
+    {
+        pWorker->setInGloble(false);
+        return;
+    }
+
+    pRunner->addWorker(pWorker);
 }
 CRunner *CRunner::adjustLoad(CWorker *pWorker, const unsigned short &usToIndex)
 {
@@ -120,29 +133,6 @@ CRunner *CRunner::adjustLoad(CWorker *pWorker, const unsigned short &usToIndex)
     H_LOG(LOGLV_SYS, "move task %s run thread. %d--->%d", pWorker->getName(), usOldIndex, usToIndex);
     return pRunner;
 }
-void CRunner::adjustInGloble(CWorker *pWorker, CRunner *pRunner)
-{
-    CMutex *pLckWorker(pWorker->getWorkerLck());
-
-    pLckWorker->Lock();
-    if (H_INIT_NUMBER == pWorker->getAdjureNum())
-    {
-        pWorker->setInGloble(false);
-    }
-    else
-    {
-        if (!pRunner->addWorker(pWorker))
-        {
-            pWorker->setInGloble(false);
-        }
-    }    
-    pLckWorker->unLock();
-}
-bool CRunner::addWorker(CWorker *pWorker)
-{
-    return Adjure(pWorker->getRunnerAdjure());
-}
-
 void CRunner::adjustLoad(const unsigned short &usToIndex)
 {
     m_usToIndex = usToIndex;

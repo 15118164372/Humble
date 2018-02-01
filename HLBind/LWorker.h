@@ -9,10 +9,10 @@ H_BNAMSP
 class CLWorker : public CWorker
 {
 public:
-    CLWorker(CHumble *pHumble, const char *pszFile, const char *pszName, const size_t uiCapacity);
+    CLWorker(CHumble *pHumble, const char *pszFile, const char *pszName, const size_t &uiCapacity);
     ~CLWorker(void);
 
-    void reSet(const char *pszFile, const char *pszName, const size_t uiCapacity);
+    void reSet(const char *pszFile, const char *pszName, const size_t &uiCapacity);
 
     void initTask(void);
     void destroyTask(void);

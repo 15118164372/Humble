@@ -10,8 +10,10 @@ H_BNAMSP
 class CThread : public CObject
 {
 public:
-    CThread(void) {};
-    ~CThread(void) {};
+    CThread(void) 
+    {};
+    ~CThread(void) 
+    {};
     
     static pthread_t Creat(CTask *pTask) 
     {

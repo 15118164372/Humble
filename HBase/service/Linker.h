@@ -15,7 +15,7 @@ public:
 
     //新加连接
     void addLinker(class CWorker *pWorker, const char *pszParser, const unsigned short &usType,
-        const char *pszHost, const unsigned short &usPort, const bool &bKeepAlive);
+        const char *pszHost, const unsigned short &usPort, const uint64_t &ulId, const bool &bKeepAlive);
     void reLink(void);
 
     //执行请求

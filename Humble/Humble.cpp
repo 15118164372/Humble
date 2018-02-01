@@ -99,7 +99,7 @@ bool getParam(const char *pszKey, std::map<std::string, std::string> &mapParam, 
 #ifdef H_OS_WIN
 BOOL WINAPI consoleHandler(DWORD msgType)
 {
-    BOOL bRtn = FALSE;
+    BOOL bRtn(FALSE);
 
     switch (msgType)
     {
@@ -133,9 +133,9 @@ void sigHandEntry(int iSigNum)
 }
 void writePid(int pId)
 {
-    std::string strPidPath = CUtils::getProPath() + ".pid";
-    std::string strPid = CUtils::toString(pId);
-    FILE *pFile = fopen(strPidPath.c_str(), "w");
+    std::string strPidPath(CUtils::getProPath() + ".pid");
+    std::string strPid(CUtils::toString(pId));
+    FILE *pFile(fopen(strPidPath.c_str(), "w"));
     if (NULL == pFile)
     {
         H_Printf("%s", "write pid file error.");
@@ -149,7 +149,8 @@ void writePid(int pId)
 
 CHumble *loadParam(void)
 {
-    std::string strConfFile = CUtils::formatStr("%s%s%s%s", CUtils::getProPath().c_str(), "config", H_PATH_SEPARATOR, "config.ini");
+    std::string strConfFile(CUtils::formatStr("%s%s%s%s", 
+        CUtils::getProPath().c_str(), "config", H_PATH_SEPARATOR, "config.ini"));
     CIniFile objIni(strConfFile.c_str());
     if (!objIni.haveNode("Main"))
     {
@@ -157,18 +158,18 @@ CHumble *loadParam(void)
         return NULL;
     }
 
-    unsigned short usCore = CUtils::coreCount();
+    unsigned short usCore(CUtils::coreCount());
 
-    int iSVId = objIni.getIntValue("Main", "id");
-    int iSVType = objIni.getIntValue("Main", "type");
-    std::string strRPCKey = objIni.getStringValue("Main", "rpckey");
-    std::string strScript = objIni.getStringValue("Main", "script");
-    unsigned short usPriority = (unsigned short)objIni.getIntValue("Main", "priority");
-    unsigned int uiLoadDiffer = (unsigned int)objIni.getIntValue("Main", "loaddiffer");
-    unsigned int uiAlarmTime = (unsigned int)objIni.getIntValue("Main", "alarmtime");
-    unsigned short usWorkerNum = (unsigned short)objIni.getIntValue("Main", "workernum");
-    unsigned short usNetNum = (unsigned short)objIni.getIntValue("Main", "netnum");
-    unsigned int uiRPCTimeDeviation = (unsigned int)objIni.getIntValue("Main", "rtdeviation");
+    int iSVId(objIni.getIntValue("Main", "id"));
+    int iSVType(objIni.getIntValue("Main", "type"));
+    std::string strRPCKey(objIni.getStringValue("Main", "rpckey"));
+    std::string strScript(objIni.getStringValue("Main", "script"));
+    unsigned short usPriority((unsigned short)objIni.getIntValue("Main", "priority"));
+    unsigned int uiLoadDiffer((unsigned int)objIni.getIntValue("Main", "loaddiffer"));
+    unsigned int uiAlarmTime((unsigned int)objIni.getIntValue("Main", "alarmtime"));
+    unsigned short usWorkerNum((unsigned short)objIni.getIntValue("Main", "workernum"));
+    unsigned short usNetNum((unsigned short)objIni.getIntValue("Main", "netnum"));
+    unsigned int uiRPCTimeDeviation((unsigned int)objIni.getIntValue("Main", "rtdeviation"));
 
     usWorkerNum = (H_INIT_NUMBER == usWorkerNum ? usCore : usWorkerNum);
     usNetNum = (H_INIT_NUMBER == usNetNum ? 1 : usNetNum);
@@ -197,7 +198,7 @@ CHumble *loadParam(void)
 int initHumble(void)
 {
     //×¢²áÈÎÎñ£¬¼àÌýµÈ
-    struct lua_State *pLState = luaL_newstate();
+    struct lua_State *pLState(luaL_newstate());
     if (NULL == pLState)
     {
         H_LOG(LOGLV_ERROR, "%s", "luaL_newstate error.");
@@ -206,7 +207,7 @@ int initHumble(void)
 
     luaL_openlibs(pLState);
     CReg2Lua::regAll(pLState);
-    std::string strLuaFile = CUtils::formatStr("%s%s", g_pHumble->getScriptPath(), "start.lua");
+    std::string strLuaFile(CUtils::formatStr("%s%s", g_pHumble->getScriptPath(), "start.lua"));
     if (H_RTN_OK != luaL_dofile(pLState, strLuaFile.c_str()))
     {
         H_LOG(LOGLV_ERROR, "%s", lua_tostring(pLState, -1));
@@ -298,7 +299,7 @@ void printUseage(void)
 int main(int argc, char *argv[])
 {
     std::map<std::string, std::string> mapParam;
-    int iRtn = parseParam(argc, argv, mapParam);
+    int iRtn(parseParam(argc, argv, mapParam));
     if (H_RTN_OK != iRtn)
     {
         printUseage();

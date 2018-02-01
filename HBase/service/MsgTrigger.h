@@ -32,9 +32,9 @@ public:
         regNetEvent(m_objAcceptEventLck, m_mapAcceptEvent, pWorker, usType);
         H_LOG(LOGLV_SYS, "%s register net accept event, type %d", pWorker->getName(), usType);
     };
-    void triggerAccept(CWorker *pBindWorker, const H_SOCK &uiSock, const unsigned short &usType)
+    void triggerAccept(CWorker *pBindWorker, const H_SOCK &uiSock, const unsigned short &usType, const uint64_t &ulId)
     {
-        triggerNetEvent(pBindWorker, m_objAcceptEventLck, m_mapAcceptEvent, MSG_NET_ACCEPT, uiSock, usType);
+        triggerNetEvent(pBindWorker, m_objAcceptEventLck, m_mapAcceptEvent, MSG_NET_ACCEPT, uiSock, usType, ulId);
     };
     //连接成功
     void regConnectEvent(CWorker *pWorker, const unsigned short &usType)
@@ -42,9 +42,9 @@ public:
         regNetEvent(m_objConnectEventLck, m_mapConnectEvent, pWorker, usType);
         H_LOG(LOGLV_SYS, "%s register net linked event, type %d", pWorker->getName(), usType);
     };
-    void triggerConnect(CWorker *pBindWorker, const H_SOCK &uiSock, const unsigned short &usType)
+    void triggerConnect(CWorker *pBindWorker, const H_SOCK &uiSock, const unsigned short &usType, const uint64_t &ulId)
     {
-        triggerNetEvent(pBindWorker, m_objConnectEventLck, m_mapConnectEvent, MSG_NET_CONNECT, uiSock, usType);
+        triggerNetEvent(pBindWorker, m_objConnectEventLck, m_mapConnectEvent, MSG_NET_CONNECT, uiSock, usType, ulId);
     };
     //close
     void regCloseEvent(CWorker *pWorker, const unsigned short &usType)
@@ -52,9 +52,9 @@ public:
         regNetEvent(m_objCloseEventLck, m_mapCloseEvent, pWorker, usType);
         H_LOG(LOGLV_SYS, "%s register net close event, type %d", pWorker->getName(), usType);
     };
-    void triggerClosed(CWorker *pBindWorker, const H_SOCK &uiSock, const unsigned short &usType)
+    void triggerClosed(CWorker *pBindWorker, const H_SOCK &uiSock, const unsigned short &usType, const uint64_t &ulId)
     {
-        triggerNetEvent(pBindWorker, m_objCloseEventLck, m_mapCloseEvent, MSG_NET_CLOSE, uiSock, usType);
+        triggerNetEvent(pBindWorker, m_objCloseEventLck, m_mapCloseEvent, MSG_NET_CLOSE, uiSock, usType, ulId);
     };
     //网络可读(数字请求码) MSG_NET_READ_I
     void regIProto(CWorker *pWorker, H_PROTO_TYPE &iProto);
@@ -111,7 +111,7 @@ private:
     void regNetEvent(CRWLock &objNetEventLck, netevent_map &mapEvent, CWorker *pWorker, const unsigned short &usType);
     void unRegNetEvent(CRWLock &objNetEventLck, netevent_map &mapEvent, CWorker *pWorker);
     void triggerNetEvent(CWorker *pBindWorker, CRWLock &objNetEventLck, netevent_map &mapEvent,
-        const unsigned short usEvent, const H_SOCK &uiSock, const unsigned short &usType);
+        const unsigned short usEvent, const H_SOCK &uiSock, const unsigned short &usType, const uint64_t &ulId);
     void unRegAcceptEvent(CWorker *pWorker)
     {
         unRegNetEvent(m_objAcceptEventLck, m_mapAcceptEvent, pWorker);

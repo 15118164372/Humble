@@ -53,13 +53,14 @@ void CMsgTrigger::unRegNetEvent(CRWLock &objNetEventLck, netevent_map &mapEvent,
     objNetEventLck.wunLock();
 }
 void CMsgTrigger::triggerNetEvent(CWorker *pBindWorker, CRWLock &objNetEventLck, netevent_map &mapEvent,
-    const unsigned short usEvent, const H_SOCK &uiSock, const unsigned short &usType)
+    const unsigned short usEvent, const H_SOCK &uiSock, const unsigned short &usType, const uint64_t &ulId)
 {
     if (NULL != pBindWorker)
     {
         CTaskNetEvAdjure *pNetEv = new(std::nothrow) CTaskNetEvAdjure(usEvent, uiSock, usType);
         if (NULL != pNetEv)
         {
+            pNetEv->setBindId(ulId);
             m_pWorkerMgr->addAdjureToTask(pBindWorker, pNetEv);
         }
 
@@ -78,6 +79,7 @@ void CMsgTrigger::triggerNetEvent(CWorker *pBindWorker, CRWLock &objNetEventLck,
                 continue;
             }
 
+            pNetEv->setBindId(ulId);
             m_pWorkerMgr->addAdjureToTask(it->first, pNetEv);
         }
     }

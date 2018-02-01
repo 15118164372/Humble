@@ -19,12 +19,12 @@ public:
     {
         return m_strName.c_str();
     };
-    const bool &needHandShake(void)
+    H_INLINE const bool &needHandShake(void)
     {
         return m_bHandShake;
     };
     //握手超时时间 (ms)
-    void setHSTimeOut(const unsigned int uiTime)
+    void setHSTimeOut(const unsigned int &uiTime)
     {
         m_uiHSTimeOut = uiTime;
     };
@@ -37,7 +37,7 @@ public:
     {
         m_bRPC = bRPC;
     };
-    const bool &getRPC(void)
+    H_INLINE const bool &getRPC(void)
     {
         return m_bRPC;
     };

@@ -91,7 +91,7 @@ public:
     CLinkInfo(class CEventService *pEventService, class CParser *pParser, 
         const unsigned short &usType, const char *pszHost, const unsigned short &usPort) :
         CNetInfo(pEventService, pParser, usType, pszHost, usPort), m_bKeepAlive(true), 
-        m_emLinkState(LS_WAITLINK), m_pBind(NULL)
+        m_emLinkState(LS_WAITLINK), m_ulBindId(H_INIT_NUMBER), m_pBindWorker(NULL)
     {};
     ~CLinkInfo(void)
     {};
@@ -113,27 +113,33 @@ public:
     {
         return m_bKeepAlive;
     };
-    void setBind(class CWorker *pBind)
+    void setBind(class CWorker *pBindWorker, const uint64_t &ulId)
     {
-        m_pBind = pBind;
+        m_ulBindId = ulId;
+        m_pBindWorker = pBindWorker;
     };
-    class CWorker *getBind(void)
+    class CWorker *getBindWorker(void)
     {
-        return m_pBind;
+        return m_pBindWorker;
+    };
+    const uint64_t &getBindId(void)
+    {
+        return m_ulBindId;
     };
 
 private:
     CLinkInfo(void);
     bool m_bKeepAlive;
     LinkState m_emLinkState;
-    class CWorker *m_pBind;
+    uint64_t m_ulBindId;
+    class CWorker *m_pBindWorker;    
 };
 
 //NETWORKERADJ_ADDLISTENER
 class CAddListenAdjure : public CAdjure
 {
 public:
-    CAddListenAdjure(CNetInfo *pListenInfo) : CAdjure(NETWORKERADJ_ADDLISTENER),
+    explicit CAddListenAdjure(CNetInfo *pListenInfo) : CAdjure(NETWORKERADJ_ADDLISTENER),
         m_pListenInfo(pListenInfo)
     {};
     ~CAddListenAdjure(void)
@@ -189,7 +195,7 @@ private:
 class CToSockAdjure : public CAdjure
 {
 public:
-    CToSockAdjure(const unsigned short usAdjure, const H_SOCK &uiSock) : CAdjure(usAdjure),
+    CToSockAdjure(const unsigned short &usAdjure, const H_SOCK &uiSock) : CAdjure(usAdjure),
         m_uiSock(uiSock)
     {};
     ~CToSockAdjure(void)
@@ -296,7 +302,7 @@ private:
 class CAddLinkerAdjure : public CAdjure
 {
 public:
-    CAddLinkerAdjure(CLinkInfo *pLinkInfo) : CAdjure(NETWORKERADJ_ADDLINKER), m_pLinkInfo(pLinkInfo)
+    explicit CAddLinkerAdjure(CLinkInfo *pLinkInfo) : CAdjure(NETWORKERADJ_ADDLINKER), m_pLinkInfo(pLinkInfo)
     {};
     ~CAddLinkerAdjure(void)
     {};

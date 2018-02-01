@@ -114,7 +114,7 @@ void CLog::afterAdjure(CAdjure *pAdjure)
     H_SafeDelete(pAdjure);
 }
 
-void CLog::writeLog(const LOG_LEVEL emInLogLv, const char *pFormat, ...)
+void CLog::writeLog(const LOG_LEVEL &emInLogLv, const char *pFormat, ...)
 {
     if (emInLogLv > m_emLV
         || NULL == m_pFile)

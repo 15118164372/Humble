@@ -13,7 +13,7 @@ public:
     CUtils(void) {};
     ~CUtils(void) {};
 
-    static uint64_t ntohl64(uint64_t host);
+    static uint64_t ntohl64(const uint64_t &ulVal);
     static unsigned int threadId(void);
     static unsigned short coreCount(void);
 
@@ -21,8 +21,8 @@ public:
     static std::string formatStr(const char *pcFormat, ...);
     static void Split(const std::string &strSource, const char *pszFlag,
         std::list<std::string> &lstRst);
-    static std::string trimLeft(std::string strSource);
-    static std::string trimRight(std::string strSource);
+    static std::string &trimLeft(std::string &strSource);
+    static std::string &trimRight(std::string &strSource);
     static std::string Trim(std::string strSource);
     static std::string frontOfFlag(const std::string &strSource, const char *pszFlag);
     static std::string lastOfFlag(const std::string &strSource, const char *pszFlag);

@@ -14,7 +14,7 @@ public:
         initSem(H_INIT_NUMBER);
     };
     //uiValue 信号量的初始计数
-    CSem(const unsigned int uiValue)
+    explicit CSem(const unsigned int &uiValue)
     {
         initSem(uiValue);
     };
@@ -77,7 +77,7 @@ public:
 
         return H_RTN_OK;
     };
-    void Signal(void)
+    H_INLINE void Signal(void)
     {
 #ifdef H_OS_WIN
         H_ASSERT(ReleaseSemaphore(m_stSem, 1, NULL), "ReleaseSemaphore error.");
@@ -87,7 +87,7 @@ public:
     };
 
 private:
-    void initSem(const unsigned int uiVal)
+    void initSem(const unsigned int &uiVal)
     {
 #ifdef H_OS_WIN
         m_stSem = CreateSemaphore(NULL, uiVal, INT_MAX, NULL);

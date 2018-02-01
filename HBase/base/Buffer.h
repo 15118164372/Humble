@@ -10,13 +10,19 @@ H_BNAMSP
 class CBuffer : public CObject
 {
 public:
-    CBuffer(const char *pBuf, const size_t &iLens) : m_pBuffer((char *)pBuf), m_uiLens(iLens)
+    CBuffer(const char *pBuf, const size_t &iLens) : m_pBuffer((char *)pBuf), m_pRealBuf(NULL), m_uiLens(iLens)
     {};
-    CBuffer(void) : m_pBuffer(NULL), m_uiLens(H_INIT_NUMBER)
+    CBuffer(void) : m_pBuffer(NULL), m_pRealBuf(NULL), m_uiLens(H_INIT_NUMBER)
     {};
     ~CBuffer(void)
     {
-        Free();
+        if (NULL != m_pRealBuf)
+        {
+            H_SafeDelArray(m_pRealBuf);
+            return;
+        }
+
+        H_SafeDelArray(m_pBuffer);
     };
 
     H_INLINE char *getBuffer(void)
@@ -28,13 +34,14 @@ public:
         return m_uiLens;
     };
 
-    virtual void Free(void)
+protected:
+    void setRealBuf(const char *pRealBuf)
     {
-        H_SafeDelArray(m_pBuffer);
+        m_pRealBuf = (char*)pRealBuf;
     };
 
-protected:
     char *m_pBuffer;
+    char *m_pRealBuf;
     size_t m_uiLens;
 };
 
@@ -64,20 +71,15 @@ private:
 class CSkippedBuffer : public CBuffer
 {
 public:
-    CSkippedBuffer(const char *pBuf, const size_t &iLens, const int &iSkipped) : CBuffer(pBuf, iLens),
-        m_pRealBuf((char *)pBuf - iSkipped)
-    {};
+    CSkippedBuffer(const char *pBuf, const size_t &iLens, const int &iSkipped) : CBuffer(pBuf, iLens)
+    {
+        setRealBuf(pBuf - iSkipped);
+    };
     ~CSkippedBuffer(void)
     {};
 
-    void Free(void)
-    {
-        H_SafeDelArray(m_pRealBuf);
-    };
-
 private:
     CSkippedBuffer(void);
-    char *m_pRealBuf;
 };
 
 class CDynaBuffer : public CBuffer
@@ -96,11 +98,11 @@ public:
     {
         return m_uiTotal;
     };
-    H_INLINE void setData(void *pData)
+    void setData(void *pData)
     {
         m_pData = pData;
     };
-    H_INLINE void *getData(void)
+    void *getData(void)
     {
         return m_pData;
     };
@@ -119,12 +121,12 @@ public:
         m_uiLens = H_INIT_NUMBER;
         m_uiTotal = H_INIT_NUMBER;
     };
-    H_INLINE bool Assign(const char *pBuf, const size_t &iLens)
+    bool Assign(const char *pBuf, const size_t &iLens)
     {
         m_uiLens = H_INIT_NUMBER;
         return Append(pBuf, iLens);
     };
-    H_INLINE bool Append(const char *pBuf, const size_t &iLens)
+    bool Append(const char *pBuf, const size_t &iLens)
     {
         if (H_INIT_NUMBER == iLens)
         {

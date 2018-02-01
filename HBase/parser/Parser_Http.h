@@ -10,7 +10,7 @@ H_BNAMSP
 class CHttpParser : public CParser
 {
 public:
-    CHttpParser(const char *pszName);
+    explicit CHttpParser(const char *pszName);
     ~CHttpParser(void);
 
     CAdjure *Parse(class CSession *pSession, const char *pBuf, const size_t &iLens, size_t &iParsed, bool &bClose);

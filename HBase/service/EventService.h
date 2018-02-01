@@ -20,14 +20,14 @@ enum READ_RETURN
 class CEventService : public CTask
 {
 public:
-    CEventService(const size_t uiCapacity);
+    explicit CEventService(const size_t &uiCapacity);
     ~CEventService(void);
 
     //服务名
     void setSVName(const char *pszName);
     const char *getSVName(void);
     //是否释放队列里面的命令(CRunner 不需要释放)
-    void setFreeQuAdjure(const bool bFree);
+    void setFreeQuAdjure(const bool &bFree);
 
     //CTask虚函数实现
     void Run(void);
@@ -56,6 +56,7 @@ public:
         return m_pBase;
     };
     static READ_RETURN sockRead(H_SOCK &sock, CDynaBuffer *pSockBuf);
+
 private:
     CEventService(void);
     static int creatListener(H_SOCK &fdListener);

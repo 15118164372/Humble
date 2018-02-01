@@ -3,7 +3,7 @@
 
 H_BNAMSP
 
-CLWorker::CLWorker(CHumble *pHumble, const char *pszFile, const char *pszName, const size_t uiCapacity) :
+CLWorker::CLWorker(CHumble *pHumble, const char *pszFile, const char *pszName, const size_t &uiCapacity) :
     CWorker(pszName, uiCapacity), m_pHumble(pHumble), m_strFile(pszFile)
 {
     initLua();
@@ -14,12 +14,11 @@ CLWorker::~CLWorker(void)
     freeLua();
 }
 
-void CLWorker::reSet(const char *pszFile, const char *pszName, const size_t uiCapacity)
+void CLWorker::reSet(const char *pszFile, const char *pszName, const size_t &uiCapacity)
 {
     freeLua();
 
     m_strFile = pszFile;
-    cleanAdjureQu();
     setName(pszName);
     resetCapacity(uiCapacity);
 
@@ -122,7 +121,7 @@ void CLWorker::onAccepted(CTaskNetEvAdjure *pNetEv)
 {
     try
     {
-        (*(m_pLFunc[LFUNC_NET_ACCEPT]))(pNetEv->getSock(), pNetEv->getType());
+        (*(m_pLFunc[LFUNC_NET_ACCEPT]))(pNetEv->getSock(), pNetEv->getType(), pNetEv->getBindId());
     }
     catch (luabridge::LuaException &e)
     {
@@ -133,7 +132,7 @@ void CLWorker::onConnected(CTaskNetEvAdjure *pNetEv)
 {
     try
     {
-        (*(m_pLFunc[LFUNC_NET_CONNECT]))(pNetEv->getSock(), pNetEv->getType());
+        (*(m_pLFunc[LFUNC_NET_CONNECT]))(pNetEv->getSock(), pNetEv->getType(), pNetEv->getBindId());
     }
     catch (luabridge::LuaException &e)
     {
@@ -144,7 +143,7 @@ void CLWorker::onClosed(CTaskNetEvAdjure *pNetEv)
 {
     try
     {
-        (*(m_pLFunc[LFUNC_NET_CLOSE]))(pNetEv->getSock(), pNetEv->getType());
+        (*(m_pLFunc[LFUNC_NET_CLOSE]))(pNetEv->getSock(), pNetEv->getType(), pNetEv->getBindId());
     }
     catch (luabridge::LuaException &e)
     {
@@ -231,7 +230,7 @@ void CLWorker::onUnNorProc(CAdjure *pAdjure)
             CTaskHttcdAdjure *pHttcdAdjure((CTaskHttcdAdjure *)pAdjure);
             try
             {
-                (*(m_pLFunc[LFUNC_TASK_BIND_HTTPC]))(pHttcdAdjure->getSock(), pHttcdAdjure->getType(), 
+                (*(m_pLFunc[LFUNC_TASK_BIND_HTTPC]))(pHttcdAdjure->getSock(), pHttcdAdjure->getType(), pHttcdAdjure->getBindId(),
                     pHttcdAdjure->getStatus(), pHttcdAdjure->getHead(), pHttcdAdjure->getBody());
             }
             catch (luabridge::LuaException &e)

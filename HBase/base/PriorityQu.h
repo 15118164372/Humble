@@ -16,15 +16,15 @@ public:
     ~CPriQuNode(void)
     {};
 
-    class CWorker *getWork(void)
+    H_INLINE class CWorker *getWork(void)
     {
         return m_pWork;
     };
-    const uint64_t &getId(void)
+    H_INLINE const uint64_t &getId(void)
     {
         return m_ulId;
     };
-    const uint64_t &getMark(void)
+    H_INLINE const uint64_t &getMark(void)
     {
         return m_ulMark;
     };

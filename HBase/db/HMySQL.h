@@ -49,7 +49,7 @@ public:
 class CMySQLQuery : public CDBQuery
 {
 public:    
-    CMySQLQuery(MYSQL_RES *mysql_res);
+    explicit CMySQLQuery(MYSQL_RES *mysql_res);
     ~CMySQLQuery(void);
     
     int getIntValue(const char* pszField, const int iNullValue = 0);

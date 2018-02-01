@@ -77,9 +77,9 @@ public:
     };
     //新加连接
     void addLinker(class CWorker *pWorker, const char *pszParser, const unsigned short &usType,
-        const char *pszHost, const unsigned short &usPort, const bool &bKeepAlive)
+        const char *pszHost, const unsigned short &usPort, const uint64_t &ulId, const bool &bKeepAlive)
     {
-        m_objLinker.addLinker(pWorker, pszParser, usType, pszHost, usPort, bKeepAlive);
+        m_objLinker.addLinker(pWorker, pszParser, usType, pszHost, usPort, ulId, bKeepAlive);
     };
     //关闭连接
     void closeLink(const H_SOCK &uiSock)

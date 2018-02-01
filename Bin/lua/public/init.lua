@@ -18,6 +18,9 @@ if not g_Global then
 	g_Global.AcceptEvent = {} --accept成功
 	g_Global.ConnectEvent = {}--连接成功
 	g_Global.CloseEvent = {}--连接关闭
+	g_Global.BAcceptEvent = {} --accept成功
+	g_Global.BConnectEvent = {}--连接成功
+	g_Global.BCloseEvent = {}--连接关闭
 	g_Global.NetIMsg = {}--网络消息
 	g_Global.NetBindIMsg = {}
 	g_Global.NetHttpdMsg = {}
@@ -114,43 +117,105 @@ function regDelayAtEv(strTime, Func, ...)
 	regDelayEv(iDelayTime * 1000, Func, table.unpack({...}))
 end
 
---网络事件 func(sock, sockType)
-function CCALL_ACCEPT(sock, sockType)
-	local func = m_Global.AcceptEvent[sockType]
-	if not func then
+--网络事件
+function CCALL_ACCEPT(sock, sockType, ulId)
+	if 0 == ulId then
+		local func = m_Global.AcceptEvent[sockType]
+		if not func then
+			return
+		end
+		
+		utile.callFunc(func, sock, sockType)
 		return
 	end
 	
-	utile.callFunc(func, sock, sockType)
+	local cbFun = m_Global.BAcceptEvent[ulId]
+	if not cbFun then
+		return
+	end
+	utile.callFunc(cbFun.func, sock, sockType, table.unpack(cbFun.param))
 end
+--func(sock, sockType)
 function regAcceptEv(sockType, func)
 	m_Global.AcceptEvent[sockType] = func
 	humble.regAcceptEvent(sockType)
 end
+--func(sock, sockType, ...)
+function regBAcceptEv(sockType, ulId, func, ...)
+	local tParam = {}
+	tParam.func = func
+	tParam.param = {...}
+	
+	m_Global.BAcceptEvent[ulId] = tParam
+	humble.regAcceptEvent(sockType)
+end
 
-function CCALL_CONNECT(sock, sockType)
-	local func = m_Global.ConnectEvent[sockType]
-	if not func then
+function CCALL_CONNECT(sock, sockType, ulId)
+	if 0 == ulId then
+		local func = m_Global.ConnectEvent[sockType]
+		if not func then
+			return
+		end
+		
+		utile.callFunc(func, sock, sockType)
 		return
 	end
 	
-	utile.callFunc(func, sock, sockType)
+	local cbFun = m_Global.BConnectEvent[ulId]
+	if not cbFun then
+		return
+	end
+	utile.callFunc(cbFun.func, sock, sockType, table.unpack(cbFun.param))
 end
 function regConnectEv(sockType, func)
 	m_Global.ConnectEvent[sockType] = func
 	humble.regConnectEvent(sockType)
 end
+function regBConnectEv(sockType, ulId, func, ...)
+	local tParam = {}
+	tParam.func = func
+	tParam.param = {...}
+	
+	m_Global.BConnectEvent[ulId] = tParam
+	humble.regConnectEvent(sockType)
+end
 
-function CCALL_CLOSED(sock, sockType)
-	local func = m_Global.CloseEvent[sockType]
-	if not func then
+function CCALL_CLOSED(sock, sockType, ulId)
+	if 0 == ulId then
+		local func = m_Global.CloseEvent[sockType]
+		if not func then
+			return
+		end
+		
+		utile.callFunc(func, sock, sockType)
 		return
 	end
 	
-	utile.callFunc(func, sock, sockType)
+	local cbFun = m_Global.BCloseEvent[ulId]
+	if not cbFun then
+		return
+	end
+	if cbFun.func then
+		utile.callFunc(cbFun.func, sock, sockType, table.unpack(cbFun.param))
+	end
+	
+	if not cbFun.keep then
+		m_Global.BCloseEvent[ulId] = nil
+		m_Global.BAcceptEvent[ulId] = nil
+		m_Global.BConnectEvent[ulId] = nil
+	end
 end
 function regCloseEv(sockType, func)
 	m_Global.CloseEvent[sockType] = func
+	humble.regCloseEvent(sockType)
+end
+function regBCloseEv(sockType, ulId, bKeepAlive, func, ...)
+	local tParam = {}
+	tParam.func = func
+	tParam.keep = bKeepAlive
+	tParam.param = {...}
+	
+	m_Global.BCloseEvent[ulId] = tParam
 	humble.regCloseEvent(sockType)
 end
 
@@ -201,23 +266,30 @@ function regHttpdProto(strProto, func)
 end
 
 --http client
-function CCALL_BIND_HTTPC(sock, sockType, strStatus, tHead, pszBody)
-	local func = m_Global.NetHttpcMsg[sockType]
-	if not func then
+function CCALL_BIND_HTTPC(sock, sockType, ulId, strStatus, tHead, pszBody)
+	local cbFun = m_Global.NetHttpcMsg[ulId]
+	if not cbFun then
 		return
 	end
 
-	utile.callFunc(func, sock, sockType, strStatus, tHead, pszBody)
+	utile.callFunc(cbFun.func, sock, sockType, strStatus, tHead, pszBody, 
+		table.unpack(cbFun.param))
 	humble.closeLink(sock)
 end
---http 客户端 onConnectFunc(sock, sockType) onResponse(sock, sockType, strStatus, tHead, pszBody)
-function httpClient(pszHost, usPort, sockType, onConnectFunc, onResponse)
-	if not m_Global.NetHttpcMsg[sockType] then
-		m_Global.NetHttpcMsg[sockType] = onResponse
-		regConnectEv(sockType, onConnectFunc)
-	end
+--http 客户端 
+--onConnectFunc(sock, sockType, ...) 
+--onResponse(sock, sockType, strStatus, tHead, pszBody,...)
+function httpClient(pszHost, usPort, sockType, onConnectFunc, tConnParam, onResponse, ...)
+	local Id = getId()
+	local tParam = {}
+	tParam.func = onResponse
+	tParam.param = {...}
 	
-	humble.addBindLinker("httpc", sockType, pszHost, usPort, false)	
+	regBConnectEv(sockType, Id, onConnectFunc, table.unpack(tConnParam))
+	regBCloseEv(sockType, Id, false)
+	m_Global.NetHttpcMsg[Id] = tParam
+	
+	humble.addBindLinker("httpc", sockType, pszHost, usPort, Id, false)	
 end
 
 --任务间RPC
