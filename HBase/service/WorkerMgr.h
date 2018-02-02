@@ -29,11 +29,13 @@ public:
             {
                 H_ASSERT(false, "add init or delete adjure to worker error.");
             }
+
             H_SafeDelete(pAdjure);
             H_LOG(LOGLV_ERROR, "%s", H_ERR_ADDINQU);
 
             return;
         }
+
         if (!pWorker->getInGloble())
         {
             m_pAllRunner[pWorker->getIndex()].addWorker(pWorker);
