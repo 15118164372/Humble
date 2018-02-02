@@ -31,6 +31,10 @@ public:
         }
     };
 
+    const bool &getStop(void)
+    {
+        return m_bStop;
+    };
     //CTask虚函数实现
     void Run(void)
     {
@@ -78,20 +82,18 @@ public:
     };
 
     //请求执行命令
-    bool Adjure(CAdjure *pAdjure)
+    void Adjure(CAdjure *pAdjure)
     {
-        bool bOk(false);
-        { 
+        do
+        {
             CLckThis objLckThis(&m_objMutex);
-            bOk = m_objAdjureQu.Push(pAdjure);
-        }
-        if (bOk
-            && m_iWait > H_INIT_NUMBER)
+            m_objAdjureQu.Push(pAdjure);
+        } while (false);
+
+        if (m_iWait > H_INIT_NUMBER)
         {
             m_objCond.Signal();
         }
-
-        return bOk;
     };
 
     //执行命令

@@ -33,7 +33,7 @@ CWorker *CWorkerMgr::popPool(void)
 }
 void CWorkerMgr::pushPool(CWorker *pWorker)
 {
-    H_ASSERT(m_objWorkerPool.Push(pWorker), "worker pool is full!");
+    m_objWorkerPool.Push(pWorker);
 }
 
 CWorker *CWorkerMgr::getWorker(const char *pszName)

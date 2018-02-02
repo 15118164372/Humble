@@ -136,11 +136,7 @@ void CLog::writeLog(const LOG_LEVEL &emInLogLv, const char *pFormat, ...)
         return;
     }
 
-    if (!Adjure(pMsg))
-    {
-        H_SafeDelete(pMsg);
-        H_Printf("%s", H_ERR_ADDINQU);
-    }
+    Adjure(pMsg);
 }
 
 H_ENAMSP

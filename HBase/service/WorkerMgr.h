@@ -21,21 +21,7 @@ public:
         CMutex *pLckWorker(pWorker->getWorkerLck());
 
         pLckWorker->Lock();
-        if (!pWorker->addAdjure(pAdjure))
-        {
-            pLckWorker->unLock();
-            if (MSG_TASK_INIT == pAdjure->getAdjure()
-                || MSG_TASK_DEL == pAdjure->getAdjure())
-            {
-                H_ASSERT(false, "add init or delete adjure to worker error.");
-            }
-
-            H_SafeDelete(pAdjure);
-            H_LOG(LOGLV_ERROR, "%s", H_ERR_ADDINQU);
-
-            return;
-        }
-
+        pWorker->addAdjure(pAdjure);
         if (!pWorker->getInGloble())
         {
             m_pAllRunner[pWorker->getIndex()].addWorker(pWorker);

@@ -27,11 +27,7 @@ public:
             return;
         }
 
-        if (!Adjure(pSendAdjur))
-        {
-            H_SafeDelete(pSendAdjur);
-            H_LOG(LOGLV_ERROR, "%s", H_ERR_ADDINQU);
-        }
+        Adjure(pSendAdjur);
     };
     void Send(const H_SOCK &fd, CBuffer *pBuffer)
     {
@@ -43,20 +39,11 @@ public:
             return;
         }
 
-        if (!Adjure(pSendAdjur))
-        {
-            H_SafeDelete(pBuffer);
-            H_SafeDelete(pSendAdjur);
-            H_LOG(LOGLV_ERROR, "%s", H_ERR_ADDINQU);
-        }
+        Adjure(pSendAdjur);
     };
     void broadCast(CBroadCastAdjure *pAdjure)
     {
-        if (!Adjure(pAdjure))
-        {
-            H_SafeDelete(pAdjure);
-            H_LOG(LOGLV_ERROR, "%s", H_ERR_ADDINQU);
-        }
+        Adjure(pAdjure);
     };
     void onAdjure(CAdjure *pAdjure) 
     {

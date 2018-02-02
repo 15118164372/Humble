@@ -50,6 +50,11 @@ private:
         H_SOCK &sock, const unsigned short &usType);
     void *newSockEvent(class CSession *pSession, H_SOCK &sock);
 
+    static void onSocketClose(CSession *pSession, H_SOCK &sock);
+    static void parseProtocol(CSession *pSession, H_SOCK &sock);
+    static void socketEventCB(H_SOCK sock, short sEvent, void *pArg);
+    static void handShakeTimeOut(H_SOCK, short, void *pArg);
+
 private:
 #ifdef H_OS_WIN
     typedef std::unordered_map<H_SOCK, class CWorker *>::iterator bindit;

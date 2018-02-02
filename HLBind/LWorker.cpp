@@ -21,7 +21,7 @@ void CLWorker::reSet(const char *pszFile, const char *pszName, const size_t &uiC
     m_strFile = pszFile;
     setName(pszName);
     cleanAdjureQu();
-    resetCapacity(uiCapacity);
+    setAdjureCapacity(uiCapacity);
 
     initLua();
 }

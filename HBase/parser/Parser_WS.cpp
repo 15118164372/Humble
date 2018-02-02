@@ -219,7 +219,7 @@ CBuffer *CWSParser::handShake(class CSession *pSession, const char *pBuf, const 
     }
 
     http_parser_settings *pSetting((http_parser_settings *)m_pHttpParserSetting);
-    int inParsed(http_parser_execute(&(pExtendData->stParser), pSetting,
+    size_t uiNParsed(http_parser_execute(&(pExtendData->stParser), pSetting,
         pBuf + pExtendData->uiOffset, iLens - pExtendData->uiOffset));
     if (HPE_OK != pExtendData->stParser.http_errno)
     {
@@ -227,7 +227,7 @@ CBuffer *CWSParser::handShake(class CSession *pSession, const char *pBuf, const 
         return NULL;
     }
 
-    pExtendData->uiOffset += inParsed;
+    pExtendData->uiOffset += uiNParsed;
     if (!pExtendData->bOver)
     {
         return NULL;

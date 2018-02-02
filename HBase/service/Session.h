@@ -30,7 +30,7 @@ public:
     {
         m_usType = usType;
     };
-    const unsigned short &getType(void)
+    H_INLINE const unsigned short &getType(void)
     {
         return m_usType;
     };
@@ -39,17 +39,17 @@ public:
     {
         m_pParser = pParser;
     };
-    class CParser *getParser(void)
+    H_INLINE class CParser *getParser(void)
     {
         return m_pParser;
     };
     //CNetWork*
-    class CNetWorker *getNetWorker(void)
+    H_INLINE class CNetWorker *getNetWorker(void)
     {
         return m_pNetWorker;
     };
     //握手状态(H_OK_STATUS 已经完成握手)
-    short *getHSStatus(void)
+    H_INLINE short *getHSStatus(void)
     {
         return &m_sHSStatus;
     }
@@ -62,11 +62,11 @@ public:
         m_sHSStatus = H_INVALID_STATUS;
     };
     //CLinkInfo *
-    class CLinkInfo *getLinkInfo(void)
+    H_INLINE class CLinkInfo *getLinkInfo(void)
     {
         return m_pLinkInfo;
     };
-    const bool &Accept(void)
+    H_INLINE const bool &Accept(void)
     {
         return m_bAccept;
     };
@@ -86,7 +86,7 @@ public:
     {
         return m_pTimeEvent;
     };
-    CDynaBuffer *getDynaBuffer(void)
+    H_INLINE CDynaBuffer *getDynaBuffer(void)
     {
         return &m_stDynaBuffer;
     };

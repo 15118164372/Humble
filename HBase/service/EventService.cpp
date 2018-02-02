@@ -40,7 +40,7 @@ static void onAdjureEvent(struct bufferevent *pBev, void *pArg)
     }
 }
 
-CEventService::CEventService(const size_t &uiCapacity) : m_bFreeQuAdjure(true),
+CEventService::CEventService(const size_t &uiCapacity) : m_bStop(false), m_bFreeQuAdjure(true),
     m_iRunFlage(H_INIT_NUMBER), m_objAdjureQu(uiCapacity)
 {
 #ifdef H_OS_WIN
@@ -145,17 +145,12 @@ void CEventService::Run(void)
     H_Printf("stop service: %s", m_strServiceName.c_str());
     --m_iRunFlage;
 }
-bool CEventService::Adjure(CAdjure *pAdjure)
+void CEventService::Adjure(CAdjure *pAdjure)
 {
-    if (!m_objAdjureQu.Push(pAdjure))
-    {
-        return false;
-    }
+    m_objAdjureQu.Push(pAdjure);
 
     const char *pszAdjure = "";
     (void)send(m_sockAdjure[1], pszAdjure, 1, 0);
-
-    return true;
 }
 void CEventService::onStop(void)
 {
@@ -168,6 +163,7 @@ void CEventService::onStop(void)
 }
 void CEventService::Stop(void)
 {
+    m_bStop = true;
     const char *pszStop = "";
     (void)send(m_sockStop[1], pszStop, 1, 0);
 

@@ -51,19 +51,13 @@ void CNetListener::addListener(const char *pszParser, const unsigned short &usTy
         return;
     }
 
-    if (!Adjure(pAdjure))
-    {
-        H_SafeDelete(pNetInfo);
-        H_SafeDelete(pAdjure);
-        H_LOG(LOGLV_ERROR, "%s", H_ERR_ADDINQU);
-    }
+    Adjure(pAdjure);
 }
 
 static void acceptCB(struct evconnlistener *, H_SOCK sock, struct sockaddr *, int, void *pArg)
 {
     CNetInfo *pNetInfo((CNetInfo *)pArg);
-    CNetListener *pNetListener((CNetListener *)pNetInfo->getEventService());
-    CNetWorker *pNetWorker(pNetListener->getNetMgr()->getNetWorker(sock));
+    CNetWorker *pNetWorker(((CNetListener *)pNetInfo->getEventService())->getNetMgr()->getNetWorker(sock));
 
     pNetWorker->addSock(NULL, pNetInfo->getParser(), sock, pNetInfo->getType());
 }

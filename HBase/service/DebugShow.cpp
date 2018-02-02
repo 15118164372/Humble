@@ -13,17 +13,12 @@ void CDebugShow::addDebug(const H_SOCK &sock)
         return;
     }
 
-    if (!Adjure(pAdjure))
-    {
-        H_SafeDelete(pAdjure);
-        H_Printf("%s", H_ERR_ADDINQU);
-        return;
-    }
+    Adjure(pAdjure);
 }
 
 void CDebugShow::onCloseSock(H_SOCK &sock, CDynaBuffer *pSockBuf)
 {
-    H_Printf("socket %d closed.", sock);
+    H_Printf("socket %d closed.", (int)sock);
 
     CUtils::closeSock(sock);
     event_free((struct event *)pSockBuf->getData());
@@ -84,7 +79,7 @@ void CDebugShow::addInLoop(CToSockAdjure *pToSockAdjure)
     if (NULL == pSockBuf)
     {
         CUtils::closeSock(sock);
-        H_Printf("%s", H_ERR_ADDINQU);
+        H_Printf("%s", H_ERR_MEMORY);
         return;
     }
 
@@ -92,7 +87,7 @@ void CDebugShow::addInLoop(CToSockAdjure *pToSockAdjure)
     {
         CUtils::closeSock(sock);
         H_SafeDelete(pSockBuf);
-        H_Printf("%s", H_ERR_ADDINQU);
+        H_Printf("%s", H_ERR_MEMORY);
         return;
     }
 

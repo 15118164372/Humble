@@ -178,7 +178,7 @@ CAdjure *CRPCParser::Parse(class CSession *pSession, const char *pBuf, const siz
     }
 
     memcpy(pAdjure->getHead(), pBuf, m_uiContentHeadLens);
-    pAdjure->getHead()->uiLens = uiConLens;
+    pAdjure->getHead()->uiLens = (unsigned int)uiConLens;
     pAdjure->setContent(pBuf + m_uiContentHeadLens, uiConLens);
 
     return pAdjure;

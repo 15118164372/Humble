@@ -13,38 +13,40 @@ public:
     CCirQueue(void) : m_uiSize(H_INIT_NUMBER), m_uiNext(H_INIT_NUMBER), m_uiCapacity(H_ONEK)
     {
         m_pData = new(std::nothrow) void*[m_uiCapacity];
-        H_ASSERT(NULL != m_pData, "malloc memory error.");
+        H_ASSERT(NULL != m_pData, H_ERR_MEMORY);
     };
     explicit CCirQueue(const size_t &uiCapacity) : m_uiSize(H_INIT_NUMBER), m_uiNext(H_INIT_NUMBER),
         m_uiCapacity(uiCapacity)
     {
         m_pData = new(std::nothrow) void*[m_uiCapacity];
-        H_ASSERT(NULL != m_pData, "malloc memory error.");
+        H_ASSERT(NULL != m_pData, H_ERR_MEMORY);
     };
     ~CCirQueue(void)
     {
         H_SafeDelArray(m_pData);
     };
 
-    void resetQueue(const size_t &uiCapacity)
+    H_INLINE void setCapacity(const size_t &uiCapacity)
     {
-        m_uiSize = H_INIT_NUMBER;
-        m_uiNext = H_INIT_NUMBER;
-
-        if (uiCapacity > m_uiCapacity)
+        if (uiCapacity <= m_uiCapacity)
         {
-            m_uiCapacity = uiCapacity;
-            H_SafeDelArray(m_pData);
-            
-            m_pData = new(std::nothrow) void*[m_uiCapacity];
-            H_ASSERT(NULL != m_pData, "malloc memory error.");
+            return;
         }
+
+        void **pNewData = new(std::nothrow) void*[uiCapacity];
+        H_ASSERT(NULL != pNewData, H_ERR_MEMORY);
+
+        memcpy(pNewData + m_uiNext, m_pData + m_uiNext, m_uiSize * sizeof(void*));
+        H_SafeDelArray(m_pData);
+
+        m_uiCapacity = uiCapacity;
+        m_pData = pNewData;
     };
-    H_INLINE bool Push(void *pValue)
+    H_INLINE void Push(void *pValue)
     {
         if (m_uiSize >= m_uiCapacity)
         {
-            return false;
+            setCapacity(m_uiCapacity * 2);
         }
 
         size_t iPos(m_uiNext + m_uiSize);
@@ -55,8 +57,6 @@ public:
 
         m_pData[iPos] = pValue;
         ++m_uiSize;
-
-        return true;
     };
     H_INLINE void *Pop(void)
     {
@@ -109,13 +109,11 @@ public:
     ~CSafeQueue(void)
     {};
 
-    bool Push(void *pValue)
+    void Push(void *pValue)
     {
         m_objLck.Lock();
-        bool bOk(m_objQu.Push(pValue));
+        m_objQu.Push(pValue);
         m_objLck.unLock();
-
-        return bOk;
     };
     void *Pop(void)
     {

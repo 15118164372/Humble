@@ -44,12 +44,7 @@ void CLinker::addLinker(class CWorker *pWorker, const char *pszParser, const uns
         return;
     }
 
-    if (!Adjure(pAddLinker))
-    {
-        H_SafeDelete(pLinkInfo);
-        H_SafeDelete(pAddLinker);
-        H_LOG(LOGLV_ERROR, "%s", H_ERR_ADDINQU);
-    }
+    Adjure(pAddLinker);
 }
 void CLinker::reLink(void)
 {
@@ -65,11 +60,7 @@ void CLinker::reLink(void)
         return;
     }
 
-    if (!Adjure(pReLink))
-    {
-        H_SafeDelete(pReLink);
-        H_LOG(LOGLV_ERROR, "%s", H_ERR_ADDINQU);
-    }
+    Adjure(pReLink);
 }
 void CLinker::onAdjure(CAdjure *pAdjure)
 {
@@ -88,6 +79,11 @@ void CLinker::onAdjure(CAdjure *pAdjure)
             CLinkInfo *pLinkInfo;
             for (std::list<class CLinkInfo *>::iterator it = m_lstAllLink.begin(); m_lstAllLink.end() != it;)
             {
+                if (getStop())
+                {
+                    break;
+                }
+
                 pLinkInfo = *it;
                 switch (pLinkInfo->getLinkState())
                 {

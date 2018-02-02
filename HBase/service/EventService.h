@@ -33,7 +33,7 @@ public:
     void Run(void);
 
     //«Î«Û÷¥––√¸¡Ó
-    bool Adjure(CAdjure *pAdjure);
+    void Adjure(CAdjure *pAdjure);
 
     //÷¥––√¸¡Ó
     virtual void onAdjure(CAdjure *pAdjure) {};
@@ -55,6 +55,10 @@ public:
     {
         return m_pBase;
     };
+    const bool &getStop(void)
+    {
+        return m_bStop;
+    };
     static READ_RETURN sockRead(H_SOCK &sock, CDynaBuffer *pSockBuf);
 
 private:
@@ -62,6 +66,7 @@ private:
     static int creatListener(H_SOCK &fdListener);
 
 private:
+    bool m_bStop;
     bool m_bFreeQuAdjure;
     void *m_pStopEvent;
     void *m_pAdjureEvent;

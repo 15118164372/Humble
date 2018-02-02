@@ -41,14 +41,14 @@ typedef unsigned short H_PROTO_TYPE;
 #define H_SERVICE_DEBUGSHOW   "debugshow"
 
 #define H_QULENS_MAIL                H_ONEK
-#define H_QULENS_LOG                 H_ONEK * 10 * 10
-#define H_QULENS_RUNNER              H_ONEK * 10
+#define H_QULENS_LOG                 H_ONEK * 10
 #define H_QULENS_LISTENER            H_ONEK
-#define H_QULENS_ADDSOCK             H_ONEK * 10 * 5
-#define H_QULENS_SENDER              H_ONEK * 10 * 10
 #define H_QULENS_LINKER              H_ONEK
-#define H_QULENS_WORKERPOOL          H_ONEK * 10 * 5
 #define H_QULENS_DEBUGSHOW           10
+#define H_QULENS_ADDSOCK             H_ONEK * 10
+#define H_QULENS_RUNNER              H_ONEK * 10
+#define H_QULENS_WORKERPOOL          H_ONEK * 10
+#define H_QULENS_SENDER              H_ONEK * 10
 
 #define H_TIMEOUT_RPCHS              2000
 #define H_TIMEOUT_WSHS               2000
@@ -67,7 +67,6 @@ typedef unsigned short H_PROTO_TYPE;
 #define H_RTN_ERROR                  1
 
 #define H_ERR_MEMORY  "malloc memory error."
-#define H_ERR_ADDINQU "add message into queue error."
 
 #define H_INLINE   inline
 #define H_BNAMSP   namespace Humble {

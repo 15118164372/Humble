@@ -22,7 +22,7 @@ public:
     //请求执行Worker 锁在调用处
     void addWorker(CWorker *pWorker)
     {
-        H_ASSERT(Adjure(pWorker->getRunnerAdjure()), "add worker in globle queue error.");
+        Adjure(pWorker->getRunnerAdjure());
     };
 
     void setIndex(const unsigned short &usIndex);

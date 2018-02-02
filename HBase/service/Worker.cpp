@@ -5,15 +5,15 @@
 
 H_BNAMSP
 
-bool CWorker::addAdjure(CAdjure *pAdj)
+void CWorker::addAdjure(CAdjure *pAdj)
 {
     if (m_bFreeze)
     {
         H_LOG(LOGLV_WARN, "add task to freeze worker %s.", getName());
-        return false;
+        return;
     }
 
-    return m_objAdjureQu.Push(pAdj);
+    m_objAdjureQu.Push(pAdj);
 }
 
 void CWorker::Run(CAdjure *pAdjure)

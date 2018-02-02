@@ -23,11 +23,7 @@ public:
     //发送邮件请求
     void sendMail(CMailAdjure *pMail)
     {
-        if (!Adjure(pMail))
-        {
-            H_SafeDelete(pMail);
-            H_LOG(LOGLV_ERROR, "%s", H_ERR_ADDINQU);
-        }
+        Adjure(pMail);
     };
 
     //执行发送

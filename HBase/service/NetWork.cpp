@@ -44,6 +44,7 @@ class CNetMgr *CNetWorker::getNetMgr(void)
 {
     return m_pNetMgr;
 }
+
 void CNetWorker::setLinkStatus(class CLinkInfo *pLinkInfo, const LinkState emState)
 {
     if (NULL != pLinkInfo)
@@ -63,13 +64,8 @@ void CNetWorker::addSock(class CLinkInfo *pLinkInfo, class CParser *pParser,
         H_LOG(LOGLV_ERROR, "%s", H_ERR_MEMORY);
         return;
     }
-    if (!Adjure(pAddInAdjure))
-    {
-        CUtils::closeSock(sock);
-        setLinkStatus(pLinkInfo, LS_CLOSED);
-        H_SafeDelete(pAddInAdjure);
-        H_LOG(LOGLV_ERROR, "%s", H_ERR_ADDINQU);
-    }
+
+    Adjure(pAddInAdjure);
 }
 void CNetWorker::bindWorker(const H_SOCK &uiSock, class CWorker *pWorker)
 {
@@ -80,11 +76,7 @@ void CNetWorker::bindWorker(const H_SOCK &uiSock, class CWorker *pWorker)
         return;
     }
 
-    if (!Adjure(pAdjure))
-    {
-        H_SafeDelete(pAdjure);
-        H_LOG(LOGLV_ERROR, "%s", H_ERR_ADDINQU);
-    }
+    Adjure(pAdjure);
 }
 void CNetWorker::unBindWorker(const H_SOCK &uiSock)
 {
@@ -95,11 +87,7 @@ void CNetWorker::unBindWorker(const H_SOCK &uiSock)
         return;
     }
 
-    if (!Adjure(pAdjure))
-    {
-        H_SafeDelete(pAdjure);
-        H_LOG(LOGLV_ERROR, "%s", H_ERR_ADDINQU);
-    }
+    Adjure(pAdjure);
 }
 
 void CNetWorker::onAdjure(CAdjure *pAdjure)
@@ -130,7 +118,7 @@ void CNetWorker::afterAdjure(CAdjure *pAdjure)
     H_SafeDelete(pAdjure);
 }
 
-static void onSocketClose(CSession *pSession, evutil_socket_t &sock)
+void CNetWorker::onSocketClose(CSession *pSession, H_SOCK &sock)
 {
     CLinkInfo *pLinkInfo(pSession->getLinkInfo());
     CNetWorker *pNetWorker(pSession->getNetWorker());
@@ -154,26 +142,24 @@ static void onSocketClose(CSession *pSession, evutil_socket_t &sock)
         && H_OK_STATUS == *pSession->getHSStatus())
     {
         SVIdType *pExtendData((SVIdType *)pSession->getExtendData());
-        pSession->getNetWorker()->getNetMgr()->
-            getRPCLink()->Unregister(pExtendData->iId, pExtendData->iType, sock);
+        pNetWorker->getNetMgr()->getRPCLink()->Unregister(pExtendData->iId, pExtendData->iType, sock);
         H_LOG(LOGLV_SYS, "unregister rpc link, id %d, type %d, sock %d", 
             pExtendData->iId, pExtendData->iType, sock);
     }
 
     H_SafeDelete(pSession);
 }
-static void parseProtocol(CSession *pSession, H_SOCK &sock)
+void CNetWorker::parseProtocol(CSession *pSession, H_SOCK &sock)
 {
     bool bClose(false);
     size_t iParsed(H_INIT_NUMBER);
-    short *psHSStatus(pSession->getHSStatus());
     CParser *pParser(pSession->getParser());
     CDynaBuffer *pSockBuf(pSession->getDynaBuffer());
     CNetWorker *pNetWorker(pSession->getNetWorker());
 
     //需要握手
     if (pParser->needHandShake()
-        && H_OK_STATUS != *(psHSStatus))
+        && H_OK_STATUS != *(pSession->getHSStatus()))
     {
         CBuffer *pBuf(pParser->handShake(pSession, pSockBuf->getBuffer(), pSockBuf->getLens(), iParsed, bClose));
         if (bClose)
@@ -183,7 +169,7 @@ static void parseProtocol(CSession *pSession, H_SOCK &sock)
             return;
         }
 
-        if (H_OK_STATUS == *(psHSStatus))
+        if (H_OK_STATUS == *(pSession->getHSStatus()))
         {
             //握手完成，移除计时器
             event_free((struct event *)pSession->getTimeEvent());
@@ -231,7 +217,7 @@ static void parseProtocol(CSession *pSession, H_SOCK &sock)
 
     pSockBuf->Remove(iTotalParsed);
 }
-static void socketEventCB(evutil_socket_t sock, short sEvent, void *pArg)
+void CNetWorker::socketEventCB(evutil_socket_t sock, short sEvent, void *pArg)
 {
     CSession *pSession((CSession *)pArg);
     READ_RETURN emRet(CEventService::sockRead(sock, pSession->getDynaBuffer()));
@@ -254,7 +240,7 @@ static void socketEventCB(evutil_socket_t sock, short sEvent, void *pArg)
             break;
     }
 }
-static void handShakeTimeOut(evutil_socket_t, short, void *pArg)
+void CNetWorker::handShakeTimeOut(H_SOCK, short, void *pArg)
 {
     CSession *pSession((CSession *)pArg);
     if (H_OK_STATUS != *(pSession->getHSStatus()))
@@ -267,7 +253,7 @@ static void handShakeTimeOut(evutil_socket_t, short, void *pArg)
 }
 void *CNetWorker::handShakeMonitor(class CSession *pSession, const unsigned int &uiMs)
 {
-    struct event *pTimeEvent = evtimer_new((struct event_base *)getLoop(), handShakeTimeOut, pSession);
+    struct event *pTimeEvent(evtimer_new((struct event_base *)getLoop(), handShakeTimeOut, pSession));
     if (NULL == pTimeEvent)
     {
         H_LOG(LOGLV_ERROR, "%s", "evtimer_new error.");
@@ -285,6 +271,7 @@ void *CNetWorker::handShakeMonitor(class CSession *pSession, const unsigned int 
     {
         tv.tv_usec = uiMs * 1000;
     }
+
     if (H_RTN_OK != evtimer_add(pTimeEvent, &tv))
     {
         event_free(pTimeEvent);
@@ -386,7 +373,7 @@ void CNetWorker::addSock(CAddSockInAdjure *pAdjure)
 
     if (pSession->Accept())
     {
-        m_pMsgTrigger->triggerAccept(pBindWorker, sock, pSession->getType(), H_INIT_NUMBER);
+        m_pMsgTrigger->triggerAccept(pBindWorker, sock, pSession->getType(), ulBindId);
         return;
     }
 
@@ -394,8 +381,7 @@ void CNetWorker::addSock(CAddSockInAdjure *pAdjure)
     {
         //rpc发起握手
         bool bClose(false);
-        CRPCParser *pRPCParser((CRPCParser *)pParser);
-        CBuffer *pBuffer(pRPCParser->Sign(bClose));
+        CBuffer *pBuffer(((CRPCParser *)pParser)->Sign(bClose));
         if (bClose)
         {
             onSocketClose(pSession, sock);
@@ -404,6 +390,7 @@ void CNetWorker::addSock(CAddSockInAdjure *pAdjure)
 
         m_pNetMgr->sendMsg(sock, pBuffer);
     }
+
     m_pMsgTrigger->triggerConnect(pBindWorker, sock, pSession->getType(), ulBindId);
 }
 void CNetWorker::bindWorker(CBindToTaskAdjure *pAdjure)

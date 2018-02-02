@@ -69,7 +69,7 @@ public:
         return m_bInGloble;
     };
     //任务队列操作 锁在调用处
-    bool addAdjure(CAdjure *pAdj);
+    void addAdjure(CAdjure *pAdj);
     CAdjure *getAdjure(void)
     {
         return (CAdjure *)m_objAdjureQu.Pop();
@@ -86,9 +86,9 @@ public:
             H_SafeDelete(pAdjure);
         }
     };
-    void resetCapacity(const size_t &uiCapacity)
+    void setAdjureCapacity(const size_t &uiCapacity)
     {
-        m_objAdjureQu.resetQueue(uiCapacity);
+        m_objAdjureQu.setCapacity(uiCapacity);
     };
 
     void setFreeze(const bool &bFreeze)
