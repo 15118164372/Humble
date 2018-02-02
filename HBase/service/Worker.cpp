@@ -37,6 +37,7 @@ void CWorker::Run(CAdjure *pAdjure)
 
             m_objWorkerLck.Lock();
             cleanAdjureQu();
+            setInGloble(false);
             m_objWorkerLck.unLock();
 
             m_pWorkerMgr->pushPool(this);
