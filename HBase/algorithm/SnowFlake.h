@@ -13,8 +13,8 @@ public:
     CSnowFlake(void);
     ~CSnowFlake(void);
 
-    void setWorkId(const int uiID);
-    void setCenterId(const int uiID);
+    void setWorkId(const int uiId);
+    void setCenterId(const int uiId);
     uint64_t getId(void);
 
 private:

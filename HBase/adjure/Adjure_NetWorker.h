@@ -96,7 +96,7 @@ public:
     ~CLinkInfo(void)
     {};
 
-    LinkState getLinkState(void)
+    const LinkState &getLinkState(void)
     {
         return m_emLinkState;
     };
@@ -109,7 +109,7 @@ public:
     {
         m_bKeepAlive = bKeepAlive;
     };
-    bool getKeepAlive(void)
+    const bool &getKeepAlive(void)
     {
         return m_bKeepAlive;
     };
@@ -166,7 +166,7 @@ public:
     ~CAddSockInAdjure(void)
     {};
 
-    unsigned short getType(void)
+    const unsigned short &getType(void)
     {
         return m_usType;
     };
@@ -178,7 +178,7 @@ public:
     {
         return m_pParser;
     };
-    H_SOCK getSock(void)
+    const H_SOCK &getSock(void)
     {
         return m_uiSock;
     };
@@ -201,7 +201,7 @@ public:
     ~CToSockAdjure(void)
     {};
 
-    H_SOCK getSock(void)
+    const H_SOCK &getSock(void)
     {
         return m_uiSock;
     };

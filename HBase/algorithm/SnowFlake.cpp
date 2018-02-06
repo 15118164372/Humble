@@ -32,18 +32,18 @@ CSnowFlake::~CSnowFlake(void)
 {
 }
 
-void CSnowFlake::setWorkId(const int uiID)
+void CSnowFlake::setWorkId(const int uiId)
 {
-    H_ASSERT((uiID <= MaxWorkerId) && (uiID >= 0), "param error.");
+    H_ASSERT((uiId <= MaxWorkerId) && (uiId >= 0), "param error.");
 
-    m_uiWorkid = uiID;
+    m_uiWorkid = uiId;
 }
 
-void CSnowFlake::setCenterId(const int uiID)
+void CSnowFlake::setCenterId(const int uiId)
 {
-    H_ASSERT((uiID <= MaxDatacenterId) && (uiID >= 0), "param error.");
+    H_ASSERT((uiId <= MaxDatacenterId) && (uiId >= 0), "param error.");
 
-    m_uiCenterid = uiID;
+    m_uiCenterid = uiId;
 }
 
 uint64_t CSnowFlake::tilNextMillis(void)

@@ -106,7 +106,7 @@ public:
     {
         m_ulId = ulId;
     };
-    const uint64_t getBindId(void)
+    const uint64_t &getBindId(void)
     {
         return m_ulId;
     };
