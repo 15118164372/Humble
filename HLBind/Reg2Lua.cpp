@@ -225,7 +225,7 @@ void CReg2Lua::regObject(struct lua_State *pLState)
             .addFunction("Elapsed", &CClock::Elapsed)
         .endClass()
 #ifdef H_UUID
-        .deriveClass<CUUID, CNoCopyObject>("CUUID")
+        .deriveClass<CUUID, CObject>("CUUID")
             .addConstructor<void(*) (void)>()
             .addFunction("getUUID", &CUUID::getUUID)
         .endClass()
