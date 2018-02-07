@@ -5,16 +5,6 @@ H_BNAMSP
 
 #ifdef H_UUID
 
-#ifndef H_OS_WIN
-typedef struct _GUID
-{
-    unsigned long Data1;
-    unsigned short Data2;
-    unsigned short Data3;
-    unsigned char Data4[8];
-} GUID, UUID;
-#endif
-
 CUUID::CUUID(void)
 {
 #ifdef H_OS_WIN
@@ -29,7 +19,7 @@ CUUID::~CUUID(void)
 #endif
 }
 
-int CUUID::createGuid(struct GUID *stUUID)
+int CUUID::createGuid(GUID *stUUID)
 {
 #ifdef H_OS_WIN
     if (S_OK != CoCreateGuid(stUUID))
@@ -46,7 +36,7 @@ int CUUID::createGuid(struct GUID *stUUID)
 std::string CUUID::getUUID(void)
 {
     GUID stGuid;
-    if (H_RTN_OK != createGuid(stGuid))
+    if (H_RTN_OK != createGuid(&stGuid))
     {
         return "";
     }

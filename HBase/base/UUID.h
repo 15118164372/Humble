@@ -8,6 +8,16 @@ H_BNAMSP
 
 #ifdef H_UUID
 
+#ifndef H_OS_WIN
+typedef struct _GUID
+{
+    unsigned long Data1;
+    unsigned short Data2;
+    unsigned short Data3;
+    unsigned char Data4[8];
+} GUID, UUID;
+#endif
+
 /*UUID
 yum install libuuid-devel
 */
@@ -21,7 +31,7 @@ public:
     std::string getUUID(void);
 
 private:
-    int createGuid(struct GUID *stUUID);
+    int createGuid(GUID *stUUID);
 };
 
 #endif//H_UUID
