@@ -967,7 +967,7 @@ void CMySQLLink::rollBack(void)
     m_bTrans = false;
 }
 
-void CMySQLLink::setBusyTimeout(int nMillisecs)
+void CMySQLLink::setTimeout(int nMillisecs)
 {
     checkDB();
     m_pDb_Ptr->options.read_timeout = nMillisecs;

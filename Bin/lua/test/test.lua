@@ -17,7 +17,6 @@ end
 
 function testUnRegTask()
 	humble.unRegTask("test3")
-	regDelayEv(1000, testRegTask)
 end
 
 function testRegTask()

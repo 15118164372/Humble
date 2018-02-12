@@ -182,7 +182,7 @@ public:
     CDBQuery* execQuery(const char* szSQL);
     CMySQLStatement *compileStatement(const char* pszSQL);
 
-    void setBusyTimeout(int nMillisecs);
+    void setTimeout(int nMillisecs);
 
     int reLink(void);
 
