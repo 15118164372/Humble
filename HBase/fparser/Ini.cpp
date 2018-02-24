@@ -126,7 +126,7 @@ void CIniFile::readInfo(void)
         }
 
         //去掉注释
-        removeNote(strTmp);
+        //removeNote(strTmp);
         strTmp = CUtils::Trim(strTmp);
         if (strTmp.empty())
         {
