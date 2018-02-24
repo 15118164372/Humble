@@ -28,17 +28,17 @@ void CLWorker::reSet(const char *pszFile, const char *pszName, const size_t &uiC
 
 void CLWorker::initLua(void)
 {
-    m_stState = luaL_newstate();
-    H_ASSERT(NULL != m_stState, "luaL_newstate error.");
+    m_pState = luaL_newstate();
+    H_ASSERT(NULL != m_pState, "luaL_newstate error.");
 
-    luaL_openlibs(m_stState);
-    CReg2Lua::regAll(m_stState);
-    luabridge::setGlobal(m_stState, getName(), "g_taskName");
-    luabridge::setGlobal(m_stState, (CWorker*)this, "g_curWorker");
+    luaL_openlibs(m_pState);
+    CReg2Lua::regAll(m_pState);
+    luabridge::setGlobal(m_pState, getName(), "g_taskName");
+    luabridge::setGlobal(m_pState, (CWorker*)this, "g_curWorker");
 
     for (int i = 0; i < LFUNC_COUNT; ++i)
     {
-        m_pLFunc[i] = new(std::nothrow) luabridge::LuaRef(m_stState);
+        m_pLFunc[i] = new(std::nothrow) luabridge::LuaRef(m_pState);
         H_ASSERT(NULL != m_pLFunc[i], "malloc memory error.");
     }
 }
@@ -49,43 +49,43 @@ void CLWorker::freeLua(void)
         H_SafeDelete(m_pLFunc[i]);
     }
 
-    if (NULL != m_stState)
+    if (NULL != m_pState)
     {
-        lua_close(m_stState);
-        m_stState = NULL;
+        lua_close(m_pState);
+        m_pState = NULL;
     }
 }
 
 void CLWorker::initTask(void)
 {
     std::string strLuaFile = g_pHumble->getScriptPath() + m_strFile;
-    if (H_RTN_OK != luaL_dofile(m_stState, strLuaFile.c_str()))
+    if (H_RTN_OK != luaL_dofile(m_pState, strLuaFile.c_str()))
     {
-        const char *pErr = lua_tostring(m_stState, -1);
+        const char *pErr = lua_tostring(m_pState, -1);
         H_ASSERT(false, pErr);
     }
 
-    *(m_pLFunc[LFUNC_TASK_INIT]) = luabridge::getGlobal(m_stState, "initTask");
-    *(m_pLFunc[LFUNC_TASK_DEL]) = luabridge::getGlobal(m_stState, "destroyTask");
+    *(m_pLFunc[LFUNC_TASK_INIT]) = luabridge::getGlobal(m_pState, "initTask");
+    *(m_pLFunc[LFUNC_TASK_DEL]) = luabridge::getGlobal(m_pState, "destroyTask");
 
-    *(m_pLFunc[LFUNC_TIME_TIMEOUT]) = luabridge::getGlobal(m_stState, "CCALL_TIMEOUT");
+    *(m_pLFunc[LFUNC_TIME_TIMEOUT]) = luabridge::getGlobal(m_pState, "CCALL_TIMEOUT");
 
-    *(m_pLFunc[LFUNC_NET_ACCEPT]) = luabridge::getGlobal(m_stState, "CCALL_ACCEPT");
-    *(m_pLFunc[LFUNC_NET_CONNECT]) = luabridge::getGlobal(m_stState, "CCALL_CONNECT");
-    *(m_pLFunc[LFUNC_NET_CLOSE]) = luabridge::getGlobal(m_stState, "CCALL_CLOSED");
+    *(m_pLFunc[LFUNC_NET_ACCEPT]) = luabridge::getGlobal(m_pState, "CCALL_ACCEPT");
+    *(m_pLFunc[LFUNC_NET_CONNECT]) = luabridge::getGlobal(m_pState, "CCALL_CONNECT");
+    *(m_pLFunc[LFUNC_NET_CLOSE]) = luabridge::getGlobal(m_pState, "CCALL_CLOSED");
     
-    *(m_pLFunc[LFUNC_NET_READ_I]) = luabridge::getGlobal(m_stState, "CCALL_NETREADI");
-    *(m_pLFunc[LFUNC_NET_READ_HTTPD]) = luabridge::getGlobal(m_stState, "CCALL_NETREADHTTPD");
+    *(m_pLFunc[LFUNC_NET_READ_I]) = luabridge::getGlobal(m_pState, "CCALL_NETREADI");
+    *(m_pLFunc[LFUNC_NET_READ_HTTPD]) = luabridge::getGlobal(m_pState, "CCALL_NETREADHTTPD");
 
-    *(m_pLFunc[LFUNC_NET_RPC]) = luabridge::getGlobal(m_stState, "CCALL_NETRPC");
+    *(m_pLFunc[LFUNC_NET_RPC]) = luabridge::getGlobal(m_pState, "CCALL_NETRPC");
 
-    *(m_pLFunc[LFUNC_TASK_RPCCALL]) = luabridge::getGlobal(m_stState, "CCALL_RPCCALL");
-    *(m_pLFunc[LFUNC_TASK_RPCRTN]) = luabridge::getGlobal(m_stState, "CCALL_RPCRTN");
+    *(m_pLFunc[LFUNC_TASK_RPCCALL]) = luabridge::getGlobal(m_pState, "CCALL_RPCCALL");
+    *(m_pLFunc[LFUNC_TASK_RPCRTN]) = luabridge::getGlobal(m_pState, "CCALL_RPCRTN");
 
-    *(m_pLFunc[LFUNC_TASK_DEBUG]) = luabridge::getGlobal(m_stState, "CCALL_DEBUG");
+    *(m_pLFunc[LFUNC_TASK_DEBUG]) = luabridge::getGlobal(m_pState, "CCALL_DEBUG");
 
-    *(m_pLFunc[LFUNC_TASK_BIND_HTTPC]) = luabridge::getGlobal(m_stState, "CCALL_BIND_HTTPC");
-    *(m_pLFunc[LFUNC_TASK_BIND_I]) = luabridge::getGlobal(m_stState, "CCALL_BIND_I");
+    *(m_pLFunc[LFUNC_TASK_BIND_HTTPC]) = luabridge::getGlobal(m_pState, "CCALL_BIND_HTTPC");
+    *(m_pLFunc[LFUNC_TASK_BIND_I]) = luabridge::getGlobal(m_pState, "CCALL_BIND_I");
 
     try
     {

@@ -61,9 +61,9 @@ private:
     };
 
     CHumble *m_pHumble;
+    struct lua_State *m_pState;
     luabridge::LuaRef *m_pLFunc[LFUNC_COUNT];
-    std::string m_strFile;
-    struct lua_State *m_stState;
+    std::string m_strFile;    
 };
 
 H_ENAMSP
