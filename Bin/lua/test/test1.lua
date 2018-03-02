@@ -63,7 +63,7 @@ local function test_TaskRPC()
 	taskRPC("test2", "Add", {1, 2}, 20, AddRtn)
 	taskRPC("test2", "String", {}, 20, StringRtn)
 	
-	humble.rpcClient("127.0.0.1", 17000)
+	--humble.rpcClient("127.0.0.1", 17000)
 end
 regDelayEv(1000, test_TaskRPC)
 
@@ -80,7 +80,7 @@ local function test_NetRPC()
 	netRPC(sock, "test2", "Add", {1, 2}, 200, AddRtn)
 	netRPC(sock, "test2", "String", {}, 200, StringRtn)
 end
-regDelayEv(2000, test_NetRPC)
+--regDelayEv(2000, test_NetRPC)
 
 --httpc
 local function onResponse(sock, sockType, strStatus, tHead, pszBody, param)
