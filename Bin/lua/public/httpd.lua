@@ -55,7 +55,7 @@ local http_status_msg = {
 	[505] = "HTTP Version not supported",
 }
 
-local function httpMsg(sock, strHead, varBodyFunc, tHeader, ...)
+local function httpMsg(sock, strHead, tHeader, varBodyFunc, ...)
     local tRtnMsg = {}    
 	table.insert(tRtnMsg, strHead)
 	
@@ -102,17 +102,17 @@ local function httpMsg(sock, strHead, varBodyFunc, tHeader, ...)
     strMsg = table.concat(tRtnMsg)
 	humble.sendMsg(sock, strMsg)
 end
-function httpd.Get(sock, strUrl, varBodyFunc, tHeader, ...)
-	local strHead = string.format("%s %s HTTP/1.1\r\n", "GET", strUrl)
-	httpMsg(sock, strHead, varBodyFunc, tHeader, table.unpack({...}))
+function httpd.Get(sock, strMethod, tHeader)
+	local strHead = string.format("%s %s HTTP/1.1\r\n", "GET", strMethod)
+	httpMsg(sock, strHead, tHeader)
 end
-function httpd.Post(sock, strUrl, varBodyFunc, tHeader, ...)
-	local strHead = string.format("%s %s HTTP/1.1\r\n", "POST", strUrl)
-	httpMsg(sock, strHead, varBodyFunc, tHeader, table.unpack({...}))
+function httpd.Post(sock, strMethod, tHeader, varBodyFunc, ...)
+	local strHead = string.format("%s %s HTTP/1.1\r\n", "POST", strMethod)
+	httpMsg(sock, strHead, tHeader, varBodyFunc, table.unpack({...}))
 end
-function httpd.Response(sock, iCode, varBodyFunc, tHeader, ...)
+function httpd.Response(sock, iCode, tHeader, varBodyFunc, ...)
 	local strHead = string.format("HTTP/1.1 %03d %s\r\n", iCode, http_status_msg[iCode] or "")
-	httpMsg(sock, strHead, varBodyFunc, tHeader, table.unpack({...}))
+	httpMsg(sock, strHead, tHeader, varBodyFunc, table.unpack({...}))
 end
 
 return httpd

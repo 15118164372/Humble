@@ -24,7 +24,7 @@ local function echo2(sock, sockType, strMethod, tUrl, tHead, pszBody)
 	table.print(tHead)
 	print(pszBody)
 	
-	httpd.Response(sock, 200, "echo2 server return")
+	httpd.Response(sock, 200, nil, "echo2 server return")
 end
 regHttpdProto("/echo2", echo2)
 
