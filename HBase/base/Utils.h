@@ -53,11 +53,11 @@ public:
     static size_t hashNumber(T iVal)
     {
 #if defined(H_X64)
-#define OFFSET_BASIS 14695981039346656037ULL
-#define PRIME 1099511628211ULL
+        #define OFFSET_BASIS 14695981039346656037ULL
+        #define PRIME 1099511628211ULL
 #else
-#define OFFSET_BASIS 2166136261U
-#define PRIME 16777619U
+        #define OFFSET_BASIS 2166136261U
+        #define PRIME 16777619U
 #endif
         size_t iHash(OFFSET_BASIS);
         unsigned char *pAddr((unsigned char *)&iVal);
