@@ -33,7 +33,8 @@ bool CRPCParser::checkSign(void *pDocument, const char *pszBuf, unsigned short &
     int64_t ilCur((int64_t)CUtils::nowMilSecond());
     int64_t ilTMS((*pDoc)["tms"].GetInt64());
     int64_t iDif(abs(ilCur - ilTMS));
-    if (iDif > m_uiRPCTimeDeviation)
+    if (m_uiRPCTimeDeviation > H_INIT_NUMBER 
+        && iDif > m_uiRPCTimeDeviation)
     {
         H_LOG(LOGLV_WARN, "timestamp error. now %s message tms %s",
             CUtils::toString(ilCur).c_str(), CUtils::toString(ilTMS).c_str());

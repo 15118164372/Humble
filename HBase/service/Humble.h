@@ -54,12 +54,17 @@ public:
     //启动
     void Satrt(void)
     {
+        //日志
         CThread::Creat(g_pLog);
         g_pLog->waitStart();
+        //邮件
         CThread::Creat(&m_objMailer);
         m_objMailer.waitStart();
+        //工作线程
         m_objWorkerMgr.Start(m_usRunnerNum, m_uiAlarmTime, m_uiAdjustTime);
+        //网络线程
         m_objNetMgr.startNet();
+        //计时器
         m_objTimer.Start();
     };
     //请求停止

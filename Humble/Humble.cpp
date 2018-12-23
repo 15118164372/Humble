@@ -147,7 +147,7 @@ void writePid(int pId)
 }
 #endif
 
-CHumble *loadParam(void)
+CHumble *initParam(void)
 {
     std::string strConfFile(CUtils::formatStr("%s%s%s%s", 
         CUtils::getProPath().c_str(), "config", H_PATH_SEPARATOR, "config.ini"));
@@ -158,18 +158,19 @@ CHumble *loadParam(void)
         return NULL;
     }
 
+    //核心线程数
     unsigned short usCore(CUtils::coreCount());
 
-    int iSVId(objIni.getIntValue("Main", "id"));
-    int iSVType(objIni.getIntValue("Main", "type"));
-    std::string strRPCKey(objIni.getStringValue("Main", "rpckey"));
-    std::string strScript(objIni.getStringValue("Main", "script"));
-    unsigned short usPriority((unsigned short)objIni.getIntValue("Main", "priority"));
-    unsigned int uiLoadDiffer((unsigned int)objIni.getIntValue("Main", "loaddiffer"));
-    unsigned int uiAlarmTime((unsigned int)objIni.getIntValue("Main", "alarmtime"));
-    unsigned short usWorkerNum((unsigned short)objIni.getIntValue("Main", "workernum"));
-    unsigned short usNetNum((unsigned short)objIni.getIntValue("Main", "netnum"));
-    unsigned int uiRPCTimeDeviation((unsigned int)objIni.getIntValue("Main", "rtdeviation"));
+    int iSVId(objIni.getIntValue("Main", "id"));//服务器ID
+    int iSVType(objIni.getIntValue("Main", "type"));//服务器类型
+    std::string strRPCKey(objIni.getStringValue("Main", "rpckey"));//RPC KEY
+    std::string strScript(objIni.getStringValue("Main", "script"));//脚本所在路径
+    unsigned short usPriority((unsigned short)objIni.getIntValue("Main", "priority"));//日志级别
+    unsigned int uiLoadDiffer((unsigned int)objIni.getIntValue("Main", "loaddiffer"));//调整线程负载差(毫秒) 0无效
+    unsigned int uiAlarmTime((unsigned int)objIni.getIntValue("Main", "alarmtime"));//任务执行耗时告警值(微秒) 0无效
+    unsigned short usWorkerNum((unsigned short)objIni.getIntValue("Main", "workernum"));//工作线程数
+    unsigned short usNetNum((unsigned short)objIni.getIntValue("Main", "netnum"));//网络线程数
+    unsigned int uiRPCTimeDeviation((unsigned int)objIni.getIntValue("Main", "rtdeviation"));//网络rpc连接允许的时间误差(ms) 0无效
 
     usWorkerNum = (H_INIT_NUMBER == usWorkerNum ? usCore : usWorkerNum);
     usNetNum = (H_INIT_NUMBER == usNetNum ? 1 : usNetNum);
@@ -195,7 +196,7 @@ CHumble *loadParam(void)
     return pHumble;
 }
 
-int initHumble(void)
+int initTasks(void)
 {
     //注册任务，监听等
     struct lua_State *pLState(luaL_newstate());
@@ -221,22 +222,23 @@ int initHumble(void)
 
 void runHumble(void)
 {
-    g_pHumble = loadParam();
+    //根据配置初始化参数
+    g_pHumble = initParam();
     if (NULL == g_pHumble)
     {
         return;
     }
-
+    //启动服务
     g_pHumble->Satrt();
-
-    if (H_RTN_OK == initHumble())
+    //注册任务，监听等
+    if (H_RTN_OK == initTasks())
     {
         H_LOG(LOGLV_SYS, "%s", "start service successfully.");
         CLckThis objLckThis(&g_objExitMutex);
         g_objExitCond.Wait(&objLckThis);
         H_LOG(LOGLV_SYS, "%s", "begin stop service.");
     }
-
+    //停止服务
     g_pHumble->Stop();
     H_SafeDelete(g_pHumble);
 }
@@ -298,6 +300,7 @@ void printUseage(void)
 //Humble --b
 int main(int argc, char *argv[])
 {
+    //参数解析
     std::map<std::string, std::string> mapParam;
     int iRtn(parseParam(argc, argv, mapParam));
     if (H_RTN_OK != iRtn)

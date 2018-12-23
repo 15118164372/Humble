@@ -158,7 +158,8 @@ unsigned short CWorkerMgr::calIndex(const char *pszName)
 
 void CWorkerMgr::adjustLoad(void)
 {
-    if (1 == m_usRunnerNum)
+    if (1 == m_usRunnerNum
+        || H_INIT_NUMBER == m_uiAdjustTime)
     {
         return;
     }
