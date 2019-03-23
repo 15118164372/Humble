@@ -29,7 +29,9 @@
 #include "lundump.h"
 #include "lvm.h"
 
-
+#ifdef WIN32
+#pragma warning(disable:4244)
+#endif
 
 const char lua_ident[] =
   "$LuaVersion: " LUA_COPYRIGHT " $"

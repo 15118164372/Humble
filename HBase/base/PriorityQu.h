@@ -10,15 +10,15 @@ H_BNAMSP
 class CPriQuNode : public CObject
 {
 public:
-    CPriQuNode(class CWorker *pWork, const uint64_t &ulMark, const uint64_t &ulId) :
-        m_pWork(pWork), m_ulMark(ulMark), m_ulId(ulId)
+    CPriQuNode(void *pData, const uint64_t &ulMark, const uint64_t &ulId) :
+        m_pData(pData), m_ulMark(ulMark), m_ulId(ulId)
     {};
     ~CPriQuNode(void)
     {};
 
-    H_INLINE class CWorker *getWork(void)
+    H_INLINE void *getData(void)
     {
-        return m_pWork;
+        return m_pData;
     };
     H_INLINE const uint64_t &getId(void)
     {
@@ -31,7 +31,7 @@ public:
 
 private:
     CPriQuNode(void);
-    class CWorker *m_pWork;
+    void *m_pData;
     uint64_t m_ulMark;
     uint64_t m_ulId;
 };
@@ -67,9 +67,9 @@ public:
         m_priorityQu.push(pNode);
         m_objLck.unLock();
     };
-    void Push(class CWorker *pWork, const uint64_t &ulMark, const uint64_t &ulId)
+    void Push(void *pData, const uint64_t &ulMark, const uint64_t &ulId)
     {
-        CPriQuNode *pNode = new(std::nothrow) CPriQuNode(pWork, ulMark, ulId);
+        CPriQuNode *pNode = new(std::nothrow) CPriQuNode(pData, ulMark, ulId);
         H_ASSERT(NULL != pNode, H_ERR_MEMORY);
 
         Push(pNode);

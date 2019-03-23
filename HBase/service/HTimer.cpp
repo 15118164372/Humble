@@ -34,7 +34,7 @@ void CTimerTask::Run(void)
         //触发超时消息
         while (NULL != (pNode = m_pTimer->getNode(ulCurTime)))
         {
-            m_pMsgTrigger->triggerTimeOut(pNode->getWork(), pNode->getId());
+            m_pMsgTrigger->triggerTimeOut((CWorker*)(pNode->getData()), pNode->getId());
             H_SafeDelete(pNode);
         }
 
