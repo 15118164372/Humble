@@ -57,8 +57,7 @@ static const luaL_Reg loadedlibs[] = {
 #ifdef H_MYSQL
   { LUA_LUASQLNAME, luaopen_luasql_mysql },
 #endif
-  { LUA_LPEG, luaopen_lpeg },
-  { LUA_PROTOBUFC, luaopen_protobuf_c },
+  { LUA_PROTOBUF, luaopen_pb },
   { LUA_LUASOCKET, luaopen_socket_core },
   { NULL, NULL }
 };

@@ -19,11 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lpeg\lpcap.c" />
-    <ClCompile Include="lpeg\lpcode.c" />
-    <ClCompile Include="lpeg\lpprint.c" />
-    <ClCompile Include="lpeg\lptree.c" />
-    <ClCompile Include="lpeg\lpvm.c" />
+    <ClCompile Include="lua-protobuf\pb.c" />
     <ClCompile Include="lua5.3\lapi.c" />
     <ClCompile Include="lua5.3\lauxlib.c" />
     <ClCompile Include="lua5.3\lbaselib.c" />
@@ -79,29 +75,10 @@
     <ClCompile Include="luasql\ls_mysql.c" />
     <ClCompile Include="luasql\luasql.c" />
     <ClCompile Include="LWorker.cpp" />
-    <ClCompile Include="pbc\alloc.cpp" />
-    <ClCompile Include="pbc\array.cpp" />
-    <ClCompile Include="pbc\bootstrap.cpp" />
-    <ClCompile Include="pbc\context.cpp" />
-    <ClCompile Include="pbc\decode.cpp" />
-    <ClCompile Include="pbc\map.cpp" />
-    <ClCompile Include="pbc\pattern.cpp" />
-    <ClCompile Include="pbc\pbc-lua53.cpp" />
-    <ClCompile Include="pbc\proto.cpp" />
-    <ClCompile Include="pbc\register.cpp" />
-    <ClCompile Include="pbc\rmessage.cpp" />
-    <ClCompile Include="pbc\stringpool.cpp" />
-    <ClCompile Include="pbc\varint.cpp" />
-    <ClCompile Include="pbc\wmessage.cpp" />
     <ClCompile Include="Reg2Lua.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lpeg\lpcap.h" />
-    <ClInclude Include="lpeg\lpcode.h" />
-    <ClInclude Include="lpeg\lpprint.h" />
-    <ClInclude Include="lpeg\lptree.h" />
-    <ClInclude Include="lpeg\lptypes.h" />
-    <ClInclude Include="lpeg\lpvm.h" />
+    <ClInclude Include="lua-protobuf\pb.h" />
     <ClInclude Include="lua5.3\lapi.h" />
     <ClInclude Include="lua5.3\lauxlib.h" />
     <ClInclude Include="lua5.3\lcode.h" />
@@ -167,17 +144,6 @@
     <ClInclude Include="luasocket\wsocket.h" />
     <ClInclude Include="luasql\luasql.h" />
     <ClInclude Include="LWorker.h" />
-    <ClInclude Include="pbc\alloc.h" />
-    <ClInclude Include="pbc\array.h" />
-    <ClInclude Include="pbc\bootstrap.h" />
-    <ClInclude Include="pbc\context.h" />
-    <ClInclude Include="pbc\descriptor.pbc.h" />
-    <ClInclude Include="pbc\map.h" />
-    <ClInclude Include="pbc\pattern.h" />
-    <ClInclude Include="pbc\pbc.h" />
-    <ClInclude Include="pbc\proto.h" />
-    <ClInclude Include="pbc\stringpool.h" />
-    <ClInclude Include="pbc\varint.h" />
     <ClInclude Include="Reg2Lua.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

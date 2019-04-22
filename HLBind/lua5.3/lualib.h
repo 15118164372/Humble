@@ -53,11 +53,8 @@ LUALIB_API int (luaopen_cjson) (lua_State *L);
 #define LUA_LUASQLNAME "luasql"  
 LUALIB_API int (luaopen_luasql_mysql) (lua_State *L);
 
-#define LUA_LPEG "lpeg"  
-LUALIB_API int (luaopen_lpeg) (lua_State *L);
-
-#define LUA_PROTOBUFC "protobuf.c"  
-LUALIB_API int (luaopen_protobuf_c) (lua_State *L);
+#define LUA_PROTOBUF "pb"  
+LUALIB_API int (luaopen_pb) (lua_State *L);
 
 #define LUA_LUASOCKET "socket.core"
 LUALIB_API int (luaopen_socket_core)(lua_State *L);
