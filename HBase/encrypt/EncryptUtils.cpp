@@ -351,13 +351,12 @@ unsigned int CEnUtils::crc32(const char *pszKey, const size_t iLens)
     return uiCRC ^ ~0U;
 }
 
-std::string CEnUtils::xorEncode(const char *pszKey, const size_t iCount, const char *pszBuf, const size_t iLens)
+std::string CEnUtils::xorEncode(const char acKey[4], const size_t iCount, const char *pszBuf, const size_t iLens)
 {
-    H_ASSERT(strlen(pszKey) >= 4, "key lens error.");
-    char cKey1 = pszKey[0];
-    char cKey2 = pszKey[1];
-    char cKey3 = pszKey[2];
-    char cKey4 = pszKey[3];
+    char cKey1 = acKey[0];
+    char cKey2 = acKey[1];
+    char cKey3 = acKey[2];
+    char cKey4 = acKey[3];
 
     std::string strBuf(pszBuf, iLens);
 
@@ -372,13 +371,12 @@ std::string CEnUtils::xorEncode(const char *pszKey, const size_t iCount, const c
 
     return strBuf;
 }
-std::string CEnUtils::xorDecode(const char *pszKey, const size_t iCount, const char *pszBuf, const size_t iLens)
+std::string CEnUtils::xorDecode(const char acKey[4], const size_t iCount, const char *pszBuf, const size_t iLens)
 {
-    H_ASSERT(strlen(pszKey) >= 4, "key lens error.");
-    char cKey1 = pszKey[0];
-    char cKey2 = pszKey[1];
-    char cKey3 = pszKey[2];
-    char cKey4 = pszKey[3];
+    char cKey1 = acKey[0];
+    char cKey2 = acKey[1];
+    char cKey3 = acKey[2];
+    char cKey4 = acKey[3];
 
     std::string strBuf(pszBuf, iLens);
 

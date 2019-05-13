@@ -17,7 +17,7 @@ local function wsEcho2(sock, sockType, netMsg)
 end
 regIProto(2000, wsEcho2)
 
---httpd æµ‹è¯•
+--httpd œyÔ‡
 local function echo2(sock, sockType, strMethod, tUrl, tHead, pszBody)
 	print(strMethod)	
 	table.print(tUrl)
@@ -28,7 +28,7 @@ local function echo2(sock, sockType, strMethod, tUrl, tHead, pszBody)
 end
 regHttpdProto("/echo2", echo2)
 
---rpcæ–¹æ³•
+--rpc ·½·¨
 local function Add(a, b)
 	return a + b
 end

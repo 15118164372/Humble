@@ -28,9 +28,9 @@ public:
     //crc32
     static unsigned int crc32(const char *pszKey, const size_t iLens);
 
-    //异或  iCount 编码次数
-    static std::string xorEncode(const char *pszKey, const size_t iCount, const char *pszBuf, const size_t iLens);
-    static std::string xorDecode(const char *pszKey, const size_t iCount, const char *pszBuf, const size_t iLens);
+    //异或  iCount 编码次数 pszKey
+    static std::string xorEncode(const char acKey[4], const size_t iCount, const char *pszBuf, const size_t iLens);
+    static std::string xorDecode(const char acKey[4], const size_t iCount, const char *pszBuf, const size_t iLens);
 
     /*base64编码*/
     static std::string b64Encode(const char *pszData, const size_t iLens);
