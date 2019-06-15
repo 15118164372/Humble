@@ -1,6 +1,6 @@
 #ifndef pb_h
 #define pb_h
-//https://github.com/starwing/lua-protobuf
+
 #ifndef PB_NS_BEGIN
 # ifdef __cplusplus
 #   define PB_NS_BEGIN extern "C" {
@@ -1357,7 +1357,7 @@ static void pbL_grow(pb_Loader *L, void **pp, size_t obj_size) {
 
 static void pbL_FieldOptions(pb_Loader *L, pbL_FieldInfo *info) {
     pb_Slice s;
-    uint32_t tag = 0;
+    uint32_t tag;
     pbL_beginmsg(L, &s);
     while (pb_readvarint32(&L->s, &tag)) {
         switch (tag) {
@@ -1371,7 +1371,7 @@ static void pbL_FieldOptions(pb_Loader *L, pbL_FieldInfo *info) {
 
 static void pbL_FieldDescriptorProto(pb_Loader *L, pbL_FieldInfo *info) {
     pb_Slice s;
-    uint32_t tag = 0;
+    uint32_t tag;
     pbL_beginmsg(L, &s);
     info->packed = -1;
     while (pb_readvarint32(&L->s, &tag)) {
@@ -1403,7 +1403,7 @@ static void pbL_FieldDescriptorProto(pb_Loader *L, pbL_FieldInfo *info) {
 
 static void pbL_EnumValueDescriptorProto(pb_Loader *L, pbL_EnumValueInfo *info) {
     pb_Slice s;
-    uint32_t tag = 0;
+    uint32_t tag;
     pbL_beginmsg(L, &s);
     while (pb_readvarint32(&L->s, &tag)) {
         switch (tag) {
@@ -1419,7 +1419,7 @@ static void pbL_EnumValueDescriptorProto(pb_Loader *L, pbL_EnumValueInfo *info) 
 
 static void pbL_EnumDescriptorProto(pb_Loader *L, pbL_EnumInfo *info) {
     pb_Slice s;
-    uint32_t tag = 0;
+    uint32_t tag;
     pbL_beginmsg(L, &s);
     while (pb_readvarint32(&L->s, &tag)) {
         switch (tag) {
@@ -1435,7 +1435,7 @@ static void pbL_EnumDescriptorProto(pb_Loader *L, pbL_EnumInfo *info) {
 
 static void pbL_MessageOptions(pb_Loader *L, pbL_TypeInfo *info) {
     pb_Slice s;
-    uint32_t tag = 0;
+    uint32_t tag;
     pbL_beginmsg(L, &s);
     while (pb_readvarint32(&L->s, &tag)) {
         switch (tag) {
@@ -1449,7 +1449,7 @@ static void pbL_MessageOptions(pb_Loader *L, pbL_TypeInfo *info) {
 
 static void pbL_OneofDescriptorProto(pb_Loader *L, pbL_TypeInfo *info) {
     pb_Slice s;
-    uint32_t tag = 0;
+    uint32_t tag;
     pbL_beginmsg(L, &s);
     while (pb_readvarint32(&L->s, &tag)) {
         switch (tag) {
@@ -1463,7 +1463,7 @@ static void pbL_OneofDescriptorProto(pb_Loader *L, pbL_TypeInfo *info) {
 
 static void pbL_DescriptorProto(pb_Loader *L, pbL_TypeInfo *info) {
     pb_Slice s;
-    uint32_t tag = 0;
+    uint32_t tag;
     pbL_beginmsg(L, &s);
     while (pb_readvarint32(&L->s, &tag)) {
         switch (tag) {
@@ -1489,7 +1489,7 @@ static void pbL_DescriptorProto(pb_Loader *L, pbL_TypeInfo *info) {
 
 static void pbL_FileDescriptorProto(pb_Loader *L, pbL_FileInfo *info) {
     pb_Slice s;
-    uint32_t tag = 0;
+    uint32_t tag;
     pbL_beginmsg(L, &s);
     while (pb_readvarint32(&L->s, &tag)) {
         switch (tag) {
@@ -1510,7 +1510,7 @@ static void pbL_FileDescriptorProto(pb_Loader *L, pbL_FileInfo *info) {
 }
 
 static void pbL_FileDescriptorSet(pb_Loader *L, pbL_FileInfo **pinfo) {
-    uint32_t tag = 0;
+    uint32_t tag;
     while (pb_readvarint32(&L->s, &tag)) {
         switch (tag) {
         case pb_pair(1, PB_TBYTES): /* FileDescriptorProto file */

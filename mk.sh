@@ -104,17 +104,8 @@ Make()
             exit 1
         fi
 		
-		ExtFlags=""		
-		if [ "$EachSub" = "HLBind/pbc" ]
-		then
-			ExtFlags="-Wno-strict-aliasing"
-		fi
-		if [[ $EachSub =~ "HBase/3rd/libuv" ]]
-		then
-			ExtFlags="-w"
-		fi
-
-        SourceFile=`ls *.cpp 2>/dev/null`
+		ExtFlags=""
+		SourceFile=`ls *.cpp 2>/dev/null`
         for EachFile in $SourceFile
         do
             IsExcePTL $EachFile
