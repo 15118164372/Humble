@@ -25,7 +25,7 @@ PROGRAMNAME="Humble"
 HumbleDir="HBase HBase/3rd HBase/3rd/conhash HBase/3rd/d3des HBase/3rd/http-parser HBase/3rd/jwsmtp"
 HumbleDir=$HumbleDir" HBase/3rd/md5 HBase/3rd/mysql HBase/3rd/rapidjson HBase/3rd/rijndael HBase/3rd/RSAEuro HBase/3rd/sha1 HBase/3rd/zlib"
 HumbleDir=$HumbleDir" HBase/adjure HBase/algorithm HBase/base HBase/db HBase/encrypt HBase/fparser HBase/parser HBase/service"
-HumbleDir=$HumbleDir" HLBind HLBind/lua5.3 HLBind/luabridge HLBind/luacjson HLBind/luasocket HLBind/luasql HLBind/lua-protobuf"
+HumbleDir=$HumbleDir" HLBind HLBind/lua5.3 HLBind/LuaBridge HLBind/LuaBridge/detail HLBind/luacjson HLBind/luasocket HLBind/luasql HLBind/lua-protobuf"
 HumbleDir=$HumbleDir" Humble"
 
 #main函数所在文件夹

@@ -7,12 +7,6 @@
     <Filter Include="3rd\lua5.3">
       <UniqueIdentifier>{0162a98e-8fb0-4c6f-9a21-08da6ed0253b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3rd\luabridge">
-      <UniqueIdentifier>{016c4efa-c361-4b97-965d-145735e6ebb8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3rd\luabridge\detail">
-      <UniqueIdentifier>{feb5af3d-4ffb-4759-87b5-55687c3b4e93}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3rd\luacjson">
       <UniqueIdentifier>{b14187ca-268c-4e01-9263-1a0b811084e5}</UniqueIdentifier>
     </Filter>
@@ -24,6 +18,12 @@
     </Filter>
     <Filter Include="3rd\lua-protobuf">
       <UniqueIdentifier>{c2a97bd4-92ab-4ba6-ba62-ef6272c10c1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\LuaBridge">
+      <UniqueIdentifier>{016c4efa-c361-4b97-965d-145735e6ebb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd\LuaBridge\detail">
+      <UniqueIdentifier>{feb5af3d-4ffb-4759-87b5-55687c3b4e93}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +138,17 @@
     <ClCompile Include="luacjson\strbuf.c">
       <Filter>3rd\luacjson</Filter>
     </ClCompile>
+    <ClCompile Include="luasql\ls_mysql.c">
+      <Filter>3rd\luasql</Filter>
+    </ClCompile>
+    <ClCompile Include="luasql\luasql.c">
+      <Filter>3rd\luasql</Filter>
+    </ClCompile>
+    <ClCompile Include="LWorker.cpp" />
+    <ClCompile Include="Reg2Lua.cpp" />
+    <ClCompile Include="lua-protobuf\pb.c">
+      <Filter>3rd\lua-protobuf</Filter>
+    </ClCompile>
     <ClCompile Include="luasocket\auxiliar.c">
       <Filter>3rd\luasocket</Filter>
     </ClCompile>
@@ -182,17 +193,6 @@
     </ClCompile>
     <ClCompile Include="luasocket\wsocket.c">
       <Filter>3rd\luasocket</Filter>
-    </ClCompile>
-    <ClCompile Include="luasql\ls_mysql.c">
-      <Filter>3rd\luasql</Filter>
-    </ClCompile>
-    <ClCompile Include="luasql\luasql.c">
-      <Filter>3rd\luasql</Filter>
-    </ClCompile>
-    <ClCompile Include="LWorker.cpp" />
-    <ClCompile Include="Reg2Lua.cpp" />
-    <ClCompile Include="lua-protobuf\pb.c">
-      <Filter>3rd\lua-protobuf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,55 +275,55 @@
       <Filter>3rd\lua5.3</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\LuaBridge.h">
-      <Filter>3rd\luabridge</Filter>
+      <Filter>3rd\LuaBridge</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\RefCountedObject.h">
-      <Filter>3rd\luabridge</Filter>
+      <Filter>3rd\LuaBridge</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\RefCountedPtr.h">
-      <Filter>3rd\luabridge</Filter>
+      <Filter>3rd\LuaBridge</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\detail\CFunctions.h">
-      <Filter>3rd\luabridge\detail</Filter>
+      <Filter>3rd\LuaBridge\detail</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\detail\ClassInfo.h">
-      <Filter>3rd\luabridge\detail</Filter>
+      <Filter>3rd\LuaBridge\detail</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\detail\Constructor.h">
-      <Filter>3rd\luabridge\detail</Filter>
+      <Filter>3rd\LuaBridge\detail</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\detail\dump.h">
-      <Filter>3rd\luabridge\detail</Filter>
+      <Filter>3rd\LuaBridge\detail</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\detail\FuncTraits.h">
-      <Filter>3rd\luabridge\detail</Filter>
+      <Filter>3rd\LuaBridge\detail</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\detail\Iterator.h">
-      <Filter>3rd\luabridge\detail</Filter>
+      <Filter>3rd\LuaBridge\detail</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\detail\LuaException.h">
-      <Filter>3rd\luabridge\detail</Filter>
+      <Filter>3rd\LuaBridge\detail</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\detail\LuaHelpers.h">
-      <Filter>3rd\luabridge\detail</Filter>
+      <Filter>3rd\LuaBridge\detail</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\detail\LuaRef.h">
-      <Filter>3rd\luabridge\detail</Filter>
+      <Filter>3rd\LuaBridge\detail</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\detail\Namespace.h">
-      <Filter>3rd\luabridge\detail</Filter>
+      <Filter>3rd\LuaBridge\detail</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\detail\Stack.h">
-      <Filter>3rd\luabridge\detail</Filter>
+      <Filter>3rd\LuaBridge\detail</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\detail\TypeList.h">
-      <Filter>3rd\luabridge\detail</Filter>
+      <Filter>3rd\LuaBridge\detail</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\detail\TypeTraits.h">
-      <Filter>3rd\luabridge\detail</Filter>
+      <Filter>3rd\LuaBridge\detail</Filter>
     </ClInclude>
     <ClInclude Include="luabridge\detail\Userdata.h">
-      <Filter>3rd\luabridge\detail</Filter>
+      <Filter>3rd\LuaBridge\detail</Filter>
     </ClInclude>
     <ClInclude Include="luacjson\dtoa_config.h">
       <Filter>3rd\luacjson</Filter>
@@ -334,6 +334,33 @@
     <ClInclude Include="luacjson\strbuf.h">
       <Filter>3rd\luacjson</Filter>
     </ClInclude>
+    <ClInclude Include="luasql\luasql.h">
+      <Filter>3rd\luasql</Filter>
+    </ClInclude>
+    <ClInclude Include="LWorker.h" />
+    <ClInclude Include="Reg2Lua.h" />
+    <ClInclude Include="lua-protobuf\pb.h">
+      <Filter>3rd\lua-protobuf</Filter>
+    </ClInclude>
+    <ClInclude Include="luabridge\detail\Config.h">
+      <Filter>3rd\LuaBridge\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="luabridge\detail\Security.h">
+      <Filter>3rd\LuaBridge\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="luabridge\List.h">
+      <Filter>3rd\LuaBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="luabridge\Map.h">
+      <Filter>3rd\LuaBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="luabridge\UnorderedMap.h">
+      <Filter>3rd\LuaBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="luabridge\Vector.h">
+      <Filter>3rd\LuaBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="LuabridgeStack.h" />
     <ClInclude Include="luasocket\auxiliar.h">
       <Filter>3rd\luasocket</Filter>
     </ClInclude>
@@ -384,14 +411,6 @@
     </ClInclude>
     <ClInclude Include="luasocket\wsocket.h">
       <Filter>3rd\luasocket</Filter>
-    </ClInclude>
-    <ClInclude Include="luasql\luasql.h">
-      <Filter>3rd\luasql</Filter>
-    </ClInclude>
-    <ClInclude Include="LWorker.h" />
-    <ClInclude Include="Reg2Lua.h" />
-    <ClInclude Include="lua-protobuf\pb.h">
-      <Filter>3rd\lua-protobuf</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

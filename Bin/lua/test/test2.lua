@@ -12,7 +12,7 @@ function destroyTask()
 	
 end
 
-local function wsEcho2(sock, sockType, netMsg)
+local function wsEcho2(sock, sockType, netMsg)    
 	ws.binaryFrame(sock, 2000, "wsEcho2 return.")
 end
 regIProto(2000, wsEcho2)
@@ -41,6 +41,8 @@ regRPC("String", String)
 
 g_strAttr = ""
 local function SetAttr(strAttr)
+    print("--------------RPC SetAttr--------------")
+    print(strAttr)
 	g_strAttr = strAttr
 end
 regRPC("SetAttr", SetAttr)

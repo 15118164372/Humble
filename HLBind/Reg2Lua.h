@@ -3,8 +3,7 @@
 #define H_REGTOLUA_H_
 
 #include "HBase.h"
-#include "lua.hpp"
-#include "LuaBridge.h"
+#include "LuabridgeStack.h"
 
 H_BNAMSP
 

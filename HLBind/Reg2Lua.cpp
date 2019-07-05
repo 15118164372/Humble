@@ -45,6 +45,10 @@ CMailAdjure *newMail(void)
 
     return pMail;
 }
+void Lua_Sleep(int iTime)
+{
+    H_Sleep(iTime);
+}
 
 CReg2Lua::CReg2Lua(void)
 {
@@ -57,8 +61,8 @@ CReg2Lua::~CReg2Lua(void)
 void CReg2Lua::regAll(struct lua_State *pLState)
 {
     regFuncs(pLState);
-    regWorker(pLState);
     regAdjure(pLState);
+    regWorker(pLState);    
     regMail(pLState);
     regHumble(pLState);
     regObject(pLState);
@@ -73,6 +77,7 @@ void CReg2Lua::regFuncs(struct lua_State *pLState)
         .addFunction("regTask", regLWorker)
         .addFunction("broadCast", broadCast)
         .addFunction("newMail", newMail)
+        .addFunction("H_Sleep", Lua_Sleep)
         .addFunction("H_LOG", luaLog);
 }
 
@@ -173,6 +178,22 @@ void CReg2Lua::regMail(struct lua_State *pLState)
 void CReg2Lua::regObject(struct lua_State *pLState)
 {
     luabridge::getGlobalNamespace(pLState)
+        .beginClass<CMailAdjure>("CMailAdjure")
+            .addFunction("setAuthLogin", &CMailAdjure::setAuthLogin)
+            .addFunction("setAuthPlain", &CMailAdjure::setAuthPlain)
+            .addFunction("setSMTPSV", &CMailAdjure::setSMTPSV)
+            .addFunction("setFromAddr", &CMailAdjure::setFromAddr)
+            .addFunction("setUserName", &CMailAdjure::setUserName)
+            .addFunction("setPSW", &CMailAdjure::setPSW)
+            .addFunction("setSubject", &CMailAdjure::setSubject)
+            .addFunction("setMsg", &CMailAdjure::setMsg)
+            .addFunction("setHtml", &CMailAdjure::setHtml)
+            .addFunction("setHtmlFile", &CMailAdjure::setHtmlFile)
+            .addFunction("addToAddr", &CMailAdjure::addToAddr)
+            .addFunction("addAttach", &CMailAdjure::addAttach)
+        .endClass();
+
+    luabridge::getGlobalNamespace(pLState)
         .beginClass<CObject>("CObject")
             .addConstructor<void(*) (void)>()
         .endClass()
@@ -231,12 +252,8 @@ void CReg2Lua::regObject(struct lua_State *pLState)
         .endClass()
 #endif
         .deriveClass<CUtils, CObject>("CUtils")
-            .addConstructor<void(*) (void)>()
-            .addStaticFunction("threadId", &CUtils::threadId)
-            .addStaticFunction("coreCount", &CUtils::coreCount)
+            .addStaticFunction("coreCount", &CUtils::nowStrMilSecond)
             .addStaticFunction("nowMilSecond", &CUtils::nowMilSecond)
-            .addStaticFunction("setNTo1", &CUtils::setNTo1)
-            .addStaticFunction("setNTo0", &CUtils::setNTo0)
         .endClass()
 
         .deriveClass<CAES, CObject>("CAES")
