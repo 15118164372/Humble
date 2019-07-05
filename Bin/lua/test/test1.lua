@@ -73,7 +73,7 @@ end
 regDelayEv(1000, test_TaskRPC)
 
 local function test_NetRPC()
-	local sock = humble.getALinkByType(SockType.RPC)
+	local sock = humble.getALinkById(humble.getServiceId())
 	if Invalid_Sock == sock then
 		print("no rpc linked.")
 		regDelayEv(1000, test_NetRPC)

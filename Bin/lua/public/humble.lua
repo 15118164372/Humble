@@ -190,12 +190,14 @@ function humble.broadCast(socks, pszBuf)
 end
 
 --获取rpc连接的socket
+--根据服务器Id获取
 function humble.getALinkById(svId)
 	return m_Humble:getALinkById(svId)
 end
 function humble.getLinkById(svId)
 	return m_Humble:getLinkById(m_curWorker, svId)
 end
+--根据服务器类型获取
 function humble.getALinkByType(svType)
 	return m_Humble:getALinkByType(svType)
 end
