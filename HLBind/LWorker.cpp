@@ -39,7 +39,7 @@ void CLWorker::initLua(void)
     for (int i = 0; i < LFUNC_COUNT; ++i)
     {
         m_pLFunc[i] = new(std::nothrow) luabridge::LuaRef(m_pState);
-        H_ASSERT(NULL != m_pLFunc[i], "malloc memory error.");
+        H_ASSERT(NULL != m_pLFunc[i], H_ERR_MEMORY);
     }
 }
 void CLWorker::freeLua(void)

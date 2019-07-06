@@ -23,7 +23,7 @@ enum
 CDESEncrypt::CDESEncrypt(void)
 {
     m_pContext = getcontext();
-    H_ASSERT(NULL != m_pContext, "malloc memory error.");
+    H_ASSERT(NULL != m_pContext, H_ERR_MEMORY);
 }
 
 CDESEncrypt::~CDESEncrypt()

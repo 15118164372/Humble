@@ -41,7 +41,7 @@ void luaLog(const unsigned short usLV, const char *pszLuaFile, const int iLine, 
 CMailAdjure *newMail(void)
 {
     CMailAdjure *pMail = new(std::nothrow) CMailAdjure();
-    H_ASSERT(NULL != pMail, "malloc memory error.");
+    H_ASSERT(NULL != pMail, H_ERR_MEMORY);
 
     return pMail;
 }

@@ -443,11 +443,11 @@ CMySQLStatement::CMySQLStatement(MYSQL *pDB, MYSQL_STMT *pStmt)
     }
 
     m_pBinder_Param = new(std::nothrow) MYSQL_BIND[m_uiParamNum];
-    H_ASSERT(NULL != m_pBinder_Param, "malloc memory error.");
+    H_ASSERT(NULL != m_pBinder_Param, H_ERR_MEMORY);
     H_Zero(m_pBinder_Param, m_uiParamNum * sizeof(MYSQL_BIND));
 
     m_pBindMemInfo = new(std::nothrow) BindMemInfo[m_uiParamNum];
-    H_ASSERT(NULL != m_pBindMemInfo, "malloc memory error.");    
+    H_ASSERT(NULL != m_pBindMemInfo, H_ERR_MEMORY);
 }
 
 void CMySQLStatement::getFiledInfo(void)
@@ -589,9 +589,9 @@ CDBQuery *CMySQLStatement::execQuery(void)
     }
 
     pStBindInfo = new(std::nothrow) BindInfo[m_uiCol];
-    H_ASSERT(NULL != pStBindInfo, "malloc memory error.");
+    H_ASSERT(NULL != pStBindInfo, H_ERR_MEMORY);
     pRstBinder = new(std::nothrow) MYSQL_BIND[m_uiCol];
-    H_ASSERT(NULL != pRstBinder, "malloc memory error.");
+    H_ASSERT(NULL != pRstBinder, H_ERR_MEMORY);
     H_Zero(pRstBinder, m_uiCol * sizeof(MYSQL_BIND));
 
     getRstBinderInfo(pRstBinder, pStBindInfo);
@@ -611,7 +611,7 @@ CDBQuery *CMySQLStatement::execQuery(void)
     }    
 
     CDBQuery * pQuery = new(std::nothrow) CMySQLStmtQuery(pRstBinder, pStBindInfo, m_pStmt, m_uiCol);
-    H_ASSERT(NULL != pQuery, "malloc memory error.");
+    H_ASSERT(NULL != pQuery, H_ERR_MEMORY);
 
     return pQuery;
 }
@@ -663,12 +663,12 @@ void CMySQLStatement::getRstBinderInfo(MYSQL_BIND *pBinder, struct BindInfo *pSt
             || MYSQL_TYPE_BLOB == stBinder.buffer_type)
         {
             stBinder.length = new(std::nothrow) unsigned long;
-            H_ASSERT(NULL != stBinder.length, "malloc memory error.");
+            H_ASSERT(NULL != stBinder.length, H_ERR_MEMORY);
             *(stBinder.length) = 0;
         }
 
         stBinder.buffer = new(std::nothrow) char[stBinder.buffer_length];
-        H_ASSERT(NULL != stBinder.buffer, "malloc memory error."); 
+        H_ASSERT(NULL != stBinder.buffer, H_ERR_MEMORY);
         H_Zero(stBinder.buffer, stBinder.buffer_length);
     }
 }
@@ -680,7 +680,7 @@ void CMySQLStatement::setBindInfo(size_t iLens, struct BindMemInfo &stInfo)
     {
         H_SafeDelete(stInfo.pMem);
         stInfo.pMem = new(std::nothrow) char[iLens];
-        H_ASSERT(NULL != stInfo.pMem, "malloc memory error.");
+        H_ASSERT(NULL != stInfo.pMem, H_ERR_MEMORY);
         stInfo.iLens = iLens;
     }
 }
@@ -880,7 +880,7 @@ CDBQuery* CMySQLLink::execQuery(const char* szSQL)
         }
 
         CDBQuery *pQuery = new(std::nothrow) CMySQLQuery(Mysql_Res);
-        H_ASSERT(NULL != pQuery, "malloc memory error.");
+        H_ASSERT(NULL != pQuery, H_ERR_MEMORY);
 
         return pQuery;
     }
@@ -904,7 +904,7 @@ CMySQLStatement *CMySQLLink::compileStatement(const char* pszSQL)
     if (H_RTN_OK == mysql_stmt_prepare(pStmt, pszSQL, (unsigned long)strlen(pszSQL)))
     {
         CMySQLStatement *pStatement = new(std::nothrow) CMySQLStatement(m_pDb_Ptr, pStmt);
-        H_ASSERT(NULL != pStatement, "malloc memory error.");
+        H_ASSERT(NULL != pStatement, H_ERR_MEMORY);
 
         return pStatement;
     }

@@ -9,13 +9,13 @@ H_BNAMSP
 CRSAKey::CRSAKey(void)
 {
     m_pRandom = new(std::nothrow) R_RANDOM_STRUCT;
-    H_ASSERT(NULL != m_pRandom, "malloc memory error.");
+    H_ASSERT(NULL != m_pRandom, H_ERR_MEMORY);
 
     m_pPublicKey = new(std::nothrow)R_RSA_PUBLIC_KEY;
-    H_ASSERT(NULL != m_pPublicKey, "malloc memory error.");
+    H_ASSERT(NULL != m_pPublicKey, H_ERR_MEMORY);
 
     m_pPrivateKey = new(std::nothrow)R_RSA_PRIVATE_KEY;
-    H_ASSERT(NULL != m_pPrivateKey, "malloc memory error.");
+    H_ASSERT(NULL != m_pPrivateKey, H_ERR_MEMORY);
 }
 
 CRSAKey::~CRSAKey(void)
@@ -95,7 +95,7 @@ char *CRSAKey::fileRead(const char *pszFile)
     }
 
     char *pBuf = new(std::nothrow) char[ulFileSize];
-    H_ASSERT(NULL != pBuf, "malloc memory error.");
+    H_ASSERT(NULL != pBuf, H_ERR_MEMORY);
     fread(pBuf, 1, ulFileSize, pFile);
     fclose(pFile);
 

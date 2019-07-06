@@ -7,13 +7,13 @@ H_BNAMSP
 CRSA::CRSA(void)
 {
     m_pRandom = new(std::nothrow) R_RANDOM_STRUCT;
-    H_ASSERT(NULL != m_pRandom, "malloc memory error.");
+    H_ASSERT(NULL != m_pRandom, H_ERR_MEMORY);
 
     m_pPubKey = new(std::nothrow)R_RSA_PUBLIC_KEY;
-    H_ASSERT(NULL != m_pPubKey, "malloc memory error.");
+    H_ASSERT(NULL != m_pPubKey, H_ERR_MEMORY);
 
     m_pPriKey = new(std::nothrow)R_RSA_PRIVATE_KEY;
-    H_ASSERT(NULL != m_pPriKey, "malloc memory error.");
+    H_ASSERT(NULL != m_pPriKey, H_ERR_MEMORY);
 }
 
 CRSA::~CRSA(void)

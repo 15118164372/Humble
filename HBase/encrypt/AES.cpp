@@ -28,15 +28,15 @@ void CAES::setKey(const char *pszKey, const unsigned int uiKeyType)
     size_t iKeyLens(KEYLENGTH(uiKeyType));
 
     m_pEncodeRK = new(std::nothrow) unsigned long[iRKLens + 1];
-    H_ASSERT(NULL != m_pEncodeRK, "malloc memory error.");
+    H_ASSERT(NULL != m_pEncodeRK, H_ERR_MEMORY);
     H_Zero(m_pEncodeRK, iRKLens + 1);
 
     m_pDecodeRK = new(std::nothrow) unsigned long[iRKLens + 1];
-    H_ASSERT(NULL != m_pDecodeRK, "malloc memory error.");
+    H_ASSERT(NULL != m_pDecodeRK, H_ERR_MEMORY);
     H_Zero(m_pDecodeRK, iRKLens + 1);
 
     unsigned char * pKey = new(std::nothrow) unsigned char[iKeyLens + 1];
-    H_ASSERT(NULL != pKey, "malloc memory error.");
+    H_ASSERT(NULL != pKey, H_ERR_MEMORY);
     H_Zero(pKey, iKeyLens + 1);
     memcpy(pKey, pszKey, strlen(pszKey) > iKeyLens ? iKeyLens : strlen(pszKey));
 
