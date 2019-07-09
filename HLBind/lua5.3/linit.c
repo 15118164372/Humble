@@ -58,7 +58,7 @@ static const luaL_Reg loadedlibs[] = {
   { LUA_LUASQLNAME, luaopen_luasql_mysql },
 #endif
   { LUA_PROTOBUF, luaopen_pb },
-  { LUA_LUASOCKET, luaopen_socket_core },
+  { LUA_LUASOCKET, luaopen_socket },
   { NULL, NULL }
 };
 

@@ -1,3 +1,5 @@
+local lua_socket=require("socket")
+
 local redis = {
     _VERSION     = 'redis-lua 2.0.5-dev',
     _DESCRIPTION = 'A Lua client library for the redis key value storage system.',
@@ -11,25 +13,6 @@ Redis = redis
 
 local unpack = _G.unpack or table.unpack
 local network, request, response = {}, {}, {}
-
-local defaults = {
-    host        = '127.0.0.1',
-    port        = 6379,
-    tcp_nodelay = true,
-    path        = nil,
-}
-
-local function merge_defaults(parameters)
-    if parameters == nil then
-        parameters = {}
-    end
-    for k, v in pairs(defaults) do
-        if parameters[k] == nil then
-            parameters[k] = defaults[k]
-        end
-    end
-    return parameters
-end
 
 local function parse_boolean(v)
     if v == '1' or v == 'true' or v == 'TRUE' then
@@ -299,14 +282,19 @@ end
 -- ############################################################################
 
 function network.write(client, buffer)
-    local _, err = client.network.socket:send(buffer)
-    if err then client.error(err) end
+    local err = lua_socket.write(client.network.socket, buffer)
+    if not err then client.error("send messsage error.") end
 end
 
 function network.read(client, len)
-    if len == nil then len = '*l' end
-    local line, err = client.network.socket:receive(len)
-    if not err then return line else client.error('connection error: ' .. err) end
+    local line
+    if len == nil then
+        line = socket.readline(client.network.socket)
+    else
+        line = socket.read(client.network.socket, len)
+    end
+    
+    if nil ~= line then return line else client.error('read message error') end
 end
 
 -- ############################################################################
@@ -478,13 +466,15 @@ end
 
 client_prototype.quit = function(client)
     request.multibulk(client, 'QUIT')
-    client.network.socket:shutdown()
+    lua_socket.shutdown(client.network.socket)
+    lua_socket.close(client.network.socket)
     return true
 end
 
 client_prototype.shutdown = function(client)
     request.multibulk(client, 'SHUTDOWN')
-    client.network.socket:shutdown()
+    lua_socket.shutdown(client.network.socket)
+    lua_socket.close(client.network.socket)
 end
 
 -- Command pipelining
@@ -801,91 +791,13 @@ do
 end
 
 -- ############################################################################
-
-local function connect_tcp(socket, parameters)
-    local host, port = parameters.host, tonumber(parameters.port)
-    if parameters.timeout then
-        socket:settimeout(parameters.timeout, 't')
-    end
-
-    local ok, err = socket:connect(host, port)
-    if not ok then
-        redis.error('could not connect to '..host..':'..port..' ['..err..']')
-    end
-    socket:setoption('tcp-nodelay', parameters.tcp_nodelay)
-    return socket
-end
-
-local function connect_unix(socket, parameters)
-    local ok, err = socket:connect(parameters.path)
-    if not ok then
-        redis.error('could not connect to '..parameters.path..' ['..err..']')
-    end
-    return socket
-end
-
-local function create_connection(parameters)
-    if parameters.socket then
-        return parameters.socket
-    end
-
-    local perform_connection, socket
-
-    if parameters.scheme == 'unix' then
-        perform_connection, socket = connect_unix, require('socket.unix')
-        assert(socket, 'your build of LuaSocket does not support UNIX domain sockets')
-    else
-        if parameters.scheme then
-            local scheme = parameters.scheme
-            assert(scheme == 'redis' or scheme == 'tcp', 'invalid scheme: '..scheme)
-        end
-        perform_connection, socket = connect_tcp, require('socket').tcp
-    end
-
-    return perform_connection(socket(), parameters)
-end
-
--- ############################################################################
-
 function redis.error(message, level)
     error(message, (level or 1) + 1)
 end
 
-function redis.connect(...)
-    local args, parameters = {...}, nil
-
-    if #args == 1 then
-        if type(args[1]) == 'table' then
-            parameters = args[1]
-        else
-            local uri = require('socket.url')
-            parameters = uri.parse(select(1, ...))
-            if parameters.scheme then
-                if parameters.query then
-                    for k, v in parameters.query:gmatch('([-_%w]+)=([-_%w]+)') do
-                        if k == 'tcp_nodelay' or k == 'tcp-nodelay' then
-                            parameters.tcp_nodelay = parse_boolean(v)
-                        elseif k == 'timeout' then
-                            parameters.timeout = tonumber(v)
-                        end
-                    end
-                end
-            else
-                parameters.host = parameters.path
-            end
-        end
-    elseif #args > 1 then
-        local host, port, timeout = unpack(args)
-        parameters = { host = host, port = port, timeout = tonumber(timeout) }
-    end
-
-    local commands = redis.commands or {}
-    if type(commands) ~= 'table' then
-        redis.error('invalid type for the commands table')
-    end
-
-    local socket = create_connection(merge_defaults(parameters))
-    local client = create_client(client_prototype, socket, commands)
+function redis.connect(host, port)    
+    local fd = assert(lua_socket.open(host, port), 'could not connect to '..host..':'..port)
+    local client = create_client(client_prototype, fd, redis.commands)
 
     return client
 end

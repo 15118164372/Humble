@@ -56,8 +56,8 @@ LUALIB_API int (luaopen_luasql_mysql) (lua_State *L);
 #define LUA_PROTOBUF "pb"  
 LUALIB_API int (luaopen_pb) (lua_State *L);
 
-#define LUA_LUASOCKET "socket.core"
-LUALIB_API int (luaopen_socket_core)(lua_State *L);
+#define LUA_LUASOCKET "socket"
+LUALIB_API int (luaopen_socket)(lua_State *L);
 
 /* open all previous libraries */
 LUALIB_API void (luaL_openlibs) (lua_State *L);
