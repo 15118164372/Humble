@@ -36,11 +36,11 @@ init_winsock() {
 
 #endif
 
-#ifndef MSG_WAITALL
+#ifndef MSG_WAITALL 
 #define MSG_WAITALL 0
 #endif
 
-#define LOCALBUFFER 1024
+#define LOCALBUFFER 2048
 
 static int
 lopen(lua_State *L) {
