@@ -32,6 +32,7 @@
 
 #include <LuaBridge/detail/Config.h>
 #include <LuaBridge/detail/ClassInfo.h>
+#include <LuaBridge/detail/LuaException.h>
 #include <LuaBridge/detail/Security.h>
 #include <LuaBridge/detail/TypeTraits.h>
 
@@ -281,7 +282,9 @@ class Namespace : public detail::Registrar
     static int ctorPlacementProxy (lua_State* L)
     {
       ArgList <Params, 2> args (L);
-      Constructor <T, Params>::call (UserdataValue <T>::place (L), args);
+      UserdataValue <T>* value = UserdataValue <T>::place (L);
+      Constructor <T, Params>::call (value->getObject (), args);
+      value->commit ();
       return 1;
     }
 
@@ -572,8 +575,8 @@ class Namespace : public detail::Registrar
     /**
       Add or replace a property member.
     */
-    template <class TG>
-    Class <T>& addProperty (char const* name, TG (T::* get) () const, void (T::* set) (TG) = 0)
+    template <class TG, class TS = TG>
+    Class <T>& addProperty (char const* name, TG (T::* get) () const, void (T::* set) (TS) = 0)
     {
       assertStackState (); // Stack: const table (co), class table (cl), static table (st)
 
@@ -586,7 +589,7 @@ class Namespace : public detail::Registrar
 
       if (set != 0)
       {
-        typedef void (T::* set_t) (TG);
+        typedef void (T::* set_t) (TS);
         new (lua_newuserdata (L, sizeof (set_t))) set_t (set); // Stack: co, cl, st, function ptr
         lua_pushcclosure (L, &CFunc::CallMember <set_t>::f, 1); // Stack: co, cl, st, setter
         CFunc::addSetter (L, name, -3); // Stack: co, cl, st
@@ -599,8 +602,8 @@ class Namespace : public detail::Registrar
     /**
       Add or replace a property member.
     */
-    template <class TG>
-    Class <T>& addProperty (char const* name, TG (T::* get) (lua_State*) const, void (T::* set) (TG, lua_State*) = 0)
+    template <class TG, class TS = TG>
+    Class <T>& addProperty (char const* name, TG (T::* get) (lua_State*) const, void (T::* set) (TS, lua_State*) = 0)
     {
       assertStackState (); // Stack: const table (co), class table (cl), static table (st)
 
@@ -613,7 +616,7 @@ class Namespace : public detail::Registrar
 
       if (set != 0)
       {
-        typedef void (T::* set_t) (TG, lua_State*);
+        typedef void (T::* set_t) (TS, lua_State*);
         new (lua_newuserdata (L, sizeof (set_t))) set_t (set); // Stack: co, cl, st, function ptr
         lua_pushcclosure (L, &CFunc::CallMember <set_t>::f, 1); // Stack: co, cl, st, setter
         CFunc::addSetter (L, name, -3); // Stack: co, cl, st
@@ -633,8 +636,8 @@ class Namespace : public detail::Registrar
       Both the get and the set functions require a T const* and T* in the first
       argument respectively.
     */
-    template <class TG>
-    Class <T>& addProperty (char const* name, TG (*get) (T const*), void (*set) (T*, TG) = 0)
+    template <class TG, class TS = TG>
+    Class <T>& addProperty (char const* name, TG (*get) (T const*), void (*set) (T*, TS) = 0)
     {
       assertStackState (); // Stack: const table (co), class table (cl), static table (st)
 
@@ -647,7 +650,7 @@ class Namespace : public detail::Registrar
       if (set != 0)
       {
         lua_pushlightuserdata (L, reinterpret_cast <void*> (set)); // Stack: co, cl, st, function ptr
-        lua_pushcclosure (L, &CFunc::Call <void (*) (T*, TG)>::f, 1); // Stack: co, cl, st, setter
+        lua_pushcclosure (L, &CFunc::Call <void (*) (T*, TS)>::f, 1); // Stack: co, cl, st, setter
         CFunc::addSetter (L, name, -3); // Stack: co, cl, st
       }
 
@@ -1020,11 +1023,6 @@ private:
 
   using Registrar::operator=;
 
-  static int throwAtPanic (lua_State* L)
-  {
-    throw std::runtime_error (lua_tostring (L, 1));
-  }
-
 public:
   //----------------------------------------------------------------------------
   /**
@@ -1032,7 +1030,7 @@ public:
   */
   static Namespace getGlobalNamespace (lua_State* L)
   {
-    lua_atpanic (L, throwAtPanic);
+    enableExceptions (L);
     return Namespace (L);
   }
 
@@ -1114,8 +1112,8 @@ public:
 
       If the set function is omitted or null, the property is read-only.
   */
-  template <class TG>
-  Namespace& addProperty (char const* name, TG (*get) (), void (*set) (TG) = 0)
+  template <class TG, class TS = TG>
+  Namespace& addProperty (char const* name, TG (*get) (), void (*set) (TS) = 0)
   {
     if (m_stackSize == 1)
     {
@@ -1131,7 +1129,7 @@ public:
     if (set != 0)
     {
       lua_pushlightuserdata(L, reinterpret_cast <void*> (set)); // Stack: ns, function ptr
-      lua_pushcclosure (L, &CFunc::Call <void (*) (TG)>::f, 1);
+      lua_pushcclosure (L, &CFunc::Call <void (*) (TS)>::f, 1);
     }
     else
     {
@@ -1144,6 +1142,36 @@ public:
   }
 
   //----------------------------------------------------------------------------
+  /**
+      Add or replace a property.
+      If the set function is omitted or null, the property is read-only.
+  */
+  Namespace& addProperty (char const* name, int (*get) (lua_State*), int (*set) (lua_State*) = 0)
+  {
+    if (m_stackSize == 1)
+    {
+      throw std::logic_error ("addProperty () called on global namespace");
+    }
+
+    assert (lua_istable (L, -1)); // Stack: namespace table (ns)
+    lua_pushcfunction (L, get); // Stack: ns, getter
+    CFunc::addGetter (L, name, -2); // Stack: ns
+    if (set != 0)
+    {
+      lua_pushcfunction(L, set); // Stack: ns, setter
+      CFunc::addSetter(L, name, -2); // Stack: ns
+    }
+    else
+    {
+      lua_pushstring(L, name); // Stack: ns, name
+      lua_pushcclosure(L, &CFunc::readOnlyError, 1); // Stack: ns, name, readOnlyError
+      CFunc::addSetter(L, name, -2); // Stack: ns
+    }
+
+    return *this;
+  }
+
+//----------------------------------------------------------------------------
   /**
       Add or replace a free function.
   */

@@ -56,7 +56,4 @@
 #include <LuaBridge/detail/CFunctions.h>
 #include <LuaBridge/detail/Security.h>
 #include <LuaBridge/detail/Stack.h>
-#include <LuaBridge/Map.h>
-#include <LuaBridge/List.h>
-#include <LuaBridge/Vector.h>
 #include <LuaBridge/detail/Namespace.h>

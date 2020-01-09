@@ -3,6 +3,9 @@
 
 #include "lua.hpp"
 #include "LuaBridge.h"
+#include "LuaBridge/List.h"
+#include "LuaBridge/Vector.h"
+#include "LuaBridge/Map.h"
 
 namespace luabridge
 {

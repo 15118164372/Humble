@@ -167,7 +167,8 @@ void CLWorker::onNetReadHttpd(CTaskHttpdAdjure *pNetRead)
 {
     try
     {
-        (*(m_pLFunc[LFUNC_NET_READ_HTTPD]))(pNetRead->getSock(), pNetRead->getType(), pNetRead->getPath(), pNetRead);
+        (*(m_pLFunc[LFUNC_NET_READ_HTTPD]))(pNetRead->getSock(), pNetRead->getType(), pNetRead->getPath(), 
+            pNetRead->getMethod(), pNetRead->getUrl(), pNetRead->getHead(), pNetRead->getBody());
     }
     catch (luabridge::LuaException &e)
     {

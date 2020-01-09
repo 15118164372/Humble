@@ -61,7 +61,6 @@ CReg2Lua::~CReg2Lua(void)
 void CReg2Lua::regAll(struct lua_State *pLState)
 {
     regFuncs(pLState);
-    regAdjure(pLState);
     regWorker(pLState);    
     regMail(pLState);
     regHumble(pLState);
@@ -140,19 +139,6 @@ void CReg2Lua::regHumble(struct lua_State *pLState)
             .addFunction("getProPath", &CHumble::getProPath)
             .addFunction("getScriptPath", &CHumble::getScriptPath)
             .addFunction("getRPCKey", &CHumble::getRPCKey)
-        .endClass();
-}
-
-void CReg2Lua::regAdjure(struct lua_State *pLState)
-{
-    luabridge::getGlobalNamespace(pLState)
-        .beginClass<CHttpAdjure>("CHttpAdjure")
-            .addFunction("getHead", &CHttpAdjure::getHead)
-            .addFunction("getBody", &CHttpAdjure::getBody)
-        .endClass()
-        .deriveClass<CTaskHttpdAdjure, CHttpAdjure>("CTaskHttpdAdjure")
-            .addFunction("getUrl", &CTaskHttpdAdjure::getUrl)
-            .addFunction("getMethod", &CTaskHttpdAdjure::getMethod)
         .endClass();
 }
 

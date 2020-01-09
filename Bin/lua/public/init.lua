@@ -249,15 +249,14 @@ function regBindIProto(iProto, func)
 end
 
 --httpd
-function CCALL_NETREADHTTPD(sock, sockType, strProto, pHttpdAdjure)
+function CCALL_NETREADHTTPD(sock, sockType, strProto, strMethod, tUrl, tHead, strBody)
 	local func = m_Global.NetHttpdMsg[strProto]
 	if not func then
 		return
 	end
 	
 	utile.callFunc(func, sock, sockType, 
-		pHttpdAdjure:getMethod(), pHttpdAdjure:getUrl(), 
-		pHttpdAdjure:getHead(), pHttpdAdjure:getBody())
+		strMethod, tUrl, tHead, strBody)
 end
 --function func(sock, sockType, strMethod, tUrl, tHead, pszBody)
 function regHttpdProto(strProto, func)

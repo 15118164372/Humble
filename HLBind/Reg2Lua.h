@@ -17,7 +17,6 @@ public:
 
 private:
     static void regFuncs(struct lua_State *pLState);
-    static void regAdjure(struct lua_State *pLState);
     static void regWorker(struct lua_State *pLState);
     static void regHumble(struct lua_State *pLState);
     static void regMail(struct lua_State *pLState);
