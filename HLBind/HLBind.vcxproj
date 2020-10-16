@@ -20,39 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lua-protobuf\pb.c" />
-    <ClCompile Include="lua5.3\lapi.c" />
-    <ClCompile Include="lua5.3\lauxlib.c" />
-    <ClCompile Include="lua5.3\lbaselib.c" />
-    <ClCompile Include="lua5.3\lbitlib.c" />
-    <ClCompile Include="lua5.3\lcode.c" />
-    <ClCompile Include="lua5.3\lcorolib.c" />
-    <ClCompile Include="lua5.3\lctype.c" />
-    <ClCompile Include="lua5.3\ldblib.c" />
-    <ClCompile Include="lua5.3\ldebug.c" />
-    <ClCompile Include="lua5.3\ldo.c" />
-    <ClCompile Include="lua5.3\ldump.c" />
-    <ClCompile Include="lua5.3\lfunc.c" />
-    <ClCompile Include="lua5.3\lgc.c" />
-    <ClCompile Include="lua5.3\linit.c" />
-    <ClCompile Include="lua5.3\liolib.c" />
-    <ClCompile Include="lua5.3\llex.c" />
-    <ClCompile Include="lua5.3\lmathlib.c" />
-    <ClCompile Include="lua5.3\lmem.c" />
-    <ClCompile Include="lua5.3\loadlib.c" />
-    <ClCompile Include="lua5.3\lobject.c" />
-    <ClCompile Include="lua5.3\lopcodes.c" />
-    <ClCompile Include="lua5.3\loslib.c" />
-    <ClCompile Include="lua5.3\lparser.c" />
-    <ClCompile Include="lua5.3\lstate.c" />
-    <ClCompile Include="lua5.3\lstring.c" />
-    <ClCompile Include="lua5.3\lstrlib.c" />
-    <ClCompile Include="lua5.3\ltable.c" />
-    <ClCompile Include="lua5.3\ltablib.c" />
-    <ClCompile Include="lua5.3\ltm.c" />
-    <ClCompile Include="lua5.3\lundump.c" />
-    <ClCompile Include="lua5.3\lutf8lib.c" />
-    <ClCompile Include="lua5.3\lvm.c" />
-    <ClCompile Include="lua5.3\lzio.c" />
     <ClCompile Include="luacjson\dtoa.c" />
     <ClCompile Include="luacjson\g_fmt.c" />
     <ClCompile Include="luacjson\lua_cjson.c" />
@@ -60,65 +27,99 @@
     <ClCompile Include="luasocket\lua-socket.c" />
     <ClCompile Include="luasql\ls_mysql.c" />
     <ClCompile Include="luasql\luasql.c" />
+    <ClCompile Include="lua\lapi.c" />
+    <ClCompile Include="lua\lauxlib.c" />
+    <ClCompile Include="lua\lbaselib.c" />
+    <ClCompile Include="lua\lcode.c" />
+    <ClCompile Include="lua\lcorolib.c" />
+    <ClCompile Include="lua\lctype.c" />
+    <ClCompile Include="lua\ldblib.c" />
+    <ClCompile Include="lua\ldebug.c" />
+    <ClCompile Include="lua\ldo.c" />
+    <ClCompile Include="lua\ldump.c" />
+    <ClCompile Include="lua\lfunc.c" />
+    <ClCompile Include="lua\lgc.c" />
+    <ClCompile Include="lua\linit.c" />
+    <ClCompile Include="lua\liolib.c" />
+    <ClCompile Include="lua\llex.c" />
+    <ClCompile Include="lua\lmathlib.c" />
+    <ClCompile Include="lua\lmem.c" />
+    <ClCompile Include="lua\loadlib.c" />
+    <ClCompile Include="lua\lobject.c" />
+    <ClCompile Include="lua\lopcodes.c" />
+    <ClCompile Include="lua\loslib.c" />
+    <ClCompile Include="lua\lparser.c" />
+    <ClCompile Include="lua\lstate.c" />
+    <ClCompile Include="lua\lstring.c" />
+    <ClCompile Include="lua\lstrlib.c" />
+    <ClCompile Include="lua\ltable.c" />
+    <ClCompile Include="lua\ltablib.c" />
+    <ClCompile Include="lua\ltm.c" />
+    <ClCompile Include="lua\lundump.c" />
+    <ClCompile Include="lua\lutf8lib.c" />
+    <ClCompile Include="lua\lvm.c" />
+    <ClCompile Include="lua\lzio.c" />
     <ClCompile Include="LWorker.cpp" />
     <ClCompile Include="Reg2Lua.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lua-protobuf\pb.h" />
-    <ClInclude Include="lua5.3\lapi.h" />
-    <ClInclude Include="lua5.3\lauxlib.h" />
-    <ClInclude Include="lua5.3\lcode.h" />
-    <ClInclude Include="lua5.3\lctype.h" />
-    <ClInclude Include="lua5.3\ldebug.h" />
-    <ClInclude Include="lua5.3\ldo.h" />
-    <ClInclude Include="lua5.3\lfunc.h" />
-    <ClInclude Include="lua5.3\lgc.h" />
-    <ClInclude Include="lua5.3\llex.h" />
-    <ClInclude Include="lua5.3\llimits.h" />
-    <ClInclude Include="lua5.3\lmem.h" />
-    <ClInclude Include="lua5.3\lobject.h" />
-    <ClInclude Include="lua5.3\lopcodes.h" />
-    <ClInclude Include="lua5.3\lparser.h" />
-    <ClInclude Include="lua5.3\lprefix.h" />
-    <ClInclude Include="lua5.3\lstate.h" />
-    <ClInclude Include="lua5.3\lstring.h" />
-    <ClInclude Include="lua5.3\ltable.h" />
-    <ClInclude Include="lua5.3\ltm.h" />
-    <ClInclude Include="lua5.3\lua.h" />
-    <ClInclude Include="lua5.3\lua.hpp" />
-    <ClInclude Include="lua5.3\luaconf.h" />
-    <ClInclude Include="lua5.3\lualib.h" />
-    <ClInclude Include="lua5.3\lundump.h" />
-    <ClInclude Include="lua5.3\lvm.h" />
-    <ClInclude Include="lua5.3\lzio.h" />
     <ClInclude Include="LuabridgeStack.h" />
-    <ClInclude Include="luabridge\detail\CFunctions.h" />
-    <ClInclude Include="luabridge\detail\ClassInfo.h" />
-    <ClInclude Include="luabridge\detail\Config.h" />
-    <ClInclude Include="luabridge\detail\Constructor.h" />
-    <ClInclude Include="luabridge\detail\dump.h" />
-    <ClInclude Include="luabridge\detail\FuncTraits.h" />
-    <ClInclude Include="luabridge\detail\Iterator.h" />
-    <ClInclude Include="luabridge\detail\LuaException.h" />
-    <ClInclude Include="luabridge\detail\LuaHelpers.h" />
-    <ClInclude Include="luabridge\detail\LuaRef.h" />
-    <ClInclude Include="luabridge\detail\Namespace.h" />
-    <ClInclude Include="luabridge\detail\Security.h" />
-    <ClInclude Include="luabridge\detail\Stack.h" />
-    <ClInclude Include="luabridge\detail\TypeList.h" />
-    <ClInclude Include="luabridge\detail\TypeTraits.h" />
-    <ClInclude Include="luabridge\detail\Userdata.h" />
-    <ClInclude Include="luabridge\List.h" />
-    <ClInclude Include="luabridge\LuaBridge.h" />
-    <ClInclude Include="luabridge\Map.h" />
-    <ClInclude Include="luabridge\RefCountedObject.h" />
-    <ClInclude Include="luabridge\RefCountedPtr.h" />
-    <ClInclude Include="luabridge\UnorderedMap.h" />
-    <ClInclude Include="luabridge\Vector.h" />
+    <ClInclude Include="LuaBridge\detail\CFunctions.h" />
+    <ClInclude Include="LuaBridge\detail\ClassInfo.h" />
+    <ClInclude Include="LuaBridge\detail\Config.h" />
+    <ClInclude Include="LuaBridge\detail\Constructor.h" />
+    <ClInclude Include="LuaBridge\detail\dump.h" />
+    <ClInclude Include="LuaBridge\detail\FuncTraits.h" />
+    <ClInclude Include="LuaBridge\detail\Iterator.h" />
+    <ClInclude Include="LuaBridge\detail\LuaException.h" />
+    <ClInclude Include="LuaBridge\detail\LuaHelpers.h" />
+    <ClInclude Include="LuaBridge\detail\LuaRef.h" />
+    <ClInclude Include="LuaBridge\detail\Namespace.h" />
+    <ClInclude Include="LuaBridge\detail\Security.h" />
+    <ClInclude Include="LuaBridge\detail\Stack.h" />
+    <ClInclude Include="LuaBridge\detail\TypeList.h" />
+    <ClInclude Include="LuaBridge\detail\TypeTraits.h" />
+    <ClInclude Include="LuaBridge\detail\Userdata.h" />
+    <ClInclude Include="LuaBridge\List.h" />
+    <ClInclude Include="LuaBridge\LuaBridge.h" />
+    <ClInclude Include="LuaBridge\Map.h" />
+    <ClInclude Include="LuaBridge\RefCountedObject.h" />
+    <ClInclude Include="LuaBridge\RefCountedPtr.h" />
+    <ClInclude Include="LuaBridge\UnorderedMap.h" />
+    <ClInclude Include="LuaBridge\Vector.h" />
     <ClInclude Include="luacjson\dtoa_config.h" />
     <ClInclude Include="luacjson\fpconv.h" />
     <ClInclude Include="luacjson\strbuf.h" />
     <ClInclude Include="luasql\luasql.h" />
+    <ClInclude Include="lua\lapi.h" />
+    <ClInclude Include="lua\lauxlib.h" />
+    <ClInclude Include="lua\lcode.h" />
+    <ClInclude Include="lua\lctype.h" />
+    <ClInclude Include="lua\ldebug.h" />
+    <ClInclude Include="lua\ldo.h" />
+    <ClInclude Include="lua\lfunc.h" />
+    <ClInclude Include="lua\lgc.h" />
+    <ClInclude Include="lua\ljumptab.h" />
+    <ClInclude Include="lua\llex.h" />
+    <ClInclude Include="lua\llimits.h" />
+    <ClInclude Include="lua\lmem.h" />
+    <ClInclude Include="lua\lobject.h" />
+    <ClInclude Include="lua\lopcodes.h" />
+    <ClInclude Include="lua\lopnames.h" />
+    <ClInclude Include="lua\lparser.h" />
+    <ClInclude Include="lua\lprefix.h" />
+    <ClInclude Include="lua\lstate.h" />
+    <ClInclude Include="lua\lstring.h" />
+    <ClInclude Include="lua\ltable.h" />
+    <ClInclude Include="lua\ltm.h" />
+    <ClInclude Include="lua\lua.h" />
+    <ClInclude Include="lua\lua.hpp" />
+    <ClInclude Include="lua\luaconf.h" />
+    <ClInclude Include="lua\lualib.h" />
+    <ClInclude Include="lua\lundump.h" />
+    <ClInclude Include="lua\lvm.h" />
+    <ClInclude Include="lua\lzio.h" />
     <ClInclude Include="LWorker.h" />
     <ClInclude Include="Reg2Lua.h" />
   </ItemGroup>
@@ -192,7 +193,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -205,7 +206,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -220,7 +221,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -237,7 +238,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

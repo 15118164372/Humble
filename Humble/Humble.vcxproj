@@ -92,7 +92,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -108,7 +108,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -126,7 +126,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,7 +146,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua5.3;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../HBase;../HBase/3rd/;../HBase/3rd/conhash;../HBase/3rd/d3des;../HBase/3rd/http-parser;../HBase/3rd/jwsmtp;../HBase/3rd/md5;../HBase/3rd/mysql;../HBase/3rd/rapidjson;../HBase/3rd/rijndael;../HBase/3rd/RSAEuro;../HBase/3rd/sha1;../HBase/3rd/zlib;../HBase/adjure;../HBase/algorithm;../HBase/db;../HBase/base;../HBase/encrypt;../HBase/fparser;../HBase/parser;../HBase/service;../HLBind;../HLBind/lpeg;../HLBind/lua;../HLBind/luabridge;../HLBind/luacjson;../HLBind/luasocket;../HLBind/luasql;../HLBind/pbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
