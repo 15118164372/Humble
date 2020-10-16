@@ -65,6 +65,7 @@
   <ItemGroup>
     <ClInclude Include="lua-protobuf\pb.h" />
     <ClInclude Include="LuabridgeStack.h" />
+    <ClInclude Include="LuaBridge\Array.h" />
     <ClInclude Include="LuaBridge\detail\CFunctions.h" />
     <ClInclude Include="LuaBridge\detail\ClassInfo.h" />
     <ClInclude Include="LuaBridge\detail\Config.h" />
